@@ -1,0 +1,1083 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}API Documentation - AGRP{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --api-bg: #f7f7f4;
+        --api-paper: #ffffff;
+        --api-paper-soft: #fbfaf8;
+        --api-text: #202733;
+        --api-heading: #141922;
+        --api-muted: #667085;
+        --api-muted-2: #8a93a3;
+        --api-border: #e7e3dd;
+        --api-border-strong: #d8d2c8;
+        --api-accent: #a85c1a;
+        --api-accent-soft: #f7efe7;
+        --api-accent-light: #fbf6f1;
+        --api-code-bg: #1f242b;
+        --api-code-text: #f3f4f6;
+        --api-ok-bg: #eef7f1;
+        --api-ok-text: #166534;
+        --api-error-bg: #fff1ed;
+        --api-error-text: #b42318;
+    }
+
+    .api-doc-wrapper {
+        background: var(--api-paper);
+        margin: 34px auto 46px;
+        padding: 0;
+        border: 1px solid var(--api-border);
+        border-radius: 14px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        color: var(--api-text);
+        /* Keep overflow visible so the sticky sidebar can remain fixed in the viewport. */
+        overflow: visible;
+    }
+
+    .api-doc-header {
+        padding: 38px 44px 30px;
+        border-bottom: 1px solid var(--api-border);
+        background: linear-gradient(180deg, rgba(251,250,248,0.96), rgba(255,255,255,0.98));
+    }
+
+    .api-kicker {
+        margin: 0 0 9px;
+        color: var(--api-accent);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
+
+    .api-title {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 2.18rem;
+        line-height: 1.22;
+        font-weight: 700;
+        color: var(--api-heading);
+        margin: 0 0 12px;
+        letter-spacing: -0.015em;
+    }
+
+    .api-subtitle {
+        max-width: 940px;
+        color: #4f5866;
+        line-height: 1.72;
+        font-size: 1.01rem;
+        margin: 0;
+    }
+
+    .api-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .api-meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--api-border);
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.76);
+        color: #4a5565;
+        font-size: 0.88rem;
+        white-space: nowrap;
+    }
+
+    .api-layout {
+        display: flex;
+        gap: 0;
+        align-items: flex-start;
+    }
+
+    .api-sidebar {
+        flex: 0 0 250px;
+        position: sticky;
+        top: 86px;
+        align-self: flex-start;
+        max-height: calc(100vh - 108px);
+        overflow-y: auto;
+        padding: 30px 22px 30px 28px;
+        border-right: 1px solid var(--api-border);
+        background: var(--api-paper-soft);
+        z-index: 5;
+    }
+
+    .api-sidebar::-webkit-scrollbar { width: 5px; }
+    .api-sidebar::-webkit-scrollbar-thumb { background: #d5cec4; border-radius: 999px; }
+
+    .api-sidebar-title {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #6b7280;
+        margin: 0 0 12px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+    }
+
+    .api-nav-list,
+    .api-subnav-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .api-nav-item { margin-bottom: 2px; }
+
+    .api-nav-link {
+        display: block;
+        padding: 7px 10px 7px 12px;
+        border-left: 2px solid transparent;
+        border-radius: 6px;
+        color: #505a68;
+        font-size: 0.92rem;
+        line-height: 1.38;
+        text-decoration: none;
+        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .api-nav-link:hover {
+        background: #ffffff;
+        color: var(--api-accent);
+        border-left-color: #d3a174;
+        text-decoration: none;
+    }
+
+    .api-nav-link.active {
+        background: #ffffff;
+        color: var(--api-accent);
+        border-left-color: var(--api-accent);
+        font-weight: 700;
+        box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    }
+
+    .api-subnav-list {
+        margin: 2px 0 8px 12px;
+        padding-left: 10px;
+        border-left: 1px solid var(--api-border);
+    }
+
+    .api-subnav-list .api-nav-link {
+        font-size: 0.84rem;
+        color: #737b88;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .api-main {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 34px 44px 46px;
+        background: #ffffff;
+    }
+
+    .api-section {
+        margin-bottom: 42px;
+        scroll-margin-top: 112px;
+    }
+
+    .api-section + .api-section {
+        border-top: 1px solid var(--api-border);
+        padding-top: 34px;
+    }
+
+    .api-h2 {
+        font-size: 1.48rem;
+        line-height: 1.36;
+        color: var(--api-heading);
+        font-weight: 750;
+        margin: 0 0 14px;
+        letter-spacing: -0.01em;
+    }
+
+    .api-h2::after {
+        content: "";
+        display: block;
+        width: 36px;
+        height: 2px;
+        background: var(--api-accent);
+        margin-top: 10px;
+        border-radius: 999px;
+    }
+
+    .api-h3 {
+        font-size: 1.12rem;
+        line-height: 1.42;
+        color: #7a3f13;
+        font-weight: 750;
+        margin: 26px 0 11px;
+    }
+
+    .api-card > .api-h3:first-child { margin-top: 0; }
+
+    .api-h4 {
+        font-size: 0.96rem;
+        color: #374151;
+        font-weight: 750;
+        margin: 18px 0 8px;
+    }
+
+    .api-text {
+        color: #3f4754;
+        font-size: 0.98rem;
+        line-height: 1.78;
+        margin: 0 0 14px;
+    }
+
+    .api-small-text {
+        color: var(--api-muted);
+        font-size: 0.91rem;
+        line-height: 1.7;
+        margin: 0 0 12px;
+    }
+
+    .api-card {
+        border: 1px solid var(--api-border);
+        border-radius: 10px;
+        background: #ffffff;
+        padding: 20px 22px;
+        margin: 18px 0;
+        box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+    }
+
+    .api-card.soft {
+        background: var(--api-accent-light);
+        border-color: #ecdccc;
+    }
+
+    .api-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin: 18px 0;
+    }
+
+    .api-summary-card {
+        border: 1px solid var(--api-border);
+        border-radius: 10px;
+        padding: 16px 16px 15px;
+        background: #ffffff;
+        box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+    }
+
+    .api-summary-card strong {
+        display: block;
+        color: var(--api-heading);
+        font-size: 0.99rem;
+        margin-bottom: 6px;
+    }
+
+    .api-summary-card span {
+        display: block;
+        color: var(--api-muted);
+        font-size: 0.9rem;
+        line-height: 1.58;
+    }
+
+    .api-callout {
+        border-left: 3px solid var(--api-accent);
+        background: var(--api-accent-light);
+        border-radius: 0 8px 8px 0;
+        padding: 13px 15px;
+        color: #4b3626;
+        line-height: 1.72;
+        font-size: 0.94rem;
+        margin: 16px 0;
+    }
+
+    .api-callout.info {
+        border-left-color: #64748b;
+        background: #f8fafc;
+        color: #334155;
+    }
+
+    .api-badge {
+        display: inline-block;
+        min-width: 42px;
+        text-align: center;
+        background: #f6f3ef;
+        color: #7a3f13;
+        border: 1px solid #e8d8c8;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    .endpoint-path {
+        font-family: Consolas, Monaco, "Courier New", monospace;
+        color: #27313d;
+        font-weight: 700;
+        word-break: break-all;
+    }
+
+    .endpoint-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .inline-code {
+        font-family: Consolas, Monaco, "Courier New", monospace;
+        font-size: 0.91em;
+        color: #7a3f13;
+        background: #fbf6f1;
+        border: 1px solid #ead8c6;
+        border-radius: 5px;
+        padding: 1px 5px;
+        word-break: break-word;
+    }
+
+    .code-block {
+        background: var(--api-code-bg);
+        color: var(--api-code-text);
+        border-radius: 9px;
+        padding: 15px 17px;
+        margin: 12px 0 18px;
+        overflow-x: auto;
+        font-size: 0.88rem;
+        line-height: 1.64;
+        border: 1px solid #171b20;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .code-block code {
+        color: inherit;
+        white-space: pre;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        margin: 14px 0 20px;
+        border: 1px solid var(--api-border);
+        border-radius: 10px;
+        background: #ffffff;
+    }
+
+    .api-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+        margin: 0;
+        font-size: 0.91rem;
+        background: #fff;
+    }
+
+    .api-table th,
+    .api-table td {
+        border-bottom: 1px solid var(--api-border);
+        padding: 12px 13px;
+        vertical-align: top;
+        line-height: 1.62;
+    }
+
+    .api-table th {
+        background: #fbfaf8;
+        color: #3c4654;
+        font-weight: 750;
+        white-space: nowrap;
+        border-bottom: 1px solid var(--api-border-strong);
+    }
+
+    .api-table tr:last-child td { border-bottom: none; }
+    .api-table tbody tr:hover { background: #fdfbf8; }
+    .api-table td:first-child { width: 34%; }
+
+    .api-list {
+        margin: 8px 0 14px 20px;
+        padding: 0;
+        color: #3f4754;
+        font-size: 0.98rem;
+        line-height: 1.76;
+    }
+
+    .api-list li { margin-bottom: 5px; }
+
+    .step-list {
+        counter-reset: step;
+        list-style: none;
+        margin: 16px 0;
+        padding: 0;
+    }
+
+    .step-list li {
+        counter-increment: step;
+        position: relative;
+        padding: 0 0 15px 42px;
+        color: #3f4754;
+        line-height: 1.72;
+    }
+
+    .step-list li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #d9c6b5;
+        color: var(--api-accent);
+        font-weight: 800;
+        text-align: center;
+        line-height: 24px;
+        font-size: 0.86rem;
+    }
+
+    .status-code {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+        font-size: 0.84rem;
+        font-weight: 800;
+    }
+
+    .status-ok { background: var(--api-ok-bg); color: var(--api-ok-text); }
+    .status-error { background: var(--api-error-bg); color: var(--api-error-text); }
+
+    @media (max-width: 1100px) {
+        .api-doc-header { padding: 32px 30px 26px; }
+        .api-main { padding: 30px 30px 40px; }
+        .api-sidebar { flex-basis: 225px; padding-left: 22px; }
+    }
+
+    @media (max-width: 992px) {
+        .api-layout { display: block; }
+        .api-sidebar {
+            position: static;
+            max-height: none;
+            border-right: none;
+            border-bottom: 1px solid var(--api-border);
+            padding: 22px 24px;
+            background: #fbfaf8;
+        }
+        .api-main { padding: 28px 24px 38px; }
+        .api-grid { grid-template-columns: 1fr; }
+        .api-title { font-size: 1.86rem; }
+        .api-table { font-size: 0.88rem; }
+    }
+
+    @media (max-width: 576px) {
+        .api-doc-wrapper {
+            margin: 18px 0 28px;
+            border-radius: 10px;
+        }
+        .api-doc-header { padding: 24px 18px 22px; }
+        .api-main { padding: 24px 18px 32px; }
+        .api-sidebar { padding: 18px; }
+        .api-title { font-size: 1.58rem; }
+        .api-h2 { font-size: 1.28rem; }
+        .api-h3 { font-size: 1.05rem; }
+        .api-text { font-size: 0.95rem; }
+        .api-card { padding: 16px; }
+        .code-block { font-size: 0.8rem; }
+        .api-meta-pill { white-space: normal; }
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="api-doc-wrapper">
+        <header class="api-doc-header">
+            <p class="api-kicker">AGRP Public API</p>
+            <h1 class="api-title">API Documentation</h1>
+            <p class="api-subtitle">
+                This page describes the public read-only APIs of the AGRP / Asteraceae Genomic Research Platform.
+                Use these endpoints to download genome resources and retrieve public genomics, comparative genomics, and multi-omics data through scripts, browsers, or bioinformatics workflows.
+            </p>
+            <div class="api-meta-row">
+                <span class="api-meta-pill">Base URL: <span class="inline-code">https://asteraceae.cgrpoee.top/api/</span></span>
+                <span class="api-meta-pill">Method: <span class="inline-code">GET</span></span>
+                <span class="api-meta-pill">Version: <span class="inline-code">1.0</span></span>
+                <span class="api-meta-pill">Mode: read-only</span>
+            </div>
+        </header>
+
+        <div class="api-layout">
+            <aside class="api-sidebar">
+                <p class="api-sidebar-title">Contents</p>
+                <ul class="api-nav-list">
+                    <li class="api-nav-item"><a href="#sec_1" class="api-nav-link active">1. Overview</a></li>
+                    <li class="api-nav-item"><a href="#sec_2" class="api-nav-link">2. Quick Start</a></li>
+                    <li class="api-nav-item"><a href="#sec_3" class="api-nav-link">3. General Rules</a></li>
+                    <li class="api-nav-item"><a href="#sec_4" class="api-nav-link">4. Health Check &amp; IP</a></li>
+                    <li class="api-nav-item">
+                        <a href="#sec_5" class="api-nav-link">5. Genomics APIs</a>
+                        <ul class="api-subnav-list">
+                            <li><a href="#sec_5_1" class="api-nav-link">5.1 Genome files</a></li>
+                            <li><a href="#sec_5_2" class="api-nav-link">5.2 Annotation data</a></li>
+                            <li><a href="#sec_5_3" class="api-nav-link">5.3 TE data</a></li>
+                        </ul>
+                    </li>
+                    <li class="api-nav-item">
+                        <a href="#sec_6" class="api-nav-link">6. Geno-Syn APIs</a>
+                        <ul class="api-subnav-list">
+                            <li><a href="#sec_6_1" class="api-nav-link">6.1 Ancestral files</a></li>
+                            <li><a href="#sec_6_2" class="api-nav-link">6.2 Static JSON</a></li>
+                            <li><a href="#sec_6_3" class="api-nav-link">6.3 Database queries</a></li>
+                        </ul>
+                    </li>
+                    <li class="api-nav-item"><a href="#sec_7" class="api-nav-link">7. Multi-Omics APIs</a></li>
+                    <li class="api-nav-item"><a href="#sec_8" class="api-nav-link">8. Rate Limits</a></li>
+                    <li class="api-nav-item"><a href="#sec_9" class="api-nav-link">9. Error Responses</a></li>
+                    <li class="api-nav-item"><a href="#sec_10" class="api-nav-link">10. Usage Examples</a></li>
+                    <li class="api-nav-item"><a href="#sec_11" class="api-nav-link">11. Notes</a></li>
+                </ul>
+            </aside>
+
+            <main class="api-main">
+                <section id="sec_1" class="api-section">
+                    <h2 class="api-h2">1. Overview</h2>
+                    <p class="api-text">
+                        The AGRP public API provides structured access to selected platform resources. It can be used to list available datasets, check file availability, download genome-related files, and query public data tables or JSON resources.
+                    </p>
+                    <div class="api-grid">
+                        <div class="api-summary-card">
+                            <strong>Genome resources</strong>
+                            <span>Species lists, genome file checks, and genome file downloads.</span>
+                        </div>
+                        <div class="api-summary-card">
+                            <strong>Geno-Syn resources</strong>
+                            <span>Ancestral genome files, collinearity records, dotplots, blocks, hierarchical data, and gene sets.</span>
+                        </div>
+                        <div class="api-summary-card">
+                            <strong>Multi-Omics resources</strong>
+                            <span>Pan-genome, transcriptome, expression, plant metabolomics, and scent metabolomics data.</span>
+                        </div>
+                    </div>
+                    <div class="api-callout info">
+                        The public API is read-only. Task-based services such as sequence submission, BLAST search, background analysis jobs, and generated result files are not included in this documentation.
+                    </div>
+                </section>
+
+                <section id="sec_2" class="api-section">
+                    <h2 class="api-h2">2. Quick Start</h2>
+                    <p class="api-text">All current API endpoints are under the following base URL:</p>
+                    <pre class="code-block"><code>https://asteraceae.cgrpoee.top/api/</code></pre>
+
+                    <div class="api-callout info">
+                        All command-line examples in this page use <span class="inline-code">curl -4</span> to prefer IPv4. This is especially important when checking an IP address for whitelist applications, because browsers and some networks may prefer IPv6.
+                    </div>
+
+                    <ol class="step-list">
+                        <li>Choose the resource group you need, such as genome files, Genomics annotations, Geno-Syn comparative data, or Multi-Omics data.</li>
+                        <li>Find the endpoint in the tables below and include all required parameters in the URL query string.</li>
+                        <li>Add optional filters such as <span class="inline-code">limit</span>, <span class="inline-code">offset</span>, <span class="inline-code">q</span>, or <span class="inline-code">gene_id</span> only when they are needed.</li>
+                        <li>Send a <span class="inline-code">GET</span> request with <span class="inline-code">curl</span>, a browser, Python, R, or another HTTP client.</li>
+                    </ol>
+
+                    <h3 class="api-h3">Example: check and download a genome file</h3>
+                    <p class="api-text">For file downloads, it is recommended to check the file first and then download it.</p>
+                    <pre class="code-block"><code># 1. Check whether the file exists
+curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
+
+# 2. Download the file
+curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+
+                    <h3 class="api-h3">Example: query data with a limit</h3>
+                    <p class="api-text">For large query endpoints, use <span class="inline-code">limit</span> to return a manageable number of records. The default limit is 20 records. For public access, the maximum allowed limit is 100 records per request; authorized API-key users may have higher limit caps.</p>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"</code></pre>
+                </section>
+
+                <section id="sec_3" class="api-section">
+                    <h2 class="api-h2">3. General Rules</h2>
+                    <div class="table-wrap">
+                        <table class="api-table">
+                            <thead>
+                                <tr><th>Item</th><th>Rule</th><th>Example</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>HTTP method</td><td>All current endpoints use <span class="inline-code">GET</span>.</td><td><span class="inline-code">curl -4 -i "URL"</span></td></tr>
+                                <tr><td>Response format</td><td>Most endpoints return JSON. Download endpoints return file streams when the requested file exists.</td><td><span class="inline-code">application/json</span> or attachment download</td></tr>
+                                <tr><td>Required parameters</td><td>Some endpoints require parameters such as <span class="inline-code">species</span>, <span class="inline-code">type</span>, <span class="inline-code">dataset</span>, <span class="inline-code">query_genome</span>, or <span class="inline-code">filename</span>.</td><td><span class="inline-code">?species=Aann&amp;type=cds</span></td></tr>
+                                <tr><td>Pagination</td><td>List endpoints usually support <span class="inline-code">limit</span> and <span class="inline-code">offset</span>. The default limit is 20. For public access, the maximum returned records per request is 100; authorized API-key users may have higher limit caps.</td><td><span class="inline-code">?limit=20&amp;offset=40</span></td></tr>
+                                <tr><td>Search filters</td><td>Some endpoints support keyword or field filters such as <span class="inline-code">q</span>, <span class="inline-code">gene_id</span>, <span class="inline-code">species</span>, <span class="inline-code">database</span>, or <span class="inline-code">query_genome</span>.</td><td><span class="inline-code">?q=Aann&amp;limit=5</span></td></tr>
+                                <tr><td>File and name safety</td><td>Download-related names use safe identifiers such as letters, numbers, underscores, hyphens, and dots. Filename values that contain spaces should be URL-encoded.</td><td><span class="inline-code">Aann</span>, <span class="inline-code">AAKI</span>, <span class="inline-code">Dapi_white%20petal.json</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="api-callout">
+                        If a request returns <span class="inline-code">400 Bad Request</span>, first check whether a required parameter is missing or whether the parameter name is incorrect.
+                    </div>
+                </section>
+
+                <section id="sec_4" class="api-section">
+                    <h2 class="api-h2">4. Health Check and Client IP</h2>
+                    <div class="api-card soft">
+                        <div class="endpoint-line"><span class="api-badge">GET</span><span class="endpoint-path">/api/ping/</span></div>
+                        <p class="api-text">Use this endpoint to check whether the AGRP API service is running.</p>
+                        <h4 class="api-h4">Request</h4>
+                        <pre class="code-block"><code>curl -4 -H "Accept: application/json" "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
+                        <h4 class="api-h4">Response example</h4>
+                        <pre class="code-block"><code>{
+  "status": "ok",
+  "message": "AGRP API is running",
+  "version": "1.0",
+  "base_url": "https://asteraceae.cgrpoee.top/api/"
+}</code></pre>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="endpoint-line"><span class="api-badge">GET</span><span class="endpoint-path">/api/whoami/</span></div>
+                        <p class="api-text">Use this endpoint to check the public client IP address detected by the AGRP API service. For IP whitelist applications, use the IPv4 command below and send the returned IPv4 address to the AGRP team.</p>
+                        <h4 class="api-h4">Request: check the detected IPv4 address</h4>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
+                        <h4 class="api-h4">Response example</h4>
+                        <pre class="code-block"><code>{
+  "status": "ok",
+  "detected_ip": "203.0.113.10",
+  "ip_source": "CF-Connecting-IP",
+  "is_private_or_local": false,
+  "message": "This is the client IP address detected by the AGRP API for this request."
+}</code></pre>
+                        <div class="api-callout info">
+                            If this endpoint is opened directly in a browser, the detected address may be IPv6 because many networks prefer IPv6 automatically. For whitelist applications, please use <span class="inline-code">curl -4</span> from the actual server or computer that will access AGRP. A detected public IP address does not necessarily mean it is suitable for whitelist access. Campus networks, dormitory networks, public Wi-Fi, mobile hotspots, and personal broadband connections may use shared, dynamic, or temporary addresses. In these environments, please request an API key instead of IP whitelist access.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="sec_5" class="api-section">
+                    <h2 class="api-h2">5. Genomics APIs</h2>
+                    <p class="api-text">Genomics APIs provide access to genome file resources and selected annotation datasets.</p>
+
+                    <div id="sec_5_1" class="api-card">
+                        <h3 class="api-h3">5.1 Genome File APIs</h3>
+                        <p class="api-text">These endpoints are used to list species, check whether genome files exist, and download genome files.</p>
+                        <p class="api-small-text">Supported file types: <span class="inline-code">cds</span>, <span class="inline-code">pep</span>, <span class="inline-code">lens</span>, <span class="inline-code">gff</span>.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/species/</span></td><td>List species with available genome resources.</td><td>None</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/files/genome/species/</span></td><td>Alias endpoint for genome species resources.</td><td>None</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/files/genome/</span></td><td>Check whether a genome file exists.</td><td><span class="inline-code">species</span> required; <span class="inline-code">type</span> required.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/download/genome/</span></td><td>Download a genome file.</td><td><span class="inline-code">species</span> required; <span class="inline-code">type</span> required.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=lens"
+curl -4 -L -o Aann.lens "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=lens"</code></pre>
+                    </div>
+
+                    <div id="sec_5_2" class="api-card">
+                        <h3 class="api-h3">5.2 Annotation and Functional Genomics APIs</h3>
+                        <p class="api-text">These endpoints query public annotation and functional genomics records. Use <span class="inline-code">limit</span> to avoid returning too many records at once.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/interproscan/</span></td><td>Query InterProScan annotation data.</td><td><span class="inline-code">species</span> required; optional <span class="inline-code">database</span>, <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/kegg/</span></td><td>Query KEGG annotation data.</td><td><span class="inline-code">species</span> required; optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/regulatory-proteins/</span></td><td>Query regulatory protein or transcription factor data.</td><td>Optional <span class="inline-code">species</span>, <span class="inline-code">type</span>, <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/m6a/</span></td><td>Query m6A-related gene information.</td><td>Optional <span class="inline-code">species</span>, <span class="inline-code">first_class</span>, <span class="inline-code">hmm_id</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/duplication-types/</span></td><td>Query duplication type data.</td><td>Optional <span class="inline-code">species</span>, <span class="inline-code">gene_id</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/regulatory-proteins/?species=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/m6a/?species=Aann&amp;first_class=readers&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/duplication-types/?species=Aann&amp;limit=5"</code></pre>
+                    </div>
+
+                    <div id="sec_5_3" class="api-card">
+                        <h3 class="api-h3">5.3 Transposable Elements APIs</h3>
+                        <p class="api-text">These endpoints list species with available transposable element resources and query TE records for a selected species.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/transposable-elements/species/</span></td><td>List species with available TE JSON resources.</td><td>None</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genomics/transposable-elements/</span></td><td>Query TE records for one species.</td><td><span class="inline-code">species</span> required; optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/species/"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/?species=Artemisia_annua&amp;limit=5"</code></pre>
+                    </div>
+                </section>
+
+                <section id="sec_6" class="api-section">
+                    <h2 class="api-h2">6. Geno-Syn APIs</h2>
+                    <p class="api-text">Geno-Syn APIs provide access to comparative genomics resources, ancestral genome files, collinearity data, block data, hierarchical data, and selected gene datasets.</p>
+
+                    <div id="sec_6_1" class="api-card">
+                        <h3 class="api-h3">6.1 Ancestral Genome File APIs</h3>
+                        <p class="api-text">These endpoints are used to list ancestral genome datasets, check file availability, and download ancestral genome files.</p>
+                        <p class="api-small-text">Supported file types: <span class="inline-code">cds</span>, <span class="inline-code">pep</span>, <span class="inline-code">lens</span>, <span class="inline-code">gff</span>. Example datasets: <span class="inline-code">AAKI</span>, <span class="inline-code">AAKII</span>, <span class="inline-code">ACAK</span>, <span class="inline-code">ASAKI</span>, <span class="inline-code">CAAKI</span>, <span class="inline-code">CIAKI</span>.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/ancestral-genomes/</span></td><td>List ancestral genome datasets and file availability.</td><td>None</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/files/ancestral/</span></td><td>Check whether an ancestral genome file exists.</td><td><span class="inline-code">dataset</span> required; <span class="inline-code">type</span> required.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/download/ancestral/</span></td><td>Download an ancestral genome file.</td><td><span class="inline-code">dataset</span> required; <span class="inline-code">type</span> required.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/ancestral-genomes/"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/files/ancestral/?dataset=AAKI&amp;type=cds"
+curl -4 -L -o AAKI.cds "https://asteraceae.cgrpoee.top/api/download/ancestral/?dataset=AAKI&amp;type=cds"</code></pre>
+                    </div>
+
+                    <div id="sec_6_2" class="api-card">
+                        <h3 class="api-h3">6.2 Collinearity and Dotplot Static JSON APIs</h3>
+                        <p class="api-text">These endpoints query static JSON resources used by collinearity and dotplot pages.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/collinear-kaks/</span></td><td>Query collinearity and Ka/Ks records.</td><td>Optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/dotplots/</span></td><td>Query dotplot records.</td><td>Optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/collinear-kaks/?q=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/dotplots/?q=Hean&amp;limit=5"</code></pre>
+                    </div>
+
+                    <div id="sec_6_3" class="api-card">
+                        <h3 class="api-h3">6.3 Geno-Syn Database Query APIs</h3>
+                        <p class="api-text">These endpoints query database-backed comparative genomics resources. Some endpoints require a resource-specific parameter, such as <span class="inline-code">query_genome</span>.</p>
+                        <p class="api-small-text">The <span class="inline-code">block-details</span> endpoint returns block-level records for the selected <span class="inline-code">query_genome</span>. Use <span class="inline-code">gene_id</span> or <span class="inline-code">block_id</span> only when you want to narrow the result to a known exact identifier.</p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/blocks/</span></td><td>Query Aster-Blocks summary data.</td><td><span class="inline-code">query_genome</span> required; optional <span class="inline-code">reference_genome</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/block-details/</span></td><td>Query block-level gene details.</td><td><span class="inline-code">query_genome</span> required; optional <span class="inline-code">gene_id</span>, <span class="inline-code">block_id</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/hierarchical-alignments/</span></td><td>Query hierarchical multiple genome alignment data.</td><td>Optional <span class="inline-code">reference</span>, <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>. Example references: <span class="inline-code">Hean</span>, <span class="inline-code">Eupl</span>, <span class="inline-code">Vivi</span>, <span class="inline-code">Lssa</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/hierarchical-genes/</span></td><td>Query hierarchical gene data.</td><td>Optional <span class="inline-code">reference</span>, <span class="inline-code">species</span>, <span class="inline-code">gene_id</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/evogenes/</span></td><td>Query Aster-Evogenes data.</td><td>Optional <span class="inline-code">gene_id</span>, <span class="inline-code">species</span>, <span class="inline-code">function</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/orthologous/</span></td><td>Query orthologous gene data.</td><td>Optional <span class="inline-code">gene_id</span>, <span class="inline-code">orthogroup</span>, <span class="inline-code">species</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/gene-families/</span></td><td>Query gene family data.</td><td>Optional <span class="inline-code">gene_id</span>, <span class="inline-code">species</span>, <span class="inline-code">family</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/rubber-genes/</span></td><td>Query rubber biosynthesis gene data.</td><td>Optional <span class="inline-code">gene_id</span>, <span class="inline-code">species</span>, <span class="inline-code">function</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/genosyn/inulin-genes/</span></td><td>Query inulin metabolism gene data.</td><td>Optional <span class="inline-code">gene_id</span>, <span class="inline-code">species</span>, <span class="inline-code">function</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-alignments/?reference=Hean&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/evogenes/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/orthologous/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/gene-families/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/rubber-genes/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/inulin-genes/?limit=5"</code></pre>
+                    </div>
+                </section>
+
+                <section id="sec_7" class="api-section">
+                    <h2 class="api-h2">7. Multi-Omics APIs</h2>
+                    <p class="api-text">Multi-Omics APIs provide access to pan-genome, transcriptome, expression, and metabolomics resources.</p>
+                    <div class="api-card">
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Parameters</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/pangenome/</span></td><td>Query pan-genome records.</td><td>Optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/transcriptome/samples/</span></td><td>List available transcriptome sample JSON files.</td><td>Optional <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/transcriptome/sample/</span></td><td>Read one transcriptome sample JSON file.</td><td><span class="inline-code">filename</span> required.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/transcriptome/expression/</span></td><td>Query transcriptome expression data.</td><td><span class="inline-code">species</span> required; optional <span class="inline-code">gene_id</span>, <span class="inline-code">expression_index</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/metabolomics/plant/</span></td><td>Query plant metabolomics records.</td><td>Optional <span class="inline-code">cid</span>, <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                    <tr><td><span class="api-badge">GET</span><span class="endpoint-path">/api/multiomics/metabolomics/scent/</span></td><td>Query scent metabolomics records.</td><td>Optional <span class="inline-code">cid</span>, <span class="inline-code">q</span>, <span class="inline-code">limit</span>, <span class="inline-code">offset</span>.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/expression/?species=Aann&amp;expression_index=TPM&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/scent/?limit=5"</code></pre>
+                    </div>
+                </section>
+
+                <section id="sec_8" class="api-section">
+                    <h2 class="api-h2">8. Rate Limits and Fair Use</h2>
+                    <p class="api-text">
+                        The AGRP API provides public read-only access to selected Asteraceae genomic, comparative genomics, and multi-omics resources. Authentication is not required for standard query and download endpoints.
+                    </p>
+                    <p class="api-text">
+                        To maintain stable service for all users, API requests are rate-limited by client access level. Standard public users are limited by IP address. Authorized collaborators may receive higher quotas through registered IP addresses or dedicated API keys.
+                    </p>
+
+                    <div class="api-card soft">
+                        <h3 class="api-h3">Current public limits</h3>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Endpoint group</th><th>Current public limit</th><th>Notes</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="endpoint-path">/api/download/</span></td>
+                                        <td>5 requests per minute per IP; up to 2 concurrent download requests per IP.</td>
+                                        <td>Applies to genome and ancestral genome file downloads.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="endpoint-path">/api/files/</span></td>
+                                        <td>60 requests per minute per IP.</td>
+                                        <td>Applies to file availability checks and file metadata endpoints.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="endpoint-path">/api/genomics/</span>, <span class="endpoint-path">/api/genosyn/</span>, <span class="endpoint-path">/api/multiomics/</span></td>
+                                        <td>120 requests per minute per IP.</td>
+                                        <td>Applies to public JSON and database query endpoints.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="endpoint-path">/api/ping/</span></td>
+                                        <td>60 requests per minute per IP.</td>
+                                        <td>Applies to the API health check endpoint.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="inline-code">limit</span> parameter</td>
+                                        <td>Default: 20 records; maximum: 100 records per request.</td>
+                                        <td>Large values such as <span class="inline-code">limit=999999</span> are automatically capped at 100 for public access.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <h3 class="api-h3">Authorized high-throughput access</h3>
+                        <p class="api-text">
+                            For large-scale batch access, authorized collaborators may be granted higher quotas by registering a fixed IP address or by using a dedicated API key. The API endpoints remain the same; authorized requests simply receive a higher access tier.
+                        </p>
+                        <div class="table-wrap">
+                            <table class="api-table">
+                                <thead><tr><th>Access type</th><th>How it works</th><th>Typical use case</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Registered IP address</td>
+                                        <td>The collaborator provides a fixed server IPv4 address or stable institutional server network range, and AGRP grants higher quota for requests from that address. Personal computers on campus networks, dormitory networks, public Wi-Fi, mobile hotspots, or dynamic home broadband are generally not suitable for IP whitelist access.</td>
+                                        <td>Laboratory servers, institutional servers, or stable computing clusters.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dedicated API key</td>
+                                        <td>The collaborator sends a key in the <span class="inline-code">X-AGRP-API-Key</span> request header. API keys should not be placed in the URL query string.</td>
+                                        <td>Teams without a fixed IP address, cross-institution workflows, or temporary authorized access.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bulk package or manifest</td>
+                                        <td>For very large downloads, a curated package or file manifest may be more appropriate than sending many individual API requests.</td>
+                                        <td>Full dataset mirroring, long-term local analysis, or large-scale automated pipelines.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h3 class="api-h3">Checking the IP address for whitelist applications</h3>
+                    <p class="api-text">
+                        Before requesting IP whitelist access, run the following command from the actual fixed server that will access AGRP. This command forces IPv4 and avoids accidentally submitting an IPv6 address returned by a browser request.
+                    </p>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
+                    <div class="api-callout info">
+                        The returned <span class="inline-code">detected_ip</span> is the client IP detected by AGRP for that request. However, a detected public IP is not always suitable for whitelist access. If the request comes from a campus network, dormitory network, public Wi-Fi, mobile hotspot, or personal dynamic broadband connection, use an AGRP API key instead.
+                    </div>
+
+                    <h3 class="api-h3">Using an API key</h3>
+                    <p class="api-text">
+                        If the AGRP team provides an API key, include it in the HTTP request header named <span class="inline-code">X-AGRP-API-Key</span>. Do not include the key in a URL parameter, browser address bar, or shared link.
+                    </p>
+                    <pre class="code-block"><code>curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
+  "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=1000"
+
+curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
+  -L -o Aann.cds \
+  "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+
+                    <div class="api-callout info">
+                        If a request exceeds the current rate limit, the API returns <span class="inline-code">429 Too Many Requests</span>. Please wait briefly and retry with a lower request frequency. For repeated batch downloads or large automated workflows, contact the AGRP team for high-throughput access instead of sending high-frequency public requests.
+                    </div>
+
+                    <h3 class="api-h3">Recommended access pattern</h3>
+                    <ul class="api-list">
+                        <li>Check file availability before downloading large files.</li>
+                        <li>Use <span class="inline-code">limit</span> and <span class="inline-code">offset</span> for large tables instead of requesting all records at once.</li>
+                        <li>Avoid opening many parallel download connections from the same IP address.</li>
+                        <li>Use the <span class="inline-code">X-AGRP-API-Key</span> header only when an API key has been issued by the AGRP team.</li>
+                        <li>For full-dataset access, request a bulk package or manifest when possible.</li>
+                    </ul>
+                </section>
+
+                <section id="sec_9" class="api-section">
+                    <h2 class="api-h2">9. Error Responses</h2>
+                    <p class="api-text">When a request is invalid or the requested resource does not exist, the API returns a JSON error response with an appropriate HTTP status code.</p>
+                    <div class="table-wrap">
+                        <table class="api-table">
+                            <thead><tr><th>Status</th><th>Meaning</th><th>Common cause</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="status-code status-ok">200</span></td><td>OK</td><td>The request succeeded.</td></tr>
+                                <tr><td><span class="status-code status-error">400</span></td><td>Bad Request</td><td>Missing required parameter, invalid file type, or unsafe parameter value.</td></tr>
+                                <tr><td><span class="status-code status-error">404</span></td><td>Not Found</td><td>The requested file, species, dataset, or record does not exist.</td></tr>
+                                <tr><td><span class="status-code status-error">429</span></td><td>Too Many Requests</td><td>The request exceeded the current IP-based rate limit or download concurrency limit.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="api-h3">9.1 Missing required parameter</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?limit=5"</code></pre>
+                    <pre class="code-block"><code>{
+  "status": "error",
+  "message": "Missing required parameter: query_genome"
+}</code></pre>
+                    <p class="api-text">Correct request:</p>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"</code></pre>
+
+                    <h3 class="api-h3">9.2 Invalid file type</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=abc"</code></pre>
+                    <pre class="code-block"><code>{
+  "status": "error",
+  "message": "Invalid type parameter.",
+  "type": "abc",
+  "allowed_types": ["cds", "pep", "lens", "gff"]
+}</code></pre>
+
+                    <h3 class="api-h3">9.3 File not found</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=NotExist&amp;type=cds"</code></pre>
+                    <pre class="code-block"><code>{
+  "status": "error",
+  "message": "File not found.",
+  "species": "NotExist",
+  "type": "cds",
+  "filename": "NotExist.cds"
+}</code></pre>
+
+                    <h3 class="api-h3">9.4 Invalid species parameter</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=../../etc/passwd&amp;type=cds"</code></pre>
+                    <pre class="code-block"><code>{
+  "status": "error",
+  "message": "Invalid species parameter. Only letters, numbers, underscores, hyphens and dots are allowed.",
+  "species": "../../etc/passwd"
+}</code></pre>
+
+                    <h3 class="api-h3">9.5 Too many requests</h3>
+                    <p class="api-text">If the request frequency or the number of concurrent downloads is too high, the API may return <span class="inline-code">429 Too Many Requests</span>.</p>
+                    <pre class="code-block"><code>{
+  "detail": "Request was throttled. Expected available in 42 seconds."
+}</code></pre>
+                    <p class="api-text">For concurrent download limits, the response may look like this:</p>
+                    <pre class="code-block"><code>{
+  "detail": "Too many concurrent download requests. Please wait for your current downloads to finish."
+}</code></pre>
+                </section>
+
+                <section id="sec_10" class="api-section">
+                    <h2 class="api-h2">10. Usage Examples</h2>
+                    <p class="api-text">The examples below show common ways to use the API. The tables above provide the full list of endpoints and supported parameters.</p>
+
+                    <h3 class="api-h3">10.1 Check your detected IPv4 address</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
+
+                    <h3 class="api-h3">10.2 Check whether the API is available</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
+
+                    <h3 class="api-h3">10.3 List genome resources and download a file</h3>
+                    <pre class="code-block"><code># List species with available genome files
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
+
+# Check whether a specific file exists
+curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
+
+# Download the file
+curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+
+                    <h3 class="api-h3">10.4 Query annotation records</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"</code></pre>
+
+                    <h3 class="api-h3">10.5 Query Geno-Syn records</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"</code></pre>
+
+                    <h3 class="api-h3">10.6 Query Multi-Omics records</h3>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
+curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"</code></pre>
+                </section>
+
+                <section id="sec_11" class="api-section">
+                    <h2 class="api-h2">11. Notes</h2>
+                    <ul class="api-list">
+                        <li>The API provides public read-only access to selected AGRP resources.</li>
+                        <li>Download endpoints return file streams only when the requested file exists. For scripts, check file availability before downloading large files.</li>
+                        <li>API requests may be rate-limited by IP address or authorized access level to maintain stable public service.</li>
+                        <li>Authorized collaborators may receive higher quotas through registered fixed server IPv4 addresses or the <span class="inline-code">X-AGRP-API-Key</span> request header.</li>
+                        <li>Use <span class="inline-code">curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</span> to check the IPv4 address detected by AGRP before requesting IP whitelist access.</li>
+                        <li>Use <span class="inline-code">limit</span> and <span class="inline-code">offset</span> when querying large tables or JSON resources. The default limit is 20. For public access, the maximum allowed limit is 100; authorized API-key users may have higher limit caps.</li>
+                        <li>URL-encode filenames or query values that contain spaces, for example <span class="inline-code">Dapi_white%20petal.json</span>.</li>
+                        <li>A successful response with an empty <span class="inline-code">data</span> list means the request was valid but no matching records were found.</li>
+                        <li>This documentation describes programmatic access to public resources and does not replace the normal website pages.</li>
+                    </ul>
+                </section>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        var sectionLinks = [];
+
+        $('a.api-nav-link[href^="#"]').each(function() {
+            var target = $($(this).attr('href'));
+            if (target.length) {
+                sectionLinks.push({ link: $(this), target: target });
+            }
+        });
+
+        $('a.api-nav-link[href^="#"]').on('click', function(event) {
+            var target = $($(this).attr('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').stop().animate({ scrollTop: target.offset().top - 96 }, 450);
+                $('.api-nav-link').removeClass('active');
+                $(this).addClass('active');
+            }
+        });
+
+        $(window).on('scroll', function() {
+            var scrollDistance = $(window).scrollTop() + 125;
+            var activeLink = null;
+
+            for (var i = 0; i < sectionLinks.length; i++) {
+                if (sectionLinks[i].target.offset().top <= scrollDistance) {
+                    activeLink = sectionLinks[i].link;
+                }
+            }
+
+            if (activeLink) {
+                $('.api-nav-link').removeClass('active');
+                activeLink.addClass('active');
+            }
+        });
+    });
+</script>
+{% endblock %}
