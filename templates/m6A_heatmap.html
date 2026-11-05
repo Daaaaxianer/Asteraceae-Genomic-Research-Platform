@@ -1,0 +1,128 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Gene duplication type</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 900px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
+        },
+        legend: {},
+        grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+        },
+        xAxis: {
+        type: 'value'
+        },
+        yAxis: {
+        type: 'category',
+        data: ["Begonia darthvaderiana", "Benincasa hispida", "Begonia loranthoides", "Begonia masoniana", "Begonia peltatifolia", "Citrullus amarus", "Cucurbita argyrosperma", "Citrullus colocynthis", "Citrullus ecirrhosus", "Cucumis hystrix", "Cucumis metuliferus", "Citrullus lanatus", "Citrullus lanatus cultivar", "Cucurbita maxima", "Cucumis melo", "Cucurbita moschata", "Citrullus mucsospermus", "Coriaria nepalensis", "Cucurbita pepo", "Citrullus rehmii", "Cucumis sativus", "Hemsleya chinensis", "Herpetospermum pedunculosum", "Luffa acutangula", "Luffa cylindrica", "Lagenaria siceraria", "Momordica charantia", "Sechium edule", "Trichosanthes anguina", "Vitis vinifera"
+]
+        },
+        series: [
+        {
+          name: 'Readers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [7, 7, 8, 7, 7, 5, 10, 5, 5, 5, 5, 5, 5, 8, 6, 8, 5, 31, 7, 5, 5, 5, 4, 4, 4, 4, 4, 9, 5, 10
+]
+        },
+        {
+          name: 'Erasers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [7, 14, 7, 4, 5, 8, 8, 8, 8, 8, 8, 8, 9, 8, 9, 8, 8, 23, 8, 9, 7, 8, 8, 9, 9, 9, 8, 12, 9, 8
+]
+        },
+        {
+          name: 'Writers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [4, 3, 5, 3, 3, 5, 6, 5, 5, 3, 4, 5, 5, 6, 3, 7, 5, 9, 7, 5, 4, 5, 4, 3, 3, 4, 4, 5, 4, 5
+]
+        },
+        ]
+        };
+
+        option && myChart.setOption(option);
+        myChart.on('click', function (params) {
+                var name = params.name;
+                if (
+                    name === "Begonia darthvaderiana" ||
+                    name === "Benincasa hispida" ||
+                    name === "Begonia loranthoides" ||
+                    name === "Begonia masoniana" ||
+                    name === "Begonia peltatifolia" ||
+                    name === "Citrullus amarus" ||
+                    name === "Cucurbita argyrosperma" ||
+                    name === "Citrullus colocynthis" ||
+                    name === "Citrullus ecirrhosus" ||
+                    name === "Cucumis hystrix" ||
+                    name === "Cucumis metuliferus" ||
+                    name === "Citrullus lanatus" ||
+                    name === "Citrullus lanatus cultivar" ||
+                    name === "Cucurbita maxima" ||
+                    name === "Cucumis melo" ||
+                    name === "Cucurbita moschata" ||
+                    name === "Citrullus mucsospermus" ||
+                    name === "Coriaria nepalensis" ||
+                    name === "Cucurbita pepo" ||
+                    name === "Citrullus rehmii" ||
+                    name === "Cucumis sativus" ||
+                    name === "Hemsleya chinensis" ||
+                    name === "Herpetospermum pedunculosum" ||
+                    name === "Luffa acutangula" ||
+                    name === "Luffa cylindrica" ||
+                    name === "Lagenaria siceraria" ||
+                    name === "Momordica charantia" ||
+                    name === "Sechium edule" ||
+                    name === "Trichosanthes anguina" ||
+                    name === "Vitis vinifera"
+                ) {
+                    window.location.href = "/browse/m6A_gene";
+                }
+            });
+
+    </script>
+{% endblock %}

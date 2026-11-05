@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Cicer reticulatum</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; Hologalegina; IRL clade; Cicereae; Cicer</p>
+                    <p><b>Abbr: </b> Cre</p>
+                    <p><b>Level: </b> *</p>
+                    <p><b>chromosome number: </b> 2n=2X=16</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Cre.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Cicer reticulatum is a species of flowering plant in the family Fabaceae, native to southeastern Turkey. It is the wild ancestor of Cicer arietinum, the chickpea or garbanzo. It appears that Cicer reticulatum had already developed the tan-seeded kabuli and the smaller green-seeded desi types prior to the domestication of the chickpea at the dawn of agriculture.
+                    </p>
+                    <p><b>Distribution: </b> Iraq, Turkey</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://academic.oup.com/dnaresearch/article/24/1/1/2669389">Draft genome sequence of Cicer reticulatum L., the wild progenitor of chickpea provides a resource for agronomic trait improvement</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> Genome assembly is available at National Centre for Biotechnology Information (NCBI) as Bioproject ID PRJNA263699 (<a href="http://www.ncbi.nlm.nih.gov/bioproject?term=PRJNA263699">http://www.ncbi.nlm.nih.gov/bioproject?term=PRJNA263699</a>). The sequence data are available in Sequence Read Archive under accession numbers SRR160365, SRR1640444, SRR1640451 and SRR1640455. Genome assembly, annotation data and all the supplementary figures, tables, data are available for viewing and downloading at nipgr.res.in/WCGAP.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

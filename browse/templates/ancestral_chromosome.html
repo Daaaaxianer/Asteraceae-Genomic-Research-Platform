@@ -1,0 +1,1840 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aster-Anccalling - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control,
+input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus,
+input.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #e67e22;
+    margin: 25px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fffbf7;
+    color: #d35400;
+    font-weight: 700;
+    border-bottom: 2px solid #e67e22;
+    padding: 12px 34px 12px 14px !important;
+    white-space: nowrap;
+}
+
+table td {
+    padding: 10px 14px !important;
+    border-bottom: 1px solid #edf0f2;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.table-responsive {
+    background: #fff;
+    border: 1px solid #eadfd3;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+}
+
+table.dataTable {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    margin: 0 !important;
+}
+
+table.dataTable tbody tr:nth-child(even) {
+    background-color: #fffdf9;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #fff6eb;
+}
+
+#blastTable th:first-child,
+#blastTable td:first-child {
+    width: 76px !important;
+    min-width: 76px;
+    text-align: center;
+}
+
+#blastTable td:nth-child(n+4) {
+    text-align: center;
+}
+
+.table-action-primary,
+.table-action-secondary {
+    border-radius: 7px;
+    font-weight: 700;
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.table-action-primary {
+    color: #fff;
+    background: #d35400;
+    border: 1px solid #d35400;
+}
+
+.table-action-primary:hover {
+    color: #fff;
+    background: #b94a00;
+    border-color: #b94a00;
+}
+
+.table-action-secondary {
+    color: #d35400;
+    background: #fff;
+    border: 1px solid #efc89a;
+}
+
+.table-action-secondary:hover {
+    color: #b94a00;
+    background: #fff8ef;
+    border-color: #e8b66f;
+}
+
+.dataTables_wrapper {
+    color: #2c3e50;
+}
+
+.dataTables_wrapper > .row {
+    align-items: center;
+    row-gap: 12px;
+}
+
+.dataTables_wrapper > .row:first-child {
+    margin-bottom: 12px;
+}
+
+.dataTables_wrapper > .row:last-child {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #f0e4d8;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin: 0;
+}
+
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #495057;
+    font-weight: 600;
+}
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    height: 36px;
+    border: 1px solid #d9e0e6;
+    border-radius: 7px;
+    background-color: #fff;
+    color: #2c3e50;
+    box-shadow: none;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    min-width: 76px;
+    margin: 0;
+    padding: 4px 28px 4px 10px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    min-width: 220px;
+    margin: 0;
+    padding: 6px 10px;
+}
+
+.dataTables_wrapper .dataTables_length select:focus,
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+    outline: 0;
+}
+
+.dataTables_wrapper .dataTables_scroll {
+    border: 1px solid #eadfd3;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dataTables_wrapper .dataTables_scrollBody {
+    border-bottom: 0 !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+    padding: 0 !important;
+    color: #5f6b76;
+    font-weight: 600;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button,
+.dataTables_wrapper .dataTables_paginate .page-item {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.dataTables_wrapper .pagination {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+}
+
+.dataTables_wrapper .pagination .page-link {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 7px !important;
+    border: 1px solid #d8dee4;
+    background: #fff;
+    color: #44515c;
+    box-sizing: border-box;
+    box-shadow: none;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dataTables_wrapper .pagination .page-item.active .page-link {
+    color: #fff;
+    background: #d35400;
+    border-color: #d35400;
+    box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+}
+
+.dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+    color: #d35400;
+    background: #fff8ef;
+    border-color: #efc89a;
+}
+
+.dataTables_wrapper .pagination .page-item.disabled .page-link {
+    color: #b6c0c9;
+    background: #f8fafb;
+    border-color: #e8edf1;
+}
+
+.page-jump-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #5f6b76;
+    font-size: 0.92rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.page-jump-input {
+    width: 58px;
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid #d8dee4;
+    border-radius: 7px;
+    color: #2c3e50;
+    text-align: center;
+    font-weight: 700;
+    outline: 0;
+}
+
+.page-jump-input:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+}
+
+.page-jump-total {
+    color: #8a96a3;
+}
+
+.page-jump-btn {
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #efc89a;
+    border-radius: 7px;
+    background: #fff8ef;
+    color: #d35400;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.page-jump-btn:hover {
+    background: #fff3df;
+    border-color: #e8b66f;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+
+/* ===================== 表格居中 ===================== */
+#ancestorTable th,
+#ancestorTable td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* ===================== 文件链接样式 ===================== */
+.file-link {
+    color: #e67e22;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.file-link:hover {
+    color: #d35400;
+    text-decoration: underline;
+}
+
+
+
+/* ===================== Search mode cards ===================== */
+.mode-grid {
+    --mode-gap: 22px;
+    --mode-radius: 18px;
+    --mode-border: #ecc59d;
+    --mode-card-bg: #fffaf4;
+    --mode-panel-bg: #fafafa;
+    --mode-bridge-space: 24px;
+    --mode-bridge-height: 27px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--mode-gap);
+    row-gap: 0;
+    margin-bottom: 30px;
+    align-items: stretch;
+    counter-reset: search-mode-card;
+    isolation: isolate;
+}
+
+.mode-card {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 242px;
+    padding: 26px 26px 24px;
+    border: 1px solid #f3dfca;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at calc(100% - 22px) 18px, #f2ddc7 0, #f2ddc7 4px, rgba(242, 221, 199, 0.22) 5px, rgba(242, 221, 199, 0.22) 9px, transparent 10px),
+        radial-gradient(circle at 93% 13%, rgba(234, 151, 66, 0.055), transparent 30%),
+        linear-gradient(180deg, #fffefd 0%, #fffbf6 100%);
+    box-shadow: 0 10px 24px rgba(186, 107, 39, 0.055);
+    cursor: pointer;
+    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, border-radius 0.22s ease;
+    counter-increment: search-mode-card;
+}
+
+.mode-card[data-mode="candidate"] {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.mode-card[data-mode="best_hit_trace"] {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.mode-card::after {
+    content: none;
+}
+
+.mode-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--mode-border);
+    background:
+        radial-gradient(circle at calc(100% - 22px) 18px, #f0d5b9 0, #f0d5b9 4px, rgba(240, 213, 185, 0.28) 5px, rgba(240, 213, 185, 0.28) 9px, transparent 10px),
+        radial-gradient(circle at 93% 13%, rgba(234, 151, 66, 0.075), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #fffaf4 100%);
+    box-shadow: 0 14px 30px rgba(186, 107, 39, 0.095);
+}
+
+.mode-card.active {
+    z-index: 5;
+    overflow: visible;
+    transform: none;
+    border-color: var(--mode-border);
+    border-bottom-color: var(--mode-card-bg);
+    border-radius: var(--mode-radius) var(--mode-radius) 0 0;
+    background:
+        radial-gradient(circle at calc(100% - 22px) 18px, #e6a66a 0, #e6a66a 4px, rgba(230, 166, 106, 0.16) 5px, rgba(230, 166, 106, 0.16) 9px, transparent 10px),
+        radial-gradient(circle at 93% 13%, rgba(234, 151, 66, 0.08), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, var(--mode-card-bg) 100%);
+    box-shadow:
+        0 -12px 30px rgba(186, 107, 39, 0.075),
+        12px 0 30px rgba(186, 107, 39, 0.055),
+        -12px 0 30px rgba(186, 107, 39, 0.055);
+}
+
+.mode-card.active::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(-1 * var(--mode-bridge-space) - 1px);
+    height: var(--mode-bridge-height);
+    background: linear-gradient(180deg, var(--mode-card-bg) 0%, var(--mode-card-bg) 58%, rgba(250, 250, 250, 0.98) 100%);
+    border-left: 1px solid var(--mode-border);
+    border-right: 1px solid var(--mode-border);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.mode-card:focus-visible {
+    outline: 3px solid rgba(230, 166, 106, 0.22);
+    outline-offset: 3px;
+}
+
+.mode-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 20px;
+    color: #bf641f;
+    font-size: 1.38rem;
+    font-weight: 800;
+    letter-spacing: 0.15px;
+    margin-bottom: 13px;
+}
+
+.mode-card h4::before {
+    content: counter(search-mode-card);
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #c96e24;
+    font-size: 0.95rem;
+    font-weight: 800;
+    background: #fff3e5;
+    border: 1px solid #f1cda6;
+    box-shadow: 0 5px 12px rgba(190, 110, 36, 0.08);
+}
+
+.mode-card p {
+    min-height: 78px;
+    color: #47515b;
+    line-height: 1.72;
+    margin-bottom: 18px;
+}
+
+.mode-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 9px;
+    color: #58636e;
+    font-size: 0.94rem;
+    font-weight: 650;
+    line-height: 1.45;
+}
+
+.mode-steps li {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+}
+
+.mode-steps li strong {
+    flex: 0 0 auto;
+    color: #d1843e;
+    font-weight: 800;
+}
+
+.mode-card:hover .mode-steps,
+.mode-card.active .mode-steps {
+    color: #47515b;
+}
+
+.mode-form {
+    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.mode-form.active {
+    display: block;
+    margin-top: var(--mode-bridge-space);
+    z-index: 2;
+}
+
+.mode-grid .mode-form.active > .form-card {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0;
+    padding: 34px 28px 30px;
+    border-color: var(--mode-border);
+    border-top: 1px solid var(--mode-border);
+    border-radius: 0 var(--mode-radius) var(--mode-radius) var(--mode-radius);
+    background:
+        linear-gradient(180deg, var(--mode-card-bg) 0%, rgba(250, 250, 250, 0.98) 108px, var(--mode-panel-bg) 100%);
+    box-shadow:
+        12px 0 30px rgba(186, 107, 39, 0.055),
+        -12px 0 30px rgba(186, 107, 39, 0.055),
+        0 20px 44px rgba(186, 107, 39, 0.075);
+}
+
+.mode-form[data-mode-form="best_hit_trace"].active > .form-card {
+    border-radius: var(--mode-radius) 0 var(--mode-radius) var(--mode-radius);
+}
+
+.mode-grid .mode-form.active > .form-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 38px;
+    background: linear-gradient(180deg, rgba(255, 250, 244, 0.94) 0%, rgba(255, 250, 244, 0) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.mode-grid .mode-form.active > .form-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.mode-grid .mode-form.active .section-title {
+    margin-top: 0;
+}
+
+.mode-hint {
+    color: #6c757d;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-top: -6px;
+    margin-bottom: 18px;
+}
+
+/* ===================== ks dotplot panel ===================== */
+.ks-dotplot-card {
+    margin-bottom: 20px;
+    padding: 20px 22px;
+    border: 1px solid #f0d8bd;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fffdf9 0%, #fff8ef 100%);
+}
+
+.ks-dotplot-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.ks-dotplot-title {
+    margin: 0 0 6px;
+    color: #d35400;
+    font-size: 1.18rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+}
+
+.ks-dotplot-desc {
+    margin: 0;
+    color: #6c757d;
+    line-height: 1.6;
+    font-size: 0.94rem;
+}
+
+.ks-dotplot-example-menu {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.ks-dotplot-example-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid #efc89a;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #d35400;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 6px 14px rgba(211, 84, 0, 0.08);
+}
+
+.ks-dotplot-example-btn:hover,
+.ks-dotplot-example-menu:focus-within .ks-dotplot-example-btn,
+.ks-dotplot-example-menu:hover .ks-dotplot-example-btn {
+    background: #fff8ef;
+    border-color: #e8b66f;
+    color: #b94a00;
+}
+
+.ks-dotplot-example-list {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 20;
+    min-width: 178px;
+    padding: 8px;
+    border: 1px solid #f0d8bd;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(44, 62, 80, 0.14);
+}
+
+.ks-dotplot-example-menu:hover .ks-dotplot-example-list,
+.ks-dotplot-example-menu:focus-within .ks-dotplot-example-list {
+    display: grid;
+    gap: 4px;
+}
+
+.ks-dotplot-example-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 8px 10px;
+    border-radius: 7px;
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ks-dotplot-example-list a:hover {
+    color: #d35400;
+    background: #fff8ef;
+}
+
+.ks-dotplot-example-list span {
+    color: #9aa3ac;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.ks-dotplot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 18px;
+}
+
+.ks-dotplot-grid .form-label {
+    margin-bottom: 6px;
+}
+
+.ks-dotplot-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.ks-dotplot-submit {
+    color: #fff;
+    background: #d35400;
+    border: 1px solid #d35400;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-weight: 800;
+}
+
+.ks-dotplot-submit:hover {
+    color: #fff;
+    background: #b94a00;
+    border-color: #b94a00;
+}
+
+.ks-dotplot-note {
+    margin-top: 12px;
+    color: #7a4b18;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.ks-dotplot-status {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    border: 1px solid #efc89a;
+    background: #fffaf3;
+    color: #62401b;
+    font-weight: 700;
+}
+
+.ks-dotplot-status.is-error {
+    border-color: #f1b0b7;
+    background: #fff5f5;
+    color: #842029;
+}
+
+.ks-dotplot-download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    margin-left: 8px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid #d35400;
+    background: #d35400;
+    color: #fff !important;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none !important;
+    box-shadow: 0 6px 14px rgba(211, 84, 0, 0.18);
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ks-dotplot-download-btn:hover,
+.ks-dotplot-download-btn:focus {
+    background: #b94a00;
+    border-color: #b94a00;
+    color: #fff !important;
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(211, 84, 0, 0.24);
+}
+
+.ks-dotplot-progress {
+    display: none;
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #f4dfc4;
+}
+
+.ks-dotplot-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #d35400;
+    transition: width 0.25s ease;
+}
+
+@media (max-width: 768px) {
+    .mode-grid {
+        --mode-gap: 0px;
+        --mode-radius: 16px;
+        --mode-bridge-space: 16px;
+        --mode-bridge-height: 19px;
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        row-gap: var(--mode-bridge-space);
+    }
+
+    .mode-card[data-mode="candidate"],
+    .mode-card[data-mode="best_hit_trace"],
+    .mode-form {
+        grid-column: 1;
+    }
+
+    .mode-card[data-mode="candidate"] {
+        grid-row: 1;
+    }
+
+    .mode-form[data-mode-form="candidate"] {
+        grid-row: 2;
+    }
+
+    .mode-card[data-mode="best_hit_trace"] {
+        grid-row: 3;
+    }
+
+    .mode-form[data-mode-form="best_hit_trace"] {
+        grid-row: 4;
+    }
+
+    .mode-card {
+        min-height: auto;
+        padding: 24px 20px 22px;
+    }
+
+    .mode-card.active {
+        border-radius: var(--mode-radius) var(--mode-radius) 0 0;
+    }
+
+    .mode-form.active {
+        margin-top: 0;
+    }
+
+    .mode-grid .mode-form.active > .form-card {
+        padding: 30px 20px 24px;
+        border-radius: 0 0 var(--mode-radius) var(--mode-radius);
+    }
+
+    .mode-card p {
+        min-height: 0;
+    }
+
+    .page-wrapper {
+        padding: 28px 18px;
+    }
+
+    .table-responsive {
+        padding: 12px;
+    }
+
+    .dataTables_wrapper .dataTables_length label,
+    .dataTables_wrapper .dataTables_filter label {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        text-align: center;
+    }
+
+    .dataTables_wrapper .pagination {
+        justify-content: center;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        justify-content: center;
+    }
+
+    .ks-dotplot-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ks-dotplot-example-menu {
+        align-self: flex-end;
+    }
+
+    .ks-dotplot-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* English file picker for this page. */
+.ancestor-file-picker { position: relative; display: flex; align-items: stretch; width: 100%; min-width: 0; min-height: calc(1.5em + .75rem + 2px); overflow: hidden; color: #212529; background: #fff; border: 1px solid #dee2e6; border-radius: .375rem; }
+.input-group > .ancestor-file-picker { flex: 1 1 auto; width: 1%; }
+.ancestor-file-picker > input[type="file"] { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+.ancestor-file-picker__button, .ancestor-file-picker__name { display: flex; align-items: center; min-width: 0; padding: .375rem .75rem; pointer-events: none; }
+.ancestor-file-picker__button { flex: 0 0 auto; background: #f8f9fa; border-right: 1px solid #dee2e6; }
+.ancestor-file-picker__name { flex: 1 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ancestor-file-picker:focus-within { border-color: #e67e22; box-shadow: 0 0 0 3px rgba(230,126,34,.15); }
+.ancestor-file-picker:hover .ancestor-file-picker__button { background: #e9ecef; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">Aster-Anccalling</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        Reconstructing ancestral genomes supports the inference of new genomic chromosome karyotypes in Asteraceae and the reconstruction of ancient gene evolutionary histories. We provide detailed information for <strong>29</strong> AAGs, including GFF, PEP, and CDS files for each AAG, along with the number of inferred ancient genes located on ancient chromosomes. These AAGs collectively cover <strong>463</strong> ancient chromosomes and <strong>404,036</strong> ancient genes.
+    </div>
+
+    <!-- 查询表单部分 -->
+    <div class="result-title">
+        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+        Query Ancestral Genes
+    </div>
+
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+    {% endif %}
+
+    <div class="mode-grid" aria-label="Search mode selection">
+        <div class="mode-card" data-mode="candidate" tabindex="0" role="button" aria-pressed="false">
+            <h4>Ancestral Candidate Search</h4>
+            <p>Search query sequences against selected ancestral chromosome databases and return all hits passing the selected thresholds.</p>
+            <ul class="mode-steps">
+                <li><strong>1.</strong> Query sequence</li>
+                <li><strong>2.</strong> Selected ancestors</li>
+                <li><strong>3.</strong> Filter hits</li>
+                <li><strong>4.</strong> Candidate genes</li>
+            </ul>
+        </div>
+        <div class="mode-card" data-mode="best_hit_trace" tabindex="0" role="button" aria-pressed="false">
+            <h4>Ancestral Gene Tracing</h4>
+            <p>Search only the bottom-layer extant species shown in the ancestral tree, keep the best matched gene for each query, then report the corresponding ancestral chromosome relationships when available.</p>
+            <ul class="mode-steps">
+                <li><strong>1.</strong> Query sequence</li>
+                <li><strong>2.</strong> Bottom-layer species</li>
+                <li><strong>3.</strong> Best matched gene</li>
+                <li><strong>4.</strong> Ancestral tracing</li>
+            </ul>
+        </div>
+
+    <form class="mode-form" id="candidateSearchForm" data-mode-form="candidate" action="ancestral_chromosome" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="search_mode" value="candidate">
+
+        <div class="form-card">
+            <h4 class="section-title">Ancestral Candidate Search</h4>
+            <div class="mode-hint">
+                This mode returns all ancestral hits that meet the selected E-value, score, and identity thresholds.
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Query Sequence
+                    <button type="button" class="example-btn js-example-sequence" data-target="candidate_query_sequence">Example</button>
+                </label>
+                <textarea class="form-control" id="candidate_query_sequence" name="query_sequence" rows="5"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Upload query FASTA file (single or multiple genes)</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="file1">
+                    <a href="/static/example_file/ancestral_chromosome/Aann.pep" class="input-group-text js-example-file" download>Example</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Query sequence type</label>
+                    <select class="form-control" name="patten" required>
+                        <option value="blastp" selected>Protein sequence (BLASTP)</option>
+                        <option value="blastn">Nucleotide sequence (BLASTN)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ancestral Chromosomes</label>
+                    <select class="form-control" name="species_data" required>
+                        <option value="ALL_ANCESTRAL_DATASETS" selected>All ancestors</option>
+                        {% if ancestral_options %}
+                        {% for ancestor in ancestral_options %}
+                        <option value="{{ ancestor.code }}">{{ ancestor.name }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">E-value</label>
+                    <input type="text" class="form-control" name="e_value" value="1e-5" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Score value</label>
+                    <input type="text" class="form-control" name="score_1" value="100" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Identity value</label>
+                    <input type="text" class="form-control" name="identity_1" value="60" required>
+                </div>
+            </div>
+
+            <input class="w-100 btn btn-lg search-btn" type="submit" value="Search">
+        </div>
+    </form>
+
+    <form class="mode-form" id="bestHitTraceForm" data-mode-form="best_hit_trace" action="ancestral_chromosome" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="search_mode" value="best_hit_trace">
+        <input type="hidden" name="species_data" value="ALL_ANCESTRAL_DATASETS">
+
+        <div class="form-card">
+            <h4 class="section-title">Ancestral Gene Tracing</h4>
+            <div class="mode-hint">
+                This mode searches only extant species that are currently linked to ancestral chromosome relationships, keeps the best matched gene for each query, and reports the relationships available in the system.
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Query Sequence
+                    <button type="button" class="example-btn js-example-sequence" data-target="trace_query_sequence">Example</button>
+                </label>
+                <textarea class="form-control" id="trace_query_sequence" name="query_sequence" rows="5"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Upload query FASTA file (single or multiple genes)</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="file1">
+                    <a href="/static/example_file/ancestral_chromosome/Aann.pep" class="input-group-text js-example-file" download>Example</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Query sequence type</label>
+                    <select class="form-control" name="patten" required>
+                        <option value="blastp" selected>Protein sequence (BLASTP)</option>
+                        <option value="blastn">Nucleotide sequence (BLASTN)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">E-value</label>
+                    <input type="text" class="form-control" name="e_value" value="1e-5" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Score value</label>
+                    <input type="text" class="form-control" name="score_1" value="100" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Identity value</label>
+                    <input type="text" class="form-control" name="identity_1" value="60" required>
+                </div>
+            </div>
+
+            <input class="w-100 btn btn-lg search-btn" type="submit" value="Search">
+        </div>
+    </form>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 数据表格部分 -->
+    <div class="result-title">
+        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+        Ancestral Genome and Visualization Analysis Module<br>
+        for Deciphering the Evolution of New Genomes
+    </div>
+
+    <div class="table-responsive">
+        <div class="ks-dotplot-card" id="ksDotplotCard">
+            <div class="ks-dotplot-header">
+                <div>
+                    <h4 class="ks-dotplot-title">Ancestral Dotplot</h4>
+                    
+                </div>
+                <button type="button" class="ks-dotplot-example-btn" id="ksDotplotExampleDownload">Example</button>
+            </div>
+
+            <form id="ancestralKsDotplotForm" action="{% url 'ancestral_ks_dotplot_url' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="ks-dotplot-grid">
+                    <div>
+                        <label class="form-label">Reference ancestor</label>
+                        <select class="form-control" name="reference_ancestor" required>
+                            {% if ancestral_options %}
+                            {% for ancestor in ancestral_options %}
+                            <option value="{{ ancestor.code }}">{{ ancestor.name }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Query species name</label>
+                        <input type="text" class="form-control" name="query_species"  required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Query PEP file</label>
+                        <input type="file" class="form-control" name="query_pep" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Query CDS file</label>
+                        <input type="file" class="form-control" name="query_cds" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Query GFF/GFF3 file</label>
+                        <input type="file" class="form-control" name="query_gff" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Query Lens file <span style="font-weight:500;color:#8a96a3;">(optional)</span></label>
+                        <input type="file" class="form-control" name="query_lens">
+                    </div>
+
+                    <div>
+                        <label class="form-label">E-value</label>
+                        <input type="text" class="form-control" name="ks_evalue" value="1e-5" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Score</label>
+                        <input type="text" class="form-control" name="ks_score" value="100" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Repeat number</label>
+                        <input type="text" class="form-control" name="ks_repeat_number" value="5" required>
+                    </div>
+                </div>
+
+                <input type="hidden" name="ks_threads" value="4">
+
+                <div class="ks-dotplot-actions">
+                    <button type="submit" class="ks-dotplot-submit">Run</button>
+                </div>
+
+            
+
+                <div class="ks-dotplot-status" id="ksDotplotStatus"></div>
+                <div class="ks-dotplot-progress" id="ksDotplotProgress">
+                    <div class="ks-dotplot-progress-bar" id="ksDotplotProgressBar"></div>
+                </div>
+            </form>
+        </div>
+
+        <table id="ancestorTable" class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Ancestor Name</th>
+                    <th>CDS</th>
+                    <th>PEP</th>
+                    <th>LENS</th>
+                    <th>GFF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 祖先数据行 -->
+                {% if ancestral_options %}
+                {% for ancestor in ancestral_options %}
+                <tr>
+                    <td>{{ ancestor.name }}</td>
+                    <td><a href="{{ ancestor.cds_url }}" class="file-link">Download</a></td>
+                    <td><a href="{{ ancestor.pep_url }}" class="file-link">Download</a></td>
+                    <td><a href="{{ ancestor.lens_url }}" class="file-link">Download</a></td>
+                    <td><a href="{{ ancestor.gff_url }}" class="file-link">Download</a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr><td>AAKI</td><td><a href="/static/ancestral_data/AAKI/AAKI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKI/AAKI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKI/AAKI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKI/AAKI.new.gff" class="file-link">Download</a></td></tr>
+                <tr><td>AAKII</td><td><a href="/static/ancestral_data/AAKII/AAKII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKII/AAKII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKII/AAKII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKII/AAKII.gff" class="file-link">Download</a></td></tr>
+		        <tr><td>AAKIII</td><td><a href="/static/ancestral_data/AAKIII/AAKIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKIII/AAKIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKIII/AAKIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/AAKIII/AAKIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ACAK</td><td><a href="/static/ancestral_data/ACAK/ACAK.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ACAK/ACAK.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ACAK/ACAK.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ACAK/ACAK.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKI</td><td><a href="/static/ancestral_data/ASAKI/ASAKI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKI/ASAKI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKI/ASAKI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKI/ASAKI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKII</td><td><a href="/static/ancestral_data/ASAKII/ASAKII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKII/ASAKII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKII/ASAKII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKII/ASAKII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKIII</td><td><a href="/static/ancestral_data/ASAKIII/ASAKIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIII/ASAKIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIII/ASAKIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIII/ASAKIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKIV</td><td><a href="/static/ancestral_data/ASAKIV/ASAKIV.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIV/ASAKIV.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIV/ASAKIV.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIV/ASAKIV.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKIX</td><td><a href="/static/ancestral_data/ASAKIX/ASAKIX.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIX/ASAKIX.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIX/ASAKIX.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKIX/ASAKIX.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKV</td><td><a href="/static/ancestral_data/ASAKV/ASAKV.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKV/ASAKV.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKV/ASAKV.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKV/ASAKV.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKVI</td><td><a href="/static/ancestral_data/ASAKVI/ASAKVI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVI/ASAKVI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVI/ASAKVI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVI/ASAKVI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKVII</td><td><a href="/static/ancestral_data/ASAKVII/ASAKVII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVII/ASAKVII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVII/ASAKVII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVII/ASAKVII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKVIII</td><td><a href="/static/ancestral_data/ASAKVIII/ASAKVIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVIII/ASAKVIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVIII/ASAKVIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKVIII/ASAKVIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKX</td><td><a href="/static/ancestral_data/ASAKX/ASAKX.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKX/ASAKX.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKX/ASAKX.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKX/ASAKX.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXI</td><td><a href="/static/ancestral_data/ASAKXI/ASAKXI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXI/ASAKXI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXI/ASAKXI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXI/ASAKXI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXII</td><td><a href="/static/ancestral_data/ASAKXII/ASAKXII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXII/ASAKXII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXII/ASAKXII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXII/ASAKXII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXIII</td><td><a href="/static/ancestral_data/ASAKXIII/ASAKXIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIII/ASAKXIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIII/ASAKXIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIII/ASAKXIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXIV</td><td><a href="/static/ancestral_data/ASAKXIV/ASAKXIV.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIV/ASAKXIV.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIV/ASAKXIV.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIV/ASAKXIV.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXIX</td><td><a href="/static/ancestral_data/ASAKXIX/ASAKXIX.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIX/ASAKXIX.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIX/ASAKXIX.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXIX/ASAKXIX.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXV</td><td><a href="/static/ancestral_data/ASAKXV/ASAKXV.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXV/ASAKXV.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXV/ASAKXV.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXV/ASAKXV.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXVI</td><td><a href="/static/ancestral_data/ASAKXVI/ASAKXVI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVI/ASAKXVI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVI/ASAKXVI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVI/ASAKXVI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXVII</td><td><a href="/static/ancestral_data/ASAKXVII/ASAKXVII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVII/ASAKXVII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVII/ASAKXVII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVII/ASAKXVII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>ASAKXVIII</td><td><a href="/static/ancestral_data/ASAKXVIII/ASAKXVIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVIII/ASAKXVIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVIII/ASAKXVIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/ASAKXVIII/ASAKXVIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CAAKI</td><td><a href="/static/ancestral_data/CAAKI/CAAKI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKI/CAAKI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKI/CAAKI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKI/CAAKI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CAAKII</td><td><a href="/static/ancestral_data/CAAKII/CAAKII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKII/CAAKII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKII/CAAKII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKII/CAAKII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CAAKIII</td><td><a href="/static/ancestral_data/CAAKIII/CAAKIII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIII/CAAKIII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIII/CAAKIII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIII/CAAKIII.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CAAKIV</td><td><a href="/static/ancestral_data/CAAKIV/CAAKIV.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIV/CAAKIV.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIV/CAAKIV.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CAAKIV/CAAKIV.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CIAKI</td><td><a href="/static/ancestral_data/CIAKI/CIAKI.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKI/CIAKI.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKI/CIAKI.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKI/CIAKI.gff" class="file-link">Download</a></td></tr>
+                <tr><td>CIAKII</td><td><a href="/static/ancestral_data/CIAKII/CIAKII.cds" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKII/CIAKII.pep" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKII/CIAKII.lens" class="file-link">Download</a></td><td><a href="/static/ancestral_data/CIAKII/CIAKII.gff" class="file-link">Download</a></td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+    
+
+    {% if blast_results %}
+    <div class="section-divider"></div>
+
+    <div class="result-title">
+        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+        Blast Results
+    </div>
+
+    <div class="action-bar">
+        <button type="button" id="selectAllBtn" class="btn btn-sm table-action-primary">
+            <i class="bi bi-check-square-fill" aria-hidden="true"></i> Select All
+        </button>
+        <button type="button" id="download-btn" class="btn btn-sm table-action-secondary">
+            <i class="bi bi-download" aria-hidden="true"></i> Download Selected
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table id="blastTable" class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Query ID</th>
+                    <th>Subject ID</th>
+                    <th>Identity</th>
+                    <th>Length</th>
+                    <th>Mismatch</th>
+                    <th>Gapopen</th>
+                    <th>Qstart</th>
+                    <th>Qend</th>
+                    <th>Sstart</th>
+                    <th>Send</th>
+                    <th>evalue</th>
+                    <th>Bitscore</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pair in blast_results %}
+                    <tr>
+                        <td><input type="checkbox" class="row-checkbox"></td>
+                        <td>{{ pair.0 }}</td>
+                        <td>{{ pair.1 }}</td>
+                        <td>{{ pair.2 }}</td>
+                        <td>{{ pair.3 }}</td>
+                        <td>{{ pair.4 }}</td>
+                        <td>{{ pair.5 }}</td>
+                        <td>{{ pair.6 }}</td>
+                        <td>{{ pair.7 }}</td>
+                        <td>{{ pair.8 }}</td>
+                        <td>{{ pair.9 }}</td>
+                        <td>{{ pair.10 }}</td>
+                        <td>{{ pair.11 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+
+
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+    function installPageJump(table, tableSelector) {
+        var tableId = $(tableSelector).attr('id');
+        var wrapper = $('#' + tableId + '_wrapper');
+
+        function renderPageJump() {
+            var info = table.page.info();
+            var paginate = wrapper.find('.dataTables_paginate');
+            paginate.find('.page-jump-control').remove();
+
+            if (!info || info.pages <= 1) {
+                return;
+            }
+
+            var inputId = tableId + '_page_jump';
+            var control = $('<div class="page-jump-control" aria-label="Jump to page"></div>');
+            var input = $('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                id: inputId,
+                min: 1,
+                max: info.pages,
+                value: info.page + 1,
+                'aria-label': 'Page number'
+            });
+            var total = $('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+            var button = $('<button type="button" class="page-jump-btn">Go</button>');
+
+            function jumpToPage() {
+                var requestedPage = parseInt(input.val(), 10);
+                if (isNaN(requestedPage)) {
+                    input.val(info.page + 1).focus();
+                    return;
+                }
+
+                requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                table.page(requestedPage - 1).draw('page');
+            }
+
+            input.on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    jumpToPage();
+                }
+            });
+            button.on('click', jumpToPage);
+
+            control
+                .append($('<label></label>').attr('for', inputId).text('Page'))
+                .append(input)
+                .append(total)
+                .append(button);
+            paginate.append(control);
+        }
+
+        table.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    // 祖先数据表格配置
+    var ancestorTable = $('#ancestorTable').DataTable({
+        "pageLength": 10,
+        "pagingType": "simple_numbers",
+        "searching": true,
+        "lengthChange": true,
+        "info": true,
+        "ordering": true,
+        "order": [[0, 'asc']],
+        "language": {
+            "lengthMenu": "Show _MENU_ entries per page",
+            "zeroRecords": "No matching records found",
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+            "infoEmpty": "Showing 0 to 0 of 0 entries",
+            "infoFiltered": "(filtered from _MAX_ total entries)",
+            "search": "Search:",
+            "paginate": {
+                "first": "First",
+                "last": "Last",
+                "next": "Next",
+                "previous": "Previous"
+            }
+        },
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "drawCallback": function(settings) {
+            // 确保表格正确渲染
+            console.log('Table initialized with page length:', settings._iDisplayLength);
+        }
+    });
+    installPageJump(ancestorTable, '#ancestorTable');
+
+    // Blast结果表格配置（如果存在）
+    if ($('#blastTable').length) {
+        var blastTable = $('#blastTable').DataTable({
+            "pageLength": 10,
+            "pagingType": "simple_numbers",
+            "searching": true,
+            "lengthChange": true,
+            "info": true,
+            "ordering": true,
+            "language": {
+                "lengthMenu": "Show _MENU_ entries per page",
+                "zeroRecords": "No matching records found",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "Showing 0 to 0 of 0 entries",
+                "infoFiltered": "(filtered from _MAX_ total entries)",
+                "search": "Search:",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            },
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "scrollX": true
+        });
+        installPageJump(blastTable, '#blastTable');
+    }
+});
+
+// ks dotplot example files download
+(function() {
+    var exampleButton = document.getElementById('ksDotplotExampleDownload');
+    if (!exampleButton) {
+        return;
+    }
+    var exampleFiles = [
+        '/static/example_file/ancestral_chromosome/Aann.pep',
+        '/static/example_file/ancestral_chromosome/Aann.cds',
+        '/static/example_file/ancestral_chromosome/Aann.new.gff',
+        '/static/example_file/ancestral_chromosome/Aann.lens'
+    ];
+
+    exampleButton.addEventListener('click', function() {
+        exampleFiles.forEach(function(fileUrl, index) {
+            window.setTimeout(function() {
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.download = fileUrl.split('/').pop();
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, index * 120);
+        });
+    });
+})();
+
+// ks dotplot background job polling
+(function() {
+    var pollingTimer = null;
+    var statusTemplate = "{% url 'ancestral_ks_dotplot_status_url' 'KS_JOB_ID_PLACEHOLDER' %}";
+    var statusBox = document.getElementById('ksDotplotStatus');
+    var progressWrap = document.getElementById('ksDotplotProgress');
+    var progressBar = document.getElementById('ksDotplotProgressBar');
+    var form = document.getElementById('ancestralKsDotplotForm');
+
+    function updateProgress(isError, progress) {
+        if (progressWrap && progressBar) {
+            var numericProgress = parseInt(progress, 10);
+            if (isNaN(numericProgress)) {
+                numericProgress = 0;
+            }
+            numericProgress = Math.max(0, Math.min(100, numericProgress));
+            progressWrap.style.display = isError ? 'none' : 'block';
+            progressBar.style.width = numericProgress + '%';
+        }
+    }
+
+    function setStatus(message, isError, progress) {
+        if (!statusBox) {
+            return;
+        }
+        statusBox.style.display = 'block';
+        statusBox.classList.toggle('is-error', !!isError);
+        statusBox.textContent = message || '';
+        updateProgress(isError, progress);
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function setDownloadStatus(data) {
+        if (!statusBox) {
+            return;
+        }
+        var links = Array.isArray(data.download_urls) ? data.download_urls.slice(0) : [];
+        if (!links.length && data.download_url) {
+            links.push({
+                url: data.download_url,
+                label: data.download_label || 'Download ks dotplot'
+            });
+        }
+
+        if (!links.length) {
+            setStatus('Result is ready, but no download link was returned.', true, 100);
+            return;
+        }
+
+        statusBox.style.display = 'block';
+        statusBox.classList.remove('is-error');
+        statusBox.innerHTML = '<span>Result is ready.</span>' + links.map(function(item) {
+            var label = item.label || 'Download ks dotplot';
+            return '<a class="ks-dotplot-download-btn" href="' + escapeHtml(item.url) + '">' + escapeHtml(label) + '</a>';
+        }).join('');
+        updateProgress(false, 100);
+    }
+
+    window.showAncestralKsDotplotError = function(message) {
+        if (pollingTimer) {
+            clearInterval(pollingTimer);
+            pollingTimer = null;
+        }
+        setStatus(message || 'ks dotplot job failed.', true, 100);
+    };
+
+    window.startAncestralKsDotplotPolling = function(jobId) {
+        if (pollingTimer) {
+            clearInterval(pollingTimer);
+        }
+        setStatus('ks dotplot job submitted. Running in the background...', false, 0);
+
+        function poll() {
+            var statusUrl = statusTemplate.replace('KS_JOB_ID_PLACEHOLDER', encodeURIComponent(jobId));
+            fetch(statusUrl, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.status === 'done') {
+                        clearInterval(pollingTimer);
+                        pollingTimer = null;
+                        setDownloadStatus(data);
+                    } else if (data.status === 'error') {
+                        clearInterval(pollingTimer);
+                        pollingTimer = null;
+                        setStatus(data.message || 'ks dotplot job failed.', true, 100);
+                    } else {
+                        setStatus(data.message || 'ks dotplot job is running...', false, data.progress || 5);
+                    }
+                })
+                .catch(function(error) {
+                    clearInterval(pollingTimer);
+                    pollingTimer = null;
+                    setStatus('Could not check ks dotplot job status: ' + error, true, 100);
+                });
+        }
+
+        poll();
+        pollingTimer = setInterval(poll, 5000);
+    };
+
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            if (pollingTimer) {
+                clearInterval(pollingTimer);
+                pollingTimer = null;
+            }
+
+            var submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.dataset.originalText = submitButton.dataset.originalText || submitButton.textContent;
+                submitButton.textContent = 'Submitting...';
+            }
+
+            setStatus('Uploading files and submitting ks dotplot job...', false, 0);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+                .then(function(response) {
+                    return response.json().then(function(data) {
+                        if (!response.ok || data.status === 'error') {
+                            throw new Error(data.message || 'ks dotplot job submission failed.');
+                        }
+                        return data;
+                    });
+                })
+                .then(function(data) {
+                    if (!data.job_id) {
+                        throw new Error('ks dotplot job was submitted, but no job id was returned.');
+                    }
+                    window.startAncestralKsDotplotPolling(data.job_id);
+                })
+                .catch(function(error) {
+                    setStatus('Could not submit ks dotplot job: ' + error.message, true, 100);
+                })
+                .finally(function() {
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = submitButton.dataset.originalText || 'Run ks dotplot';
+                    }
+                });
+        });
+    }
+})();
+
+// Search mode selection and sequence/file examples
+var proteinExampleSequence = `>ZPYcontig75_002250.1
+MAPQRRRLHHLQRFPLLIPLISAVAAALMFLFALLSLLAPSPNETNHMHRPRQRSSFDVQSEDNAIGDNVFRVPKIIGKLNRGLWSFNNSVNFYGCSNASSEFPKAQAITHPDRYLVIATSGGLNQQRTGITDAVVAARILNSTLVVPKLDQRSFWKDSSNFSEIFDVEWFISFLSKDVKIIKELPAKVGRRSSLYSMRVPRKCSERCYINRILPILQKKHVIQLSKYDYRLANRLDPEYQKLRCRVNYHGLRFTDPILAMGRKLVRRMRMRSKHYIALHLFLDVIIFSCSRFEPDMLAFSGCDYGGGEKEQKELGAIRKRWKTLHGANPDKQRRQGKCPLTPEEVGLMLRALGYGSGVHIYVASGEIYGGENTLAPLRALFPNIHSKETIAIKEELEPFSSFSSRMAALDFIVCDESDVFVTNNNGNMAKILAGRRRYFGHKPTIRPNAKNLYQLIMNRNNMTWEAFASRVRTFQKGFMGEPNEVRPGRGVFHENPSTCICEDSVPKVGQDSGHRKHGKDNAINENDDDEDYDDSELPEMEDDDYENDEDLSDRVEKGTYNGTVSDYDAMNSQNPELEEVVSD
+>ZPYcontig73_002250.1
+MIVIISREPCDIVYWDFVTCVRYLAGYESEPTKHCCETVATLNKEDKQYTERICQCIEDLAKGIRIKFDLERIQFLPDRCHMPITFPISNDFNCSIIQSTANWNGKLKV`;
+
+var nucleotideExampleSequence = `>Aann1g00188
+ATGGTAAATAATGACCTTGCTAGCCTAGTAATTATCAGGCCCCTGAAATCTTGGAAAGAA
+ACTCTTGCTCTCATTTGCATATTCTCACAGGAGGATGAATGGACTTCACTATGTGAAACC
+CTTGCTTCTAGACTTGTAACTGCTGGTAATACATTAGCAGCGAGTCTTTGTTATATATGT
+TCCGGAAACATCGATAGAACTGTAGAAATGTGGTCAAAGAAGGTTACAGTTGGGCATGAG
+GGTAAATCCTGTGTGGATCTTCTTCAGGATTTGATGGAGAAAACTATGGTCCTTGCTCTA
+GCAATGCGACAACAGAGATTAAGTGCTTCTTTATGTAGCCTTATTGAGAAATATGCTGAG
+ATGTTAGCAAGTACAGGACTTCTATCAACAGCTATGGAATATTTGAAGCTAGTGGACACC
+GAAAATGCGTCTCCTGAGCTTGTGATCTTAAGAGATCGGATAGCTCTCTTATCTGAACTA
+GGGCCTGTTTCTCCTTGGCCTGTCCCACCTCCATTGGTTCCTACCAGATGCCCCTGCTCA
+TGCCCATGGTTACCACAGGATGTGACACCCACACCTCCAGCACCTTCTGCAGCCTCTCCA
+ACATTACAGACAGCTGACGTGTCAAACGTCCCTGCCCAAAAAAGGACGGTTATTGAAACA
+TTGACGAGACTCTTTAATGAGACATCAGAAGCCCTGGGAGGTTCCCATGCAGTTCGAGCT
+AAGAGGAGGGAGATCGATGACAACTCTAAGAAAATAGGTGCTTTGTTTGCTAAATTAAAC
+AATGGTGATATTTCTGAAACTGCTGCTGAAAAGCTTGTTCAGCTCTGTCAAGCATTGGAT
+CATTGTGACTTCCCTACTGCCCTCAAGATCCAGGGGGATCTTACCACCAATTACTGGGAC
+GAGTGTAGTTTCTGGTTAGCAACCCTCAAACGAATGATAAAGGTCAGGCAGAATGCTCGA
+TGA`;
+
+var exampleFileUrls = {
+    blastp: '/static/example_file/ancestral_chromosome/Aann.pep',
+    blastn: '/static/example_file/ancestral_chromosome/Aann.cds'
+};
+
+var exampleFileNames = {
+    blastp: 'Aann.pep',
+    blastn: 'Aann.cds'
+};
+
+function activateSearchMode(mode) {
+    document.querySelectorAll('.mode-card').forEach(function(card) {
+        var isActive = card.getAttribute('data-mode') === mode;
+        card.classList.toggle('active', isActive);
+        card.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    document.querySelectorAll('.mode-form').forEach(function(form) {
+        form.classList.toggle('active', form.getAttribute('data-mode-form') === mode);
+    });
+}
+
+document.querySelectorAll('.mode-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+        activateSearchMode(card.getAttribute('data-mode'));
+    });
+    card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            activateSearchMode(card.getAttribute('data-mode'));
+        }
+    });
+});
+
+function getSelectedSequenceType(form) {
+    var select = form ? form.querySelector('select[name="patten"]') : null;
+    return select ? select.value : 'blastp';
+}
+
+function updateExampleFileLink(form) {
+    if (!form) {
+        return;
+    }
+    var sequenceType = getSelectedSequenceType(form);
+    var link = form.querySelector('.js-example-file');
+    if (link) {
+        link.href = exampleFileUrls[sequenceType] || exampleFileUrls.blastp;
+        link.setAttribute('download', exampleFileNames[sequenceType] || exampleFileNames.blastp);
+        link.textContent = sequenceType === 'blastn' ? 'CDS example' : 'PEP example';
+    }
+}
+
+document.querySelectorAll('select[name="patten"]').forEach(function(select) {
+    updateExampleFileLink(select.closest('form'));
+    select.addEventListener('change', function() {
+        updateExampleFileLink(select.closest('form'));
+    });
+});
+
+document.querySelectorAll('.js-example-sequence').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var target = document.getElementById(button.getAttribute('data-target'));
+        var form = button.closest('form');
+        var sequenceType = getSelectedSequenceType(form);
+        if (target) {
+            target.value = sequenceType === 'blastn' ? nucleotideExampleSequence : proteinExampleSequence;
+        }
+    });
+});
+
+var initialMode = '{{ submitted_search_mode|default:"" }}';
+if (initialMode) {
+    activateSearchMode(initialMode);
+}
+
+// 选择所有和下载功能
+document.addEventListener("DOMContentLoaded", function () {
+    var selectAllBtn = document.getElementById("selectAllBtn");
+    var downloadBtn = document.getElementById("download-btn");
+
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener("click", function () {
+            document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+                cb.checked = true;
+            });
+        });
+    }
+
+    if (downloadBtn) {
+        downloadBtn.addEventListener("click", function () {
+            var rows = [];
+
+            document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+                if (cb.checked) {
+                    var row = cb.closest("tr");
+                    var data = [];
+                    row.querySelectorAll("td").forEach(function (td, index) {
+                        if (index !== 0) { // 跳过复选框列
+                            data.push(td.textContent.trim());
+                        }
+                    });
+                    rows.push(data.join("\t"));
+                }
+            });
+
+            if (rows.length === 0) {
+                alert("Please select at least one row.");
+                return;
+            }
+
+            var blob = new Blob([rows.join("\n")], {type: "text/plain"});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "blast_selected_rows.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+});
+
+// Keep the original file inputs for submission and keyboard access.
+(function () {
+    document.querySelectorAll('.page-wrapper input[type="file"]').forEach(function (input, index) {
+        var field = input.closest('div');
+        var label = field && (field.querySelector(':scope > label') || (field.parentElement && field.parentElement.querySelector(':scope > label')));
+        input.id = input.id || 'ancestor-file-' + index;
+        if (label) label.htmlFor = input.id;
+        var picker = document.createElement('span');
+        picker.className = 'ancestor-file-picker';
+        var button = document.createElement('span');
+        button.className = 'ancestor-file-picker__button';
+        button.textContent = 'Choose File';
+        button.setAttribute('aria-hidden', 'true');
+        var name = document.createElement('span');
+        name.className = 'ancestor-file-picker__name';
+        name.setAttribute('aria-hidden', 'true');
+        function updateName() {
+            var file = input.files[0];
+            name.textContent = file ? file.name : 'No file chosen';
+            name.title = file ? file.name : '';
+            if (input.required) input.setCustomValidity(file ? '' : 'Please choose a file.');
+        }
+        input.parentNode.insertBefore(picker, input);
+        picker.append(input, button, name);
+        input.addEventListener('change', updateName);
+        if (input.form) input.form.addEventListener('reset', function () { setTimeout(updateName, 0); });
+        updateName();
+    });
+}());
+</script>
+{% endblock %}

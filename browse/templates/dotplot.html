@@ -1,0 +1,646 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aster-Dotplots - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+
+        <h2 class="page-title">Aster-Dotplots</h2>
+        <div class="title-line"></div>
+
+        <div class="desc-card">
+            In the Aster-Dotplots interface, we generated <strong>10,088</strong> genomic synteny dotplots (GSDs) in various forms, including BLAST dotplots (B-GSDs), block dotplots (BB-GSDs), and Ks dotplots (BBK-GSDs) to visualize syntenic blocks (SBs) and identify whole genome duplication (WGD) events. B-GSDs show anchor gene pairs and potential SBs with BLAST matching information, while BB-GSDs display inferred SBs. BBK-GSDs integrate Ks values to infer SBs linked to evolutionary events.
+        </div>
+
+            <style>
+            /* ====== 整体卡片美化 ====== */
+            .card {
+                border-radius: 14px;
+                border: 1px solid #eee;
+            }
+
+            .card-body {
+                height: 100%;
+                overflow: auto;
+            }
+
+            /* ====== 表格居中 & 不换行 ====== */
+            #example th,
+            #example td {
+                white-space: nowrap;
+                text-align: center;
+                vertical-align: middle;
+            }
+            </style>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- 左侧：表单部分 -->
+                    <div class="col-lg-3">
+                        <form action="dotplot" method="post" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label">Query Genome</label>
+                                <select class="form-control" id="species1" name="sp_data_1" required>
+                                    <option value="Aann">Artemisia annua</option>
+                                    <option value="Aarg">Artemisia argyi</option>
+                                    <option value="Amar">Ambrosia artemisiifolia</option>
+                                    <option value="Amtr">Ambrosia trifida</option>
+                                    <option value="Arla">Arctium lappa</option>
+                                    <option value="Armi">Arctium minus</option>
+                                    <option value="Artr">Artemisia tridentata</option>
+                                    <option value="Bial">Bidens alba</option>
+                                    <option value="Busi">Buxus sinica</option>
+                                    <option value="Cati">Carthamus tinctorius</option>
+                                    <option value="Ccar">Cynara cardunculus</option>
+                                    <option value="Ceso">Centaurea solstitialis</option>
+                                    <option value="Chla">Chrysanthemum lavandulifolium</option>
+                                    <option value="Chma">Chrysanthemum makinoi</option>
+                                    <option value="Chmo">Chrysanthemum morifolium</option>
+                                    <option value="Chna">Chrysanthemum nankingense</option>
+                                    <option value="Cich">Cichorium intybus</option>
+                                    <option value="Cien">Cichorium endivia</option>
+                                    <option value="Cind">Chrysanthemum indicum</option>
+                                    <option value="Cobi">Cosmos bipinnata</option>
+                                    <option value="Cpa">Centrapalus pauciflorus</option>
+                                    <option value="Dapi">Dahlia pinnata.nucleus</option>
+                                    <option value="Desu">Deinandra increscens subsp. villosa</option>
+                                    <option value="Ecan">Erigeron canadensis</option>
+                                    <option value="Enbr">Erigeron breviscapus</option>
+                                    <option value="Eupl">Euptelea pleiosperma</option>
+                                    <option value="Fbi">Flaveria bidentis</option>
+                                    <option value="Fbr">Flaveria brownii</option>
+                                    <option value="Ffl">Flaveria floridana</option>
+                                    <option value="Fli">Flaveria linearis</option>
+                                    <option value="Fra">Flaveria ramosissima</option>
+                                    <option value="Fro">Flaveria robusta</option>
+                                    <option value="Fso">Flaveria sonorensis</option>
+                                    <option value="Ftr">Flaveria trinervia</option>
+                                    <option value="Glco">Glebionis coronaria</option>
+                                    <option value="Hean">Helianthus annuus</option>
+                                    <option value="Hetu">Helianthus tuberosus</option>
+                                    <option value="Heub">Helichrysum umbraculigerum</option>
+                                    <option value="Laca">Lactuca saligna</option>
+                                    <option value="Lomi">Logfia minima</option>
+                                    <option value="Lssa">Lactuca sativa</option>
+                                    <option value="Mimi">Mikania micrantha</option>
+                                    <option value="Nenu">Nelumbo nucifera</option>
+                                    <option value="Nin">Nymphoides indica</option>
+                                    <option value="Pdy">Pulicaria dysenterica</option>
+                                    <option value="Pin">Pluchea indica</option>
+                                    <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                                    <option value="Sain">Saussurea involucrata</option>
+                                    <option value="Scae">Solidago caesia</option>
+                                    <option value="Sesq">Senecio squalidus</option>
+                                    <option value="Smso">Smallanthus sonchifolius</option>
+                                    <option value="Soca">Solidago canadensis</option>
+                                    <option value="Stre">Stevia rebaudiana</option>
+                                    <option value="Taer">Tagetes erecta</option>
+                                    <option value="Tako">Taraxacum koksaghyz</option>
+                                    <option value="Tamo">Taraxacum mongolicum</option>
+                                    <option value="Tesi">Tetracentron sinense</option>
+                                    <option value="Vivi">Vitis vinifera</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Chromosomes1</label>
+                                <select class="form-control" id="chromosome1" name="chromosome_data_1[]" multiple required></select>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="selectAll1">Select All</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAll1">Deselect All</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Species2</label>
+                                <select class="form-control" id="species2" name="sp_data_2" required>
+                                    <option value="Aann">Artemisia annua</option>
+<option value="Aary">Artemisia argyi</option>
+<option value="Amar">Ambrosia artemisiifolia</option>
+<option value="Amtr">Ambrosia trifida</option>
+<option value="Arla">Arctium lappa</option>
+<option value="Armi">Arctium minus</option>
+<option value="Artr">Artemisia tridentata</option>
+<option value="Bial">Bidens alba</option>
+<option value="Busi">Buxus sinica</option>
+<option value="Ccar">Cynara cardunculus</option>
+<option value="Ceso">Centaurea solstitialis</option>
+<option value="Chla">Chrysanthemum lavandulifolium</option>
+<option value="Chma">Chrysanthemum makinoi</option>
+<option value="Chmo">Chrysanthemum morifolium</option>
+<option value="Chna">Chrysanthemum nankingense</option>
+<option value="Cich">Cichorium intybus</option>
+<option value="Cien">Cichorium endivia</option>
+<option value="Cind">Chrysanthemum indicum</option>
+<option value="Cobi">Cosmos bipinnatus</option>
+<option value="Cpa">Centrapalus pauciflorus</option>
+<option value="Cati">Carthamus tinctorius</option>
+<option value="Dapi">Dahlia pinnata</option>
+<option value="Desu">Deinandra increscens</option>
+<option value="Ecan">Erigeron canadensis</option>
+<option value="Enbr">Erigeron breviscapus</option>
+<option value="Eupl">Euptelea pleiosperma</option>
+<option value="Fbi">Flaveria bidentis</option>
+<option value="Fbr">Flaveria brownii</option>
+<option value="Ffl">Flaveria floridana</option>
+<option value="Fli">Flaveria linearis</option>
+<option value="Fra">Flaveria ramosissima</option>
+<option value="Fro">Flaveria robusta</option>
+<option value="Fso">Flaveria sonorensis</option>
+<option value="Ftr">Flaveria trinervia</option>
+<option value="Gehy">Gerbera hybrida</option>
+<option value="Glco">Glebionis coronaria</option>
+<option value="Hean">Helianthus annuus</option>
+<option value="Hetu">Helianthus tuberosus</option>
+<option value="Heub">Helichrysum umbraculigerum</option>
+<option value="Laca">Lactuca saligna</option>
+<option value="Lomi">Logfia minima</option>
+<option value="Lssa">Lactuca sativa</option>
+<option value="Mimi">Mikania micrantha</option>
+<option value="Nenu">Nelumbo nucifera</option>
+<option value="Nin">Nymphoides indica</option>
+<option value="Pin">Pluchea indica</option>
+<option value="Pdy">Pulicaria dysenterica</option>
+<option value="Pslu">Pseudognaphalium luteoalbum</option>
+<option value="Sain">Saussurea involucrata</option>
+<option value="Scae">Solidago caesia</option>
+<option value="Sesq">Senecio squalidus</option>
+<option value="Smso">Smallanthus sonchifolius</option>
+<option value="Soca">Solidago canadensis</option>
+<option value="Stre">Stevia rebaudiana</option>
+<option value="Taer">Tagetes erecta</option>
+<option value="Tako">Taraxacum kok-saghyz</option>
+<option value="Tamo">Taraxacum mongolicum</option>
+<option value="Tesi">Tetracentron sinense</option>
+<option value="Vivi">Vitis vinifera</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Chromosomes2</label>
+                                <select class="form-control" id="chromosome2" name="chromosome_data_2[]" multiple required></select>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="selectAll2">Select All</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAll2">Deselect All</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Options</label>
+                                <select class="form-control" id="options1" name="options_1" required>
+                                    <option value="blastp">BLASTP</option>
+                                    <option value="block">BLOCK</option>
+                                    <option value="ks">KS</option>
+                                </select>
+                            </div>
+
+                            <input class="w-100 btn btn-primary btn-lg" type="submit" value="Search">
+                        </form>
+
+                    </div>
+
+                    <!-- ================= 右侧：表格 ================= -->
+                    <div class="col-lg-9">
+                        <table id="example" class="display table table-striped table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th>Species1</th>
+                                    <th>Species2</th>
+                                    <th>Chr1</th>
+                                    <th>Chr2</th>
+                                    <th>Blastp_dot</th>
+                                    <th>Block_dot</th>
+                                    <th>Ks_dot</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    {% if image_url %}
+                    <div class="col-12 mt-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <img src="{{ image_url }}" alt="Result Image" style="width:100%;">
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+
+               <script>
+                    // 获取物种选框和染色体号选框
+                    var species1Select = document.getElementById('species1');
+                    var chromosome1Select = document.getElementById('chromosome1');
+                    var species2Select = document.getElementById('species2');
+                    var chromosome2Select = document.getElementById('chromosome2');
+
+                    // 定义染色体号数据
+                    var chromosomeData = {
+                        'Aann': ['Aann01', 'Aann02', 'Aann03', 'Aann04', 'Aann05', 'Aann06', 'Aann07', 'Aann08', 'Aann09'],
+                        'Aarg': ['Aarg01', 'Aarg02', 'Aarg03', 'Aarg04', 'Aarg05', 'Aarg06', 'Aarg07', 'Aarg08', 'Aarg09', 'Aarg10', 'Aarg11', 'Aarg12', 'Aarg13', 'Aarg14', 'Aarg15', 'Aarg16', 'Aarg17'],
+                        'Amar': ['Amar'],
+                        'Arla': ['Arla01', 'Arla02', 'Arla03', 'Arla04', 'Arla05', 'Arla06', 'Arla07', 'Arla08', 'Arla09', 'Arla10', 'Arla11', 'Arla12', 'Arla13', 'Arla14', 'Arla15', 'Arla16', 'Arla17', 'Arla18'],
+                        'Armi': ['Armi01', 'Armi02', 'Armi03', 'Armi04', 'Armi05', 'Armi06', 'Armi07', 'Armi08', 'Armi09', 'Armi10', 'Armi11', 'Armi12', 'Armi13', 'Armi14', 'Armi15', 'Armi16', 'Armi17', 'Armi18'],
+                        'Amtr': ['Amtr01', 'Amtr02', 'Amtr03', 'Amtr04', 'Amtr05', 'Amtr06', 'Amtr07', 'Amtr08', 'Amtr09', 'Amtr10', 'Amtr11', 'Amtr12'],
+                        'Artr': ['Artr01', 'Artr02', 'Artr03', 'Artr04', 'Artr05', 'Artr06', 'Artr07', 'Artr08', 'Artr09', ],
+                        'Bial': ['Bial01', 'Bial02', 'Bial03', 'Bial04', 'Bial05', 'Bial06', 'Bial07', 'Bial08', 'Bial09', 'Bial10','Bial11', 'Bial12', 'Bial13', 'Bial14', 'Bial15', 'Bial16', 'Bial17', 'Bial18', 'Bial19', 'Bial20','Bial21', 'Bial22', 'Bial23', 'Bial24', 'Bial25', 'Bial26', 'Bial27', 'Bial28', 'Bial29', 'Bial30','Bial31', 'Bial32', 'Bial33', 'Bial34', 'Bial35', 'Bial36', 'Bial37', 'Bial38', 'Bial39', 'Bial40','Bial41', 'Bial42', 'Bial43', 'Bial44', 'Bial45',],
+                        'Busi': ['Busi01', 'Busi02', 'Busi03', 'Busi04', 'Busi05', 'Busi06', 'Busi07', 'Busi08', 'Busi09', 'Busi10','Busi11', 'Busi12', 'Busi13', 'Busi14',],
+                        'Cobi': ['Cobi01', 'Cobi02', 'Cobi03', 'Cobi04', 'Cobi05', 'Cobi06', 'Cobi07', 'Cobi08', 'Cobi09'],
+                        'Ccar': ['Ccar01', 'Ccar02', 'Ccar03', 'Ccar04', 'Ccar05', 'Ccar06', 'Ccar07', 'Ccar08', 'Ccar09', 'Ccar10','Ccar11', 'Ccar12', 'Ccar13', 'Ccar14', 'Ccar15', 'Ccar16', 'Ccar17'],
+                        'Cien': ['Cien01', 'Cien02', 'Cien03', 'Cien04', 'Cien05', 'Cien06', 'Cien07', 'Cien08', 'Cien09'],
+                        'Chin': ['Chin01', 'Chin02', 'Chin03', 'Chin04', 'Chin05', 'Chin06', 'Chin07', 'Chin08', 'Chin09'],
+                        'Cich': ['Cich01', 'Cich02', 'Cich03', 'Cich04', 'Cich05', 'Cich06', 'Cich07', 'Cich08', 'Cich09',],
+                        'Chla': ['Chla01', 'Chla02', 'Chla03', 'Chla04', 'Chla05', 'Chla06', 'Chla07', 'Chla08', 'Chla09'],
+                        'Chma': ['Chma01', 'Chma02', 'Chma03', 'Chma04', 'Chma05', 'Chma06', 'Chma07', 'Chma08', 'Chma09'],
+                        'Chmo': ['Chmo01', 'Chmo02', 'Chmo03', 'Chmo04', 'Chmo05', 'Chmo06', 'Chmo07', 'Chmo08', 'Chmo09', 'Chmo10','Chmo11', 'Chmo12', 'Chmo13', 'Chmo14', 'Chmo15', 'Chmo16', 'Chmo17', 'Chmo18', 'Chmo19', 'Chmo20','Chmo21', 'Chmo22', 'Chmo23', 'Chmo24', 'Chmo25', 'Chmo26', 'Chmo27'],
+                        'Chna': ['Chna01', 'Chna02', 'Chna03', 'Chna04', 'Chna05', 'Chna06', 'Chna07', 'Chna08', 'Chna09'],
+                        'Coca': ['Coca01', 'Coca02', 'Coca03', 'Coca04', 'Coca05', 'Coca06', 'Coca07', 'Coca08', 'Coca09', 'Coca10'],
+                        'Cpa': ['Cpa'],
+                        'Cse': ['Cse01', 'Cse02', 'Cse03', 'Cse04', 'Cse05', 'Cse06', 'Cse07', 'Cse08', 'Cse09', 'Cse10'],
+                        'Ceso': ['Ceso01', 'Ceso02', 'Ceso03', 'Ceso04', 'Ceso05', 'Ceso06', 'Ceso07', 'Ceso08'],
+                        'Cati': ['Cati01', 'Cati02', 'Cati03', 'Cati04', 'Cati05', 'Cati06', 'Cati07', 'Cati08', 'Cati09', 'Cati10', 'Cati11', 'Cati12'],
+                        'Dapi': ['Dapi01','Dapi02','Dapi03','Dapi04','Dapi05','Dapi06','Dapi07','Dapi08','Dapi09','Dapi10','Dapi11','Dapi12','Dapi13','Dapi14','Dapi15','Dapi16','Dapi17','Dapi18','Dapi19','Dapi20','Dapi21','Dapi22','Dapi23','Dapi24','Dapi25','Dapi26','Dapi27','Dapi28','Dapi29','Dapi30','Dapi31','Dapi32','Dapi33','Dapi34','Dapi35','Dapi36','Dapi37','Dapi38','Dapi39','Dapi40','Dapi41','Dapi42','Dapi43','Dapi44','Dapi45','Dapi46','Dapi47','Dapi48','Dapi49','Dapi50','Dapi51','Dapi52','Dapi53','Dapi54','Dapi55','Dapi56','Dapi57'],
+                        'Desu': ['Desu'],
+                        'Ecan': ['Ecan01','Ecan02','Ecan03','Ecan04','Ecan05','Ecan06','Ecan07','Ecan08','Ecan09'],
+                        'Enbr': ['Enbr01', 'Enbr02', 'Enbr03', 'Enbr04', 'Enbr05', 'Enbr06', 'Enbr07', 'Enbr08', 'Enbr09'],
+                        'Eupl': ['Eupl01', 'Eupl02', 'Eupl03', 'Eupl04', 'Eupl05', 'Eupl06', 'Eupl07', 'Eupl08', 'Eupl09', 'Eupl10','Eupl11', 'Eupl12', 'Eupl13', 'Eupl14'],
+                        'Fbi': ['Fbi'],
+                        'Fbr': ['Fbr'],
+                        'Ffl': ['Ffl'],
+                        'Fli': ['Fli01', 'Fli02', 'Fli03', 'Fli04', 'Fli05', 'Fli06', 'Fli07', 'Fli08', 'Fli09', 'Fli10','Fli11', 'Fli12', 'Fli13', 'Fli14', 'Fli15', 'Fli16', 'Fli17', 'Fli18'],
+                        'Fra': ['Fra01','Fra02','Fra03','Fra04','Fra05','Fra06','Fra07','Fra08','Fra09','Fra10','Fra11','Fra12','Fra13','Fra14','Fra15','Fra16','Fra17','Fra18'],
+                        'Fro': ['Fro01','Fro02','Fro03','Fro04','Fro05','Fro06','Fro07','Fro08','Fro09','Fro10','Fro11','Fro12','Fro13','Fro14','Fro15','Fro16','Fro17','Fro18'],
+                        'Fso': ['Fso01','Fso02','Fso03','Fso04','Fso05','Fso06','Fso07','Fso08','Fso09','Fso10','Fso11','Fso12','Fso13','Fso14','Fso15','Fso16','Fso17','Fso18'],
+                        'Ftr': ['Ftr01','Ftr02','Ftr03','Ftr04','Ftr05','Ftr06','Ftr07','Ftr08','Ftr09','Ftr10','Ftr11','Ftr12','Ftr13','Ftr14','Ftr15','Ftr16','Ftr17','Ftr18'],
+                        'Glco': ['Glco01', 'Glco02', 'Glco03', 'Glco04', 'Glco05', 'Glco06', 'Glco07', 'Glco08', 'Glco09'],
+                        'Hean': ['Hean01','Hean02','Hean03','Hean04','Hean05','Hean06','Hean07','Hean08','Hean09','Hean10','Hean11','Hean12','Hean13','Hean14','Hean15','Hean16','Hean17'],
+                        'Hetu': ['Hetu01','Hetu02','Hetu03','Hetu04','Hetu05','Hetu06','Hetu07','Hetu08','Hetu09','Hetu10','Hetu11','Hetu12','Hetu13','Hetu14','Hetu15','Hetu16','Hetu17','Hetu18','Hetu19','Hetu20','Hetu21','Hetu22','Hetu23','Hetu24','Hetu25','Hetu26','Hetu27','Hetu28','Hetu29','Hetu30','Hetu31','Hetu32','Hetu33','Hetu34','Hetu35','Hetu36','Hetu37','Hetu38','Hetu39','Hetu40','Hetu41','Hetu42','Hetu43','Hetu44','Hetu45','Hetu46','Hetu47','Hetu48','Hetu49','Hetu50','Hetu51','Hetu52','Hetu53','Hetu54','Hetu55','Hetu56','Hetu57','Hetu58','Hetu59','Hetu60','Hetu61'],
+                        'Heub': ['Heub01', 'Heub02', 'Heub03', 'Heub04', 'Heub05', 'Heub06', 'Heub07'],
+                        'Laca': ['Laca01', 'Laca02', 'Laca03', 'Laca04', 'Laca05', 'Laca06', 'Laca07', 'Laca08', 'Laca09'],
+                        'Lomi': ['Lomi01', 'Lomi02', 'Lomi03', 'Lomi04', 'Lomi05', 'Lomi06', 'Lomi07', 'Lomi08', 'Lomi09', 'Lomi10','Lomi11', 'Lomi12', 'Lomi13', 'Lomi14', 'Lomi15'],
+                        'Lssa': ['Lssa01', 'Lssa02', 'Lssa03', 'Lssa04', 'Lssa05', 'Lssa06', 'Lssa07', 'Lssa08', 'Lssa09'],
+                        'Mmi': ['Mimi01','Mimi02','Mimi03','Mimi04','Mimi05','Mimi06','Mimi07','Mimi08','Mimi09','Mimi10','Mimi11','Mimi12','Mimi13','Mimi14','Mimi15','Mimi16','Mimi17','Mimi18','Mimi19'],
+                        'Nenu': ['Nenu01', 'Nenu02', 'Nenu03', 'Nenu04', 'Nenu05', 'Nenu06', 'Nenu07', 'Nenu08'],
+                        'Nin': ['Nin01', 'Nin02', 'Nin03', 'Nin04', 'Nin05', 'Nin06', 'Nin07', 'Nin08', 'Nin09'],
+                        'Pdy': ['Pdy01', 'Pdy02', 'Pdy03', 'Pdy04', 'Pdy05', 'Pdy06', 'Pdy07', 'Pdy08', 'Pdy09'],
+                        'Pin': ['Pin'],
+                        'Pslu': ['Pslu01', 'Pslu02', 'Pslu03', 'Pslu04', 'Pslu05', 'Pslu06', 'Pslu07'],
+                        'Scae': ['Scae'],
+                        'Sain': ['Sain01','Sain02','Sain03','Sain04','Sain05','Sain06','Sain07','Sain08','Sain09','Sain10','Sain11','Sain12','Sain13','Sain14','Sain15','Sain16'],
+                        'Soca': ['Soca01', 'Soca02', 'Soca03', 'Soca04', 'Soca05', 'Soca06', 'Soca07', 'Soca08', 'Soca09'],
+                        'Stre': ['Stre01', 'Stre02', 'Stre03', 'Stre04', 'Stre05', 'Stre06', 'Stre07', 'Stre08', 'Stre09', 'Stre10','Stre11'],
+                        'Smso': ['Smso01','Smso02','Smso03','Smso04','Smso05','Smso06','Smso07','Smso08','Smso09','Smso10','Smso11','Smso12','Smso13','Smso14','Smso15','Smso16','Smso17','Smso18','Smso19','Smso20','Smso21','Smso22','Smso23','Smso24','Smso25','Smso26','Smso27','Smso28','Smso29'],
+                        'Sesq': ['Sesq'],
+                        'Taer': ['Taer01', 'Taer02', 'Taer03', 'Taer04', 'Taer05', 'Taer06', 'Taer07', 'Taer08', 'Taer09', 'Taer10', 'Taer11', 'Taer12'],
+                        'Tesi': ['Tesi01','Tesi02','Tesi03','Tesi04','Tesi05','Tesi06','Tesi07','Tesi08','Tesi09','Tesi10','Tesi11','Tesi12','Tesi13','Tesi14','Tesi15','Tesi16','Tesi17','Tesi18','Tesi19','Tesi20','Tesi21','Tesi22','Tesi23','Tesi24'],
+                        'Tako': ['Tako01', 'Tako02', 'Tako03', 'Tako04', 'Tako05', 'Tako06', 'Tako07', 'Tako08'],
+                        'Tamo': ['Tamo01', 'Tamo02', 'Tamo03', 'Tamo04', 'Tamo05', 'Tamo06', 'Tamo07', 'Tamo08'],
+                        'Vivi': ['Vivi01','Vivi02','Vivi03','Vivi04','Vivi05','Vivi06','Vivi07','Vivi08','Vivi09','Vivi10','Vivi11','Vivi12','Vivi13','Vivi14','Vivi15','Vivi16','Vivi17','Vivi18','Vivi19'],
+                            };
+
+                    // 更新染色体号选框的选项
+                    function updateChromosomes(selectElement, species) {
+                        // 清除旧的选项
+                        selectElement.innerHTML = '';
+
+                        // 添加新的选项
+                        chromosomeData[species].forEach(function(chromosome) {
+                            var option = document.createElement('option');
+                            option.textContent = chromosome;
+                            option.value = chromosome;
+                            selectElement.appendChild(option);
+                        });
+                    }
+
+                    // 初始化染色体号选框
+                    updateChromosomes(chromosome1Select, species1Select.value);
+                    updateChromosomes(chromosome2Select, species2Select.value);
+
+                    // 监听物种选框的变化事件，更新染色体号选框
+                    species1Select.addEventListener('change', function() {
+                        updateChromosomes(chromosome1Select, this.value);
+                    });
+
+                    species2Select.addEventListener('change', function() {
+                        updateChromosomes(chromosome2Select, this.value);
+                    });
+
+                    // 更新选项文本以显示对号
+                    function updateOptionText(option) {
+                        if (option.selected) {
+                            if (!option.textContent.includes('✔')) {
+                                option.textContent = option.value + ' ✔';
+                            }
+                        } else {
+                            option.textContent = option.textContent.replace(' ✔', '');
+                        }
+                    }
+
+                    // 处理点击事件 - 使用 mousedown 事件以避免与 change 事件冲突
+                    chromosome1Select.addEventListener('mousedown', function(event) {
+                        event.preventDefault(); // 阻止默认行为，让我们自己处理
+
+                        var option = event.target;
+                        if (option.tagName === 'OPTION') {
+                            // 切换选中状态
+                            option.selected = !option.selected;
+
+                            // 更新显示
+                            updateOptionText(option);
+
+                            // 触发 change 事件以确保表单验证正常工作
+                            var changeEvent = new Event('change', { bubbles: true });
+                            this.dispatchEvent(changeEvent);
+                        }
+                    });
+
+                    chromosome2Select.addEventListener('mousedown', function(event) {
+                        event.preventDefault(); // 阻止默认行为，让我们自己处理
+
+                        var option = event.target;
+                        if (option.tagName === 'OPTION') {
+                            // 切换选中状态
+                            option.selected = !option.selected;
+
+                            // 更新显示
+                            updateOptionText(option);
+
+                            // 触发 change 事件以确保表单验证正常工作
+                            var changeEvent = new Event('change', { bubbles: true });
+                            this.dispatchEvent(changeEvent);
+                        }
+                    });
+
+                    // 处理键盘操作（如Ctrl+点击）后的更新
+                    chromosome1Select.addEventListener('change', function() {
+                        var options = this.options;
+                        for (var i = 0; i < options.length; i++) {
+                            updateOptionText(options[i]);
+                        }
+                    });
+
+                    chromosome2Select.addEventListener('change', function() {
+                        var options = this.options;
+                        for (var i = 0; i < options.length; i++) {
+                            updateOptionText(options[i]);
+                        }
+                    });
+
+                    // 全选按钮的点击事件
+                    document.getElementById('selectAll1').addEventListener('click', function() {
+                        var options = chromosome1Select.options;
+                        for (var i = 0; i < options.length; i++) {
+                            options[i].selected = true;
+                            updateOptionText(options[i]);
+                        }
+                        // 触发 change 事件
+                        chromosome1Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+
+                    document.getElementById('selectAll2').addEventListener('click', function() {
+                        var options = chromosome2Select.options;
+                        for (var i = 0; i < options.length; i++) {
+                            options[i].selected = true;
+                            updateOptionText(options[i]);
+                        }
+                        // 触发 change 事件
+                        chromosome2Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+
+                    // 取消全选按钮的点击事件
+                    document.getElementById('deselectAll1').addEventListener('click', function() {
+                        var options = chromosome1Select.options;
+                        for (var i = 0; i < options.length; i++) {
+                            options[i].selected = false;
+                            updateOptionText(options[i]);
+                        }
+                        // 触发 change 事件
+                        chromosome1Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+
+                    document.getElementById('deselectAll2').addEventListener('click', function() {
+                        var options = chromosome2Select.options;
+                        for (var i = 0; i < options.length; i++) {
+                            options[i].selected = false;
+                            updateOptionText(options[i]);
+                        }
+                        // 触发 change 事件
+                        chromosome2Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                </script>
+        </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // 初始化DataTable
+        $('#example').DataTable({
+            "ajax": "{% url 'dotplot_data_url' %}",
+            "scrollX": true,
+            "deferRender": true,
+            "processing": true,
+            "pageLength": 10,
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            "language": {
+                "processing": '<div class="spinner-border text-warning" role="status"><span class="visually-hidden">Loading...</span></div> Loading data...',
+                "lengthMenu": "Show _MENU_ entries",
+                "zeroRecords": "No matching records found",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtered from _MAX_ total entries)",
+                "search": "Search:",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": '<i class="bi bi-chevron-right"></i>',
+                    "previous": '<i class="bi bi-chevron-left"></i>'
+                }
+            },
+            "initComplete": function() {
+                // 数据加载完成后隐藏加载提示
+                $('.loading-notice').fadeOut();
+                // 调整表格容器宽度
+                $('.dataTables_wrapper').css('overflow-x', 'auto');
+            },
+            "drawCallback": function() {
+                // 每次绘制后确保表格响应式
+                $('.dataTables_wrapper').css('overflow-x', 'auto');
+            }
+        });
+    });
+
+    function downloadCSV() {
+        var table = $('#example').DataTable();
+        var data = table.data().toArray();
+        var headers = table.columns().header().toArray().map(th => th.innerText);
+
+        // 构建CSV内容
+        var csv = headers.join(',') + '\n';
+        data.forEach(row => {
+            csv += row.join(',') + '\n';
+        });
+
+        // 创建下载链接
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "TE_{{ sp_name }}_{{ type }}.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+{% endblock %}

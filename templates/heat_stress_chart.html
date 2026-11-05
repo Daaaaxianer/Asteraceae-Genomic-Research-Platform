@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Heat Stress - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 白色卡片容器样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 页面主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图表标题样式 (无图标) */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22; /* 橙色左边框 */
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">Heat Stress</h2>
+            <p class="section-subtitle">Distribution of Heat Shock Factor (HSF) gene family across species</p>
+        </div>
+        <hr class="section-divider">
+
+        <h3 class="chart-header">
+            HSF Gene Count Statistics
+        </h3>
+        <div id="container_bar" style="height: 1200px; width: 100%;"></div>
+
+        <div class="my-5 border-top" style="border-top-style: dashed !important; opacity: 0.3;"></div>
+
+        <h3 class="chart-header">
+            HSF Abundance View (Treemap)
+        </h3>
+        <div id="container_treemap" style="height: 800px; width: 100%;"></div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // =========================================================
+            // 1. 数据源 (Generated from Excel)
+            // =========================================================
+            var speciesData = ["Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Gerbera hybrida", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum kok-saghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"];
+
+            var data_HSF = [35, 63, 31, 39, 30, 28, 47, 66, 23, 33, 25, 15, 66, 52, 121, 38, 32, 26, 36, 36, 21, 65, 34, 31, 29, 26, 31, 32, 35, 33, 32, 37, 33, 34, 36, 40, 40, 118, 24, 30, 37, 29, 32, 26, 17, 24, 26, 35, 25, 28, 33, 83, 36, 43, 37, 19, 26, 35, 20];
+
+            // =========================================================
+            // 2. 初始化柱状图 (Bar Chart)
+            // =========================================================
+            var domBar = document.getElementById('container_bar');
+            if (domBar) {
+                var myChartBar = echarts.init(domBar, null, {renderer: 'canvas'});
+
+                var optionBar = {
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    grid: { left: '3%', right: '4%', bottom: '1%', top: '30px', containLabel: true },
+                    xAxis: {
+                        type: 'value',
+                        name: 'HSF Gene Count',
+                        position: 'top',
+                        splitLine: { lineStyle: { type: 'dashed' } }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: speciesData,
+                        axisLabel: { fontStyle: 'italic', interval: 0, fontSize: 11 },
+                        inverse: true
+                    },
+                    series: [{
+                        name: 'HSF',
+                        type: 'bar',
+                        data: data_HSF,
+                        itemStyle: { color: '#e67e22' },
+                        label: { show: true, position: 'right' }
+                    }]
+                };
+                myChartBar.setOption(optionBar);
+            }
+
+            // =========================================================
+            // 3. 初始化矩形树图 (Treemap) - 替代热图
+            // =========================================================
+            var domTreemap = document.getElementById('container_treemap');
+            if (domTreemap) {
+                var myChartTreemap = echarts.init(domTreemap, null, {renderer: 'canvas'});
+
+                // 转换数据为 Treemap 格式: [{name: 'Species', value: Count}, ...]
+                var treemapData = speciesData.map(function(species, index) {
+                    return {
+                        name: species,
+                        value: data_HSF[index]
+                    };
+                });
+
+                var optionTreemap = {
+                    tooltip: {
+                        formatter: function (info) {
+                            var value = info.value;
+                            var treePathInfo = info.treePathInfo;
+                            var treePath = [];
+                            for (var i = 1; i < treePathInfo.length; i++) {
+                                treePath.push(treePathInfo[i].name);
+                            }
+                            return '<div class="tooltip-title">' + treePath.join('/') + '</div>' +
+                                   'HSF Count: ' + value;
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'HSF Count',
+                            type: 'treemap',
+                            visibleMin: 300,
+                            label: {
+                                show: true,
+                                formatter: '{b}\n{c}',
+                                fontSize: 14,
+                                fontStyle: 'italic'
+                            },
+                            itemStyle: {
+                                borderColor: '#fff'
+                            },
+                            levels: [
+                                {
+                                    itemStyle: {
+                                        borderWidth: 0,
+                                        gapWidth: 2
+                                    }
+                                },
+                                {
+                                    itemStyle: {
+                                        gapWidth: 1
+                                    }
+                                },
+                                {
+                                    colorSaturation: [0.35, 0.5],
+                                    itemStyle: {
+                                        gapWidth: 1,
+                                        borderColorSaturation: 0.6
+                                    }
+                                }
+                            ],
+                            data: treemapData
+                        }
+                    ]
+                };
+                myChartTreemap.setOption(optionTreemap);
+            }
+
+            // =========================================================
+            // 4. 窗口缩放监听
+            // =========================================================
+            window.addEventListener('resize', function() {
+                if (domBar) myChartBar.resize();
+                if (domTreemap) myChartTreemap.resize();
+            });
+        });
+    </script>
+{% endblock %}

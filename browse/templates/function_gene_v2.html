@@ -1,0 +1,566 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteraceae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Function genes</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5">
+            &emsp;&emsp;The website allows researchers to select <em>Arabidopsis thaliana</em> as a model organism and identify genes related to specific functions in Fabaceae plants through the best match method. Users can choose functions of interest, such as nitrogen fixation, drought resistance, and cold tolerance, and the webpage will display a list of Fabaceae plant genes related to the selected function. This facilitates easy access to and understanding of gene information related to specific functions, aiding researchers in studying relevant functions in Fabaceae plants.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "sequence_fetch_url" %}"><b>sequence fetch.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="function_gene_v2" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-2">
+                <a href="{% url "function_gene_url" %}">
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 40px" value="Switch">
+                </a>
+            </div>
+
+            <div class="col-sm-10" style="padding-top: 20px">
+                <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                    <table id="myTable2">
+                        <thead>
+                            <tr>
+                                <th>Column 1</th>
+                                <th>Column 2</th>
+                                <th>Column 3</th>
+                                <th>Column 4</th>
+                                <th>Column 5</th>
+                                <th>Column 6</th>
+                                <th>Column 7</th>
+                                <th>Column 8</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="{% url 'select_function' '14-3-3 family' %}">14-3-3 family</a></td>
+                                <td><a href="{% url 'select_function' 'Acyl Lipid Metabolism Gene Families' %}">Acyl Lipid Metabolism Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'AGC Kinase Gene Family' %}">AGC Kinase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Aldehyde Dehydrogenase Gene Family' %}">Aldehyde Dehydrogenase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Alfin-like Transcription Factor Family' %}">Alfin-like Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Amino Acid or Auxin Permease AAAP Family' %}">Amino Acid or Auxin Permease AAAP Family</a></td>
+                                <td><a href="{% url 'select_function' 'Antiporter Super Family' %}">Antiporter Super Family</a></td>
+                                <td><a href="{% url 'select_function' 'Antiporters' %}">Antiporters</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'AP2-EREBP Transcription Factor Family' %}">AP2-EREBP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'ARIADNE family' %}">ARIADNE family</a></td>
+                                <td><a href="{% url 'select_function' 'ARID Transcription Factor Family' %}">ARID Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'AS2 family' %}">AS2 family</a></td>
+                                <td><a href="{% url 'select_function' 'AT-hook Motif Nuclear Localized (AHL) Family' %}">AT-hook Motif Nuclear Localized (AHL) Family</a></td>
+                                <td><a href="{% url 'select_function' 'AtRKD Transcription Factor Family' %}">AtRKD Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'B3 DNA Binding Superfamily' %}">B3 DNA Binding Superfamily</a></td>
+                                <td><a href="{% url 'select_function' 'Basic Helix-Loop-Helix Transcription Factor Gene Family' %}">Basic Helix-Loop-Helix Transcription Factor Gene Family</a></td>
+                            </tr>
+
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Basic region leucine zipper (bZIP) Transcription Factor Gene Family' %}">Basic region leucine zipper (bZIP) Transcription Factor Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'BBR or BPC Transcription factor family' %}">BBR or BPC Transcription factor family</a></td>
+                                <td><a href="{% url 'select_function' 'bZIP Transcription Factor Family' %}">bZIP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'BZR Transcription Factor Family' %}">BZR Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'C2C2-CO-like Transcription Factor Family' %}">C2C2-CO-like Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'C2C2-Dof Transcription Factor Family' %}">C2C2-Dof Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'C2C2-Gata Transcription Factor Family' %}">C2C2-Gata Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'C2C2-YABBY Transcription Factor Family' %}">C2C2-YABBY Transcription Factor Family</a></td>
+                            </tr>
+
+                            <tr>
+                                <td><a href="{% url 'select_function' 'C2H2 Transcription Factor Family' %}">C2H2 Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'C3H Transcription Factor Family' %}">C3H Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Calmodulin-binding Proteins' %}">Calmodulin-binding Proteins</a></td>
+                                <td><a href="{% url 'select_function' 'CAMTA Transcription Factor Family' %}">CAMTA Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Carbohydrate Esterase' %}">Carbohydrate Esterase</a></td>
+                                <td><a href="{% url 'select_function' 'CBL-interacting serine-threonine protein kinases' %}">CBL-interacting serine-threonine protein kinases</a></td>
+                                <td><a href="{% url 'select_function' 'CCAAT-DR1 Transcription Factor Family' %}">CCAAT-DR1 Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'CCAAT-HAP2 Transcription Factor Family' %}">CCAAT-HAP2 Transcription Factor Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'CCAAT-HAP3 Transcription Factor Family' %}">CCAAT-HAP3 Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'CCAAT-HAP5 Transcription Factor Family' %}">CCAAT-HAP5 Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Cell Wall Biosynthesis' %}">Cell Wall Biosynthesis</a></td>
+                                <td><a href="{% url 'select_function' 'Chloroplast and Mitochondria Gene Families' %}">Chloroplast and Mitochondria Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'COBRA Gene Family' %}">COBRA Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Core Cell Cycle Gene Families' %}">Core Cell Cycle Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'Core DNA Replication Machinery Family' %}">Core DNA Replication Machinery Family</a></td>
+                                <td><a href="{% url 'select_function' 'CPP Transcription Factor Family' %}">CPP Transcription Factor Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Cytochrome P450' %}">Cytochrome P450</a></td>
+                                <td><a href="{% url 'select_function' 'Cytoplasmic Ribosomal Protein Gene Family' %}">Cytoplasmic Ribosomal Protein Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Cytoskeleton Gene Families' %}">Cytoskeleton Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'E2F-DP Transcription Factor Family' %}">E2F-DP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'EF-hand Containing Proteins' %}">EF-hand Containing Proteins</a></td>
+                                <td><a href="{% url 'select_function' 'EIL Transcription Factor Family' %}">EIL Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Eukaryotic Initiation Factors Gene Family' %}">Eukaryotic Initiation Factors Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'EXO70 exocyst subunit family' %}">EXO70 exocyst subunit family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Expansin Gene Family' %}">Expansin Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'FH2 protein (formin) Gene Family' %}">FH2 protein (formin) Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'G2-like Transcription Factor Family' %}">G2-like Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'GeBP Transcription Factor Family' %}">GeBP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Glutamine Dumper (GDU) Family' %}">Glutamine Dumper (GDU) Family</a></td>
+                                <td><a href="{% url 'select_function' 'Glutathione S-transferase Gene Family' %}">Glutathione S-transferase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Glycoside Hydrolase' %}">Glycoside Hydrolase</a></td>
+                                <td><a href="{% url 'select_function' 'Glycosyltransferase' %}">Glycosyltransferase</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'GRAS Transcription Factor Family' %}">GRAS Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'GRF Transcription Factor Family' %}">GRF Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Histidine Kinase Gene Family' %}">Histidine Kinase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Homeobox Transcription Factor Family' %}">Homeobox Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'HRT Transcription Factor Family' %}">HRT Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'HSF' %}">HSF</a></td>
+                                <td><a href="{% url 'select_function' 'IDZ Gene Family' %}">IDZ Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Inorganic Solute Cotransporters' %}">Inorganic Solute Cotransporters</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Ion Channels' %}">Ion Channels</a></td>
+                                <td><a href="{% url 'select_function' 'IQD Protein Family' %}">IQD Protein Family</a></td>
+                                <td><a href="{% url 'select_function' 'JUMONJI Transcription Factor Family' %}">JUMONJI Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Leucine-rich Repeat extension Gene Families' %}">Leucine-rich Repeat extension Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'Lipid Metabolism Gene Families' %}">Lipid Metabolism Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'LysM Receptor-like Kinase (LYKs) Gene Family' %}">LysM Receptor-like Kinase (LYKs) Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'LysM Receptor-like Protein (LYPs) Gene Family' %}">LysM Receptor-like Protein (LYPs) Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'MADS-box Gene Family' %}">MADS-box Gene Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Major Intrinsic Protein MIP' %}">Major Intrinsic Protein MIP</a></td>
+                                <td><a href="{% url 'select_function' 'MAP Kinase Gene Family' %}">MAP Kinase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'MAP Kinase Kinase Gene Family' %}">MAP Kinase Kinase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'MAP Kinase Kinase Kinase' %}">MAP Kinase Kinase Kinase</a></td>
+                                <td><a href="{% url 'select_function' 'MAP Kinase Kinase Kinase Kinase' %}">MAP Kinase Kinase Kinase Kinase</a></td>
+                                <td><a href="{% url 'select_function' 'Mechanosensitive Ion Channel Family' %}">Mechanosensitive Ion Channel Family</a></td>
+                                <td><a href="{% url 'select_function' 'Miscellaneous Gene Families' %}">Miscellaneous Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'MLO family' %}">MLO family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Monolignol Biosynthesis Gene Families' %}">Monolignol Biosynthesis Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'MRS2 Gene Family' %}">MRS2 Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'MYB Transcription Factor Family' %}">MYB Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'MYB-Related Transcription Factor Family' %}">MYB-Related Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Myosins gene family' %}">Myosins gene family</a></td>
+                                <td><a href="{% url 'select_function' 'NAC Transcription Factor Family' %}">NAC Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'NADPH P450 reductases' %}">NADPH P450 reductases</a></td>
+                                <td><a href="{% url 'select_function' 'Nicotianamine Synthase Gene Family' %}">Nicotianamine Synthase Gene Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'NLP Transcription Factor Family' %}">NLP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Nodulin-like Gene Family' %}">Nodulin-like Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Non-SMC Element family' %}">Non-SMC Element family</a></td>
+                                <td><a href="{% url 'select_function' 'Organic Solute Cotransporters' %}">Organic Solute Cotransporters</a></td>
+                                <td><a href="{% url 'select_function' 'Orphan Transcription Factor Family' %}">Orphan Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Peroxidase' %}">Peroxidase</a></td>
+                                <td><a href="{% url 'select_function' 'PHD Gene Family' %}">PHD Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'PHD Transcription Factor Family' %}">PHD Transcription Factor Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Phospholipase D Gene Family (Wang group)' %}">Phospholipase D Gene Family (Wang group)</a></td>
+                                <td><a href="{% url 'select_function' 'Phytocyanin Superfamily' %}">Phytocyanin Superfamily</a></td>
+                                <td><a href="{% url 'select_function' 'Plant Defensins Gene Families' %}">Plant Defensins Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'Plant U-box Gene Family' %}">Plant U-box Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Pollen Coat Proteome' %}">Pollen Coat Proteome</a></td>
+                                <td><a href="{% url 'select_function' 'Polysaccharide Lyase' %}">Polysaccharide Lyase</a></td>
+                                <td><a href="{% url 'select_function' 'PP2C-type Phosphatase Gene Family' %}">PP2C-type Phosphatase Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Primary Pumps ATPases' %}">Primary Pumps ATPases</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Primary Pumps ATPases(2)' %}">Primary Pumps ATPases(2)</a></td>
+                                <td><a href="{% url 'select_function' 'Protein tyrosine phosphatase (PTP) family' %}">Protein tyrosine phosphatase (PTP) family</a></td>
+                                <td><a href="{% url 'select_function' 'PRT Gene Family' %}">PRT Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'RAD5 or RAD16-like Gene Family' %}">RAD5 or RAD16-like Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Rapid Response to Elicitors' %}">Rapid Response to Elicitors</a></td>
+                                <td><a href="{% url 'select_function' 'RAV Transcription Factor Family' %}">RAV Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'RCI2 Gene Family' %}">RCI2 Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Receptor kinase-like Gene Family' %}">Receptor kinase-like Gene Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'REM Transcription Factor Family' %}">REM Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Response Regulator Gene Family' %}">Response Regulator Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'SBP-box Gene Family' %}">SBP-box Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Single Myb Histone (SMH) Gene Family' %}">Single Myb Histone (SMH) Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'SNARE and Associated Proteins' %}">SNARE and Associated Proteins</a></td>
+                                <td><a href="{% url 'select_function' 'Strubbelig Receptor Gene Family' %}">Strubbelig Receptor Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Structural Maintenance of Chromosomes family' %}">Structural Maintenance of Chromosomes family</a></td>
+                                <td><a href="{% url 'select_function' 'Su(var)3-9 homologs' %}">Su(var)3-9 homologs</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Subtilisin-like Serine Gene Family' %}">Subtilisin-like Serine Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Sucrose Transporter Gene Family' %}">Sucrose Transporter Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Sulfurtransferasese or Rhodanese' %}">Sulfurtransferasese or Rhodanese</a></td>
+                                <td><a href="{% url 'select_function' 'SUVH1 or 3-interacting DNAJ domain-containing protein superfamily' %}">SUVH1 or 3-interacting DNAJ domain-containing protein superfamily</a></td>
+                                <td><a href="{% url 'select_function' 'TCP Transcription Factor Family' %}">TCP Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Tify Gene Family' %}">Tify Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'Trehalose Biosynthesis Gene Families' %}">Trehalose Biosynthesis Gene Families</a></td>
+                                <td><a href="{% url 'select_function' 'Trihelix Transcription Factor Family' %}">Trihelix Transcription Factor Family</a></td>
+                                </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'TRM (TON1 Recruiting Motif) Superfamily' %}">TRM (TON1 Recruiting Motif) Superfamily</a></td>
+                                <td><a href="{% url 'select_function' 'TUB Transcription Factor Family' %}">TUB Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Type I MADS-box Gene Family' %}">Type I MADS-box Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'U-box Gene Family' %}">U-box Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'VOZ-9 Transcription Factor Family' %}">VOZ-9 Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Whirly Transcription Factor Family' %}">Whirly Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Wox Gene Family' %}">Wox Gene Family</a></td>
+                                <td><a href="{% url 'select_function' 'WRKY Transcription Factor Family' %}">WRKY Transcription Factor Family</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'select_function' 'Xyloglucan Fucosyltransferase1' %}">Xyloglucan Fucosyltransferase1</a></td>
+                                <td><a href="{% url 'select_function' 'ZF-HD Transcription Factor Family' %}">ZF-HD Transcription Factor Family</a></td>
+                                <td><a href="{% url 'select_function' 'Zinc finger-homeobox gene family' %}">Zinc finger-homeobox gene family</a></td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>---</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-300%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>
+                    <button type="button" id="deselectAllBtn" class="btn btn-secondary">Deselect All</button>
+                    <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button>
+                    <form id="myForm" class="col-lg-2">
+                        {% csrf_token %}
+                        <button id="printDataBtn" class="btn btn-primary" type="button">Draw Ks circos</button>
+                    </form>
+                </div>
+
+                <div class="col-md-12" style="">
+                    <table id="myTable">
+                        <thead><tr><th>Select</th><th>Gene</th><th>Type</th><th>Subject start</th><th>Subject end</th><th>Function</th><th>Arabidopsis gene</th><th>Identity (%)</th><th>E-value</th><th>Bit score</th></tr></thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr><td><input type="checkbox" class="row-checkbox"></td><td><a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a></td><td>{{ pair.14 }}</td><td>{{ pair.9 }}</td><td>{{ pair.10 }}</td><td>{{ pair.13 }}</td><td>{{ pair.1 }}</td><td>{{ pair.3 }}</td><td>{{ pair.11 }}</td><td>{{ pair.12 }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+{#                <div class="col-md-2"></div>#}
+
+                <script>
+                    var printDataBtn = document.getElementById("printDataBtn");
+                    printDataBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                var mainDataCells = row.querySelectorAll("td:nth-child(2)"); // 获取第一组数据
+                                mainDataCells.forEach(function(cell) {
+                                    rowData.push(cell.textContent.trim());
+                                });
+                                selectedRows.push(rowData);
+                            }
+                        });
+                        {#console.log(selectedRows);#}
+
+                        // 获取CSRF令牌
+                        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+                        // 发送数据到Django后端
+                        var xhr = new XMLHttpRequest();
+                        var url = "{% url 'draw_ks_circos' %}"; // 使用Django模板标签获取URL
+                        xhr.open("POST", url, true);
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken); // 将CSRF令牌添加到请求头中
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    console.log("Data sent successfully.");
+                                    var newWindow = window.open("/browse/ks_circos_img", "_blank");
+                                    if (newWindow) {
+                                        newWindow.focus();
+                                    } else {
+                                        console.error("Failed to open new window.");
+                                    }
+                                } else {
+                                    console.error("Error sending data:", xhr.statusText);
+                                }
+                            }
+                        };
+                        var data = JSON.stringify({ selectedRows: selectedRows });
+                        xhr.send(data);
+                    });
+                </script>
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    var deselectAllBtn = document.getElementById("deselectAllBtn");
+
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    deselectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = false;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Function_gene_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+            {% if blast_results %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Blast results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-430%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                    <table id="myTable2">
+                        <thead>
+                            <tr>
+                                <th>Query ID</th>
+                                <th>Subject ID</th>
+                                <th>Identity</th>
+                                <th>Length</th>
+                                <th>Mismatch</th>
+                                <th>Gapopen</th>
+                                <th>Qstart</th>
+                                <th>Qend</th>
+                                <th>Sstart</th>
+                                <th>Send</th>
+                                <th>evalue</th>
+                                <th>Bitscore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in blast_results %}
+                                <tr>
+                                    <td>{{ pair.0 }}</td>
+                                    <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.7 }}</td>
+                                    <td>{{ pair.8 }}</td>
+                                    <td>{{ pair.9 }}</td>
+                                    <td>{{ pair.10 }}</td>
+                                    <td>{{ pair.11 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            {% if not_found_geneids %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Not found genes<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-550%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in not_found_geneids %}
+                                <tr>
+                                    <td>{{ pair }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-sm-2"></div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable2').DataTable();
+            });
+        </script>
+
+
+    <script>
+        document.getElementById('gene_id').addEventListener('click', function() {
+            var exampleText = `Aann1g00364
+Aann1g00591
+Aann1g00667
+Aann1g00671
+Aann1g00682
+`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>Arla2g00494
+MEVNMAIVMAIGLVLLLVVLTLALLRASAFPKEMDGIPGSLGWPFVGESLSFISEFSSPAGIFSFMYKRQQRYGKVFKSYVLGRYMVFTTGREASKMLLTGKDGMVSLNLFYTGQKVLGPNSLLQQNGEDHKRLRRLIAEPLSIDGLKKYFQFINNLAVETFDQWPGQKVLVLEEASTFTLKVIGNMIMSLEPTGEEQEKFRDNFKIISSSFASLPFNIPGTAFYRGMKARDRMFEMLDTIIARRRNGNDLQQDFLGSLIKKHSKEGKDDDEKLTDAQMKDNILTLLIAGHDTTTAALTWLIKFLEENLAALDRLREEHMEIRSKRKDGSSLTWSEVNNMPYTAKVVSETLRRATILPWYSRKAAQDFEINGYSIKKGWSVNLDVVSIHHDPQVFVDPHKFDPSRFDLPWVWKRSTWKALEKDDSVQPTLVRMPKNKYPIFVEML
+`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+        <script>
+            document.getElementById('k_number').addEventListener('click', function() {
+                var exampleText = `K04506`;
+                document.getElementById('lastName').value = exampleText;
+            });
+        </script>
+
+        <script>
+            document.getElementById('gene_function').addEventListener('click', function() {
+                var exampleText = `AP2-EREBP Transcription Factor Family;`;
+                document.getElementById('lastName').value = exampleText;
+            });
+        </script>
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+    </form>
+
+{% endblock %}
+
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

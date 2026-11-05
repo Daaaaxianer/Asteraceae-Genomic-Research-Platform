@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Auxin gene</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;We selected <em>Arabidopsis thaliana</em> as the model organism and identified its Auxin gene. By best matching, we identified the Auxin gene of 25 other Fabaceae. They were identified using pfam and stored in the platform.
+            <br>&emsp;&emsp;Growth hormone (auxin) is a class of endogenous hormones containing an unsaturated aromatic ring and an acetic acid side chain, abbreviated as IAA, whose chemical essence is indoleacetic acid. In addition, 4-chloro-IAA, 5-hydroxy-IAA, naphthalene acetic acid (NAA) and indole butyric acid are growth hormone analogues. Growth hormone was the first plant hormone to be discovered. The most important chemical in growth hormone is 3-indoleacetic acid. It is used in agriculture to promote the rooting of cuttings, which is very effective.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <!-- choose module -->
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Phaseolus vulgaris</i></p>
+                <a href="{% url "Auxin" "Pvu" %}"><img src="../../static/image/Pvu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 93 </p>
+                <a href="{% url "Auxin" "Pvu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Pvu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Pvu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Pisum sativum</i></p>
+                <a href="{% url "Auxin" "Psa" %}"><img src="../../static/image/Psa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 74 </p>
+                <a href="{% url "Auxin" "Psa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Psa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Psa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Senna tora</i></p>
+                <a href="{% url "Auxin" "Sto" %}"><img src="../../static/image/Sto.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 83 </p>
+                <a href="{% url "Auxin" "Sto" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Sto.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Sto.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Spatholobus suberectus</i></p>
+                <a href="{% url "Auxin" "Ssu" %}"><img src="../../static/image/Ssu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 92 </p>
+                <a href="{% url "Auxin" "Ssu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Ssu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Ssu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium pratense</i></p>
+                <a href="{% url "Auxin" "Tpr" %}"><img src="../../static/image/Tpr.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 77 </p>
+                <a href="{% url "Auxin" "Tpr" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Tpr.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Tpr.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium subterranum</i></p>
+                <a href="{% url "Auxin" "Tsu" %}"><img src="../../static/image/Tsu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 79 </p>
+                <a href="{% url "Auxin" "Tsu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Tsu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Tsu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vigna radiata</i></p>
+                <a href="{% url "Auxin" "Vra" %}"><img src="../../static/image/Vra.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 82 </p>
+                <a href="{% url "Auxin" "Vra" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Vra.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Vra.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vicia faba</i></p>
+                <a href="{% url "Auxin" "Vfa" %}"><img src="../../static/image/Vfa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 81 </p>
+                <a href="{% url "Auxin" "Vfa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Vfa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Auxingenes_Vfa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "Auxin_genes_index_url1" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "Auxin_genes_index_url2" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "Auxin_genes_index_url3" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "Auxin_genes_index_url3" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

@@ -1,0 +1,671 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Transposable elements - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-orange: #e67e22;
+        --dark-orange: #d35400;
+        --light-bg: #fffbf7;
+        --border-color: #eee;
+        --text-color: #2c3e50;
+        --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        --card-hover-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text-color);
+    }
+
+    /* Main Page Container */
+    .page-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin: 40px auto;
+        border: 1px solid rgba(0,0,0,0.02);
+        min-height: 600px;
+    }
+
+    /* Typography */
+    .main-title {
+        color: var(--dark-orange);
+        font-weight: 800;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .intro-text {
+        text-align: justify;
+        color: #555;
+        line-height: 1.7;
+        background-color: var(--light-bg);
+        padding: 20px;
+        border-left: 4px solid var(--primary-orange);
+        border-radius: 4px;
+        margin-bottom: 40px;
+    }
+
+    /* Grid Container */
+    .centered-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    /* Card Style */
+    .module-item {
+        flex: 0 0 calc(33.333% - 25px);
+        max-width: calc(33.333% - 25px);
+        box-sizing: border-box;
+    }
+
+    .species-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .species-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+        border-color: #ffe0b2;
+    }
+
+    /* Image Styling */
+    .species-card img {
+        max-width: 100%;
+        height: 180px; /* Fixed height for consistency */
+        object-fit: contain;
+        margin: 15px 0;
+        transition: transform 0.3s ease;
+    }
+
+    .species-card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Text inside Card */
+    .species-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        font-style: italic;
+        color: var(--dark-orange);
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .species-total {
+        font-size: 0.95rem;
+        color: #666;
+        background: #f8f9fa;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        display: inline-block;
+        font-weight: 500;
+    }
+
+    /* Action Links */
+    .action-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .btn-link-custom {
+        display: block;
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* Green Link (More Info) */
+    .link-more {
+        color: #27ae60;
+        border: 1px solid #e9f7ef;
+        background-color: #f4fcf7;
+    }
+    .link-more:hover {
+        background-color: #27ae60;
+        color: white;
+    }
+
+    /* Yellow Link (Download) */
+    .link-download {
+        color: #d4ac0d;
+        border: 1px solid #fcf3cf;
+        background-color: #fef9e7;
+    }
+    .link-download:hover {
+        background-color: #d4ac0d;
+        color: white;
+    }
+
+    /* Pagination Styling */
+    .pagination .page-link {
+        color: var(--dark-orange);
+        border: 1px solid #eee;
+        margin: 0 3px;
+        border-radius: 4px;
+    }
+    .pagination .page-link:hover {
+        background-color: var(--light-bg);
+        border-color: var(--primary-orange);
+        color: var(--dark-orange);
+    }
+    .pagination .page-item.disabled .page-link {
+        color: #ccc;
+        background-color: #fff;
+        border-color: #eee;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .module-item {
+            flex: 0 0 calc(50% - 25px);
+            max-width: calc(50% - 25px);
+        }
+    }
+    @media (max-width: 768px) {
+        .module-item {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .page-wrapper {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        
+        <div style="max-width: 900px; margin: 0 auto;">
+            <h2 class="text-center main-title">Transposable elements</h2>
+            <div class="intro-text">
+                <p style="margin: 0;">
+                    &emsp;&emsp;Transposable elements (TEs): also known as jumping genes, are DNA sequences that can change their position in a cell. There are two types of transposons: type I transposons (Retrotransposon) and type II transposons (DNA transposons).
+                    <br><br>
+                    &emsp;&emsp;Type I transposons: DNA is used as a template and is transcribed into mRNA, which is then reverse transcribed into cDNA and inserted into a new position in the genome by the action of integrase. Type II transposon: The mechanism of transposition of type II transposon is called "cut-and-paste". The transposase cuts the TE from its original position in the genome and pastes it into other regions of the genome. The gaps formed by the cut are repaired by DNA.
+                </p>
+            </div>
+        </div>
+
+        <div class="centered-container">
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Deinandra increscens</i></p>
+                        <a href="{% url "TE" "Dein" %}">
+                             <img src="{%static 'image/Deinandra_increscens.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 2,857,503</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Dein" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Deinandra_increscens.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Erigeron canadensis</i></p>
+                        <a href="{% url "TE" "Erca" %}">
+                             <img src="{%static 'image/Erigeron_canadensis.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 823,693</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Erca" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Erigeron_canadensis.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Erigeron breviscapus</i></p>
+                        <a href="{% url "TE" "Erbr" %}">
+                             <img src="{%static 'image/Erigeron_breviscapus.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 2,545,650</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Erbr" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Erigeron_breviscapus.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria bidentis</i></p>
+                        <a href="{% url "TE" "Flbi" %}">
+                             <img src="{%static 'image/Flaveria_bidentis.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,742,217</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flbi" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_bidentis.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria brownii</i></p>
+                        <a href="{% url "TE" "Flbr" %}">
+                             <img src="{%static 'image/Flaveria_brownii.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 2,028,764</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flbr" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_brownii.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria floridana</i></p>
+                        <a href="{% url "TE" "Flfl" %}">
+                             <img src="{%static 'image/Flaveria_floridana.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 3,567,554</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flfl" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_floridana.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria linearis</i></p>
+                        <a href="{% url "TE" "Flli" %}">
+                             <img src="{%static 'image/Flaveria_linearis.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 2,363,709</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flli" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_linearis.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria ramosissima</i></p>
+                        <a href="{% url "TE" "Flra" %}">
+                             <img src="{%static 'image/Flaveria_ramosissima.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,407,438</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flra" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_ramosissima.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria robusta</i></p>
+                        <a href="{% url "TE" "Flro" %}">
+                             <img src="{%static 'image/Flaveria_robusta.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,002,510</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flro" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_robusta.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria sonorensis</i></p>
+                        <a href="{% url "TE" "Flso" %}">
+                             <img src="{%static 'image/Flaveria_sonorensis.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,791,747</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Flso" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_sonorensis.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Flaveria trinervia</i></p>
+                        <a href="{% url "TE" "Ftr" %}">
+                             <img src="{%static 'image/Flaveria_trinervia.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,843,111</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Ftr" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Flaveria_trinervia.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Gerbera hybrida</i></p>
+                        <a href="{% url "TE" "Gehy" %}">
+                             <img src="{%static 'image/Gerbera_hybrida.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 4,218,002</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Gehy" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Gerbera_hybrida.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Glebionis coronaria</i></p>
+                        <a href="{% url "TE" "Glco" %}">
+                             <img src="{%static 'image/Glebionis_coronaria.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 7,088,636</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Glco" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Glebionis_coronaria.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Helianthus annuus</i></p>
+                        <a href="{% url "TE" "Hean" %}">
+                             <img src="{%static 'image/Helianthus_annuus.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 4,869,281</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Hean" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Helianthus_annuus.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Helianthus tuberosus</i></p>
+                        <a href="{% url "TE" "Hetu" %}">
+                             <img src="{%static 'image/Helianthus_tuberosus.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 18,372,605</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Hetu" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Helianthus_tuberosus.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Helichrysum umbraculigerum</i></p>
+                        <a href="{% url "TE" "Heum" %}">
+                             <img src="{%static 'image/Helichrysum_umbraculigerum.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,981,989</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Heum" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Helichrysum_umbraculigerum.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Lactuca saligna</i></p>
+                        <a href="{% url "TE" "Lasa" %}">
+                             <img src="{%static 'image/Lactuca_saligna.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 3,318,550</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Lasa" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Lactuca_saligna.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Lactuca sativa </i></p>
+                        <a href="{% url "TE" "Lssa" %}">
+                             <img src="{%static 'image/Lactuca_sativa.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 4,363,994</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Lssa" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Lactuca_sativa.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Logfia minima</i></p>
+                        <a href="{% url "TE" "Lomi" %}">
+                             <img src="{%static 'image/Logfia_minima.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 888,027</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Lomi" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Logfia_minima.out'%}" class="btn-link-custom link-download" target="_blank">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+             <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Mikania micrantha</i></p>
+                        <a href="{% url "TE" "Mimi" %}">
+                             <img src="{%static 'image/Mikania_micrantha.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 3,362,056</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Mimi" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Mikania_micrantha.out'%}" class="btn-link-custom link-download" target="_bSaink">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-item">
+                <div class="species-card">
+                    <div style="width: 100%">
+                        <p class="species-name"><i>Pulicaria dysenterica</i></p>
+                        <a href="{% url "TE" "Pudy" %}">
+                             <img src="{%static 'image/Pulicaria_dysenterica.webp'%}" alt="Homologues">
+                        </a>
+                    </div>
+                    <div class="species-total">Total : 1,499,879</div>
+                    <div class="action-links">
+                        <a href="{% url "TE" "Pudy" %}" class="btn-link-custom link-more">
+                            <i class="fas fa-info-circle"></i> More information
+                        </a>
+                        <a href="{%static 'TE_out_file/Pulicaria_dysenterica.out'%}" class="btn-link-custom link-download" target="_bSaink">
+                            <i class="fas fa-download"></i> Repeat download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+        <div class="row justify-content-center" style="margin-top: 40px;">
+            <div class="col-auto">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="{% url "TE_index_url1" %}">1</a></li>
+                        <li class="page-item"><a class="page-link" href="{% url "TE_index_url2" %}">2</a></li>
+                        <li class="page-item"><a class="page-link" href="{% url "TE_index_url3" %}">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="{% url "TE_index_url3" %}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

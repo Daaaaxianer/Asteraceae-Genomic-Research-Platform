@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head_link %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Asteraceae platform</title>
+        <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+        <link rel="icon" href="../static/image/shuye.png" type="image/x-icon"/>
+        <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+        <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+        <!-- font awesome style -->
+        <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+        <!-- Custom styles for this template -->
+        <link href="../static/css/style.css" rel="stylesheet"/>
+        <!-- responsive style -->
+        <link href="../static/css/responsive.css" rel="stylesheet"/>
+        <link href="../static/vendor/css/style.css" rel="stylesheet">
+        <script src="../static/vendor/js/home.js"></script>
+
+{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">#}
+        <link rel="stylesheet" href="../static/css/bootstrap-icons.css">
+
+    {% endblock %}
+</head>
+
+{% load static  %}
+<body style="padding-top: 0">
+<!-- Navigation -->
+{% block header_index %}  
+    <nav class="" style="background-color: #190707eb!important;text-align: center">
+        <img class="banner-image" src="{% static "/image/banner.jpg" %}" alt="">
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success" style="background-color: #190707eb!important;height: 80px;padding-bottom: 16px;padding-left:0" >
+        <div class="container">
+            <li class="nav-item navbar-brand">
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+
+					<!-- Home -->
+                        <li class="nav-item" style="">
+                            <a class="nav-link" href="{% url "index_url" %}" id="navbarDropdownPages" aria-haspopup="true"
+                               aria-expanded="false" style="padding-top: 30px;padding-right:10px">
+                                Home
+                            </a>
+                        </li>
+                        
+                        <!-- Resource -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Genomics<span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url "genome_information_url" %}">Genome</a>
+                                    <a class="dropdown-item" href="{% url "JBrowse_index_url" %}">Jbrowse</a>
+                                    <a class="dropdown-item" href="{% url "interproscan_index_url" %}">GO-annotations</a>
+                                    <a class="dropdown-item" href="{% url "kegg_index_url" %}">KEGG-pathways</a>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Resource-页面 -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Geno-Syn<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!-- Syntenic -->
+                                    <a class="dropdown-item" href="{% url "dotplot_url" %}">Pair-wise synteny</a>
+                                    <a class="dropdown-item" href="{% url "collinear_kaks_url" %}">Syn-Block</a>
+                                    <!-- Syntenic -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Hierarchical alignments</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "hierarchical_alignments_Vivi_url" %}">Vivi_syntenic</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Event-related gene -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Event-related genes</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "ECH_event_url" %}">ECH</a></li>
+<!--                                             <li><a class="dropdown-item" href="{% url "ACH_event_url" %}">ACH</a></li>
+                                            <li><a class="dropdown-item" href="{% url "AST_event_url" %}">AST</a></li> -->
+                                        </ul>
+                                    </li>
+                                    <!-- Karyotype -->
+                                    <a class="dropdown-item" href="{% url "karyotype_url" %}">Ancestral genome and evolution</a>                                 
+{#                                  <a class="dropdown-item" href="{% url "paper_url" %}">Fabaceae publication</a>#}
+{#                                    <li class="dropdown-submenu">#}
+{#                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Breeding and Control</a>#}
+{#                                        <ul class="dropdown-menu">#}
+{#                                            <li><a class="dropdown-item" href="{% url "common_pests_url" %}">Common pests</a></li>#}
+
+{#                                        </ul>#}
+{#                                    </li>#}
+                                    <!-- Gene family -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Gene family</a>
+                                        <ul class="dropdown-menu">
+                                    <!-- Orthologous Gene Search -->
+                                    <a class="dropdown-item" href="{% url "gene_family_url" %}">Orthologous Gene</a>
+
+
+                                        <!-- Domain Search -->
+                                            <li><a class="dropdown-item" href="{% url "function_gene_url" %}">Gene-families</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Gene family --> 
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Resource -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Multi-Omics<span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                     <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Transcriptomes</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "transcriptome_url" %}">Data</a></li>
+                                            <li><a class="dropdown-item" href="{% url "transcriptome2_url" %}">Form</a></li>
+                                        </ul>
+                                    </li>
+                                    <a class="dropdown-item" href="{% url "Metabolomics_url" %}">Metabolomes</a>
+                                    <a class="dropdown-item" href="{% url "pan_genome_url" %}">Pan-genomes</a>
+                                    <a class="dropdown-item" href="{% url "TE_index_url1" %}">Transposable elements</a>
+                                    <!-- TF 转录因子基因家族 -->
+                                    <li><a class="dropdown-item" href="{% url "TF_genes_index_url" %}">Transcription factors</a></li>
+                                    <!-- <a class="dropdown-item" href="{% url "pan_genome_url" %}">Pan-genome</a> -->
+                                    <!-- N6-methyladenosine(m6A) -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">N6-methyladenosine(m6A)</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "m6a_wirters_genes_index_url" %}">Wirters</a></li>
+                                            <li><a class="dropdown-item" href="{% url "m6a_readers_genes_url" %}">Readers</a></li>
+                                            <li><a class="dropdown-item" href="{% url "m6a_erasers_genes_url" %}">Erasers</a></li>
+                                        </ul>
+                                    </li>
+									<li>
+                                    <a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Dup_genes</a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- 最后--Browse -->
+
+                        <!-- Resource-页面 -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Species-Infor<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url "ecology_url" %}">Species encyclopedias</a>
+                                	<a class="dropdown-item" href="{% url "diseases_url" %}">Ecological resources</a>
+                                    <a class="dropdown-item" href="{% url "database_url" %}">External Database Link</a>
+{#                                    <a class="dropdown-item" href="{% url "paper_url" %}">Fabaceae publication</a>#}
+
+{#                                    <li class="dropdown-submenu">#}
+{#                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Breeding and Control</a>#}
+{#                                        <ul class="dropdown-menu">#}
+{#                                            <li><a class="dropdown-item" href="{% url "common_pests_url" %}">Common pests</a></li>#}
+{#                                            <li><a class="dropdown-item" href="{% url "diseases_url" %}">Diseases</a></li>#}
+{#                                            <li><a class="dropdown-item" href="{% url "economic_value_url" %}">Economic value</a></li>#}
+{#                                            <li><a class="dropdown-item" href="{% url "method_planting_url" %}">Method of planting</a></li>#}
+{#                                        </ul>#}
+{#                                    </li>#}
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- Resource最后 -->
+
+
+
+                        <!-- Tools -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Bio-Tools <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url "chart_url" %}">All Tools</a>
+
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Genome browsing and visualization</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "jbrowse_url" %}">JBrowse</a></li>
+                                            <li><a class="dropdown-item" href="{% url "diamond_url" %}">ShinyCircos</a></li>
+                                            <li><a class="dropdown-item" href="{% url "GF_ks_circos_url" %}">GF-Circos</a></li>
+                                            <li><a class="dropdown-item" href="{% url "sequenceserver_url" %}">Bi-visualazition</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_blast_dotplot_url" %}">Blast dotplot</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_block_dotplot_url" %}">Ks dotplot</a></li>
+                                            <li><a class="dropdown-item" href="{% url "colinearscan_url" %}">B-Dotter</a></li>
+                                            <li><a class="dropdown-item" href="{% url "wgdimcs_url" %}">BB-Dotter</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_block_dotplot_url" %}">BK-Dotter</a></li>
+                                        </ul>
+                                    </li>
+
+
+                                    <!-- 共线性分析 -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">HSequence alignment and homology search</a>
+                                        <ul class="dropdown-menu">
+
+                                            <li><a class="dropdown-item" href="{% url "blast_match_run_url" %}">Blast</a></li>
+                                            <li><a class="dropdown-item" href="{% url "diamond_url" %}">Diamond</a></li>
+                                            <li><a class="dropdown-item" href="{% url "wgdikaks_url" %}">Bi-match</a></li>
+                                            <li><a class="dropdown-item" href="{% url "sequenceserver_url" %}">SequenceServer</a></li>
+                                            <li><a class="dropdown-item" href="{% url "paraat_url" %}">Seq-fatch</a></li>
+                                            <li><a class="dropdown-item" href="{% url "paraat_url" %}">ParaAT</a></li>
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Multigene-align</a></li>
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">MEME</a></li>
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Hmmer</a></li>
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Pfam</a></li>
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Gmapping</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- 基因组分馏 -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Systematic development and evolutionary analysis</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "zu_correspondence_mc_url" %}">FastTree</a></li>
+                                            <li><a class="dropdown-item" href="{% url "iq_tree_url" %}">IQ-Tree2</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_diushi_url" %}">KaKs calculator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">NG-KaKs-Cal</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Subtree-splitter</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Seq-corrector</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Block_info</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Block_run</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_correspondence_mc_url" %}">Correspondence</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- Gene family -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Analysis of Gene Structure and Characteristics</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Codonw</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Cpgfinder</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Interproscan</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">iTAK</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">GSDS</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Sptaxon-accessor</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Paleo-gene identifier</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">Paleo-gene_Rl</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- Other -->
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Homology and Gene Family Analysis</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "dupgen_finder_url" %}">Dupgen finder</a></li>
+                                            <li><a class="dropdown-item" href="{% url "formatTofasta_url" %}">Synviso</a></li>
+                                            <li><a class="dropdown-item" href="{% url "colinearscan_url" %}">ColinearScan</a></li>
+                                            <li><a class="dropdown-item" href="{% url "mcscanx_url" %}">MGScanX</a></li>
+                                            <li><a class="dropdown-item" href="{% url "extract_row_url" %}">Syn-blocks-stat</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">Syn-deco generator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">Multi-syn-phytre</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">BDL-finder</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">BDL-deduplicator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">BDL-extractor</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">BDL-combiner</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="javascript:">Calculation tools and statistical analysis</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url "sequence_screening_url" %}">GC-calculator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "formatTofasta_url" %}">Segienth-calculator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "find_replace_url" %}">Gerstr-counter</a></li>
+                                            <li><a class="dropdown-item" href="{% url "quchong_url" %}">Gam-Calculator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "extract_row_url" %}">SS-extractor</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">Heatmap</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">Lollipop</a></li>
+                                            <li><a class="dropdown-item" href="{% url "zu_pindex_url" %}">P-index-calculator</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">SAF-converter</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">KaKs calculate</a></li>
+                                            <li><a class="dropdown-item" href="{% url "file_merge_url" %}">Seq-corrector</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                                                <!-- Resource-页面 -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                Aster-Stats<span class="caret"></span>
+                                </a>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                      <li><a class="dropdown-item" href="{% url "sp_tree_chart_url" %}">sp_tree</a></li>
+                                      <li><a class="dropdown-item" href="{% url "m6a_chart_url" %}">m6a</a></li>
+                                      <li><a class="dropdown-item" href="{% url "gene_replication_type_url" %}">Duplication type</a></li>
+                                      <li><a class="dropdown-item" href="{% url "function_gene_chart_url" %}">Functional genes</a></li>
+                                      <li><a class="dropdown-item" href="{% url "TE_chart_url" %}">TE</a></li>
+                                      <li><a class="dropdown-item" href="{% url "Pathway_url" %}">Pathway</a></li>
+                                      <li><a class="dropdown-item" href="{% url "RPS_chart_url" %}">RPS</a></li>
+                                  </ul>
+                            </div>
+                        </li>
+                        <!-- Resource最后 -->
+
+                        <!-- 最后--Tools -->
+
+                        <!--                         Chart
+<li class="nav-item dropdown" style="padding-right: 1px">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">Diagram
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+        <a class="dropdown-item" href="{% url "sp_tree_chart_url" %}">Phylogenetic tree</a>
+        <a class="dropdown-item" href="{% url "gene_replication_type_url" %}">Gene duplication type</a>
+         <a class="dropdown-item" href="{% url "p_index_url" %}">Polyploidy index</a>
+        <a class="dropdown-item" href="{% url "function_gene_chart_url" %}">Functional genes</a>
+        <a class="dropdown-item" href="{% url "transcription_factor_chart_url" %}">Transcription factor</a>
+
+        <a class="dropdown-item" href="{% url "m6a_chart_url" %}">N6-methyladenosine(m6A)</a>
+
+
+
+{#                                <a class="dropdown-item" href="Heatmap.html">Heatmap</a>#}
+{#                                <a class="dropdown-item" href="Gene_family_number.html">Gene family number</a>#}
+    </div>
+</li>
+最后 Chart
+
+                        <! --  Gene family -->
+
+
+
+<!--                         Chart
+<li class="nav-item dropdown" style="padding-right: 1px">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">Diagram
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+        <a class="dropdown-item" href="{% url "sp_tree_chart_url" %}">Phylogenetic tree</a>
+        <a class="dropdown-item" href="{% url "gene_replication_type_url" %}">Gene duplication type</a>
+         <a class="dropdown-item" href="{% url "p_index_url" %}">Polyploidy index</a>
+        <a class="dropdown-item" href="{% url "function_gene_chart_url" %}">Functional genes</a>
+        <a class="dropdown-item" href="{% url "transcription_factor_chart_url" %}">Transcription factor</a>
+
+        <a class="dropdown-item" href="{% url "m6a_chart_url" %}">N6-methyladenosine(m6A)</a>
+
+
+{#                                <a class="dropdown-item" href="Heatmap.html">Heatmap</a>#}
+{#                                <a class="dropdown-item" href="Gene_family_number.html">Gene family number</a>#}
+    </div>
+</li>
+最后 Chart
+
+Documentation
+<li class="nav-item dropdown" style="padding-right: 1px">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">Documentation
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+        <a class="dropdown-item" href="{% url "documentation_url" %}">Platform Manual</a>
+        <a class="dropdown-item" href="{% url "documentation_tools_url" %}">Pipeline flow examples</a>
+        <a class="dropdown-item" href="{% url "software_tools_url" %}">Software usage commands</a>
+    </div>
+</li>
+
+Referenced
+<li class="nav-item dropdown" style="padding-right: 1px">
+    <div class="dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Reference<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url "Referenced_our_url" %}" id="navbarDropdownPages" aria-haspopup="true" aria-expanded="false">Our publications</a>
+            <a class="dropdown-item" href="{% url "references_url" %}">References</a>
+        </ul>
+    </div>
+</li> -->
+
+                        <!-- Submit -->
+                        <li class="nav-item" style="">
+                            <a class="nav-link" href="{% url "submit_url" %}" id="navbarDropdownPages" aria-haspopup="true"
+                               aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                Submit
+                            </a>
+                        </li>
+
+<!--                         Wikipedia
+<li class="nav-item" style="padding-right: 1px">
+    <div class="dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Wikipedia<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url "paper_url" %}">Fabaceae publication</a>
+            <a class="dropdown-item" href="{% url "common_pests_url" %}">Common pests</a>
+            <a class="dropdown-item" href="{% url "diseases_url" %}">Diseases</a>
+            <a class="dropdown-item" href="{% url "economic_value_url" %}">Economic value</a>
+            <a class="dropdown-item" href="{% url "method_planting_url" %}">Method of planting</a>
+        </ul>
+    </div>
+</li>
+ -->
+
+                        <!-- About -->
+                        <li class="nav-item dropdown" style="">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-top: 30px;padding-left:10px;padding-right:10px">
+                                    Guides<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url "statistics_url" %}">Statistics</a>
+                                    <a class="dropdown-item" href="{% url "new_url" %}">What's new</a>
+                                    <a class="dropdown-item" href="http://www.community.cgrpoee.top/" target="_blank">Community</a>
+                                    <a class="dropdown-item" href="{% url "contact_url" %}">Contact</a>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+        </div>
+    </nav>
+{% endblock %}
+
+
+<div class="ALL" style="padding-top: 0">
+    <div class="all_box">
+
+        {% block body_index %}
+        <!-- Overview -->
+                <div class="row">
+            <div class="col-6">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+                </h3>
+                <p style="font-family:'Be My Valentine',sans-serif;color:black; text-align: center; font-size: 22px; margin-bottom: 6px">Welcome to AGRP</p>
+
+                <p style="font-family:'Arial',sans-serif;color:black; text-align: justify;">
+
+                      Asteraceae Genomics Bioinformatics Research Platform for Asteraceae research discovry.To construct a bioinformatics platform that can be used for multi-genome collinearity analysis of Asteraceae plants, which can analyze genome structure and function studies across species. Comprehensively open up the function of "ancestral genome-multigene collinearity-chromosomal rearrangement-functional genes" mutual search, and finally create a high-powered platform for genome research of Asteraceae plants, so that botanists can query their status in Asteraceae ancestors, homologous copies in the existing genome, chromosomal distribution, and biological processes involved by submitting gene IDs or sequences with one click.
+                </p>
+            </div>
+
+            <div id="carouselExampleCaptions" class="carousel slide col-6" data-ride="carousel" style="padding-top:20px">
+                <ol class="carousel-indicators" style="margin-bottom: 40px;>
+                    <li data-target="#carouselExampleCaptions  data-slide-to="0" class=""></li>
+                    <li data-target="#carouselExampleCaptions" data-slide-to="1" class="active"></li>
+                    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
+                    <li data-target="#carouselExampleCaptions" data-slide-to="4" class=""></li>
+                    <li data-target="#carouselExampleCaptions" data-slide-to="5" class=""></li>
+                </ol>
+
+                <div class="carousel-inner">
+                    <div class="carousel-item active" style="height: 350px">
+                        <img src="../static/image/Han.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block text-secondary" >
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" style="height: 350px">
+                        <img src="../static/image/lunbotu2.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block text-secondary" >
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" style="height: 350px">
+                        <img src="../static/image/lunbotu3.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block text-secondary" >
+                        </div>
+                    </div>
+                     <div class="carousel-item" style="height: 350px">
+                        <img src="../static/image/lunbotu4.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block text-secondary" >
+                        </div>
+                    </div>
+                     <div class="carousel-item" style="height: 400px">
+                        <img src="../static/image/lunbotu5.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block text-secondary" >
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev"
+                style="padding:0; border:0; opacity: .1;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-target="#carouselExampleCaptions" data-slide="next"
+                style="padding:0; border:0; opacity: .1;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick links -->
+        <div class="row" style="margin-top: 20px">
+            <div class="col-2" style="padding-right: 0">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif; margin-bottom: 0; padding-bottom: 0;width: 230px;">Portals of data
+                </h3>
+            </div>
+            <div class="col-10" style="padding-left: 30px">
+                <hr style="border: 1px dashed #ccc; width: 100%;height: 1px; margin: 8px" />
+                <hr style="border: 1px dashed #ccc; width: 100%;height: 1px; margin: 8px" />
+            </div>
+        </div>
+
+        <div class="line1" >
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63">
+	                    	<a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dupgen_finder_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left:5px">2842278 Dup_genes
+                            </a>                            
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "kegg_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 20px">3258068 Pathway
+                            </a> 
+                        </div>  
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #FFFFFF">
+                        </div>                       
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "kegg_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 12px">xxxx Pair_align</a>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dupgen_finder_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 5px">106802 Deco_Align</a>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #FFFFFF;">                            
+
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63"><a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 8px">xxxx RNA-Seq</a>
+
+
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 10px">1095 Metabolo-mics</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <br>
+            <!--第二个-->
+        <div class="line2" >
+            <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                            <a id="shangbao" onclick="function skipCase(number) {
+
+                            }
+                            skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 20px">138729<br>TF</a>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f3c8308a;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "genome_information_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 20px"><br>Genome Resource
+                            </a> 
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+            <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63;">                            
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 5px">2313<br>m6A</a>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="hexagon">
+	            <div class="bar-rotate-right">
+	                <div class="bar-rotate-left">
+	                    <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 15px">xxxx Ancestral genes</a>
+                        </div>
+	                </div>
+	            </div>
+	        </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f3c8308a;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dotplot_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 70px; padding-left: 20px">Browse</a>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                         <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dotplot_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 15px">xxxx Ancestral genomes</a> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                         <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dotplot_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 60px; padding-left: 10px">174<br>Value</a> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f3c8308a;">                            
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "dotplot_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 70px; padding-left: 20px">Search</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;"><a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TE_index_url1" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 5px">58 Planting techniques</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <br>
+            <!--第三个-->
+        <div class="line3" >
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TF_genes_index_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 20px">16354<br>334<br>GO</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                            <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TE_index_url1" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 20px">176018<br>776<br>TE</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #FFFFFF"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TE_index_url1" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 0">xxxx Orthogenes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63">                        
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TE_index_url1" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 20px">xxxx Function genes</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #FFFFFF;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63">
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "database_url" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 55px; padding-left: 20px">9<br>Diseases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hexagon">
+                <div class="bar-rotate-right">
+                    <div class="bar-rotate-left">
+                        <div class="bar-horizontal" style="background-color: #f6db4c63;">
+                        <a id="shangbao" onclick="skipCase(1);" class="IconUrl" href="{% url "TE_index_url1" %}" title="Search annotation, location, and homolog of Triticeae genes by gene ID" style="padding-top: 40px; padding-left: 20px">24<br>External DB link</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 3px">
+            <div class="col-3" style="padding-right: 0">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png);margin-bottom: 0; padding-bottom: 8px">Tools quick links
+                </h3>
+            </div>
+            <div class="col-9" style="padding-left: 0">
+                <hr style="border: 1px dashed #ccc; width: 100%;height: 1px; margin: 8px" />
+                <hr style="border: 1px dashed #ccc; width: 100%;height: 1px; margin: 8px" />
+            </div>
+
+            <div class="row">
+                <!-- Genome browsing and annotation -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="height: 230px;background-color: #fff5e7">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/Polyploidy.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>Genome browsing and visualization</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/JBrowse_index" >Jbrowse</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/circos" >ShinyCircos</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/interproscan">GF-Circos</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/iTAK">Bi-visualazition</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/dupgen_finder">Blast dotplot</a></i>
+                                </ul>
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/dupgen_finder">Ks dotplot</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/dupgen_finder">B-Dotter</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/dupgen_finder">BB-Dotter</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/dupgen_finder">BK-Dotter</a></i>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homology search and alignment -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="height: 230px;background-color: #EDF2FF">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/Polyploidy.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>HSequence alignment and homology search</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/blast_match" >Blast</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/sequence_fetch" >Diamond</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/blast">Bi-match</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">SequenceServer</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/sequenceserver">Seq-fatch</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">ParaAT</a></i>
+                            </ul>
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">Multigene-align</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">MEME</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">Hmmer</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">Pfam</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/diamond">Gmapping</a></i>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Synteny inference -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="height: 230px;background-color: #fff5e7">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/Polyploidy.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>Systematic development and evolutionary analysis</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/mcscanx_run" >FastTree</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/colinearscan" >IQ-Tree2</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/synvisio" >KaKs calculator</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/block_number_count" >NG-KaKs-Cal</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_blast_dotplot" >Subtree-splitter</a></i>
+                            </ul>
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_block_dotplot" >Seq-corrector</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_ks_dotplot" >Block_info</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_ks_dotplot" >Block_run</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_ks_dotplot" >Correspondence</a></i>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evaluation of nucleotide mutation -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="margin-top:20px;height: 230px;background-color: #EDF2FF">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/Dating.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>Analysis of Gene Structure and Characteristics</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/paraat" >Codonw</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/kaks_calculator" >Cpgfinder</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_ks_calculate" >Interproscan</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/wgdi_blockinfo" >iTAK</a></i>
+                            </ul>
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/wgdi_blockinfo" >GSDS</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/wgdi_blockinfo" >Sptaxon-accessor</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/wgdi_blockinfo" >Paleo-gene identifier</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/wgdi_blockinfo" >Paleo-gene_Rl</a></i>
+                                 </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paleogenome fractionation -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="margin-top:20px; height: 230px;background-color: #EDF2FF">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/Fractionation.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>Homology and Gene Family Analysis</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_correspondence_mc" >Dupgen finder</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/collinearity_generator" >Synviso</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_retention" >ColinearScan</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_loss" >MGScanX</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/zu_pindex" >Syn-blocks-stat</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >Syn-deco generator</a></i>
+                                </ul>
+                                <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >Multi-syn-phytre</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >BDL-finder</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >BDL-deduplicator</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >BDL-extractor</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_list_tree" >BDL-combiner</a></i>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gene structure and evolution -->
+                <div class="col-lg-4">
+                    <div class="table-module" style="margin-top:20px; height: 230px;background-color: #FFF5E7">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img style="width: 60px;" src="../static/image/gene_family.png">
+                                    </td>
+                                    <td>
+                                        <h6 class="portal_module_font"><b>Calculation tools and statistical analysis</b></h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-left: 0;">
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/codonw" >GC-calculator</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/cpgfinder" >Cpgfinder</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/meme_suit" >MEME</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/gsds" >GSDS</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/hmmer" >Hmmer</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/pfam" >Pfam</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/fasttree" >FastTree</a></i>
+                            </ul>
+                            <ul style="padding-left: 20px">
+                                <i class="bi bi-chevron-right"><a href="/tools/iq_tree" >IQ-Tree2</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/sequence_alignment" >Multigene-align</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_heatmap" >Heatmap</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/lollipop_chart" >Lollipop</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/draw_gene_structure" >Gmapping</a></i>
+                                <i class="bi bi-chevron-right"><a href="/tools/GF_ks_circos" >GF-Circos</a></i>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+
+
+        <div class="line" style="height:15px;background-color:#fff;"></div>
+
+<!--         <div id="show_tree_input">
+            <button id="show_tree_button" style="background-color: #0b613e" onclick="display('table_support_spec')" value="Hide genome table and tree">Hide genome table and tree</button>
+        </div>
+
+        <div id="table_support_spec">
+            <table style="text-align: center">
+                <tr style="background:#fff"><th colspan="6"><span>&nbsp;</span></th></tr>
+
+                <tr style="background-color:white;">
+{#                  <td style="background-color:white;">#}
+{#                    <button onclick="treedes()">TREE</button>#}
+{#                  </td>#}
+                  <th colspan="6">
+                    <center>
+                      <span style="font-family:Arial;color:#575757;font-size:14pt;">Currently available reference genomes and annotations</span>
+                    </center>
+                  </th>
+                </tr>
+
+                <tr style="background-color:#0b613e; text-align:center; color:white">
+{#                    <td id="annotation"  style="background-color:white;color:#1A1A1A;font-size:8pt;width:100px;">#}
+{#                    ⑥&nbsp;&nbsp;⑤&nbsp;&nbsp;④&nbsp;&nbsp;③&nbsp;&nbsp;②&nbsp;&nbsp;①#}
+{#                    </td>#}
+                    <td> Species </td>
+                    <td> Abbr </td>
+                    <td> Chromosome number </td>
+                    <td> Genes number </td>
+                    <td> Data link </td>
+                    <td> References </td>
+                </tr>
+
+{#                <tr>#}
+{#                    <th rowspan="75" style="background-color:white;text-align:right;">#}
+{#                        <img src="home_img/tree.png" width="125px" height="161px" title="tree"/>#}
+{#                    </th>#}
+{#                </tr>#} -->
+
+    <!-- <tr>
+        <td style="font-style: italic;">Abrus precatorius</td>
+        <td>Apr</td>
+        <td>20</td>
+        <td>24,155</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/935/025/GCF_003935025.1_Abrus_2018"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.mdpi.com/2072-6651/11/12/691
+    " target="_blank">Hovde BT et al.(2019)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Aeschynomene evenia</td>
+        <td>Aev</td>
+        <td>20</td>
+        <td>30,827</td>
+        <td><a href="http://aeschynomenebase.fr/download" target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41467-021-21094-7
+    " target="_blank">Johan Ql et al.(2021)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Amphicarpaea edgeworthii</td>
+        <td>Aed</td>
+        <td>22</td>
+        <td>27,699</td>
+        <td><a href="https://ftp.cngb.org/pub/CNSA/data2/CNP0001124/CNS0238766/CNA0014149/" target="_blank"><i class="bi bi-arrow-down-circle"></i></a>
+        </td>
+        <td><a href="https://www.frontiersin.org/articles/10.3389/fpls.2021.770660/full
+    " target="_blank">Liu Y et al.(2020)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Arachis duranensis</td>
+        <td>Adu</td>
+        <td>20</td>
+        <td>33,238</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/817/695/GCF_000817695.2_Aradu1.1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+    " target="_blank">Bertioli DJ et al.(2016)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Arachis hypogaea</td>
+        <td>Ahy</td>
+        <td>40</td>
+        <td>65,593</td>
+        <td>
+            <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/086/295/GCF_003086295.2_arahy.Tifrunner.gnm1.KYV3"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41588-019-0405-z
+    " target="_blank">Bertioli DJ et al.(2019)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Arachis ipaensis</td>
+        <td>Aip</td>
+        <td>20</td>
+        <td>38,608</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/816/755/GCF_000816755.2_Araip1.1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+    " target="_blank">Bertioli DJ et al.(2016)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Arachis monticola</td>
+        <td>Amo</td>
+        <td>40</td>
+        <td>69,883</td>
+        <td><a href="http://gigadb.org/dataset/100453" target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://academic.oup.com/gigascience/article/7/6/giy066/5040258
+    " target="_blank">Yin D et al.(2018)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Cajanus cajan</td>
+        <td>Cca</td>
+        <td>22</td>
+        <td>28,222</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/331/145/GCF_000331145.1_ASM33114v1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://academic.oup.com/dnaresearch/article/29/2/dsac012/6570587
+    " target="_blank">Parween S et al.(2015)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Cicer arietinum</td>
+        <td>Car</td>
+        <td>16</td>
+        <td>24,711</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/340/665/GCF_000340665.1_C.cajan_V1.0"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+    " target="_blank">Varshney et al.(2011)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Dalbergia odorifera</td>
+        <td>Dod</td>
+        <td>20</td>
+        <td>29,344</td>
+        <td><a href="http://gigadb.org/dataset/100760" target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/srep12806
+    " target="_blank">Hong Z et al.(2020)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Glycine max</td>
+        <td>Gma</td>
+        <td>40</td>
+        <td>51,824</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://academic.oup.com/gigascience/article/9/8/giaa084/5893771
+    " target="_blank">Shen Y et al.(2018)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Glycine soja</td>
+        <td>Gso</td>
+        <td>40</td>
+        <td>46,722</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/193/775/GCF_004193775.1_ASM419377v2"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://academic.oup.com/g3journal/article/11/10/jkab272/6332009
+    " target="_blank">Xie M et al.(2019)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Lotus japonicus</td>
+        <td>Lja</td>
+        <td>12</td>
+        <td>26,152</td>
+        <td><a href="https://data.jgi.doe.gov/refine-download/phytozome?organism=Ljaponicus&expanded=571"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41467-019-09142-9
+    " target="_blank">Li H et al.(2020)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Lupinus albus</td>
+        <td>Lal</td>
+        <td>50</td>
+        <td>41,277</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/261/695/GCA_010261695.1_La_Amiga3.1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://academic.oup.com/dnaresearch/article/27/3/dsaa015/5870829
+    " target="_blank">Hufnagel B et al.(2020)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Lupinus angustifolius</td>
+        <td>Lan</td>
+        <td>40</td>
+        <td>29,986</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/865/875/GCF_001865875.1_LupAngTanjil_v1.0"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41467-020-14891-z
+    " target="_blank">Hane JK et al.(2016)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Medicago truncatula</td>
+        <td>Mtr</td>
+        <td>16</td>
+        <td>31,727</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/473/485/GCF_003473485.1_MtrunA17r5.0-ANR"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://onlinelibrary.wiley.com/doi/10.1111/tpj.15100
+    " target="_blank">Tang H et al.(2014)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Melilotus albus</td>
+        <td>Mal</td>
+        <td>16</td>
+        <td>41,853</td>
+        <td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA006363&page=1" target="_blank"><i class="bi bi-arrow-down-circle"></i></a>
+        </td>
+        <td><a href="https://www.nature.com/articles/nature10625
+    " target="_blank">Wu F et al.(2021)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Phaseolus vulgaris</td>
+        <td>Pvu</td>
+        <td>22</td>
+        <td>27,996</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/499/845/GCF_000499845.1_PhaVulg1_0"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://onlinelibrary.wiley.com/doi/10.1111/pbi.13742
+    " target="_blank">Vlasova A et al.(2016)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Pisum sativum</td>
+        <td>Psa</td>
+        <td>14</td>
+        <td>38,312</td>
+        <td><a href="https://urgi.versailles.inra.fr/download/pea/" target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0883-6
+    " target="_blank">Kreplak J et al.(2019)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Spatholobus suberectus</td>
+        <td>Ssu</td>
+        <td>18</td>
+        <td>29,597</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/329/165/GCA_004329165.1_ASM432916v1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41588-019-0480-1
+    " target="_blank">Qin S et al.(2019)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Trifolium pratense</td>
+        <td>Tpr</td>
+        <td>14</td>
+        <td>33,414</td>
+        <td><a href="https://zenodo.org/record/17232#.YPJwIROHfxo" target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41467-020-19681-1
+    " target="_blank">De Vega JJ et al.(2015)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Trifolium subterranum</td>
+        <td>Tsu</td>
+        <td>16</td>
+        <td>36,691</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/742/945/GCA_001742945.1_TSUd_r1.1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.nature.com/articles/s41597-019-0110-x
+    " target="_blank">Hirakawa H et al.(2016)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Vigna radiata</td>
+        <td>Vra</td>
+        <td>22</td>
+        <td>22,158</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/741/045/GCF_000741045.1_Vradiata_ver6"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://gigabytejournal.com/articles/42
+    " target="_blank">Kang et al.(2014)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Senna tora</td>
+        <td>Sto</td>
+        <td>26</td>
+        <td>44,405</td>
+        <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/851/425/GCA_014851425.1_ASM1485142v1"
+               target="_blank"><i class="bi bi-arrow-down-circle"></i></a></td>
+        <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+    " target="_blank">Kang SH et al.(2020)</a></td>
+    </tr>
+
+    <tr>
+        <td style="font-style: italic;">Bauhinia variegata</td>
+        <td>Bva</td>
+        <td>28</td>
+        <td>37,886</td>
+        <td><a href="https://figshare.com/articles/dataset/Bauhinia_variegata_genome/19298582/1" target="_blank"><i class="bi bi-arrow-down-circle"></i></a>
+        </td>
+        <td><a href="https://acsess.onlinelibrary.wiley.com/doi/10.1002/tpg2.20121
+    " target="_blank">Zhong Y et al.(2022)</a></td>
+    </tr> -->
+<!-- 
+                    <tr>
+                        <td> ... </td>
+                        <td> ... </td>
+                        <td> ... </td>
+                        <td> ... </td>
+                        <td> ... </td>
+                        <td> ... </td>
+                    </tr>
+                </table>
+            </center>
+        </div> -->
+
+
+        <!-- Footer -->
+        <div class="row" style="margin-top: 20px">
+            <div class="col-6" style="padding-right: 0;text-align: justify;">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif; margin-bottom: 0; padding-bottom: 8px">Citation
+                </h3>
+                <p>
+                    If you use ABRF in your scientific research, please cite us:
+                </p>
+                <a href="https://doi.org/10.1093/hr/uhad073">・</a>
+                <a href="https://doi.org/10.1093/hr/uhad073">
+                   Two-step model of paleohexaploidy, ancestral genome reshuffling and plasticity of heat shock response in Asteraceae<br>
+                </a>
+                <a href="#">・</a>
+                <a href="#">
+                   AGRP: A high-value bioinformatics platform empowering the genomics research of Asteraceae
+                </a>
+            </div>
+
+            <div class="col-6" style="padding-right: 0">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif; margin-bottom: 0; padding-bottom: 8px">Update log
+                </h3>
+                <marquee height="120px" direction="up" scrollamount="1" scrolldelay="1" onmouseover="this.stop()" onmouseout="this.start()">
+                    <div class="newsBox">
+                        <ul style="padding-left: 0">
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Feb. 4, 2025</span> &emsp; The website was deployed on the server.</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Dec. 26, 2024</span> &emsp; The communication portal is built.</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Nov. 15, 2024</span> &emsp; Updated the statistical form.</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Sep. 10, 2024</span> &emsp; Built the JBrowse module to visualize transcriptome data.</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">jul. 22, 2024</span> &emsp; Implemented the ability to obtain genes based on defined regions</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">May. 2, 2024</span> &emsp; The "Blast visualization", which can search function annotation and position, is now available</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Mar. 16, 2023</span> &emsp;The "Gene families", which can search gene of Triticeae by well-stueied gene of rice, maize, and Arabidopsis, is now available</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Nov.11，2022</span>The "specie_tree", which can show collinearity in micro-region, is now available</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Aug.21，2022</span>The "Dotplot", which can search function annotation and position, is now available</span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Oct.25，2021</span>Online tool of Phylogenetics is added.</span></p></li>
+                        </ul>
+                    </div>
+                </marquee>
+            </div>
+
+            <hr style="border: 1px dashed #ccc; width: 100%;height: 1px; margin: 8px">
+
+            <div class="col-12" style="padding-right: 0">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif; margin-bottom: 0; padding-bottom: 8px">Articles that have referenced this platform are
+                </h3>
+                <marquee height="80px" direction="up" scrollamount="1" scrolldelay="1" onmouseover="this.stop()" onmouseout="this.start()">
+                    <div class="newsBox">
+                        <ul style="padding-left: 40px;text-align: center">
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Jul. 1, 2024</span> <a href="https://doi.org/10.1111/jse.13116">&emsp;Allopolyploidization events and immense paleogenome reshuffling underlying the diversification of plants and secondary metabolites in Oleaceae</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Aug. 2, 2024</span> <a href="https://doi.org/10.3389/fpls.2024.1444234">&emsp;Chromosome-level assembly of Lindenbergia philippensis and comparative genomic analyses shed light on genome evolution in Lamiales</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Jun. 12, 2024</span> <a href="https://doi.org/10.1111/tpj.16854">&emsp;The haplotype-resolved genome of diploid Chrysanthemum indicum unveils new acacetin synthases genes and their evolutionary history</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Nov. 4, 2024</span> <a href=" https://doi.org/10.3389/fpls.2024.1469375">&emsp;Chromosome-scale genome assembly of Codonopsis pilosula and comparative genomic analyses shed light on its genome evolution</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Mar. 23, 2024</span> <a href="https://doi.org/10.3390/agronomy14040653">&emsp;The Genome-Wide Identification, Characterization, and Expression Profiles of the NADPH Oxidase (NOX) Gene Family under Drought and Salt Stress in Opisthopappus taihangensis (Asteraceae)</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Nov. 11, 2024</span> <a href="https://doi.org/10.1093/nar/gkae1040">&emsp;SoIR: a comprehensive Solanaceae information resource for comparative and functional genomic study</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Feb. 6, 2024</span> <a href="https://doi.org/10.3390/ijms25041957">&emsp;Polyploidization: A Biological Force That Enhances Stress Resistance</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Sep. 18, 2023</span> <a href=" https://doi.org/10.3390/antiox12091774">&emsp;Dietary Supplementation of Tannic Acid Promotes Performance of Beef Cattle via Alleviating Liver Lipid Peroxidation and Improving Glucose Metabolism and Rumen Fermentation</a></span></p></li>
+                            <li><p><span style="font-size: x-small; color: grey; "><span style="color:black">Jan. 11, 2025</span> <a href="https://doi.org/10.1016/j.hpj.2024.09.006">&emsp;OGRP: a comprehensive bioinformatics platform for the efficient empowerment of Oleaceae genomics research</a></span></p></li>
+                        </ul>
+                    </div>
+                </marquee>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="py-5 bg-success" style="background-color: #190707eb!important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="widget">
+                    <h5 class="widgetheading" target="_blank" style="color: #fff;">Our Contact</h5>
+                    <address target="_blank" style="color: #fff;">
+                        School of Life Sciences / Center for Genomics and Computational Biology, North China University
+                        of Science and Technology,
+                    </address>
+                    <p target="_blank" style="color: #fff;">
+                        <i class="icon-envelope-alt" target="_blank" style="color: #fff;"></i> Address info 21 Bohai Road,Caofeidian,
+                        Tangshan 063210, Hebei, China
+                    </p>
+                    <a href="https://beian.miit.gov.cn/#/Integrated/index" style="color: #fff; font-size: 12px" target="_blank">冀ICP备2021011948号</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="widget">
+                    <h5 class="widgetheading" target="_blank" style="color: #fff;">Quick Links</h5>
+                    <ul class="link-list" style="padding-left: 0">
+                        <li><a href="https://www.ncbi.nlm.nih.gov/" target="_blank" target="_blank" style="color: #fff;">NCBI, </a> <a href="https://www.embl.org/" target="_blank" target="_blank" style="color: #fff;">EBL,</a> <a href="https://www.ddbj.nig.ac.jp/index-e.html" target="_blank" target="_blank" style="color: #fff;">DDBJ</a></li>
+                        <li><a href="{% url "database_url" %}" target="_blank" target="_blank" style="color: #fff;">Protein families
+                            database</a></li>
+                        <li><a href="https://swissmodel.expasy.org/" target="_blank" style="color: #fff;">SWISS-MODEL</a></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <h5 class="widgetheading" target="_blank" style="color: #fff;">Friendly Links</h5>
+                    <div target="_blank" style="color: #fff;">
+                        <a href="https://soybase.org/" target="_blank" style="color: #fff;">SoyBase</a>,
+                        <a href="https://soykb.org/" target="_blank" style="color: #fff;">Soykb</a>,
+                        <a href="https://lipm-browsers.toulouse.inra.fr/k/legoo/" target="_blank" style="color: #fff;">Legoo</a>,
+                        <a href="http://www.inetbio.org/soynet/" target="_blank" style="color: #fff;">Soynet</a>,
+                        <a href="https://www.ncgr.org/" target="_blank" style="color: #fff;">NCGR</a>,
+                        <a href="https://cegresources.icrisat.org/cicarvardb/" target="_blank" style="color: #fff;">CicArVarDB</a>,
+                        <a href="http://bioinformatics.cau.edu.cn/MtED/" target="_blank" style="color: #fff;">MTED</a>,
+                        <a href="https://viggs.dna.affrc.go.jp/" target="_blank" style="color: #fff;">VIGCS</a>,
+                        <a href="http://bioinformatics.cau.edu.cn/MtTransporter/" target="_blank" style="color: #fff;">MTTD</a>,
+                        <a href="https://cegresources.icrisat.org/CicArMiSatDB/" target="_blank" style="color: #fff;">CicArMiSatDB</a>,
+                        <a href="http://bioinformatics.cau.edu.cn/SFGD/" target="_blank" style="color: #fff;">SFGD</a>,
+                        <a href="http://webpark2116.sakura.ne.jp/rlgpr/" target="_blank" style="color: #fff;">TGIF-DB</a>,
+                    </div>
+
+                </div>
+            </div>
+
+{#            <div class="col-lg-3">#}
+{#                <script type="text/javascript"#}
+{#                        src="//rf.revolvermaps.com/0/0/8.js?i=561cj3aw7q6&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33"#}
+{#                        async="async">#}
+{#                </script>#}
+{#            </div>#}
+        </div>
+    </div>
+</footer>
+
+
+<!-- Bootstrap core JavaScript -->
+
+{% block list_js %}
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+</div>
+</body>
+</html>

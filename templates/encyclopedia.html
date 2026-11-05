@@ -1,0 +1,487 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Asteraceae Encyclopedia - AGRP{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* ========== 布局样式 ========== */
+        @media (min-width: 1200px) { .container { max-width: 1320px !important; } }
+        
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            min-height: 800px;
+        }
+
+        .section-title {
+            font-family: "Georgia", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* ========== 左侧树状导航 ========== */
+        .sidebar-tree {
+            height: 100%;
+            overflow-y: auto;
+            max-height: 800px;
+            border-right: 1px solid #eee;
+            padding-right: 15px;
+        }
+
+        .tree-item { margin-left: 15px; }
+        
+        /* 每一级标题的样式 */
+        .tree-toggle {
+            cursor: pointer;
+            user-select: none;
+            padding: 5px 0;
+            display: block;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .tree-toggle:hover { color: #d35400; }
+        
+        /* 箭头图标 */
+        .tree-toggle::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 6px;
+            font-size: 0.7rem;
+            color: #999;
+            transform: rotate(0deg);
+            transition: transform 0.2s;
+        }
+        .tree-toggle.expanded::before { transform: rotate(90deg); }
+        
+        /* 子容器默认隐藏 */
+        .tree-child { display: none; margin-left: 10px; border-left: 1px dashed #ddd; }
+        .tree-child.show { display: block; }
+        
+        /* 物种链接样式 */
+        .species-link {
+            display: block;
+            padding: 4px 10px;
+            color: #666;
+            text-decoration: none;
+            font-style: italic;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+        .species-link:hover, .species-link.active {
+            background-color: #fff5eb;
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        /* ========== 右侧内容展示 ========== */
+        #species-content-area {
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: 0; } }
+
+        .detail-header {
+            border-bottom: 2px solid #d35400;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .detail-title {
+            font-family: "Georgia", serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            font-style: italic;
+        }
+
+        /* 新增：物种主图样式 */
+        .species-main-img-box {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .species-main-img {
+            max-width: 100%;
+            max-height: 450px; /* 限制高度，防止图片过长 */
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* 添加阴影增加立体感 */
+            object-fit: contain;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .info-item {
+            background: #fdfdfd;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .info-label {
+            font-size: 0.85rem;
+            color: #d35400;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        .info-value {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .desc-box {
+            background: #fafafa;
+            border-left: 4px solid #d35400;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            color: #444;
+            text-align: justify;
+        }
+
+        .karyotype-box {
+            margin-top: 30px;
+            text-align: center;
+            border: 1px dashed #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background: #fff;
+        }
+        .karyotype-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .karyotype-img:hover { transform: scale(1.02); }
+
+        .ref-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #d35400;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* Loading 状态 */
+        #loading-spinner {
+            text-align: center;
+            padding: 50px;
+            color: #d35400;
+        }
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Asteraceae Encyclopedia</h2>
+            <p class="text-muted">Comprehensive genomic and biological information</p>
+            <hr style="width: 100px; border-top: 3px solid #d35400; margin: 20px auto;">
+        </div>
+<div class="desc-card">
+        It contains comprehensive information on <strong>122</strong> species from <strong>66</strong> genera across <strong>5</strong> subfamilies of Asteraceae. Each species displays basic species information, taxonomy, genome size, karyotype, contents of various genomic elements, and relevant references. These resources are beneficial for users to efficiently understand the genetic background of Asteraceae crops.
+    </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div id="sidebar-container" class="sidebar-tree">
+                    </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div id="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading Encyclopedia Data...</p>
+                </div>
+
+                <div id="welcome-msg" class="text-center" style="padding-top: 100px; color: #999; display: none;">
+                    <i class="fa fa-book fa-5x mb-3" style="color: #eee;"></i>
+                    <h4>Select a species from the left menu to view details</h4>
+                </div>
+
+                <div id="species-content-area" style="display: none;">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 配置 JSON 文件的路径 (指向 root/static/json/baike.json)
+        const jsonUrl = "{% static 'json/baike.json' %}";
+
+        const sidebarContainer = document.getElementById('sidebar-container');
+        const contentArea = document.getElementById('species-content-area');
+        const welcomeMsg = document.getElementById('welcome-msg');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        let allSpeciesData = {}; // 存储所有物种数据
+
+        // 1. 获取 JSON 数据
+        fetch(jsonUrl)
+            .then(response => {
+                if (!response.ok) throw new Error("HTTP error " + response.status);
+                return response.json();
+            })
+            .then(data => {
+                loadingSpinner.style.display = 'none';
+                welcomeMsg.style.display = 'block';
+
+                // 处理数据并构建树
+                const tree = buildTree(data);
+                // 渲染侧边栏
+                renderSidebar(tree, sidebarContainer);
+                // 绑定侧边栏点击事件
+                bindSidebarEvents();
+            })
+            .catch(err => {
+                loadingSpinner.innerHTML = `<p class="text-danger">Error loading data: ${err.message}<br>Please check if <b>static/json/baike.json</b> exists and STATICFILES_DIRS is configured in settings.py.</p>`;
+                console.error(err);
+            });
+
+        // --- 辅助函数：构建树结构 ---
+        function buildTree(data) {
+            const tree = {};
+
+            data.forEach(item => {
+                const cleanItem = {};
+                for (let key in item) {
+                    cleanItem[key.trim()] = item[key];
+                }
+
+                // 用 Scientific name 作为 ID
+                const id = cleanItem['Scientific name'];
+                allSpeciesData[id] = cleanItem;
+
+                const family = cleanItem['Family'] || 'Uncategorized';
+                const subfamily = cleanItem['Subfamily'] || 'Uncategorized';
+                const tribe = cleanItem['Tribs'] || 'Uncategorized';
+                const genus = cleanItem['Genus'] || 'Uncategorized';
+
+                if (!tree[family]) tree[family] = {};
+                if (!tree[family][subfamily]) tree[family][subfamily] = {};
+                if (!tree[family][subfamily][tribe]) tree[family][subfamily][tribe] = {};
+                if (!tree[family][subfamily][tribe][genus]) tree[family][subfamily][tribe][genus] = [];
+
+                tree[family][subfamily][tribe][genus].push({
+                    name: cleanItem['Scientific name'],
+                    id: id
+                });
+            });
+            return tree;
+        }
+
+        // --- 辅助函数：渲染 HTML 树 ---
+        function renderSidebar(tree, container) {
+            let html = '';
+
+            for (const family in tree) {
+                html += `<div class="tree-item">
+                            <span class="tree-toggle expanded">${family} (Family)</span>
+                            <div class="tree-child show">`;
+
+                for (const subfamily in tree[family]) {
+                    html += `<div class="tree-item">
+                                <span class="tree-toggle">${subfamily} (Subfamily)</span>
+                                <div class="tree-child">`;
+
+                    for (const tribe in tree[family][subfamily]) {
+                        html += `<div class="tree-item">
+                                    <span class="tree-toggle">${tribe} (Tribe)</span>
+                                    <div class="tree-child">`;
+
+                        for (const genus in tree[family][subfamily][tribe]) {
+                            html += `<div class="tree-item">
+                                        <span class="tree-toggle">${genus} (Genus)</span>
+                                        <div class="tree-child">`;
+
+                            tree[family][subfamily][tribe][genus].forEach(sp => {
+                                html += `<div class="species-link" data-id="${sp.id}">${sp.name}</div>`;
+                            });
+
+                            html += `   </div></div>`;
+                        }
+
+                        html += `   </div></div>`;
+                    }
+
+                    html += `   </div></div>`;
+                }
+
+                html += `   </div></div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // --- 辅助函数：绑定事件 ---
+        function bindSidebarEvents() {
+            // 折叠/展开
+            document.querySelectorAll('.tree-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('expanded');
+                    const child = this.nextElementSibling;
+                    if (child) child.classList.toggle('show');
+                });
+            });
+
+            // 点击物种
+            document.querySelectorAll('.species-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    document.querySelectorAll('.species-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const speciesId = this.getAttribute('data-id');
+                    renderSpeciesDetail(allSpeciesData[speciesId]);
+                });
+            });
+        }
+
+        // --- 核心函数：渲染详情页 ---
+        function renderSpeciesDetail(data) {
+            if (!data) return;
+
+            welcomeMsg.style.display = 'none';
+            contentArea.style.display = 'block';
+
+            const val = (v) => (v && v !== 'NA') ? v : '-';
+
+            // --- 新增逻辑：处理物种主图 (Picture) ---
+            let pictureHtml = '';
+            if (data['Picture'] && data['Picture'] !== 'NA') {
+                let picSrc = data['Picture'];
+                // 去掉开头的 /，防止重复斜杠 (如果JSON里是 /image/...)
+                if (picSrc.startsWith('/')) picSrc = picSrc.substring(1);
+
+                pictureHtml = `
+                    <div class="species-main-img-box">
+                        <img src="/static/${picSrc}" alt="${data['Scientific name']}" class="species-main-img" onerror="this.style.display='none'">
+                    </div>
+                `;
+            }
+            // ------------------------------------
+
+            // 处理核型图片 (Karyotype)
+            let karyotypeHtml = '';
+            if (data['karyotype'] && data['karyotype'] !== 'NA') {
+                let imgSrc = data['karyotype'];
+                if (imgSrc.startsWith('/')) imgSrc = imgSrc.substring(1);
+                // 动态拼接 static 路径
+                karyotypeHtml = `
+                    <div class="karyotype-box">
+                        <h5 class="text-center mb-3" style="color:#d35400;">Karyotype Analysis</h5>
+                        <img src="/static/${imgSrc}" alt="Karyotype" class="karyotype-img" onerror="this.style.display='none'">
+                    </div>
+                `;
+            }
+
+            // 描述换行
+            let desc = val(data['Description']);
+            if (desc !== '-') {
+                desc = desc.replace(/\n/g, '<br>');
+            }
+
+            // Assembly Level Badge
+            let assemblyBadge = '-';
+            if (data['Assembly level'] === 'Chromosome') {
+                assemblyBadge = `<span class="badge bg-success">Chromosome</span>`;
+            } else if (data['Assembly level'] && data['Assembly level'] !== 'NA') {
+                assemblyBadge = `<span class="badge bg-warning text-dark">${data['Assembly level']}</span>`;
+            }
+
+            // Reference
+            let refHtml = '';
+            if (data['Reference'] && data['Reference'] !== 'NA') {
+                refHtml = `
+                    <div class="mb-4">
+                        <h5 style="color:#555;">Reference:</h5>
+                        <a href="${data['Reference']}" target="_blank" class="ref-link">
+                            <i class="fa fa-external-link"></i> View Original Paper / Source
+                        </a>
+                    </div>
+                `;
+            }
+
+            const html = `
+                <div class="detail-header">
+                    <h1 class="detail-title">${data['Scientific name']}</h1>
+                </div>
+
+                ${pictureHtml} <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Genome Size</div>
+                        <div class="info-value">${val(data['Genome size'])}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Chromosomes</div>
+                        <div class="info-value">${val(data['Number of Chromosome'])}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Assembly Level</div>
+                        <div class="info-value">${assemblyBadge}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Genes</div>
+                        <div class="info-value">${val(data['Genes'])}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">TE Content</div>
+                        <div class="info-value">${val(data['TE'])}</div>
+                    </div>
+                </div>
+
+                <h4 style="color:#d35400; margin-bottom:15px;"><i class="fa fa-info-circle"></i> Description</h4>
+                <div class="desc-box">${desc}</div>
+
+                ${refHtml}
+                ${karyotypeHtml}
+            `;
+
+            contentArea.innerHTML = html;
+        }
+    });
+</script>
+{% endblock %}

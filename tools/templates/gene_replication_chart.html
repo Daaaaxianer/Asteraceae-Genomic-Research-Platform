@@ -1,0 +1,114 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Gene duplication type</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 1200px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
+        },
+        legend: {},
+        grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+        },
+        xAxis: {
+        type: 'value'
+        },
+        yAxis: {
+        type: 'category',
+        data: ["A.annua","A.argyi","A.artemisiifolia","A.trifida","A.lappa","A.minus","A.tridentata","B.alba","B.sinica","C.tinctorius","C.cardunculus","C.solstitialis","C.lavandulifolium","C.makinoi","C.morifolium","C.nankingense","C.intybus","C.endivia","C.indicum","C.bipinnatus","C.pauciflorus","D.pinnata","D.increscens","E.canadensis","E.breviscapus","E.pleiosperma","F.bidentis","F.brownii","F.floridana","F.linearis","F.ramosissima","F.robusta","F.sonorensis","F.trinervia","G.coronaria","H.annuus","H.tuberosus","H.umbraculigerum","L.saligna","L.minima","L.sativa","M.micrantha","N.nucifera","N.indica","P.dysenterica","P.indica","P.luteoalbum","S.involucrata","S.caesia","S.squalidus","S.sonchifolius","S.canadensis","S.rebaudiana","T.erecta","T.koksaghyz","T.mongolicum","T.sinense","V.vinifera"]
+        },
+        series: [
+        {
+          name: 'WGD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [1622,39200,7453,29086,6979,39200,39047,125456,6737,6914,4726,2581,7444,11215,7910,10016,81996,6826,6742,21454,6867,122748,9750,2767,8412,9213,0,0,0,18927,20248,18246,27041,32220,15761,15513,103364,7698,7272,11093,29801,17120,10199,3703,9189,65285,16874,25612,18570,51624,7507,13464,15493,11271,6243,6380,24774,56518]
+        },
+        {
+          name: 'TD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [3475,3427,2979,2484,4935,3433,6181,14487,2989,17710,4297,2022,7459,8139,11606,7834,9688,3369,3683,4341,1518,12724,3887,4506,11949,1846,574,644,598,1346,2427,2404,1748,1388,7601,5803,10949,3347,3661,4325,2341,2831,2531,4976,2600,5176,2503,2792,4128,5080,3671,20331,3743,3443,14224,24423,4014,4040]
+        },
+        {
+          name: 'PD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [3986,2993,2086,1722,4581,2992,3017,6136,4071,2531,2540,683,6118,10701,18986,3728,9539,1773,3624,2337,704,5676,3176,4267,1075,1255,49,64,88,1859,968,990,1526,1167,6787,6065,8177,1010,2163,3102,678,2725,1070,2131,3173,4975,1473,1988,3606,3036,1746,2611,3707,1669,2283,1997,1384,1896]
+        },
+        {
+          name: 'TRD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [7574,16838,8133,5806,8285,16838,6738,14074,4480,4904,9111,5847,14418,18658,26100,10973,24577,5688,14739,8276,5124,19977,8193,12043,4780,3367,2499,26,0,8522,4665,4602,6971,6500,22730,17896,48845,3514,10980,14421,3524,9311,5589,4933,40040,29298,5442,6545,8485,11470,30681,7214,7510,6263,9827,9984,7412,14032]
+        },
+        {
+          name: 'DSD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [5668,3624,8218,2868,5560,3623,3605,604,2701,6478,5568,4642,5438,6584,13539,4123,5400,3887,9468,2707,3171,1869,2780,7414,2781,2875,15267,55551,71073,2647,2311,2476,2687,2413,5108,8535,2161,3662,4608,3858,1176,2941,2518,3636,8302,6111,3087,3224,3496,2047,15151,3102,3377,3445,5641,4459,4748,6532]
+        }
+        ]
+        };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+{% endblock %}

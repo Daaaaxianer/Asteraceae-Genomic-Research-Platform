@@ -1,0 +1,376 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    #visualization-container {
+      width: 1130px;
+      height: 340px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+    #gene-location-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .gene-label {
+      font-size: 12px;
+      text-anchor: start; /* 文本左对齐 */
+      fill: black; /* 文本颜色黑色 */
+    }
+    .gene-line {
+      stroke: black; /* 线条颜色黑色 */
+      stroke-width: 0.5px; /* 线条宽度 */
+      fill: none; /* 不填充 */
+    }
+  </style>
+{% endblock %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Chromosome rearrangement</b><i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-12" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5;">
+            &emsp;&emsp;Inter-genomic and intra-genomic comparisons can help reveal the structural complexity of Fabaceae genomes. We used <em>P. vulgaris</em> as a reference, and by comparing homologous gene locus maps and <em>Ks</em> values between <em>P. vulgaris</em> and other Fabaceae, we could separate orthologous and paralogous genes produced by different polyploidization in the species genomes. We created two hierarchical lists of homologous genes using <em>P. vulgaris</em> as a reference.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module. This link is <a href="{% url "blast_match_url" %}">Fabaceae blast and match</a>.
+        </h6>
+        <hr width="100%" style="border: dotted 2px">
+
+
+        <form action="chromosome_rearrangement" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-sm-3" style="padding-top: 10px"></div>
+                <div class="col-sm-6" style="padding-top: 10px">
+                    <div class="form-group">
+                        <label for="state" class="form-label">Species</label>
+                        <select class="form-control" id="state" name="sp_data_1" required>
+                            <option value="Adu">Arachis duranensis</option>
+                            <option value="Apr">Abrus precatorius</option>
+                            <option value="Aev">Aeschynomene evenia</option>
+                            <option value="Aed">Amphicarpaea edgeworthii</option>
+                            <option value="Ahy">Arachis hypogaea</option>
+                            <option value="Aip">Arachis ipaensis</option>
+                            <option value="Amo">Arachis monticola</option>
+                            <option value="Bva">Bauhinia variegata</option>
+                            <option value="Cca">Cajanus cajan</option>
+                            <option value="Car">Cicer arietinum</option>
+                            <option value="Dod">Dalbergia odorifera</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Gma">Glycine max</option>
+                            <option value="Gso">Glycine soja</option>
+                            <option value="Lapu">Lablab purpureus</option>
+                            <option value="Lja">Lotus japonicus</option>
+                            <option value="Lal">Lupinus albus</option>
+                            <option value="Lan">Lupinus angustifolius</option>
+                            <option value="Mepo">Medicago polymorpha</option>
+                            <option value="Mesa">Medicago sativa</option>
+                            <option value="Mtr">Medicago truncatula</option>
+                            <option value="Mal">Melilotus albus</option>
+                            <option value="Phac">Phaseolus acutifolius</option>
+                            <option value="Pvu">Phaseolus vulgaris</option>
+                            <option value="Psa">Pisum sativum</option>
+                            <option value="Pumo">Pueraria montana</option>
+                            <option value="Rops">Robinia pseudoacacia</option>
+                            <option value="Sto">Senna tora</option>
+                            <option value="Seca">Sesbania cannabina</option>
+                            <option value="Ssu">Spatholobus suberectus</option>
+                            <option value="Tpr">Trifolium pratense</option>
+                            <option value="Trre">Trifolium repens</option>
+                            <option value="Tsu">Trifolium subterraneum</option>
+                            <option value="Vifa">Vicia faba</option>
+                            <option value="Vian">Vigna angularis</option>
+                            <option value="Vra">Vigna radiata</option>
+                            <option value="Viun">Vigna unguiculata</option>
+                            <option value="Vvi">Vitis vinifera</option>
+                        </select>
+                    </div>
+
+
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" type="submit" value="Search">
+
+                </div>
+                <div class="col-sm-3" style="padding-top: 40px"></div>
+            </div>
+
+  <button type="button" id="reset-button" onclick="resetChromosomePositions()">Reset Zoom</button>
+  <div id="visualization-container">
+    <svg id="gene-location-svg" width="1130" height="340"></svg>
+  </div>
+
+  <script>
+    // 染色体数据
+    const chromosomeData = [
+      { name: 'Adu01', length: 3542 },
+      { name: 'Adu04', length: 3072 },
+    ];
+
+    // 基因数据
+    const geneData = [
+      { chromosome: 'Adu01', name: 'Adu01g00002', position: 2 },
+      { chromosome: 'Adu01', name: 'Adu01g00129', position: 129 },
+      { chromosome: 'Adu01', name: 'Adu01g00754', position: 754 },
+      { chromosome: 'Adu01', name: 'Adu01g00947', position: 947 },
+      { chromosome: 'Adu01', name: 'Adu01g01614', position: 1614 },
+      { chromosome: 'Adu01', name: 'Adu01g01731', position: 1731 },
+      { chromosome: 'Adu01', name: 'Adu01g01952', position: 1952 },
+      { chromosome: 'Adu01', name: 'Adu01g02329', position: 2329 },
+      { chromosome: 'Adu01', name: 'Adu01g02330', position: 2330 },
+      { chromosome: 'Adu01', name: 'Adu01g02945', position: 2945 },
+      { chromosome: 'Adu01', name: 'Adu01g02997', position: 2997 },
+      { chromosome: 'Adu01', name: 'Adu01g03084', position: 3084 },
+      { chromosome: 'Adu01', name: 'Adu01g03342', position: 3342 },
+      { chromosome: 'Adu04', name: 'Adu04g00517', position: 517 },
+      { chromosome: 'Adu04', name: 'Adu04g00557', position: 557 },
+      { chromosome: 'Adu04', name: 'Adu04g00640', position: 640 },
+      { chromosome: 'Adu04', name: 'Adu04g00765', position: 765 },
+      { chromosome: 'Adu04', name: 'Adu04g00772', position: 772 },
+      { chromosome: 'Adu04', name: 'Adu04g01064', position: 1064 },
+      { chromosome: 'Adu04', name: 'Adu04g01226', position: 1226 },
+      { chromosome: 'Adu04', name: 'Adu04g01362', position: 1362 },
+      { chromosome: 'Adu04', name: 'Adu04g01655', position: 1655 },
+      { chromosome: 'Adu04', name: 'Adu04g01963', position: 1963 },
+      { chromosome: 'Adu04', name: 'Adu04g02393', position: 2393 },
+      { chromosome: 'Adu04', name: 'Adu04g02525', position: 2525 },
+      { chromosome: 'Adu04', name: 'Adu04g02680', position: 2680 },
+      { chromosome: 'Adu04', name: 'Adu04g02732', position: 2732 },
+      { chromosome: 'Adu04', name: 'Adu04g02784', position: 2784 },
+    ];
+
+    // 定义Y轴比例尺
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(chromosomeData, d => d.length)])
+      .range([0, 300]);
+
+    const svg = d3.select("#gene-location-svg");
+
+    // 创建染色体组
+    const chromosomeGroup = svg.append("g")
+      .attr("id", "chromosome-group");
+
+    // 生成随机颜色函数
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // 绘制染色体矩形及染色体号
+    const chromosomeRects = chromosomeGroup.selectAll("rect")
+      .data(chromosomeData)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => 30 + i * 150)
+      .attr("y", 20)
+      .attr("width", 20)
+      .attr("height", d => yScale(d.length))
+      .attr("rx", 10)
+      .attr("ry", 10)
+      .attr("fill", () => getRandomColor()); // 应用随机颜色
+
+    const chromosomeTexts = chromosomeGroup.selectAll(".chromosome-text")
+      .data(chromosomeData)
+      .enter()
+      .append("text")
+      .attr("class", "chromosome-text")
+      .attr("x", (d, i) => 10 + i * 150 + 10) // 居中于染色体矩形
+      .attr("y", 15) // 在染色体矩形上方一点
+      .text(d => d.name);
+
+
+    // 按染色体分组基因标签和标注线
+    const geneGroups = svg.selectAll(".gene-group")
+      .data(chromosomeData)
+      .enter()
+      .append("g")
+      .attr("class", "gene-group");
+
+    // 添加基因标签
+    const geneLabels = geneGroups.selectAll(".gene-label")
+      .data(d => geneData.filter(gene => gene.chromosome === d.name))
+      .enter()
+      .append("text")
+      .attr("class", "gene-label")
+      .attr("x", d => {
+        const chromosomeIndex = chromosomeData.findIndex(chromosome => chromosome.name === d.chromosome);
+        return 60 + chromosomeIndex * 150 + 20; // 调整x位置，考虑染色体矩形宽度和间距
+      })
+      .attr("y", d => yScale(d.position) + 25) // 调整y位置，考虑染色体矩形y位置和间距
+      .text(d => d.name);
+
+    // 添加基因标注线
+    const geneLines = geneGroups.selectAll(".gene-line")
+      .data(d => geneData.filter(gene => gene.chromosome === d.name))
+      .enter()
+      .append("line")
+      .attr("class", "gene-line")
+      .attr("x1", d => {
+        const chromosomeIndex = chromosomeData.findIndex(chromosome => chromosome.name === d.chromosome);
+        return 5 + chromosomeIndex * 150 + 25; // 调整x1位置，考虑染色体矩形宽度和间距
+      })
+      .attr("y1", d => yScale(d.position) + 20) // 调整y1位置，考虑染色体矩形y位置和间距
+      .attr("x2", d => {
+        const chromosomeIndex = chromosomeData.findIndex(chromosome => chromosome.name === d.chromosome);
+        return 5 + chromosomeIndex * 150 + 50; // 在x1的基础上向右延伸20px
+      })
+      .attr("y2", d => yScale(d.position) + 20) // 调整y2位置，考虑染色体矩形y位置和间距
+      .attr("stroke-width", 1) // 设置线条宽度
+      .attr("stroke", "black"); // 设置线条颜色黑色
+
+    // 检查标签是否重叠，如果重叠，向下移动
+    geneLabels.each(function(d, i, nodes) {
+      const currentLabel = d3.select(nodes[i]);
+      const yPosition = parseInt(currentLabel.attr("y"));
+      const prevLabelY = i > 0 ? parseInt(d3.select(nodes[i - 1]).attr("y")) : -Infinity;
+      if (yPosition - prevLabelY < 12) { // 如果重叠
+        currentLabel.attr("y", prevLabelY + 12); // 向下移动一个基因的高度
+      }
+    });
+
+    // 定义初始鼠标位置
+    let initialMousePosition;
+
+    // 定义拖动行为
+    const dragBehavior = d3.drag()
+      .on("start", function(event) {
+        initialMousePosition = [event.x, event.y];
+      })
+      .on("drag", function(event) {
+        const dx = event.x - initialMousePosition[0];
+        const dy = event.y - initialMousePosition[1];
+        chromosomeGroup.attr("transform", `translate(${dx}, ${dy})`);
+        geneLabels.attr("transform", `translate(${dx}, ${dy})`);
+        geneLines.attr("transform", `translate(${dx}, ${dy})`);
+      });
+
+    svg.call(dragBehavior);
+
+    // 重置染色体位置函数
+    function resetChromosomePositions() {
+      chromosomeGroup.transition()
+        .duration(500)
+        .attr("transform", "translate(0,0)");
+      geneLabels.transition()
+        .duration(500)
+        .attr("transform", "translate(0,0)");
+      geneLines.transition()
+        .duration(500)
+        .attr("transform", "translate(0,0)");
+    }
+  </script>
+
+
+            {% if genes_table %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Select</th>  <!-- 新增一列用于复选框 -->
+                                <th>Species</th>
+                                <th>Gene</th>
+                                <th>Chromosome</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Strand</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hhhh in genes_table %}
+                                <tr>
+                                    <td><input type="checkbox" class="row-checkbox"></td> <!-- 新增一个复选框 -->
+                                    <td>{{ hhhh.1 }}</td>
+                                    <td><a href="{% url 'gene_detail' geneid=hhhh.2 %}">{{ hhhh.2 }}</a></td>
+                                    <td>{{ hhhh.3 }}</td>
+                                    <td>{{ hhhh.4 }}</td>
+                                    <td>{{ hhhh.5 }}</td>
+                                    <td>{{ hhhh.6 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Orthologous_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

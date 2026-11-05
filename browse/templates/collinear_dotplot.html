@@ -1,0 +1,284 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Collinear dotplot</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5">
+            &emsp;&emsp;Gene duplication type classification analysis, using <a href="https://github.com/DXXDR/DupGen_finder">DupGen_finder</a>, can divide all genes into 5 categories according to the replication type, namely WGD: whole genome duplication, TD: tandem duplication (two adjacent duplication genes), PD: Proximal duplications (repeated genes within 10 genes apart), TRD: transposed duplications (duplicated genes consisting of ancestral and new loci), DSD: scattered duplications (duplicated genes that are neither adjacent nor collinear)
+            <br>&emsp;&emsp;Among them, <em>Glycine max</em> was the species with the most WGD genes, and <em>Medicago truncatula</em> was the species with the most PD gene replication type, while TD TRD DSD was the species with the most <em>Arachis maconticola</em> Gene replication type, which might be because <em>Arachis Maconticola</em> is polyploid.
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/gene_type_new.jpg" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="collinear_dotplot" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <label for="state" class="form-label">Query genome</label>
+                <select class="form-control" id="state" name="query_genome" required>
+                    <option value="Mtr">Medicago truncatula</option>
+                    <option value="Adu">Arachis duranensis</option>
+                    <option value="Apr">Abrus precatorius</option>
+                    <option value="Aev">Aeschynomene evenia</option>
+                    <option value="Aed">Amphicarpaea edgeworthii</option>
+                    <option value="Ahy">Arachis hypogaea</option>
+                    <option value="Aip">Arachis ipaensis</option>
+                    <option value="Amo">Arachis monticola</option>
+                    <option value="Bva">Bauhinia variegata</option>
+                    <option value="Cca">Cajanus cajan</option>
+                    <option value="Car">Cicer arietinum</option>
+                    <option value="Dod">Dalbergia odorifera</option>
+                    <option value="Eupl">Euptelea pleiosperma</option>
+                    <option value="Gma">Glycine max</option>
+                    <option value="Gso">Glycine soja</option>
+                    <option value="Lapu">Lablab purpureus</option>
+                    <option value="Lja">Lotus japonicus</option>
+                    <option value="Lal">Lupinus albus</option>
+                    <option value="Lan">Lupinus angustifolius</option>
+                    <option value="Mepo">Medicago polymorpha</option>
+                    <option value="Mesa">Medicago sativa</option>
+
+                    <option value="Mal">Melilotus albus</option>
+                    <option value="Phac">Phaseolus acutifolius</option>
+                    <option value="Pvu">Phaseolus vulgaris</option>
+                    <option value="Psa">Pisum sativum</option>
+                    <option value="Pumo">Pueraria montana</option>
+                    <option value="Rops">Robinia pseudoacacia</option>
+                    <option value="Sto">Senna tora</option>
+                    <option value="Seca">Sesbania cannabina</option>
+                    <option value="Ssu">Spatholobus suberectus</option>
+                    <option value="Tpr">Trifolium pratense</option>
+                    <option value="Trre">Trifolium repens</option>
+                    <option value="Tsu">Trifolium subterraneum</option>
+                    <option value="Vifa">Vicia faba</option>
+                    <option value="Vian">Vigna angularis</option>
+                    <option value="Vra">Vigna radiata</option>
+                    <option value="Viun">Vigna unguiculata</option>
+                    <option value="Vvi">Vitis vinifera</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="state" class="form-label">Compare genome</label>
+                <select class="form-control" id="state" name="compare_genome" required>
+                    <option value="Vra">Vigna radiata</option>
+                    <option value="Adu">Arachis duranensis</option>
+                    <option value="Apr">Abrus precatorius</option>
+                    <option value="Aev">Aeschynomene evenia</option>
+                    <option value="Aed">Amphicarpaea edgeworthii</option>
+                    <option value="Ahy">Arachis hypogaea</option>
+                    <option value="Aip">Arachis ipaensis</option>
+                    <option value="Amo">Arachis monticola</option>
+                    <option value="Bva">Bauhinia variegata</option>
+                    <option value="Cca">Cajanus cajan</option>
+                    <option value="Car">Cicer arietinum</option>
+                    <option value="Dod">Dalbergia odorifera</option>
+                    <option value="Eupl">Euptelea pleiosperma</option>
+                    <option value="Gma">Glycine max</option>
+                    <option value="Gso">Glycine soja</option>
+                    <option value="Lapu">Lablab purpureus</option>
+                    <option value="Lja">Lotus japonicus</option>
+                    <option value="Lal">Lupinus albus</option>
+                    <option value="Lan">Lupinus angustifolius</option>
+                    <option value="Mepo">Medicago polymorpha</option>
+                    <option value="Mesa">Medicago sativa</option>
+                    <option value="Mtr">Medicago truncatula</option>
+                    <option value="Mal">Melilotus albus</option>
+                    <option value="Phac">Phaseolus acutifolius</option>
+                    <option value="Pvu">Phaseolus vulgaris</option>
+                    <option value="Psa">Pisum sativum</option>
+                    <option value="Pumo">Pueraria montana</option>
+                    <option value="Rops">Robinia pseudoacacia</option>
+                    <option value="Sto">Senna tora</option>
+                    <option value="Seca">Sesbania cannabina</option>
+                    <option value="Ssu">Spatholobus suberectus</option>
+                    <option value="Tpr">Trifolium pratense</option>
+                    <option value="Trre">Trifolium repens</option>
+                    <option value="Tsu">Trifolium subterraneum</option>
+                    <option value="Vifa">Vicia faba</option>
+                    <option value="Vian">Vigna angularis</option>
+
+                    <option value="Viun">Vigna unguiculata</option>
+                    <option value="Vvi">Vitis vinifera</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+            </div>
+            <div class="col-md-2"></div>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-300%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Select</th>  <!-- 新增一列用于复选框 -->
+                                <th>Gene</th>
+                                <th>Chromosome</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Duplicated_type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr>
+                                    <td><input type="checkbox" class="row-checkbox"></td> <!-- 新增一个复选框 -->
+                                    <td><a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a></td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "gene_type_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+        </div>
+
+
+
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+    </form>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

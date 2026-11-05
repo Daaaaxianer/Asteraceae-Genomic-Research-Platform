@@ -1,0 +1,506 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/modern-business.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+
+    <script type="text/javascript" src="{% static 'vendor/js/api.js' %}"></script>
+
+    <style>
+        /* 1. 页心宽度控制 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 主内容容器 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 左侧期刊封面样式 */
+        .journal-sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e67e22;
+            display: inline-block;
+        }
+
+        .journal-cover-link {
+            display: block;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .journal-cover-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(230, 126, 34, 0.15);
+            border-color: #fcebd0;
+        }
+
+        .journal-cover-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        .journal-caption {
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+            padding: 5px;
+            background: #fcfcfc;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* 5. 右侧参考文献列表样式 */
+        .ref-list-container {
+            padding-left: 10px;
+        }
+
+        .ref-list {
+            counter-reset: ref-counter;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ref-item {
+            position: relative;
+            padding: 20px 20px 20px 50px;
+            border-bottom: 1px dashed #e9ecef;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        /* 序号样式 */
+        .ref-item::before {
+            counter-increment: ref-counter;
+            content: counter(ref-counter);
+            position: absolute;
+            left: 10px;
+            top: 22px; /* 调整数字垂直位置 */
+            width: 28px;
+            height: 28px;
+            background: #fff5eb;
+            color: #e67e22;
+            border: 1px solid #ffe0b2;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ref-item:hover {
+            background-color: #fffcf9;
+            transform: translateX(6px);
+            border-bottom-color: transparent;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .ref-item:hover::before {
+            background: #e67e22;
+            color: #fff;
+            border-color: #e67e22;
+        }
+
+        .ref-content {
+            color: #4a4a4a;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* 作者名加粗 */
+        .ref-content b, .ref-content strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* 链接按钮化 */
+        .journal-link-btn {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #d35400;
+            background-color: rgba(230, 126, 34, 0.08);
+            padding: 2px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .journal-link-btn:hover {
+            background-color: #d35400;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .journal-link-btn i {
+            font-style: italic;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">References & Publications</h2>
+            <p class="section-subtitle">Key literature citations and research background</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="journal-sidebar-title">Journal Highlights</div>
+
+                <a href="https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-020-2235-7" target="_blank" class="journal-cover-link" title="BMC Plant Biology">
+                    <img src="{% static 'image/tt1.webp' %}" class="journal-cover-img" alt="BMC Plant Biology">
+                </a>
+
+                <a href="https://www.nature.com/articles/nature08670/" target="_blank" class="journal-cover-link" title="Nature">
+                    <img src="{% static 'image/tt2.webp' %}" class="journal-cover-img" alt="Nature">
+                </a>
+
+                <a href="https://www.sciencedirect.com/science/article/pii/S1672022920301261" target="_blank" class="journal-cover-link" title="Genomics Proteomics Bioinformatics">
+                    <img src="{% static 'image/tt3.jpg' %}" class="journal-cover-img" alt="GPB">
+                </a>
+
+                <a href="https://academic.oup.com/mbe/article/35/1/16/4159189?login=false#" target="_blank" class="journal-cover-link" title="Molecular Biology and Evolution">
+                    <img src="{% static 'image/tt4.jpg' %}" class="journal-cover-img" alt="MBE">
+                </a>
+
+                <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-15-271" target="_blank" class="journal-cover-link" title="BMC Genomics">
+                    <img src="{% static 'image/tt5.jpg' %}" class="journal-cover-img" alt="BMC Genomics">
+                </a>
+
+                <a href="https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-019-4712-3" target="_blank" class="journal-cover-link" title="BMC Research Notes">
+                    <img src="{% static 'image/tt6.jpeg' %}" class="journal-cover-img" alt="BMC Res Notes">
+                </a>
+
+                <a href="https://academic.oup.com/mbe/article/35/1/16/4159189?login=false#" target="_blank" class="journal-cover-link" title="MBE Article">
+                    <img src="{% static 'image/tt7.jpeg' %}" class="journal-cover-img" alt="MBE">
+                </a>
+
+                <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-447" target="_blank" class="journal-cover-link" title="BMC Bioinformatics">
+                    <img src="{% static 'image/tt8.webp' %}" class="journal-cover-img" alt="BMC Bioinformatics">
+                </a>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="ref-list-container">
+                    <ol class="ref-list">
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Jeremy Schmutz<sup>#</sup>, Steven B. Cannon, ... Scott A. Jackson<sup>*</sup>. (2010). Genome sequence of the palaeopolyploid soybean.
+                                <br>
+                                <a href="https://www.nature.com/articles/nature08670/" target="_blank" class="journal-link-btn">
+                                    <i>Nature</i> 463:178-183
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Yiming Yu<sup>#</sup>, Yidan Ouyang<sup>#</sup>, Wen Yao<sup>*</sup>. (2018). shinyCircos: an R/Shiny application for interactive creation of Circos plot.
+                                <br>
+                                <a href="https://academic.oup.com/bioinformatics/article/34/7/1229/4657077?login=false" target="_blank" class="journal-link-btn">
+                                    <i>Bioinformatics</i> 34:1229-1231
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Juan Yu<sup>#</sup>, Zhenhai Zhang<sup>#</sup>, Jiangang Wei<sup>#</sup>, Yi Ling<sup>#</sup>, Wenying Xu<sup>#</sup>, Zhen Su<sup>*</sup>. (2014). SFGD: a comprehensive platform for mining functional information from soybean transcriptome data and its use in identifying acyl-lipid metabolism pathways.
+                                <br>
+                                <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-15-271" target="_blank" class="journal-link-btn">
+                                    <i>BMC Genomics</i> 15:271
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Eric Yao<sup>#</sup>, Robert Buels, Lincoln Stein, Taner Z Sen, Ian Holmes<sup>*</sup>. (2020). JBrowse Connect: A server API to connect JBrowse instances and users.
+                                <br>
+                                <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007261" target="_blank" class="journal-link-btn">
+                                    <i>PLoS computational biology</i> 16:e1007261
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Qihang Yang<sup>#</sup>, Tao Liu, Tong Wu, Tianyu Lei, Yuxian Li, Xiyin Wang<sup>*</sup>. (2022). GGDB: A Grameneae Genome Alignment Database of Homologous Genes Hierarchically Related to Evolutionary Events.
+                                <br>
+                                <a href="https://academic.oup.com/plphys/article-abstract/190/1/340/6631237?redirectedFrom=fulltext&login=false" target="_blank" class="journal-link-btn">
+                                    <i>Plant physiology</i> 10.1093/plphys/kiac297
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                ZhichaoXu<sup>#</sup>, RanranGao<sup>#</sup>, XiangdongPu, RongXu, JiyongWang, SihaoZheng, YanZeng, JunChen, ChunnianHe,JingyuanSong<sup>*</sup>. (2020). Comparative Genome Analysis of Scutellaria baicalensis and Scutellaria barbata Reveals the Evolution of Active Flavonoid Biosynthesis.
+                                <br>
+                                <a href="https://www.sciencedirect.com/science/article/pii/S1672022920301261" target="_blank" class="journal-link-btn">
+                                    <i>Genomics Proteomics Bioinformatics</i> 18:230-240
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Yupeng Wang<sup>#</sup>, Haibao Tang, Jeremy D Debarry, Xu Tan, Jingping Li, Xiyin Wang, Tae-ho Lee, Huizhe Jin, Barry Marler, Hui Guo, Jessica C Kissinger, Andrew H Paterson<sup>*</sup>. (2012). MCScanX: a toolkit for detection and evolutionary analysis of gene synteny and collinearity.
+                                <br>
+                                <a href="https://academic.oup.com/nar/article/40/7/e49/1202057?login=false" target="_blank" class="journal-link-btn">
+                                    <i>Nucleic Acids Res</i> 40:e49
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Xiyin Wang<sup>#</sup>, Xiaoli Shi, Zhe Li, Qihui Zhu, Lei Kong, Wen Tang, Song Ge, Jingchu Luo<sup>*</sup>. (2006). Statistical inference of chromosomal homology based on gene colinearity and applications to Arabidopsis and rice.
+                                <br>
+                                <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-447" target="_blank" class="journal-link-btn">
+                                    <i>BMC Bioinformatics</i> 7:447
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                <b>Jinpeng Wang</b><sup>#</sup>, Pengchuan Sun, Yuxian Li, ... Xiyin Wang<sup>*</sup>. (2018). An Overlooked Paleotetraploidization in Cucurbitaceae.
+                                <br>
+                                <a href="https://academic.oup.com/mbe/article/35/1/16/4159189?login=false#" target="_blank" class="journal-link-btn">
+                                    <i>Mol Biol Evol</i> 35:16-26
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                <b>Jinpeng Wang</b><sup>#</sup>, Pengchuan Sun, Yuxian Li, ... Xiyin Wang<sup>*</sup>. (2017). Hierarchically Aligning 10 Legume Genomes Establishes a Family-Level Genomics Platform.
+                                <br>
+                                <a href="https://academic.oup.com/plphys/article/174/1/284/6116742?login=false#" target="_blank" class="journal-link-btn">
+                                    <i>Plant physiology</i> 174:284-300
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                <b>Jinpeng Wang</b><sup>#</sup>, Jun Qin<sup>#</sup>, Pengchuan Sun, ... Xiyin Wang<sup>*</sup>. (2019). Polyploidy Index and Its Implications for the Evolution of Polyploids.
+                                <br>
+                                <a href="https://www.frontiersin.org/articles/10.3389/fgene.2019.00807/full" target="_blank" class="journal-link-btn">
+                                    <i>Frontiers in genetics</i> 10:807
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                <b>Jinpeng Wang</b><sup>#</sup>, Jigao Yu, Yuxian Li, Chendan Wei, He Guo, Ying Liu, Jin Zhang, Xiuqing Li, Xiyin Wang<sup>*</sup>. (2020). Sequential Paleotetraploidization shaped the carrot genome.
+                                <br>
+                                <a href="https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-020-2235-7" target="_blank" class="journal-link-btn">
+                                    <i>BMC plant biology</i> 20:52
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Haibao Tang<sup>#</sup>, Vivek Krishnakumar, ... Christopher D Town<sup>*</sup>. (2014). An improved genome release (version Mt4.0) for the model legume Medicago truncatula.
+                                <br>
+                                <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-15-312" target="_blank" class="journal-link-btn">
+                                    <i>BMC Genomics</i> 15:312
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Pamela S Soltis<sup>#</sup>, D Blaine Marchant, Yves Van de Peer, Douglas E Soltis<sup>*</sup>. (2015). Polyploidy and genome evolution in plants.
+                                <br>
+                                <a href="https://www.sciencedirect.com/science/article/abs/pii/S1369526605000051" target="_blank" class="journal-link-btn">
+                                    <i>Current opinion in genetics & development</i> 35:119-125
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Jiaqing Yuan<sup>#</sup>, <b>Jinpeng Wang</b><sup>#</sup>, ... Tariq Shehzad<sup>*</sup>, Xiyin Wang<sup>*</sup>. (2019). Alignment of Rutaceae Genomes Reveals Lower Genome Fractionation Level Than Eudicot Genomes Affected by Extra Polyploidization.
+                                <br>
+                                <a href="https://www.frontiersin.org/articles/10.3389/fpls.2019.00986/full" target="_blank" class="journal-link-btn">
+                                    <i>Frontiers in plant science</i> 10:986
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Colin Ruprecht<sup>#</sup>, Rolf Lohaus<sup>#</sup>, Kevin Vanneste, Marek Mutwil, Zoran Nikoloski, Yves Van de Peer<sup>*</sup>, Staffan Persson<sup>*</sup>. (2017). Revisiting ancestral polyploidy in plants.
+                                <br>
+                                <a href="https://europepmc.org/article/PMC/5498109" target="_blank" class="journal-link-btn">
+                                    <i>Science advances</i> 3:e1603195
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Renny-Byfield<sup>#</sup>, S. Wendel, J.F<sup>*</sup>. (2014). Doubling down on genomes: polyploidy and crop plants.
+                                <br>
+                                <a href="https://europepmc.org/article/AGR/IND601149192" target="_blank" class="journal-link-btn">
+                                    <i>American journal of botany</i> 101:1711-1725
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Longhui Ren<sup>#</sup>, Wei Huang<sup>#</sup>, Steven B Cannon<sup>*</sup>. (2019). Reconstruction of ancestral genome reveals chromosome evolution history for selected legume species.
+                                <br>
+                                <a href="https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.15770" target="_blank" class="journal-link-btn">
+                                    <i>The New phytologist</i> 223:2090-2103
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Xin Qiao<sup>#</sup>, Qionghou Li, Hao Yin, Kaijie Qi, Leiting Li, Runze Wang, Shaoling Zhang<sup>*</sup>, Andrew H. Paterson<sup>*</sup>. (2019). Gene duplication and evolution in recurring polyploidization-diploidization cycles in plants.
+                                <br>
+                                <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1650-2" target="_blank" class="journal-link-btn">
+                                    <i>Genome Biol</i> 20:38
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Anurag Priyam<sup>#</sup>, Ben J Woodcroft, ... Yannick Wurm<sup>*</sup>. (2019). Sequenceserver: A Modern Graphical User Interface for Custom BLAST Databases.
+                                <br>
+                                <a href="https://academic.oup.com/mbe/article/36/12/2922/5549819?login=false#" target="_blank" class="journal-link-btn">
+                                    <i>Mol Biol Evol</i> 36:2922-2924
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Simon C Potter<sup>#</sup>, Aurélien Luciani, Sean R Eddy, Youngmi Park, Rodrigo Lopez, Robert D Finn<sup>*</sup>. (2018). HMMER web server: 2018 update.
+                                <br>
+                                <a href="https://academic.oup.com/nar/article/46/W1/W200/5037715?login=false" target="_blank" class="journal-link-btn">
+                                    <i>Nucleic Acids Res</i> 46:W200-w204
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Fanbo Meng<sup>#</sup>, Qiang Tang, Tianzhe Chu, Xianhai Li, Yue Lin, Xiaoming Song, Wei Chen<sup>*</sup>. (2022). TCMPG: an integrative database for traditional Chinese medicine plant genomes.
+                                <br>
+                                <a href="https://academic.oup.com/hr/article/doi/10.1093/hr/uhac060/6544755?login=false" target="_blank" class="journal-link-btn">
+                                    <i>Hortic Res</i> 9:uhac060
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Paola Martinez-Amador<sup>#</sup>, Nori Castañeda, Antonio Loza, Lizeth Soto, Enrique Merino, Rosa Maria Gutierrez-Rios<sup>*</sup>. (2019). Prediction of protein architectures involved in the signaling-pathway initiating sporulation in Firmicutes.
+                                <br>
+                                <a href="https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-019-4712-3" target="_blank" class="journal-link-btn">
+                                    <i>BMC research notes</i> 12:686
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Drishti Mandal<sup>#</sup>, Deevita Srivastava<sup>#</sup>, Senjuti Sinharoy<sup>*</sup>. (2020). Optimization of Hairy Root Transformation for the Functional Genomics in Chickpea: A Platform for Nodule Developmental Studies.
+                                <br>
+                                <a href="https://europepmc.org/article/MED/31893457" target="_blank" class="journal-link-btn">
+                                    <i>Methods Mol Biol</i> 2107:335-348
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="ref-item">
+                            <div class="ref-content">
+                                Fábio Madeira<sup>#</sup>, Matt Pearce, Adrian R N Tivey, Prasad Basutkar, Joon Lee, Ossama Edbali, Nandana Madhusoodanan, Anton Kolesnikov, Rodrigo Lopez<sup>*</sup>. (2022). Search and sequence analysis tools services from EMBL-EBI in 2022.
+                                <br>
+                                <a href="https://academic.oup.com/nar/article/50/W1/W276/6567472?login=false" target="_blank" class="journal-link-btn">
+                                    <i>Nucleic Acids Res</i> 50:W276-279
+                                </a>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1918 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="preload" as="image" href="{% static 'image/carouselFig01.webp' %}">
+
+<style>
+    /* ==========================================================================
+       PART 1: GLOBAL & BASIC LAYOUT STYLES
+       ========================================================================== */
+    body {
+        background-color: #f4f6f9 !important;
+        overflow-x: hidden;
+    }
+
+     
+    .section-container { padding: 0; margin-top: 30px; margin-bottom: 40px; }
+
+     
+    .content-box-wrapper {
+        background-color: #ffffff;
+        border: 1px solid rgba(230, 126, 34, 0.15);  
+        border-radius: 16px;
+        padding: 30px 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        position: relative;
+    }
+
+    .section-title {
+        font-family: "Georgia", "Times New Roman", serif;
+        font-weight: 700;
+        color: #d35400;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        display: inline-block;
+    }
+    .section-subtitle {
+        font-family: "Arial", sans-serif;
+        color: #7f8c8d;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .section-divider {
+        margin: 1.5rem auto 2.5rem auto;
+        border: 0;
+        border-top: 1px solid #e0e0e0;
+        width: 100%;
+        opacity: 1;
+    }
+
+    .welcome-title {
+        font-family: 'Muyao Softbrush Latin', 'Muyao Softbrush', cursive;
+        font-size: 2.8rem;
+        font-weight: normal;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .welcome-title span[style*="e67e22"] {
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(230, 126, 34, 0.3);
+    }
+
+    /* ==================== AGRP Analysis Pipelines (New Grid Layout) ==================== */
+
+    .agrp-pipelines-section {
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    .pipelines-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);  
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    .pipeline-card {
+        background: #ffffff;
+        border: 1px solid #eaeff2;
+        border-radius: 12px;
+        padding: 25px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: flex;
+        flex-direction: column;
+        text-decoration: none !important;  
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+
+     
+    .pipeline-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #e67e22, #f39c12);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .pipeline-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(230, 126, 34, 0.12);
+        border-color: rgba(230, 126, 34, 0.3);
+    }
+
+    .pipeline-card:hover::before {
+        opacity: 1;
+    }
+
+    .pipeline-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .pipeline-icon-box {
+        width: 50px;
+        height: 50px;
+        background: #fff5eb;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e67e22;
+        font-size: 1.5rem;
+        margin-right: 15px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .pipeline-card:hover .pipeline-icon-box {
+        background: #e67e22;
+        color: #fff;
+        transform: rotate(10deg);
+    }
+
+    .pipeline-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+        line-height: 1.3;
+        transition: color 0.3s;
+    }
+
+    .pipeline-card:hover .pipeline-title {
+        color: #d35400;
+    }
+
+    .pipeline-steps {
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.6;
+        background-color: #f8f9fa;
+        padding: 12px;
+        border-radius: 8px;
+        border-left: 3px solid #e0e0e0;
+        flex-grow: 1;  
+        font-family: "Arial", sans-serif;
+    }
+
+    .pipeline-steps strong {
+        color: #e67e22;
+        font-weight: 600;
+    }
+
+     
+    @media (max-width: 992px) {
+        .pipelines-grid {
+            grid-template-columns: repeat(2, 1fr);  
+        }
+    }
+
+    @media (max-width: 768px) {
+        .pipelines-grid {
+            grid-template-columns: 1fr;  
+        }
+    }
+
+    
+
+
+    :root { --carousel-height: 500px; }
+    .carouselfig { padding-top: 15px !important; padding-bottom: 5px !important; }
+
+     
+    .carousel-inner {
+        border-radius: 0;
+        background: transparent;
+        overflow: hidden;
+        height: var(--carousel-height);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: relative;
+        z-index: 1;
+    }
+    .carousel-item { height: var(--carousel-height); transition: transform 0.4s ease-in-out; }
+    .carousel-item > img.fixed-height-img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+     
+    .video-slide-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+     
+    #video-cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 10;
+        transition: opacity 0.3s ease;
+    }
+
+     
+    #inline-video {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0; left: 0;
+        display: none;  
+        object-fit: contain;
+        background: #000;
+        z-index: 5;
+        transform: translateZ(0);  
+    }
+
+     
+    .play-btn-wrapper {
+        position: absolute;
+        z-index: 20;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .play-btn {
+        width: 90px; height: 90px;
+        background: rgba(230, 126, 34, 0.9);
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        border: 4px solid #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    .play-btn:hover { transform: scale(1.1); background: #e67e22; }
+    .play-icon { width: 0; height: 0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-left: 28px solid white; margin-left: 8px; }
+
+     
+    .stop-btn-wrapper {
+        position: absolute;
+        top: 20px; right: 20px;
+        z-index: 1000;  
+        cursor: pointer;
+        display: none;  
+    }
+    .stop-btn {
+        width: 40px; height: 40px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(255,255,255,0.5);
+        backdrop-filter: blur(4px);
+    }
+    .stop-btn:hover { background-color: #e67e22; border-color: #e67e22; }
+    .stop-icon { position: relative; width: 18px; height: 18px; }
+    .stop-icon::before, .stop-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 2px; background-color: #fff; border-radius: 2px; }
+    .stop-icon::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .stop-icon::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+     
+    .video-active-mode #video-cover-img { opacity: 0; pointer-events: none; }
+    .video-active-mode .play-btn-wrapper { display: none; }
+    .video-active-mode #video-caption-container { display: none; }
+    .video-active-mode #inline-video {
+        display: block !important;
+        z-index: 500;
+        pointer-events: auto !important;  
+    }
+    .video-active-mode .stop-btn-wrapper { display: block; }
+
+     
+    .carousel-container-playing .carousel-control-prev,
+    .carousel-container-playing .carousel-control-next,
+    .carousel-container-playing .carousel-indicators {
+        display: none !important;
+        pointer-events: none !important;  
+    }
+
+     
+    .carousel-container-playing {
+        touch-action: none;  
+    }
+
+    .carousel-container-playing .carousel-inner {
+        pointer-events: none;  
+    }
+
+     
+    .carousel-container-playing .carousel-item.active {
+        pointer-events: auto;
+    }
+    .carousel-container-playing #video-interaction-area {
+        pointer-events: auto;
+    }
+
+    .carousel-control-prev, .carousel-control-next { width: 10%; z-index: 40; opacity: 0.7; transition: opacity 0.3s; }
+    .carousel-control-prev:hover, .carousel-control-next:hover { opacity: 1; }
+    .carousel-control-prev-icon, .carousel-control-next-icon { width: 4rem; height: 4rem; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
+
+    /* ==========================================================================
+       PART 3: OVERVIEW RESOURCES (Updated with Flip Animation & Zoom Effects)
+       ========================================================================== */
+    .stat-card {
+        border: 1px solid #e1e4e8;
+        border-radius: 12px;
+        padding: 15px 5px;
+        height: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #fcfcfc;
+         
+        perspective: 1000px;
+    }
+    .col:nth-child(4n+1) .stat-card { background-color: #fffbf0; border-color: #fcebd0; }
+    .col:nth-child(4n+2) .stat-card { background-color: #f0f7ff; border-color: #d0e4ff; }
+    .col:nth-child(4n+3) .stat-card { background-color: #f0fff4; border-color: #d0f0d8; }
+    .col:nth-child(4n+4) .stat-card { background-color: #fff5f5; border-color: #f0d0d0; }
+
+    .stat-card:hover { transform: translateY(-4px); background-color: #ffffff !important; border-color: #d0d0d0; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); }
+
+     
+    .stat-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        margin-bottom: 8px;
+        opacity: 0;  
+        transform: rotateX(90deg) translateY(20px);  
+        transform-origin: bottom center;  
+         
+    }
+
+     
+    @keyframes flipUpEffect {
+        0% { opacity: 0; transform: rotateX(90deg) translateY(20px); }
+        100% { opacity: 1; transform: rotateX(0deg) translateY(0); }
+    }
+
+     
+    .stat-icon.animate-flip {
+        animation: flipUpEffect 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .stat-icon img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        transition: all 0.3s ease;
+    }
+
+     
+    .stat-card:hover .stat-icon img { transform: scale(1.15); }
+
+     
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: 900;
+        margin-bottom: 10px;
+        font-family: 'Arial Black', 'Arial', sans-serif;
+        color: #e67e22;
+        white-space: nowrap;
+        letter-spacing: -0.5px;
+        line-height: 1;
+        display: inline-block;  
+        transition: transform 0.3s ease;  
+    }
+
+     
+    .stat-card:hover .stat-number {
+        transform: scale(1.1);
+    }
+
+    .stat-label-link { display: inline-block; font-size: 1.25rem; color: #000000; font-weight: 700; text-transform: capitalize; line-height: 1.2; text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s ease; }
+    .stat-label-link:hover { color: #d35400; border-bottom: 2px solid rgba(211, 84, 0, 0.3); }
+
+    /* ==========================================================================
+       PART 4: WEB-BASED TOOLS STYLES (Grid Layout Optimized)
+       ========================================================================== */
+    .flower-tools-section { padding: 0; margin-top: 30px; margin-bottom: 40px; }
+
+    .tools-grid-container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    .tool-group-card {
+        background: #ffffff;
+        border: 1px solid #eaeff2;
+        border-radius: 14px;
+        padding: 25px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .tool-group-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(230, 126, 34, 0.1);
+        border-color: rgba(230, 126, 34, 0.3);
+    }
+
+     
+
+     
+    .group-header {
+        display: flex;
+        flex-direction: column;  
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-shrink: 0;
+        width: 100%;
+
+         
+        background-color: #fffdfb;  
+        border: 1px solid rgba(230, 126, 34, 0.12);  
+        border-radius: 12px;
+        padding: 18px 15px;
+
+         
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: center center;
+    }
+
+     
+    .tool-group-card:hover .group-header {
+        transform: scale(1.06);  
+        background-color: #fff7ee;  
+        border-color: rgba(230, 126, 34, 0.3);
+        box-shadow: 0 5px 15px rgba(230, 126, 34, 0.08);
+    }
+
+     
+    .group-icon {
+        width: 60px;
+        height: 60px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+
+    .group-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 3px 5px rgba(230, 126, 34, 0.1));
+    }
+
+     
+    .group-header h4 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #d35400;
+        line-height: 1.35;
+        text-align: center;
+        width: 100%;
+        background: transparent;
+        padding: 0;
+        border: none;
+    }
+
+    .tools-flex-wrap {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+        flex-grow: 1;
+        align-content: stretch;
+    }
+
+    .modern-tool-btn {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #555;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 10px 12px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        height: 100%;
+        position: relative;
+    }
+
+    .modern-tool-btn:hover {
+        background-color: #fff;
+        color: #e67e22 !important;
+        border-color: #e67e22;
+        box-shadow: 0 6px 15px rgba(230, 126, 34, 0.2);
+        transform: scale(1.1);
+        z-index: 10;
+    }
+
+    .tg-1 { grid-column: span 3; }
+    .tg-2 { grid-column: span 3; }
+    .tg-3 { grid-column: span 2; }
+    .tg-4 { grid-column: span 2; }
+    .tg-5 { grid-column: span 2; }
+
+    @media (max-width: 1100px) {
+        .tools-grid-container { grid-template-columns: repeat(2, 1fr); }
+        .tg-1, .tg-2, .tg-3, .tg-4, .tg-5 { grid-column: span 1; }
+    }
+    @media (max-width: 768px) {
+        .tools-grid-container { grid-template-columns: 1fr; }
+    }
+
+    /* ==========================================================================
+       PART 5: Asteraceae Genome Hub
+       ========================================================================== */
+
+     
+    .genome-list-section { margin-top: 30px; margin-bottom: 40px; }
+
+    .genome-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .genome-table th, .genome-table td { border: 1px solid #dee2e6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 800;
+        padding: 12px;
+        font-size: 0.95rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+     
+    .genome-table th:nth-child(1) { width: 5%; }  /* No. */
+    .genome-table th:nth-child(2) { width: 11%; }   /* Genus (New) */
+    .genome-table th:nth-child(3) { width: 22%; }   /* Scientific Name */
+    .genome-table th:nth-child(4) { width: 12%; }   /* Genome size*/
+    .genome-table th:nth-child(5) { width: 10%; }   /* Chr. */
+    .genome-table th:nth-child(6) { width: 15%; }   /* Assembly level*/
+    .genome-table th:nth-child(7) { width: 11%; }   /* Data Source */
+    .genome-table th:nth-child(8) { width: 12%; }   /* Release Date */
+
+    .genome-table tbody td {
+        padding: 10px 12px;
+        color: #555;
+        font-size: 0.9rem;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .genome-table tbody tr:hover { background-color: #fffdf5; }
+
+    .genus-name { font-style: italic; color: #2c3e50; font-weight: 600; }
+    .scientific-name { font-style: italic; color: #2c3e50; font-weight: 700; font-size: 0.95rem; }
+
+    /* Data Source Link Style */
+    .data-link-btn {
+        color: #fff; background-color: #e67e22; padding: 5px 12px;
+        border-radius: 4px; text-decoration: none; font-size: 0.8rem; transition: background 0.2s;
+        display: inline-block;
+        max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+    }
+    .data-link-btn:hover { background-color: #d35400; color: #fff; }
+
+    /* Date/Reference Link Style */
+    .date-link {
+        color: #e67e22;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px dashed #e67e22;
+        transition: all 0.2s;
+    }
+    .date-link:hover {
+        color: #d35400;
+        border-bottom-style: solid;
+    }
+
+    .pagination-container { display: flex; justify-content: center; padding: 20px 0 0 0; }
+    .custom-pagination .page-item .page-link { color: #555; border: 1px solid #dee2e6; margin: 0 3px; border-radius: 4px; font-weight: 600; cursor: pointer;}
+    .custom-pagination .page-item.active .page-link { background-color: #e67e22; color: #fff; border-color: #e67e22; }
+    .custom-pagination .page-item .page-link:hover { background-color: #ffe0b2; color: #d35400; border-color: #ffe0b2; }
+
+    /* ==========================================================================
+       PART 6: TIMELINE STYLES
+       ========================================================================== */
+    .timeline-section-wrapper { margin-top: 20px; margin-bottom: 30px; }
+    .timeline-scroll-container { overflow-x: auto; overflow-y: visible; padding: 120px 0; position: relative; scrollbar-width: thin; scrollbar-color: #e67e22 #f0f0f0; }
+    .timeline-scroll-container::-webkit-scrollbar { height: 6px; }
+    .timeline-scroll-container::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+    .timeline-scroll-container::-webkit-scrollbar-thumb { background: rgba(230, 126, 34, 0.5); border-radius: 3px; }
+    .timeline-inner-wrapper { display: flex; align-items: center; position: relative; width: max-content; min-width: 100%; padding: 0 40px; }
+    .timeline-axis { position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e67e22; border-radius: 2px; z-index: 0; transform: translateY(-50%); margin: 0 40px; }
+    .timeline-axis::after { content: ''; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 14px solid #e67e22; }
+
+    .timeline-year-separator { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 20px; flex-shrink: 0; z-index: 1; height: 100px; }
+    .year-dashed-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed #ddd; z-index: 0; }
+    .year-label {
+        background: #fff; border: 3px solid #e67e22; color: #e67e22; font-weight: 900;
+        padding: 8px 20px; border-radius: 30px; font-size: 1.5rem; z-index: 2;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+    }
+
+    .timeline-node { display: inline-block; position: relative; width: 130px; height: 20px; flex-shrink: 0; text-align: center; }
+    .t-dot { width: 16px; height: 16px; background-color: #fff; border: 4px solid #e67e22; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; transition: all 0.3s ease; cursor: pointer; }
+    .timeline-node:hover .t-dot { transform: translate(-50%, -50%) scale(1.4); background-color: #e67e22; border-color: #fff; box-shadow: 0 0 15px rgba(230, 126, 34, 0.6); }
+    .t-date { position: absolute; width: 100px; left: 50%; transform: translateX(-50%); font-family: 'Arial', sans-serif; font-weight: 800; font-size: 1.15rem; color: #888; transition: color 0.3s; }
+    .timeline-node:hover .t-date { color: #d35400; }
+    .timeline-node:nth-child(odd) .t-date { bottom: 28px; }
+    .timeline-node:nth-child(even) .t-date { top: 28px; }
+    .t-content { position: absolute; width: 280px; background: #fff; border: 1px solid #e67e22; padding: 15px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: left; white-space: normal; left: 50%; transform: translateX(-50%) scale(0.95); pointer-events: none; }
+    .t-content::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); border-width: 8px; border-style: solid; }
+    .t-header { font-size: 1.05rem; color: #777; margin-bottom: 5px; font-weight: 700; }
+    .t-body { font-size: 1.1rem; color: #333; line-height: 1.5; }
+    .timeline-node:nth-child(odd) .t-content { top: 35px; }
+    .timeline-node:nth-child(odd):hover .t-content { opacity: 1; visibility: visible; top: 50px; transform: translateX(-50%) scale(1); }
+    .timeline-node:nth-child(odd) .t-content::after { top: -16px; border-color: transparent transparent #e67e22 transparent; }
+    .timeline-node:nth-child(even) .t-content { bottom: 35px; }
+    .timeline-node:nth-child(even):hover .t-content { opacity: 1; visibility: visible; bottom: 50px; transform: translateX(-50%) scale(1); }
+    .timeline-node:nth-child(even) .t-content::after { bottom: -16px; border-color: #e67e22 transparent transparent transparent; }
+    .timeline-end-spacer { width: 50px; flex-shrink: 0; }
+
+    /* ==========================================================================
+       PART 7: CITE & REFERENCES STYLES
+       ========================================================================== */
+    .cite-section-container { margin-bottom: 30px; }
+    .cite-card-body { padding: 30px; background: #fff; }
+    .custom-cite-list { list-style: none; padding: 0; margin: 0; }
+    .custom-cite-item { display: flex; align-items: flex-start; margin-bottom: 20px; }
+    .custom-cite-item:last-child { margin-bottom: 0; }
+    .cite-icon-wrapper { flex-shrink: 0; width: 30px; height: 30px; background-color: #fff5eb; color: #d35400; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; margin-top: 2px; }
+    .cite-text-block { flex: 1; background-color: #f8f9fa; border-left: 4px solid #e67e22; padding: 12px 15px; border-radius: 0 6px 6px 0; font-family: "Georgia", serif; font-style: italic; color: #4a4a4a; line-height: 1.6; font-size: 1rem; }
+
+    .agrp-card { border: 1px solid #eaeaea; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); background: #fff; overflow: hidden; }
+    .agrp-card-header { background: linear-gradient(to right, rgba(230, 126, 34, 0.1), #fff); border-bottom: 2px solid #e67e22; padding: 15px 20px; border-radius: 12px 12px 0 0; }
+    .agrp-card-header h5 { color: #d35400 !important; font-weight: 800 !important; font-family: "Segoe UI", "Arial", sans-serif; margin: 0; letter-spacing: 0.5px; display: flex; align-items: center; }
+
+    .reference-section-container { margin-bottom: 40px; }
+    .reference-scroll-mask {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+        background: #fcfcfc;
+        padding: 10px 20px;
+    }
+    .reference-footer-note { padding: 12px 20px; background-color: #f8f9fa; border-top: 1px solid #eee; font-size: 0.85rem; color: #7f8c8d; font-style: italic; text-align: right; }
+    .reference-scroll-wrapper { animation: scroll-vertical-apa 60s linear infinite; }
+    .reference-scroll-mask:hover .reference-scroll-wrapper { animation-play-state: paused; }
+    @keyframes scroll-vertical-apa { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+    .reference-list { list-style: none; padding: 0; margin: 0; }
+    .reference-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-family: "Georgia", serif;
+        font-size: 0.9rem;
+        color: #444;
+        line-height: 1.5;
+    }
+    .reference-item:last-of-type { border-bottom: none; }
+    .apa-author { font-weight: bold; }
+    .apa-title { font-style: italic; color: #2c3e50; }
+    .apa-doi { color: #d35400; text-decoration: none; font-size: 0.85rem; font-family: Arial; margin-left: 5px; }
+    .reference-spacer { height: 3rem; width: 100%; }
+</style>
+
+{% endblock %}
+
+{% block welcome_section %}
+<div class="welcome-box">
+    <h2 class="text-center welcome-title">
+        <span>Welcome to</span> <span style="color: #e67e22;">AGRP</span>!
+    </h2>
+    <p style="text-align: justify; margin-bottom: 0.5rem; color: #34495e; font-size: 1.15rem;">
+        Asteraceae is the largest angiosperm family, with more than 1,700 genera and 32,000 species. Asteraceae have a strong adaptability to the environment and are widely distributed in almost all parts of the world. It contains a large number of edible, medicinal and ornamental plants, which are of great value to human life.
+    </p>
+    <p style="text-align: justify; margin-bottom: 0; color: #34495e; font-size: 1.15rem;">
+        AGRP integrates <strong>156</strong> genomes, including <strong>149</strong> published genomes from the Asteraceae family, the newly <strong>sequenced Solidago canadensis</strong> genome, and <strong>6</strong> outgroup species. This platform provides annotation details for <strong>3,137,213</strong> protein-coding genes in Asteraceae genomes, along with resources for gene duplication types and synteny analysis; <strong>180</strong> trait-related gene families, including specialized <strong>inulin</strong>-related genes and <strong>rubber</strong> synthesis-related genes; the <strong>largest</strong> ancestral genome resource in Asteraceae, encompassing genomic data from <strong>29</strong> ancestral nodes; the most comprehensive collection of <strong>6,734</strong> transcriptomes in Asteraceae, along with <strong>17,541</strong> metabolite resources linked to <strong>257,590</strong> candidate genes; the first specialized floral scent metabolomics resource in Asteraceae, and encyclopedic resources of Asteraceae species. Interfaces for gene families and related analyses incorporate tools like <strong>Ortho-Tree, Fami-Tree, and Fami-Circos</strong> to support evolutionary gene studies. Additionally, the platform integrates <strong>62</strong> web-based analytical tools (<strong>34</strong> developed in-house) and <strong>74</strong> downloadable tools, facilitating annotation, evolutionary analysis, and functional research for newly sequenced Asteraceae genomes. Beyond providing intuitive query, analysis, and visualization tools, it features a data submission portal, statistical charts, and user manuals to ensure accessibility for all users. AGRP simultaneously establishes a distinctive AGRP-Switch interface to explore various omics data resources within the AGRP database through an integrated approach, enabling users to perform one-stop searches.
+
+    </p>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container carouselfig">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+            <div class="carousel-indicators" id="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active" id="slide-video-item">
+                    <div class="video-slide-container" id="video-interaction-area">
+
+                        <div class="play-btn-wrapper" id="start-video-btn">
+                            <div class="play-btn"><div class="play-icon"></div></div>
+                        </div>
+
+                        <div class="stop-btn-wrapper" id="stop-video-btn" title="Close Video">
+                            <div class="stop-btn"><div class="stop-icon"></div></div>
+                        </div>
+
+                        <img src="{% static 'image/carouselFig01.webp' %}" id="video-cover-img" alt="Video Cover" fetchpriority="high">
+
+                        <video id="inline-video" preload="none" playsinline>
+                            <source src="{% static 'videos/AGRP_introV1.mp4' %}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="carousel-caption d-none d-md-block" id="video-caption-container">
+                        <h4 class="carousel-text" style="color: black !important; text-shadow: 0px 0px 0px rgba(0,0,0,0.6);">Introduction to AGRP Platform</h4>
+                        <p class="carousel-text" style="color: #2F4F4F !important; text-shadow: 0px 0px 0px rgba(0,0,0,0.6);">Click the button to watch the intro video.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig02.webp' %}" class="fixed-height-img d-block w-100" alt="Genome Resources" loading="lazy">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig03.webp' %}" class="fixed-height-img d-block w-100" alt="Comparative Genomics" loading="lazy">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="carousel-text" style="color: white !important;">Advanced Bioinformatics Tools</h5>
+                        <p class="carousel-text" style="color: #f0f0f0 !important;">Processing complex genomic data with efficiency.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig04.webp' %}" class="fixed-height-img d-block w-100" alt="Ancestral Karyotype" loading="lazy">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig05.webp' %}" class="fixed-height-img d-block w-100" alt="Family" loading="lazy">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig06.webp' %}" class="fixed-height-img d-block w-100" alt="Aster-DB" loading="lazy">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <section class="section-container">
+        <div class="container">
+            <div class="content-box-wrapper" style="border-top: 3px solid #e67e22;">
+                <div class="text-center">
+                    <h2 class="section-title">Overview of AGRP Resources</h2>
+                    <p class="section-subtitle">Integrated collection and advanced processing of Asteraceae multi-omics data</p>
+                </div>
+                <hr class="section-divider">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 justify-content-center">
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Genomes.webp' %}" alt="Genomes" loading="lazy"></div><div class="stat-number counter" data-target="156">0</div><a href="{% url 'genome_url' %}" class="stat-label-link">Genomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/GOAnnotations.webp' %}" alt="GO Annotations" loading="lazy"></div><div class="stat-number counter" data-target="23959751">0</div><a href="{% url 'interproscan_index_url' %}" class="stat-label-link">GO annotations</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/KEGGAnnotations.webp' %}" alt="KEGG Annotations" loading="lazy"></div><div class="stat-number counter" data-target="921857">0</div><a href="{% url 'kegg_index_url' %}" class="stat-label-link">KEGG annotations</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/iTAK.webp' %}" alt="iTAK" loading="lazy"></div><div class="stat-number counter" data-target="262108">0</div><a href="{% url 'TF_genes_index_url' %}" class="stat-label-link">Regulatory proteins</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/TE.webp' %}" alt="TE" loading="lazy"></div><div class="stat-number counter" data-target="187648748">0</div><a href="{% url 'TE_index_url1' %}" class="stat-label-link">TE</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/GeneDuplication.webp' %}" alt="Gene Duplication" loading="lazy"></div><div class="stat-number counter" data-target="5575472">0</div><a href="{% url 'dupgen_finders_url' %}" class="stat-label-link">Gene Duplication</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/m6a.webp' %}" alt="m6A" loading="lazy"></div><div class="stat-number counter" data-target="2219">0</div><a href="{% url 'm6A_gene_url' %}" class="stat-label-link">N6-methyladenosine</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/SyntenicBlocks.webp' %}" alt="Syntenic Blocks" loading="lazy"></div><div class="stat-number counter" data-target="15554511">0</div><a href="{% url 'collinear_kaks_url' %}" class="stat-label-link">Syntenic Blocks</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/SyntenicDotplots.webp' %}" alt="Syntenic Dotplots" loading="lazy"></div><div class="stat-number counter" data-target="10088">0</div><a href="{% url 'dotplot_url' %}" class="stat-label-link">Synteny Dotplots</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/MultiAlignments.webp' %}" alt="Multi Alignments" loading="lazy"></div><div class="stat-number counter" data-target="1450041">0</div><a href="{% url 'hierarchical_alignments_Hean_url' %}" class="stat-label-link">Multi-Alignments</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Evogenes.webp' %}" alt="Evogenes" loading="lazy"></div><div class="stat-number counter" data-target="22099581">0</div><a href="{% url 'event_gene_url' %}" class="stat-label-link">Evogenes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/KaryotypeAnim.webp' %}" alt="Karyotype Anim." loading="lazy"></div><div class="stat-number counter" data-target="58">0</div><a href="{% url 'karyotype_url' %}" class="stat-label-link">Karyotype Anim.</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/AncestralGenome.webp' %}" alt="Ancestral Genome" loading="lazy"></div><div class="stat-number counter" data-target="29">0</div><a href="{% url 'ancestral_chromosome_url' %}" class="stat-label-link">Ancestral Genome</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Orthgroups.webp' %}" alt="Orthogroups" loading="lazy"></div><div class="stat-number counter" data-target="104001">0</div><a href="{% url 'orthologous_url' %}" class="stat-label-link">Orthogroups</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/GeneFamilies.webp' %}" alt="Gene Families" loading="lazy"></div><div class="stat-number counter" data-target="180">0</div><a href="{% url 'function_gene_url' %}" class="stat-label-link">Gene Families</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/RubberGenes.webp' %}" alt="Rubber Genes" loading="lazy"></div><div class="stat-number counter" data-target="5059">0</div><a href="{% url 'function_gene_url' %}" class="stat-label-link">Rubber Genes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/InulinGenes.webp' %}" alt="Inulin Genes" loading="lazy"></div><div class="stat-number counter" data-target="1079">0</div><a href="{% url 'function_gene_url' %}" class="stat-label-link">Inulin Genes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/SpeciesInfo.webp' %}" alt="Species Info" loading="lazy"></div><div class="stat-number counter" data-target="82">0</div><a href="{% url 'ecology_url' %}" class="stat-label-link">Species Info</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Transcriptomes.webp' %}" alt="Transcriptomes" loading="lazy"></div><div class="stat-number counter" data-target="6734">0</div><a href="{% url 'geneExpression_url' %}" class="stat-label-link">Transcriptomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Metabolomes.webp' %}" alt="Metabolomes" loading="lazy"></div><div class="stat-number counter" data-target="17541">0</div><a href="{% url 'metabolomics_plant_url' %}" class="stat-label-link">Metabolomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/FloralVolatiles.webp' %}" alt="Floral Volatiles" loading="lazy"></div><div class="stat-number counter" data-target="812">0</div><a href="{% url 'metabolomics_scent_url' %}" class="stat-label-link">Floral Volatiles</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/PanGenomes.webp' %}" alt="Pan Genomes" loading="lazy"></div><div class="stat-number counter" data-target="952">0</div><a href="{% url 'pan_genome_url' %}" class="stat-label-link">Pan-Genomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/ExtDatabases.webp' %}" alt="Ext Databases" loading="lazy"></div><div class="stat-number counter" data-target="56">0</div><a href="{% url 'database_url' %}" class="stat-label-link">Ext. Databases</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Literatures.webp' %}" alt="Literatures" loading="lazy"></div><div class="stat-number counter" data-target="30416">0</div><a href="{% url 'references_url' %}" class="stat-label-link">Literatures</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><img src="{% static 'image/Tools.webp' %}" alt="Tools" loading="lazy"></div><div class="stat-number counter" data-target="62">0</div><a href="{% url 'all_tools_url' %}" class="stat-label-link">Tools</a></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flower-tools-section">
+        <div class="container">
+            <div class="content-box-wrapper" style="border-top: 3px solid #e67e22;">
+                <div class="text-center">
+                    <h2 class="section-title">Web-based Tools</h2>
+                    <p class="section-subtitle">Comprehensive Integrated Bio-Information Processing Center (Total: 62 Tools)</p>
+                </div>
+                <hr class="section-divider">
+
+                <div class="tools-grid-container">
+                    <div class="tool-group-card tg-1">
+                        <div class="group-header">
+                            <div class="group-icon">
+                                <img src="{% static 'image/sequence_similarity_and_homology.webp' %}" alt="Sequence Similarity">
+                            </div>
+                            <h4>Sequence similarity comparison and homology visualization</h4>
+                        </div>
+                        <div class="tools-flex-wrap">
+                            <a href="{% url 'blast_url' %}" class="modern-tool-btn">Blast</a>
+                            <a href="{% url 'diamond_url' %}" class="modern-tool-btn">Diamond</a>
+                            <a href="{% url 'jbrowse_url' %}" class="modern-tool-btn">JBrowse</a>
+                            <a href="{% url 'circos_url' %}" class="modern-tool-btn">ShinyCircos</a>
+                            <a href="{% url 'sequence_alignment_url' %}" class="modern-tool-btn">Seq-alignment</a>
+                            <a href="{% url 'synvisio_url' %}" class="modern-tool-btn">Syntenic-vis</a>
+                            <a href="{% url 'zu_blast_dotplot_url' %}" class="modern-tool-btn">B-Dotter</a>
+                            <a href="{% url 'zu_block_dotplot_url' %}" class="modern-tool-btn">BB-Dotter</a>
+                            <a href="{% url 'zu_ks_dotplot_url' %}" class="modern-tool-btn">BK-Dotter</a>
+                            <a href="{% url 'ks_distriplot_url' %}" class="modern-tool-btn">Ks-Distriplot</a>
+                            <a href="{% url 'cds2geno_dotplot_url' %}" class="modern-tool-btn">CDS2geno-Dot</a>
+                            <a href="{% url 'paraat_url' %}" class="modern-tool-btn">ParaAT</a>
+                        </div>
+                    </div>
+
+                    <div class="tool-group-card tg-2">
+                        <div class="group-header">
+                            <div class="group-icon">
+                                <img src="{% static 'image/gene_synten.webp' %}" alt="Gene Synteny">
+                            </div>
+                            <h4>Inference and analysis of gene synteny</h4>
+                        </div>
+                        <div class="tools-flex-wrap">
+                            <a href="{% url 'mga_circos_url' %}" class="modern-tool-btn">MGA-circos</a>
+                            <a href="{% url 'zu_retention_url' %}" class="modern-tool-btn">Paleo-gene_RI</a>
+                            <a href="{% url 'zu_loss_url' %}" class="modern-tool-btn">Paleo-gene_RII</a>
+                            <a href="{% url 'collinearity_generator_url' %}" class="modern-tool-btn">Paleo-gene ID</a>
+                            <a href="{% url 'zu_correspondence_mc_url' %}" class="modern-tool-btn">Correspondence</a>
+                            <a href="{% url 'zu_ks_calculate_url' %}" class="modern-tool-btn">KaKs calculate</a>
+                            <a href="{% url 'GC_calculation_url' %}" class="modern-tool-btn">GC-calculation</a>
+                            <a href="{% url 'zu_pindex_url' %}" class="modern-tool-btn">P-index-calc</a>
+                            <a href="{% url 'wgdi_blockinfo_url' %}" class="modern-tool-btn">Block_info</a>
+                            <a href="{% url 'colinearscan_url' %}" class="modern-tool-btn">ColinearScan</a>
+                            <a href="{% url 'wgdimcs_url' %}" class="modern-tool-btn">Block_run</a>
+                            <a href="{% url 'wgdikaks_url' %}" class="modern-tool-btn">NG-KaKs-Cal</a>
+                            <a href="{% url 'mcscanx_url' %}" class="modern-tool-btn">MCScanX</a>
+                            <a href="{% url 'kaks_calculator_url' %}" class="modern-tool-btn">KaKs calculator</a>
+                            <a href="{% url 'GenomeMountRateCalculator_url' %}" class="modern-tool-btn">Mount Rate</a>
+                        </div>
+                    </div>
+
+                    <div class="tool-group-card tg-3">
+                        <div class="group-header">
+                            <div class="group-icon">
+                                <img src="{% static 'image/gene_structure.webp' %}" alt="Gene Structure">
+                            </div>
+                            <h4>Gene structure and visualization</h4>
+                        </div>
+                        <div class="tools-flex-wrap">
+                            <a href="{% url 'hmmer_url' %}" class="modern-tool-btn">Hmmer</a>
+                            <a href="{% url 'interproscan_url' %}" class="modern-tool-btn">InterProScan</a>
+                            <a href="{% url 'meme_suit_url' %}" class="modern-tool-btn">MEME Suite</a>
+                            <a href="{% url 'cpgfinder_url' %}" class="modern-tool-btn">Cpgfinder</a>
+                            <a href="{% url 'draw_gene_structure_url' %}" class="modern-tool-btn">Gene structure</a>
+                            <a href="{% url 'pfam_url' %}" class="modern-tool-btn">Pfam</a>
+                            <a href="{% url 'gsds_url' %}" class="modern-tool-btn">GSDS</a>
+                            <a href="{% url 'codonw_url' %}" class="modern-tool-btn">CodonW</a>
+                            <a href="{% url 'GF_ks_circos_url' %}" class="modern-tool-btn">GF-Circos</a>
+                            <a href="{% url 'sequence_fetch_url' %}" class="modern-tool-btn">Seq-fetch</a>
+                            <a href="{% url 'dupgen_finder_url' %}" class="modern-tool-btn">Dup_gen finder</a>
+                            <a href="{% url 'iTAK_url' %}" class="modern-tool-btn">TransFam ID</a>
+                        </div>
+                    </div>
+
+                    <div class="tool-group-card tg-4">
+                        <div class="group-header">
+                            <div class="group-icon">
+                                <img src="{% static 'image/phylogenetic_and_expression.webp' %}" alt="Phylogenetics">
+                            </div>
+                            <h4>Phylogenetic and expression analysis of genes</h4>
+                        </div>
+                        <div class="tools-flex-wrap">
+                            <a href="{% url 'lollipop_chart_url' %}" class="modern-tool-btn">Lollipop</a>
+                            <a href="{% url 'iq_tree_url' %}" class="modern-tool-btn">IQ-Tree</a>
+                            <a href="{% url 'draw_heatmap_url' %}" class="modern-tool-btn">Heatmap</a>
+                            <a href="{% url 'fasttree_url' %}" class="modern-tool-btn">FastTree</a>
+                            <a href="{% url 'draw_list_tree_url' %}" class="modern-tool-btn">Draw_list_trees</a>
+                            <a href="{% url 'subtree_extractor_url' %}" class="modern-tool-btn">Subtree-extr</a>
+                            <a href="{% url 'species_classification_url' %}" class="modern-tool-btn" style="grid-column: 1 / -1;">Species Class</a>
+                        </div>
+                    </div>
+
+                    <div class="tool-group-card tg-5">
+                        <div class="group-header">
+                            <div class="group-icon">
+                                <img src="{% static 'image/calculation_tools.webp' %}" alt="Calculation">
+                            </div>
+                            <h4>Calculation Tools</h4>
+                        </div>
+                        <div class="tools-flex-wrap">
+                            <a href="{% url 'bdi_finder_url' %}" class="modern-tool-btn">BDI-finder</a>
+                            <a href="{% url 'bdi_extractor_url' %}" class="modern-tool-btn">BDI-extractor</a>
+                            <a href="{% url 'bdi_combiner_url' %}" class="modern-tool-btn">BDI-combiner</a>
+                            <a href="{% url 'bdi_deduplicator_url' %}" class="modern-tool-btn">BDI-dedup</a>
+                            <a href="{% url 'sequence_screening_url' %}" class="modern-tool-btn">SS-extractor</a>
+                            <a href="{% url 'saf_converter_url' %}" class="modern-tool-btn">SAF-converter</a>
+                            <a href="{% url 'bbm_extraction_url' %}" class="modern-tool-btn">BBM-extraction</a>
+                            <a href="{% url 'deal_star_url' %}" class="modern-tool-btn">Deal_stars</a>
+                            <a href="{% url 'block_number_count_url' %}" class="modern-tool-btn">Block count</a>
+                            <a href="{% url 'geme_cds_exon_counter_url' %}" class="modern-tool-btn">Exon_counter</a>
+                            <a href="{% url 'blast_match_url' %}" class="modern-tool-btn">Blast match</a>
+                            <a href="{% url 'chromosome_length_url' %}" class="modern-tool-btn">Chr Length</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container agrp-pipelines-section">
+        <div class="container">
+            <div class="content-box-wrapper" style="border-top: 3px solid #e67e22;">
+                <div class="text-center">
+                    <h2 class="section-title">AGRP analysis pipelines</h2>
+                    <p class="section-subtitle">Standardized & High-throughput Workflows for Multi-omics Analysis</p>
+                </div>
+                <hr class="section-divider">
+
+                <div class="pipelines-grid">
+                    <a href="{% url 'pipeline_wgd_identification_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-diagram-2-fill"></i></div>
+                            <h4 class="pipeline-title">WGD Identification</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Phylogenetic analysis (IQ-Tree) → Synteny alignment (ColinearScan) → Dotplots (B-Dotter) → Synteny blocks → Polyploidization events → Ks distribution (Ks-Distriplot).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_aags_reconstruction_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-bricks"></i></div>
+                            <h4 class="pipeline-title">AAGs Reconstruction</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            WGDs determination → Anchored gene pairs (Blast) → SBs identification → Largest contiguous regions → Inferring CARs → Construct Ancestral Genomes (MGA-circos).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_trait_associated_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-flower1"></i></div>
+                            <h4 class="pipeline-title">Trait-associated Gene Origins</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Homologous alignment (Hmmer) → Gene family members → Syntenic relationships → Expansion patterns (GF-Circos) → Gene structure → Expression pattern (Heatmap).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_go_annotation_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-bookmarks-fill"></i></div>
+                            <h4 class="pipeline-title">GO Annotation</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Data standardization (Deal_stars) → Gene function GO Annotation (InterproScan).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_kegg_annotation_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-signpost-split-fill"></i></div>
+                            <h4 class="pipeline-title">KEGG Annotation</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Data standardization (Deal_stars) → Gene function KEGG Annotation (KofamKOALA).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_identification_of_rps_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-gear-wide-connected"></i></div>
+                            <h4 class="pipeline-title">Identification of RPs</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Process protein data into a standard format (Deal_stars) → Annotation regulatory proteins (iTAK).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_m6a_identification_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-droplet-half"></i></div>
+                            <h4 class="pipeline-title">m6A Identification</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Process protein data into a standard format (Deal_stars) → Annotate gene domain information and extract m6A (Pfam).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_gene_duplication_types_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-layers-fill"></i></div>
+                            <h4 class="pipeline-title">Gene Duplication Types (DTs)</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            Process protein data into a standard format (Deal_stars) → Identify gene duplication types (DupGen_finder).
+                        </div>
+                    </a>
+
+                    <a href="{% url 'pipeline_transposable_elements_url' %}" class="pipeline-card">
+                        <div class="pipeline-header">
+                            <div class="pipeline-icon-box"><i class="bi bi-virus"></i></div>
+                            <h4 class="pipeline-title">Transposable Elements (TEs)</h4>
+                        </div>
+                        <div class="pipeline-steps">
+                            De novo prediction (RepeatModeler) → Classifying transposons (DeepTE) → Mask repeat sequences (RepeatMasker).
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="genome-list-section">
+        <div class="container">
+            <div class="content-box-wrapper" style="border-top: 3px solid #e67e22;">
+                <div class="text-center">
+                    <h2 class="section-title">Asteraceae Genome Hub</h2>
+                    <p class="section-subtitle">Comprehensive list of 156 published genomes and annotations</p>
+                </div>
+                <hr class="section-divider">
+
+                <div class="table-responsive">
+                    <table class="genome-table table-bordered" id="genomeTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Genus</th>
+                                <th>Speciese</th>
+                                <th>Genome Size</th>
+                                <th>Chr.</th>
+                                <th>Assembly Level</th>
+                                <th>Data Source</th>
+                                <th>Release Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="genomeTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <nav aria-label="Genome Table Pagination">
+                        <ul class="pagination custom-pagination" id="genomePagination"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container timeline-section-wrapper">
+        <div class="agrp-card" >
+            <div class="agrp-card-header"><h5><span class="header-icon">✨</span> Platform Update Log</h5></div>
+            <div class="card-body p-0">
+                <div class="timeline-scroll-container">
+                    <div class="timeline-inner-wrapper">
+                        <div class="timeline-axis"></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2020</div></div>
+                        <div class="timeline-node"><div class="t-date">2020.03</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Mar 01, 2020</div><div class="t-body">Project <strong>AGRP</strong> initiated at NCST Wang Lab.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2020.12</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Dec 05, 2020</div><div class="t-body">Platform Alpha version released for internal testing.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2021</div></div>
+                        <div class="timeline-node"><div class="t-date">2021.03</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Mar 22, 2021</div><div class="t-body">First batch of Asteraceae genomes (<i>Lactuca</i> & <i>Helianthus</i>) uploaded.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2021.10</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Oct 10, 2021</div><div class="t-body">Basic <strong>BLAST</strong> server online for homology search.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2022</div></div>
+                        <div class="timeline-node"><div class="t-date">2022.05</div><div class="t-dot"></div><div class="t-content"><div class="t-header">May 15, 2022</div><div class="t-body">Released <strong>Aster-Orthologous</strong> search for comparative genomics.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2022.11</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Nov 30, 2022</div><div class="t-body">Added <strong>Transposable Elements (TE)</strong> annotation browser.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2023</div></div>
+                        <div class="timeline-node"><div class="t-date">2023.02</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Feb 18, 2023</div><div class="t-body">AGRP Beta launched with enhanced gene family identification.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2023.05</div><div class="t-dot"></div><div class="t-content"><div class="t-header">May 15, 2023</div><div class="t-body">Integrated <strong>WGD (Whole Genome Duplication)</strong> analysis pipeline.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2023.09</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Sep 12, 2023</div><div class="t-body">Published tools for <strong>Heat Shock Response</strong> and ancestral genome reshuffling analysis.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2024</div></div>
+                        <div class="timeline-node"><div class="t-date">2024.01</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jan 20, 2024</div><div class="t-body">Added <strong>Floral Scent</strong> volatile compound database for ornamental species.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2024.06</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jun 05, 2024</div><div class="t-body">Major UI overhaul and JBrowse 2 integration for smoother visualization.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2024.11</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Nov 10, 2024</div><div class="t-body">Optimized <strong>Synteny Analysis</strong> tools for faster block detection.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2025</div></div>
+                        <div class="timeline-node"><div class="t-date">2025.04</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Apr 20, 2025</div><div class="t-body">Genomics update: Total number of hosted genomes exceeded 160.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2025.08</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Aug 15, 2025</div><div class="t-body">Database expansion: Added <strong>m6A modification</strong> sites for major crops like <i>H. annuus</i>.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2025.12</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Dec 01, 2025</div><div class="t-body"><strong>Multi-Omics</strong> module released, integrating metabolome data for 15 species.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2026</div></div>
+                        <div class="timeline-node"><div class="t-date">2026.01</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jan 10, 2026</div><div class="t-body">Added <strong>SequenceServer</strong> for online BLAST alignment.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2026.07</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jul 01, 2026</div><div class="t-body"><span class="badge bg-primary me-1">New</span>Added interactive gene visualization and SVG export to <strong>Ancestral Gene Tracing</strong>.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2026.10</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Oct 30, 2026</div><div class="t-body"><span class="badge bg-danger me-1">Hot</span>Fixed gene search for 50 species in <strong>JBrowse</strong>, query submission in <strong>AGRP-Switch</strong>, and file downloads in <strong>Genome</strong>.</div></div></div>
+                        <div class="timeline-end-spacer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container cite-section-container">
+        <div class="agrp-card" >
+            <div class="agrp-card-header"><h5><span class="header-icon">📝</span> How to Cite</h5></div>
+            <div class="cite-card-body">
+                <p class="fw-bold mb-4" style="color: #555;">If you use AGRP in your research, please cite the following papers:</p>
+                <ul class="custom-cite-list">
+                    <li class="custom-cite-item">
+                        <div class="cite-icon-wrapper"><i class="bi bi-pen"></i></div>
+                        <div class="cite-text-block">Kong X M, Zhang Y, Wang Z Y, et al. Two-step model of paleohexaploidy, ancestral genome reshuffling and plasticity of heat shock response in Asteraceae. <strong>Horticulture Research</strong>, 2023, 10(6): uhad073.</div>
+                    </li>
+                    <li class="custom-cite-item">
+                        <div class="cite-icon-wrapper"><i class="bi bi-journal-bookmark"></i></div>
+                        <div class="cite-text-block">An integrated platform facilitating comparative and functional genomic discoveries in the Asteraceae. (2026). [in revision].</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container reference-section-container">
+        <div class="agrp-card" >
+            <div class="agrp-card-header"><h5><span class="header-icon">📚</span> Literature Citing Our Work</h5></div>
+            <div class="reference-scroll-mask">
+                <div class="reference-scroll-wrapper">
+                    <ul class="reference-list">
+                        <li class="reference-item">
+                            <span class="apa-author">Li X, Zhang L, Wei X, et al. (2024).</span>
+                            <span class="apa-title">Polyploidization: a biological force that enhances stress resistance.</span>
+                            International Journal of Molecular Sciences, 25(4): 1957.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Liu Z, Shen S, Li C, et al. (2025).</span>
+                            <span class="apa-title">SoIR: a comprehensive Solanaceae information resource for comparative and functional genomic study.</span>
+                            Nucleic Acids Research, 53(D1): D1623-D1632.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Hu Y, Wang J, Liu L, et al. (2025).</span>
+                            <span class="apa-title">Evolutionary history of magnoliid genomes and benzylisoquinoline alkaloid biosynthesis.</span>
+                            Nature Communications, 16(1): 4039.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Hou Z, Yang S, He W, et al. (2024).</span>
+                            <span class="apa-title">The haplotype‐resolved genome of diploid Chrysanthemum indicum unveils new acacetin synthases genes and their evolutionary history.</span>
+                            The Plant Journal, 119(3): 1336-1352.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Bi C, Sun N, Hou Z, et al. (2025).</span>
+                            <span class="apa-title">A gap-free reference genome of Populus deltoides provides insights into karyotype evolution of Salicaceae.</span>
+                            BMC Biology, 23(1): 201.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Zhang C, Huang C, Zhu K, et al. (2025).</span>
+                            <span class="apa-title">Functional Conservation and Redundancy of Duplicated AGAMOUS Homologs in Regulating Floral Organ Development of Tagetes erecta.</span>
+                            Agronomy, 15(10): 2379.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Chen B Z, Li D W, Luo K Y, et al. (2024).</span>
+                            <span class="apa-title">Chromosome-level assembly of Lindenbergia philippensis and comparative genomic analyses shed light on genome evolution in Lamiales.</span>
+                            Frontiers in Plant Science, 15: 1444234.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Chen B Z, Yang Z J, Yang L, et al. (2024).</span>
+                            <span class="apa-title">Chromosome-scale genome assembly of Codonopsis pilosula and comparative genomic analyses shed light on its genome evolution.</span>
+                            Frontiers in Plant Science, 15: 1469375.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Liao H, Zhong L, He Y, et al. (2025).</span>
+                            <span class="apa-title">Construction of Ancestral Chromosomes in Gymnosperms and the Application in Comparative Genomic Analysis.</span>
+                            Plants, 14(15): 2361.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">He T, Yi G, Li J, et al. (2023).</span>
+                            <span class="apa-title">Dietary supplementation of tannic acid promotes performance of beef cattle via alleviating liver lipid peroxidation and improving glucose metabolism and rumen fermentation.</span>
+                            Antioxidants, 12(9): 1774.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Ye H, Liu H, Han M, et al. (2024).</span>
+                            <span class="apa-title">The genome-wide identification, characterization, and expression profiles of the NADPH oxidase (NOX) gene family under drought and salt stress in Opisthopappus taihangensis (Asteraceae).</span>
+                            Agronomy, 14(4): 653.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Yu Z, Lei T, Yi X, et al. (2025).</span>
+                            <span class="apa-title">LGRPv2: A high‐value platform for the advancement of Fabaceae genomics.</span>
+                            Plant Biotechnology Journal.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Xu L, Miao T, Cui Z, et al. (2026).</span>
+                            <span class="apa-title">Synteny‐based comparative pan‐genome reveals a male‐specific FT gene underlying flowering time dimorphism in kiwifruit.</span>
+                            The Plant Journal, 125(1): e70664.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Zhao G, Jiang F, Hu W, et al. (2025).</span>
+                            <span class="apa-title">Improved Longan Genome Assembly Reveals Insights Into Flowering Mechanisms.</span>
+                            Plant Biotechnology Journal.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Wang J, Ding Y, Li Y, et al. (2025).</span>
+                            <span class="apa-title">Allopolyploidization events and immense paleogenome reshuffling underlying the diversification of plants and secondary metabolites in Oleaceae.</span>
+                            Journal of Systematics and Evolution, 63(2): 208-228.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Pei Y, Zhao X, Du W, et al. (2025).</span>
+                            <span class="apa-title">Synthetic allopolyploidy unveils hybridization‐driven transcriptional reprogramming underlying thermal adaptation in Cucumis.</span>
+                            The Plant Journal, 124(1): e70507.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Yu Z, Li Y, Song T, et al. (2025).</span>
+                            <span class="apa-title">OGRP: A comprehensive bioinformatics platform for the efficient empowerment of Oleaceae genomics research.</span>
+                            Horticultural Plant Journal, 11(3): 1308-1325.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Shen S, Meng Z, Garcia P, et al. (2025).</span>
+                            <span class="apa-title">Ancestral chromosome karyotype construction and large-scale analysis of CAM biosynthesis genes in ice plant and representative plants.</span>
+                            Vegetable Research, 5(1).
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Zeng H, Jiang Z, Li H, et al. (2025).</span>
+                            <span class="apa-title">Identification of HSF genes related to salt stress response and functional analysis of BpHSF16 in Bergenia purpurascens.</span>
+                            Genetic Resources and Crop Evolution, 72(8): 10513-10527.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Jin J, Liu Y, Su X, et al. (2025).</span>
+                            <span class="apa-title">Genome Size and Characteristics Analysis of Xanthopappus subacaulis Based on Flow Cytometry and Genome Survey.</span>
+                            Chinese Bulletin of Botany, 60(6): 888–900.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Bañales I, Mehrem S L, Almeida Landman S, et al. (2025).</span>
+                            <span class="apa-title">A lettuce receptor-like kinase recognizes the highly conserved heptapeptide motif within microbial NEP1-like proteins.</span>
+                            bioRxiv: 2025.11. 10.687460.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Feng T, McKibben M, Lovell J, et al. (2025).</span>
+                            <span class="apa-title">Phylogenomic synteny analysis tracks conserved ancient polyploid-derived triplicated genomic blocks across Asteraceae genomes.</span>
+                            bioRxiv: 2025.01. 08.631874.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Moore-Pollard E R, Ellestad P A, Cliver B R, et al. (2025).</span>
+                            <span class="apa-title">Gene duplication dynamics and regulatory evolution shape the diversification of Asteraceae.</span>
+                            bioRxiv: 2025.10. 29.685401.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">JIN J R, LIU Y P, Su X, et al. (2025).</span>
+                            <span class="apa-title">Genome Size and Characteristics Analysis of Xanthopappus subacaulis Based on Flow Cytometry and Genome Survey.</span>
+                            Chinese Bulletin of Botany: 1-0.
+                        </li>
+                        <li class="reference-item">
+                            <span class="apa-author">Golubova D. (2025).</span>
+                            <span class="apa-title">Identification and biosynthesis of bioactive triterpenes from Calendula officinalis.</span>
+                            University of East Anglia.
+                        </li>
+                    </ul>
+                    <div class="reference-spacer"></div>
+                </div>
+            </div>
+            <div class="reference-footer-note">Note: These research papers (25) have cited or utilized the research results and genomic resources of this platform.</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function initUpdateTimeline() {
+        const scroller = document.querySelector('.timeline-scroll-container');
+        if (!scroller) return;
+        const nodes = Array.from(scroller.querySelectorAll('.timeline-node'));
+        const entries = nodes.map(node => ({
+            node, dot: node.querySelector('.t-dot'), popup: node.querySelector('.t-content'),
+            body: node.querySelector('.t-body'), title: node.querySelector('.t-header')
+        }));
+        let pinned = null;
+        let visible = null;
+        let dismissTimer = null;
+        let gesture = null;
+        let ignoreDragClick = false;
+        let frame = 0;
+        const originalUserSelect = scroller.style.userSelect;
+
+        function positionPopup() {
+            if (!visible) return;
+            const { node, dot, popup } = visible;
+            const rect = dot.getBoundingClientRect();
+            const viewport = document.documentElement;
+            const above = rect.top - 24;
+            const below = viewport.clientHeight - rect.bottom - 24;
+            let placeAbove = node.matches(':nth-child(even)');
+            if ((placeAbove ? above : below) < 120) placeAbove = above > below;
+            popup.style.maxHeight = Math.max(80, placeAbove ? above : below) + 'px';
+            const width = popup.offsetWidth;
+            const height = popup.offsetHeight;
+            popup.style.left = Math.max(12, Math.min(rect.left + rect.width / 2 - width / 2, viewport.clientWidth - width - 12)) + 'px';
+            popup.style.top = Math.max(12, Math.min(placeAbove ? rect.top - 16 - height : rect.bottom + 16, viewport.clientHeight - height - 12)) + 'px';
+        }
+
+        function close(restoreFocus = false) {
+            const previous = pinned || visible;
+            clearTimeout(dismissTimer);
+            dismissTimer = null;
+            pinned = null;
+            visible = null;
+            entries.forEach(entry => {
+                entry.node.classList.remove('is-pinned');
+                entry.dot.setAttribute('aria-expanded', 'false');
+                entry.popup.style.cssText = entry.popupStyle;
+                entry.body.style.cssText = entry.bodyStyle;
+                entry.popup.style.transition = 'none';
+                entry.popup.style.visibility = 'hidden';
+                entry.popup.style.opacity = '0';
+                entry.popup.style.pointerEvents = 'none';
+            });
+            if (restoreFocus && previous) previous.dot.focus({ preventScroll: true });
+        }
+
+        function open(entry, pin = false) {
+            close();
+            visible = entry;
+            if (pin) pinned = entry;
+            entry.node.classList.toggle('is-pinned', pin);
+            entry.dot.setAttribute('aria-expanded', 'true');
+            Object.assign(entry.popup.style, {
+                position: 'fixed', left: '0', top: '0', right: 'auto', bottom: 'auto',
+                transform: 'none', transition: 'none', opacity: '1', visibility: 'visible',
+                pointerEvents: 'auto', display: 'flex', flexDirection: 'column',
+                maxWidth: 'calc(100vw - 24px)', zIndex: '1050'
+            });
+            Object.assign(entry.body.style, { minHeight: '0', overflowY: 'auto', overscrollBehavior: 'contain' });
+            positionPopup();
+        }
+
+        function scheduleDismiss() {
+            if (pinned || !visible || dismissTimer !== null) return;
+            const entry = visible;
+            dismissTimer = setTimeout(() => {
+                dismissTimer = null;
+                if (!pinned && visible === entry) close();
+            }, 250);
+        }
+
+        function keepOpen() {
+            clearTimeout(dismissTimer);
+            dismissTimer = null;
+        }
+
+        function inHoverBridge(event) {
+            const node = visible.node.getBoundingClientRect();
+            const popup = visible.popup.getBoundingClientRect();
+            const below = popup.top >= node.bottom;
+            const start = below ? node.bottom : node.top;
+            const end = below ? popup.top : popup.bottom;
+            if (event.clientY < Math.min(start, end) || event.clientY > Math.max(start, end)) return false;
+            const progress = end === start ? 1 : (event.clientY - start) / (end - start);
+            const left = node.left + (popup.left - node.left) * progress;
+            const right = node.right + (popup.right - node.right) * progress;
+            return event.clientX >= left && event.clientX <= right;
+        }
+
+        entries.forEach((entry, index) => {
+            const { node, dot, popup, body, title } = entry;
+            entry.popupStyle = popup.style.cssText;
+            entry.bodyStyle = body.style.cssText;
+            popup.id = 'timeline-update-' + index;
+            title.id = popup.id + '-title';
+            dot.tabIndex = 0;
+            dot.setAttribute('role', 'button');
+            dot.setAttribute('aria-label', 'Read update: ' + title.textContent.trim());
+            dot.setAttribute('aria-controls', popup.id);
+            dot.setAttribute('aria-expanded', 'false');
+            body.tabIndex = 0;
+            body.setAttribute('role', 'region');
+            body.setAttribute('aria-labelledby', title.id);
+            dot.addEventListener('click', () => {
+                if (pinned === entry) close();
+                else open(entry, true);
+            });
+            dot.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    dot.click();
+                }
+            });
+            node.addEventListener('pointerenter', event => {
+                if (event.pointerType !== 'mouse' || pinned || gesture) return;
+                if (visible !== entry) open(entry);
+                keepOpen();
+            });
+            node.addEventListener('pointerleave', () => {
+                if (!pinned && visible === entry) scheduleDismiss();
+            });
+            popup.addEventListener('pointerenter', keepOpen);
+            popup.addEventListener('pointerleave', scheduleDismiss);
+        });
+
+        document.addEventListener('pointermove', event => {
+            if (event.pointerType !== 'mouse' || pinned || !visible || gesture) return;
+            if (visible.node.contains(event.target) || inHoverBridge(event)) keepOpen();
+            else scheduleDismiss();
+        });
+
+        scroller.addEventListener('pointerdown', event => {
+            if (event.isPrimary && event.button === 0) ignoreDragClick = false;
+            if (event.pointerType !== 'mouse' || !event.isPrimary || event.button !== 0 || gesture || event.target.closest('.t-content')) return;
+            gesture = { id: event.pointerId, x: event.clientX, left: scroller.scrollLeft, dragging: false };
+        });
+        scroller.addEventListener('pointermove', event => {
+            if (!gesture || gesture.id !== event.pointerId) return;
+            const delta = event.clientX - gesture.x;
+            if (!gesture.dragging && Math.abs(delta) < 6) return;
+            if (!gesture.dragging) {
+                gesture.dragging = true;
+                scroller.setPointerCapture(event.pointerId);
+                scroller.classList.add('is-dragging');
+                scroller.style.userSelect = 'none';
+                if (!pinned) close();
+            }
+            event.preventDefault();
+            scroller.scrollLeft = gesture.left - delta;
+        });
+        function endGesture(event) {
+            if (!gesture || (event && event.pointerId !== undefined && event.pointerId !== gesture.id)) return;
+            const previous = gesture;
+            gesture = null;
+            ignoreDragClick = previous.dragging;
+            scroller.classList.remove('is-dragging');
+            scroller.style.userSelect = originalUserSelect;
+            if (scroller.hasPointerCapture(previous.id)) scroller.releasePointerCapture(previous.id);
+        }
+        window.addEventListener('pointerup', endGesture);
+        window.addEventListener('pointercancel', endGesture);
+        scroller.addEventListener('lostpointercapture', endGesture);
+        window.addEventListener('blur', () => endGesture());
+        scroller.addEventListener('click', event => {
+            if (ignoreDragClick && event.detail !== 0) {
+                ignoreDragClick = false;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }, true);
+        document.addEventListener('click', event => {
+            if (!scroller.contains(event.target)) close();
+        });
+        scroller.addEventListener('keydown', event => {
+            if (event.key === 'Escape') { event.preventDefault(); close(true); }
+        });
+        function schedulePosition() {
+            if (frame) return;
+            frame = requestAnimationFrame(() => { frame = 0; positionPopup(); });
+        }
+        window.addEventListener('scroll', schedulePosition, { passive: true, capture: true });
+        window.addEventListener('resize', schedulePosition);
+    }
+    document.addEventListener('DOMContentLoaded', initUpdateTimeline);
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('inline-video');
+        const startBtnWrapper = document.getElementById('start-video-btn');
+        const stopBtnWrapper = document.getElementById('stop-video-btn');
+        const carouselEl = document.getElementById('carouselExampleCaptions');
+        const interactionArea = document.getElementById('video-interaction-area');
+
+
+        let myCarousel = bootstrap.Carousel.getOrCreateInstance(carouselEl, {
+            interval: 5000,
+            touch: true,
+            pause: 'hover'
+        });
+
+        
+
+
+
+
+        const stopPropagationHandler = function(e) {
+            e.stopPropagation();
+        };
+
+        function startVideo() {
+
+            myCarousel.pause();
+
+
+            carouselEl.removeAttribute('data-bs-ride');
+
+
+            interactionArea.classList.add('video-active-mode');
+            carouselEl.classList.add('carousel-container-playing');
+
+
+            video.style.display = 'block';
+            video.controls = true;
+
+            setTimeout(() => {
+                video.play().catch(e => console.error("Playback error:", e));
+            }, 50);
+        }
+
+        function stopVideo() {
+
+            video.pause();
+            video.currentTime = 0;
+            video.controls = false;
+            video.style.display = 'none';
+
+
+            interactionArea.classList.remove('video-active-mode');
+            carouselEl.classList.remove('carousel-container-playing');
+
+
+            carouselEl.setAttribute('data-bs-ride', 'carousel');
+
+
+
+            myCarousel.to(0);
+            myCarousel.cycle();
+        }
+
+
+
+
+        if (startBtnWrapper) {
+            startBtnWrapper.addEventListener('click', function(e) {
+                e.preventDefault();
+                startVideo();
+            });
+        }
+
+
+        if (stopBtnWrapper) {
+            stopBtnWrapper.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                stopVideo();
+            });
+        }
+
+
+        video.addEventListener('ended', stopVideo);
+
+
+        ['mousedown', 'mouseup', 'click', 'touchstart', 'touchmove', 'touchend'].forEach(evt => {
+            video.addEventListener(evt, stopPropagationHandler, { passive: false });
+        });
+
+
+
+        carouselEl.addEventListener('slide.bs.carousel', function (e) {
+            if (interactionArea.classList.contains('video-active-mode')) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                myCarousel.pause();
+                return false;
+            }
+        });
+
+
+
+        function formatNumber(num) {
+            return num.toLocaleString('en-US');
+        }
+
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-target'));
+            const duration = 1500;
+            let start = null;
+            function update(timestamp) {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(easeProgress * target);
+
+                el.innerText = formatNumber(current);
+                if (progress < 1) requestAnimationFrame(update); else el.innerText = formatNumber(target);
+            }
+            requestAnimationFrame(update);
+        }
+
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const card = entry.target.closest('.stat-card');
+                    if (card) {
+
+                        const icon = card.querySelector('.stat-icon');
+                        if (icon) {
+                            icon.classList.add('animate-flip');
+                        }
+
+
+                        setTimeout(() => {
+                            animateCounter(entry.target);
+                        }, 300);
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { root: null, rootMargin: '0px', threshold: 0.2 });
+        document.querySelectorAll('.counter').forEach(counter => counterObserver.observe(counter));
+
+
+        const toolCards = document.querySelectorAll('.tool-group-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+                    }, index * 80);
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        toolCards.forEach(card => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            card.style.transition = "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+            cardObserver.observe(card);
+        });
+
+        // =========================================================================
+        // GENOME TABLE LOGIC (Updated with Genus column )
+        // =========================================================================
+        const genomeData = [
+            { id: 1, genus: "Ageratina", name: "Ageratina adenophora", size: "3.8 Gb", chr: "2n=102", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042767725.1/", date: "2025", refLink: "https://doi.org/10.1038/s41597-025-04637-1" },
+            { id: 2, genus: "Ambrosia", name: "Ambrosia artemisiifolia", size: "1.3 Gb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024762085.1/", date: "2022", refLink: "https://doi.org/10.1126/sciadv.abo5115" },
+            { id: 3, genus: "Ambrosia", name: "Ambrosia artemisiifolia", size: "1.1 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199755.1/", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-37303-4" },
+            { id: 4, genus: "Ambrosia", name: "Ambrosia artemisiifolia", size: "1.1 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199705.1/", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-37303-4" },
+            { id: 5, genus: "Ambrosia", name: "Ambrosia trifida", size: "1.7 Gb", chr: "2n=24", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028751855.1/", date: "2024", refLink: "https://doi.org/10.1016/j.ijbiomac.2024.129232" },
+            { id: 6, genus: "Ambrosia", name: "Ambrosia x helenae", size: "2 Gb", chr: "2n=24", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_030844895.1/", date: "2024", refLink: "https://doi.org/10.1002/tpg2.20442" },
+            { id: 7, genus: "Ambrosia", name: "Ambrosia x helenae", size: "1.1 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030844885.1/", date: "2024", refLink: "https://doi.org/10.1002/tpg2.20442" },
+            { id: 8, genus: "Artemisia", name: "Artemisia annua", size: "1.5 Gb", chr: "2n=18", assembly: "Chromosome", source: "GPGD", sourceLink: "http://www.gpgenome.com/species/92", date: "2022", refLink: "https://doi.org/10.1016/j.molp.2022.05.013" },
+            { id: 9, genus: "Artemisia", name: "Artemisia annua", size: "1.8 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_014162995.1/", date: "2020", refLink: "NA" },
+            { id: 10, genus: "Artemisia", name: "Artemisia annua", size: "1.8 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_003112345.1/", date: "2018", refLink: "https://doi.org/10.1016/j.molp.2018.03.015" },
+            { id: 11, genus: "Artemisia", name: "Artemisia annua", size: "1.5 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038048965.1/", date: "2024", refLink: "IRIDIAN GENOMES INC" },
+            { id: 12, genus: "Artemisia", name: "Artemisia argyi", size: "3.89 Gb", chr: "2n=34", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA010808", date: "2023", refLink: "https://doi.org/10.1016/j.xplc.2023.100516" },
+            { id: 13, genus: "Artemisia", name: "Artemisia argyi", size: "8 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030686995.1/", date: "2022", refLink: "https://doi.org/10.1111/pbi.13870" },
+            { id: 14, genus: "Artemisia", name: "Artemisia argyi", size: "7.3 Gb", chr: "2n=34", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029874665.1/", date: "2023", refLink: "https://doi.org/10.3390/agronomy13020436" },
+            { id: 15, genus: "Artemisia", name: "Artemisia argyi", size: "4.2 Gb", chr: "2n=34", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028659345.1/", date: "2024", refLink: "https://doi.org/10.3389/fpls.2024.1406592" },
+            { id: 16, genus: "Artemisia", name: "Artemisia ifranensis", size: "504.1 Mb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040967555.1/", date: "2024", refLink: "IRIDIAN GENOMES INC" },
+            { id: 17, genus: "Artemisia", name: "Artemisia ludoviciana", size: "1 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_034509245.1/", date: "2023", refLink: "IRIDIAN GENOMES INC" },
+            { id: 18, genus: "Artemisia", name: "Artemisia princeps", size: "591.2 Mb", chr: "2n=34", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035048425.1/", date: "2023", refLink: "https://doi.org/10.5281/zenodo.10116575" },
+            { id: 19, genus: "Artemisia", name: "Artemisia tridentata", size: "3.9 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021014915.2/", date: "2021", refLink: "https://doi.org/10.1002/ece3.8245" },
+            { id: 20, genus: "Artemisia", name: "Artemisia tridentata", size: "4.2 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023558565.1/", date: "2022", refLink: "https://doi.org/10.1093/g3journal/jkac122" },
+            { id: 21, genus: "Artemisia", name: "Artemisia tridentata", size: "4.5 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021014915.1/", date: "2021", refLink: "https://doi.org/10.1002/ece3.8245" },
+            { id: 22, genus: "Artemisia", name: "Artemisia tridentata", size: "3.9 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037463035.1/", date: "2024", refLink: "https://doi.org/10.1002/ajb2.16353" },
+            { id: 23, genus: "Bidens", name: "Bidens alba", size: "3.75 Gb", chr: "2n=48", assembly: "Chromosome", source: "Zenodo", sourceLink: "https://zenodo.org/records/10160015", date: "2024", refLink: "https://doi.org/10.1093/gigascience/giae032" },
+            { id: 24, genus: "Bidens", name: "Bidens hawaiensis", size: "3.5 Gb", chr: "2n=6x=72", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521415.1/", date: "2022", refLink: "https://doi.org/10.1093/jhered/esab077" },
+            { id: 25, genus: "Bidens", name: "Bidens hawaiensis", size: "2.9 Gb", chr: "2n=6x=72", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521975.1/", date: "2022", refLink: "https://doi.org/10.1093/jhered/esab077" },
+            { id: 26, genus: "Calendula", name: "Calendula officinalis", size: "1.2 Gb", chr: "2n=32", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963853835.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 27, genus: "Calendula", name: "Calendula officinalis", size: "328.4 Mb", chr: "2n=32", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963853825.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 28, genus: "Calendula", name: "Calendula officinalis", size: "486.8 Mb", chr: "2n=32", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029618835.1/", date: "2023", refLink: "NA" },
+            { id: 29, genus: "Chrysanthemum", name: "Chrysanthemum indicum", size: "3.11 Gb", chr: "2n=18", assembly: "Chromosome", source: "FigShare", sourceLink: "https://doi.org/10.6084/m9.figshare.21463119.v1", date: "2024", refLink: "https://doi.org/10.1016/j.celrep.2024.113725" },
+            { id: 30, genus: "Chrysanthemum", name: "Chrysanthemum indicum", size: "6.18 Gb", chr: "2n=18", assembly: "Chromosome", source: "FigShare", sourceLink: "https://figshare.com/projects/Chrysanthemum_indicum_genome_diploid/197683", date: "2024", refLink: "https://doi.org/10.1111/tpj.16854" },
+            { id: 31, genus: "Chrysanthemum", name: "Chrysanthemum lavandulifolium", size: "2.7 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_022545495.1/", date: "2022", refLink: "https://doi.org/10.1093/hr/uhab022" },
+            { id: 32, genus: "Chrysanthemum", name: "Chrysanthemum lavandulifolium", size: "3 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_019973895.1/", date: "2021", refLink: "https://doi.org/10.1038/s42003-021-02704-y" },
+            { id: 33, genus: "Chrysanthemum", name: "Chrysanthemum lavandulifolium", size: "2.7 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_004359105.1/", date: "2019", refLink: "https://doi.org/10.1093/dnares/dsy048" },
+            { id: 34, genus: "Chrysanthemum", name: "Chrysanthemum makinoi", size: "3.19 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_910596185.1", date: "2022", refLink: "https://doi.org/10.1093/g3journal/jkab358" },
+            { id: 35, genus: "Chrysanthemum", name: "Chrysanthemum morifolium", size: "8.15 Gb", chr: "2n=54", assembly: "Chromosome", source: "FigShare", sourceLink: "https://figshare.com/articles/dataset/A_chromosome-scale_genome_assembly_of_hexaploid_cultivated_chrysanthemum/21655364/2", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-37730-3" },
+            { id: 36, genus: "Chrysanthemum", name: "Chrysanthemum nankingense", size: "3.5 Gb", chr: "2n=18", assembly: "Chromosome", source: "CGD", sourceLink: "http://210.22.121.250:8880/asteraceae/download/downloadPage", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-37730-3" },
+            { id: 37, genus: "Chrysanthemum", name: "Chrysanthemum nankingense", size: "5.7 Gb", chr: "2n=18", assembly: "Chromosome", source: "CGD", sourceLink: "http://210.22.121.250:8880/asteraceae/download/downloadPage", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-37730-3" },
+            { id: 38, genus: "Cosmos", name: "Cosmos bipinnatus", size: "1.02 Gb", chr: "2n=24", assembly: "Chromosome", source: "Zenodo", sourceLink: "https://zenodo.org/records/10160015", date: "2024", refLink: "https://doi.org/10.1093/gigascience/giae032" },
+            { id: 39, genus: "Dahlia", name: "Dahlia pinnata", size: "7.86 Gb", chr: "2n=64", assembly: "Chromosome", source: "Zenodo", sourceLink: "https://zenodo.org/records/10160015", date: "2024", refLink: "https://doi.org/10.1093/gigascience/giae032" },
+            { id: 40, genus: "Deinandra", name: "Deinandra increscens subsp. villosa", size: "1.7 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039602395.1/", date: "2024", refLink: "https://doi.org/10.1093/g3journal/jkae117" },
+            { id: 41, genus: "Dittrichia", name: "Dittrichia graveolens", size: "834.9 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502395.1/", date: "2023", refLink: "https://doi.org/10.1093/jhered/esad033" },
+            { id: 42, genus: "Dittrichia", name: "Dittrichia graveolens", size: "824.4 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502355.1/", date: "2023", refLink: "https://doi.org/10.1093/jhered/esad033" },
+            { id: 43, genus: "Erigeron", name: "Erigeron breviscapus", size: "1.43 Gb", chr: "2n=18", assembly: "Chromosome", source: "MPOD", sourceLink: "http://medicinalplants.ynau.edu.cn/genome/detail/68", date: "2021", refLink: "https://doi.org/10.1111/1755-0998.13257" },
+            { id: 44, genus: "Erigeron", name: "Erigeron breviscapus", size: "1.2 Gb", chr: "2n=18", assembly: "Scaffold", source: "GICA", sourceLink: "https://gigadb.org/dataset/100290", date: "2017", refLink: "https://doi.org/10.1093/gigascience/gix028" },
+            { id: 45, genus: "Erigeron", name: "Erigeron canadensis", size: "426.2 Mb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_010389155.1/", date: "2020", refLink: "https://doi.org/10.1002/ps.5753" },
+            { id: 46, genus: "Erigeron", name: "Erigeron canadensis", size: "326.2 Mb", chr: "2n=18", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000775935.1/", date: "2014", refLink: "https://doi.org/10.1104/pp.114.247668" },
+            { id: 47, genus: "Erigeron", name: "Erigeron philadelphicus", size: "619.6 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024320915.1/", date: "2022", refLink: "https://doi.org/10.56179/001c.38099" },
+            { id: 48, genus: "Filago", name: "Filago lutescens", size: "648.4 Mb", chr: "2n=28", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964188195.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 49, genus: "Filago", name: "Filago lutescens", size: "646.2 Mb", chr: "2n=28", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964187975.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 50, genus: "Flaveria", name: "Flaveria bidentis", size: "1 Gb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326385.1/", date: "2021", refLink: "https://doi.org/10.1002/tpg2.20095" },
+            { id: 51, genus: "Flaveria", name: "Flaveria brownii", size: "924.1 Mb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326445.1/", date: "2021", refLink: "https://doi.org/10.1002/tpg2.20095" },
+            { id: 52, genus: "Flaveria", name: "Flaveria floridana", size: "1.6 Gb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326465.1/", date: "2021", refLink: "https://doi.org/10.1002/tpg2.20095" },
+            { id: 53, genus: "Flaveria", name: "Flaveria linearis", size: "1.7 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024085815.1/", date: "2020", refLink: "https://doi.org/10.3389/fpls.2020.00935" },
+            { id: 54, genus: "Flaveria", name: "Flaveria ramosissima", size: "1.3 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025215565.1/", date: "2020", refLink: "https://doi.org/10.3389/fpls.2020.00935" },
+            { id: 55, genus: "Flaveria", name: "Flaveria robusta", size: "551.5 Mb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506415.1/", date: "2020", refLink: "https://doi.org/10.3389/fpls.2020.00935" },
+            { id: 56, genus: "Flaveria", name: "Flaveria robusta", size: "518.9 Mb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326485.1/", date: "2021", refLink: "https://doi.org/10.1002/tpg2.20095" },
+            { id: 57, genus: "Flaveria", name: "Flaveria sonorensis", size: "1.2 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506505.1/", date: "2020", refLink: "https://doi.org/10.3389/fpls.2020.00935" },
+            { id: 58, genus: "Flaveria", name: "Flaveria trinervia", size: "1.8 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506515.1/", date: "2020", refLink: "https://doi.org/10.3389/fpls.2020.00935" },
+            { id: 59, genus: "Glebionis", name: "Glebionis coronaria", size: "6.8 Gb", chr: "2n=18", assembly: "Chromosome", source: "FigShare", sourceLink: "https://figshare.com/articles/dataset/Annotated_reference_genome_of_Glebionis_coronaria/20294385", date: "2022", refLink: "https://doi.org/10.1093/dnares/dsac036" },
+            { id: 60, genus: "Gnaphalium", name: "Gnaphalium uliginosum", size: "354.4 Mb", chr: "2n=14", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963930675.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 61, genus: "Gnaphalium", name: "Gnaphalium uliginosum", size: "14.6 Mb", chr: "2n=14", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963930705.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 62, genus: "Helianthus", name: "Helianthus annuus", size: "3 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002127325.2/", date: "2020", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 63, genus: "Helianthus", name: "Helianthus annuus", size: "3 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538245.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 64, genus: "Helianthus", name: "Helianthus annuus", size: "3 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538285.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 65, genus: "Helianthus", name: "Helianthus annuus", size: "3.2 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026652165.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 66, genus: "Helianthus", name: "Helianthus annuus", size: "3.2 Gb", chr: "2n=34", assembly: "Chromosome", source: "SGD", sourceLink: "https://sunflowergenome.org/assembly-data/", date: "2020", refLink: "https://doi.org/10.1038/s41586-020-2467-6" },
+            { id: 67, genus: "Helianthus", name: "Helianthus annuus", size: "3.01 Gb", chr: "2n=34", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/gwh/Assembly/83740/show", date: "2024", refLink: "https://doi.org/10.1007/s00122-024-04594-0" },
+            { id: 68, genus: "Helianthus", name: "Helianthus annuus", size: "3.1 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651665.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 69, genus: "Helianthus", name: "Helianthus annuus", size: "3.2 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651675.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 70, genus: "Helianthus", name: "Helianthus annuus", size: "3 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651695.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 71, genus: "Helianthus", name: "Helianthus annuus", size: "3 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651735.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 72, genus: "Helianthus", name: "Helianthus annuus", size: "3.1 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651805.1/", date: "2023", refLink: "https://doi.org/10.1073/pnas.2205783119" },
+            { id: 73, genus: "Helianthus", name: "Helianthus anomalus", size: "6.1 Gb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_047456115.1/", date: "2024", refLink: "https://doi.org/10.1007/s00122-024-04558-4" },
+            { id: 74, genus: "Helianthus", name: "Helianthus tuberosus", size: "10.49 Gb", chr: "2n=6x=102", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/gwh/Genome/158494/show", date: "2024", refLink: "https://doi.org/10.1016/j.xplc.2023.100767" },
+            { id: 75, genus: "Helianthus", name: "Helianthus tuberosus", size: "21.6 Gb", chr: "2n=6x=102", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_030545235.1/", date: "2024", refLink: "https://doi.org/10.1016/j.xplc.2023.100767" },
+            { id: 76, genus: "Helichrysum", name: "Helichrysum umbraculigerum", size: "1.3 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949592205.1/", date: "2023", refLink: "https://doi.org/10.1038/s41477-023-01402-3" },
+            { id: 77, genus: "Logfia", name: "Logfia minima", size: "544.9 Mb", chr: "2n=30", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963921325.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 78, genus: "Logfia", name: "Logfia minima", size: "5.9 Mb", chr: "2n=30", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963921315.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 79, genus: "Matricaria", name: "Matricaria chamomilla", size: "2.6 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964235185.1/", date: "2025", refLink: "https://doi.org/10.1038/s41597-025-04688-4" },
+            { id: 80, genus: "Matricaria", name: "Matricaria chamomilla", size: "2.5 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964234995.1/", date: "2025", refLink: "https://doi.org/10.1038/s41597-025-04688-4" },
+            { id: 81, genus: "Matricaria", name: "Matricaria chamomilla var. recutita", size: "2.8 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963920955.1/", date: "2025", refLink: "https://doi.org/10.1038/s41597-025-04688-4" },
+            { id: 82, genus: "Mikania", name: "Mikania micrantha", size: "1.8 Gb", chr: "2n=38", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_009363875.1/", date: "2020", refLink: "https://doi.org/10.1038/s41467-019-13926-4" },
+            { id: 83, genus: "Omalotheca", name: "Omalotheca supina", size: "1.1 Gb", chr: "2n=28", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263845.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 84, genus: "Omalotheca", name: "Omalotheca supina", size: "1.1 Gb", chr: "2n=28", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263965.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 85, genus: "Pluchea", name: "Pluchea indica", size: "1.78 Gb", chr: "2n=40", assembly: "Scaffold", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/gwh/Assembly/20674/show", date: "2022", refLink: "https://doi.org/10.1038/s41559-022-01744-9" },
+            { id: 86, genus: "Pseudognaphalium", name: "Pseudognaphalium luteoalbum", size: "881.3 Mb", chr: "2n=14", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422505.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 87, genus: "Pseudognaphalium", name: "Pseudognaphalium luteoalbum", size: "6.7 Mb", chr: "2n=14", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422485.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 88, genus: "Pulicaria", name: "Pulicaria dysenterica", size: "609.7 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947179335.2/", date: "2023", refLink: "https://doi.org/10.12688/wellcomeopenres.20003.1" },
+            { id: 89, genus: "Pulicaria", name: "Pulicaria dysenterica", size: "833.2 Mb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947179395.2/", date: "2023", refLink: "https://doi.org/10.12688/wellcomeopenres.20003.1" },
+            { id: 90, genus: "Rudbeckia", name: "Rudbeckia hirta", size: "571.1 Mb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_028566315.1/", date: "2023", refLink: "NA" },
+            { id: 91, genus: "Scalesia", name: "Scalesia atractyloides", size: "3.2 Gb", chr: "2n=4x=68", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_947069175.1/", date: "2022", refLink: "https://doi.org/10.1038/s41467-022-31280-w" },
+            { id: 92, genus: "Senecio", name: "Senecio squalidus", size: "652 Mb", chr: "2n=20", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910822075.1/", date: "2023", refLink: "https://doi.org/10.12688/wellcomeopenres.18658.1" },
+            { id: 93, genus: "Senecio", name: "Senecio squalidus", size: "161.2 Mb", chr: "2n=20", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910821995.1/", date: "2022", refLink: "https://www.sanger.ac.uk/programme/tree-of-life/" },
+            { id: 94, genus: "Silphium", name: "Silphium perfoliatum", size: "121.7 Mb", chr: "2n=14", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900538075.1/", date: "2019", refLink: "https://doi.org/10.1016/j.biombioe.2019.03.016" },
+            { id: 95, genus: "Silphium", name: "Silphium perfoliatum", size: "121.7 Mb", chr: "2n=14", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900538075.1/", date: "2019", refLink: "https://doi.org/10.1016/j.biombioe.2019.03.016" },
+            { id: 96, genus: "Smallanthus", name: "Smallanthus sonchifolius", size: "2.72 Gb", chr: "2n=58", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525975.1/", date: "2022", refLink: "https://doi.org/10.1111/1755-0998.13675" },
+            { id: 97, genus: "Solidago", name: "Solidago azorica", size: "479.4 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040966195.1/", date: "2024", refLink: "IRIDIAN GENOMES INC" },
+            { id: 98, genus: "Solidago", name: "Solidago caesia", size: "473.7 Mb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_028566075.1/", date: "2023", refLink: "IRIDIAN GENOMES INC" },
+            { id: 99, genus: "Solidago", name: "Solidago canadensis", size: "855 Mb", chr: "2n=18", assembly: "Chromosome", source: "NA", sourceLink: "NA", date: "NA", refLink: "NA" },
+            { id: 100, genus: "Stevia", name: "Stevia rebaudiana", size: "1405 Mb", chr: "2n=22", assembly: "Chromosome", source: "FigShare", sourceLink: "https://figshare.com/articles/dataset/Stevia_rebaudiana_genome_data/14169491/1", date: "2021", refLink: "https://doi.org/10.1038/s41438-021-00565-4" },
+            { id: 101, genus: "Stevia", name: "Stevia rebaudiana", size: "411.4 Mb", chr: "2n=22", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009936405.2/", date: "2020", refLink: "https://doi.org/10.12688/f1000research.24396.1" },
+            { id: 102, genus: "Tagetes", name: "Tagetes patula", size: "434.6 Mb", chr: "2n=24", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026259685.1/", date: "2022", refLink: "NA" },
+            { id: 103, genus: "Tagetes", name: "Tagetes erecta", size: "778.9 Mb", chr: "2n=24", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030867185.1/", date: "2023", refLink: "https://doi.org/10.1101/2023.07.25.550479" },
+            { id: 104, genus: "Tagetes", name: "Tagetes erecta", size: "621.2 Mb", chr: "2n=24", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026213115.1/", date: "2023", refLink: "https://doi.org/10.1016/j.hpj.2023.04.001" },
+            { id: 105, genus: "Tanacetum", name: "Tanacetum coccineum", size: "9.5 Gb", chr: "2n=36", assembly: "?Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_026074375.1/", date: "2022", refLink: "https://doi.org/10.3390/ijms23137039" },
+            { id: 106, genus: "Tanacetum", name: "Tanacetum parthenium (feverfew)", size: "2.1 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204775.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 107, genus: "Tanacetum", name: "Tanacetum parthenium (feverfew)", size: "2.1 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204795.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 108, genus: "Tanacetum", name: "Tanacetum vulgare (tansy)", size: "4.6 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264315.1/", date: "2024", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 109, genus: "Tanacetum", name: "Tanacetum vulgare (tansy)", size: "4.8 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264305.1/", date: "2024", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 110, genus: "Arctium", name: "Arctium lappa", size: "1.79 Gb", chr: "2n=36", assembly: "Chromosome", source: "FigShare", sourceLink: "https://doi.org/10.6084/m9.figshare.11590983", date: "2022", refLink: "https://doi.org/10.1111/1755-0998.13547" },
+            { id: 111, genus: "Arctium", name: "Arctium lappa", size: "1.73 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525745.1/", date: "2022", refLink: "https://doi.org/10.1111/1755-0998.13675" },
+            { id: 112, genus: "Arctium", name: "Arctium minus", size: "1.9 Gb", chr: "2n=36", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954870635.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 113, genus: "Arctium", name: "Arctium minus", size: "465.4 Mb", chr: "2n=36", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954871535.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 114, genus: "Carduus", name: "Carduus pycnocephalus", size: "2.7 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919605.1/", date: "NA", refLink: "NA" },
+            { id: 115, genus: "Carduus", name: "Carduus pycnocephalus", size: "2.7 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919555.1/", date: "NA", refLink: "NA" },
+            { id: 116, genus: "Carthamus", name: "Carthamus tinctorius", size: "1.06 Gb", chr: "2n=24", assembly: "Chromosome", source: "safflower", sourceLink: "http://safflower.scuec.edu.cn", date: "2021", refLink: "https://doi.org/10.1111/pbi.13586" },
+            { id: 117, genus: "Carthamus", name: "Carthamus tinctorius", size: "661.9 Mb", chr: "2n=24", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001633085.1/", date: "2016", refLink: "https://doi.org/10.1534/g3.115.026690" },
+            { id: 118, genus: "Carthamus", name: "Carthamus tinctorius", size: "1.17Gb", chr: "2n=24", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/gwh/Assembly/25633/show", date: "2023", refLink: "https://doi.org/10.1093/hr/uhad197" },
+            { id: 119, genus: "Centaurea", name: "Centaurea solstitialis", size: "765.1 Mb", chr: "2n=16", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030169165.1/", date: "2024", refLink: "https://doi.org/10.1093/gbe/evae243" },
+            { id: 120, genus: "Cynara", name: "Cynara cardunculus", size: "725 Mb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_001531365.2/", date: "2016", refLink: "https://doi.org/10.1038/srep19427" },
+            { id: 121, genus: "Cynara", name: "Cynara cardunculus", size: "859.1 Mb", chr: "2n=34", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228875.1/", date: "NA", refLink: "NA" },
+            { id: 122, genus: "Cynara", name: "Cynara cardunculus", size: "858 Mb", chr: "2n=34", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228895.1/", date: "NA", refLink: "NA" },
+            { id: 123, genus: "Saussurea", name: "Saussurea bogedaensis", size: "2.2 Gb", chr: "2n=30", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041870115.1/", date: "NA", refLink: "NA" },
+            { id: 124, genus: "Saussurea", name: "Saussurea involucrata", size: "2.5 Gb", chr: "2n=32", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_033807775.1/", date: "2023", refLink: "https://doi.org/10.1093/hr/uhad180" },
+            { id: 125, genus: "Silybum", name: "Silybum marianum", size: "1.5 Gb", chr: "2n=34", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001541825.1/", date: "2017", refLink: "https://doi.org/10.1111/tpj.13736" },
+            { id: 126, genus: "Silybum", name: "Silybum marianum", size: "694.4 Mb", chr: "2n=34", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036898165.1/", date: "2024", refLink: "https://doi.org/10.1038/s41597-024-03178-3" },
+            { id: 127, genus: "Cichorium", name: "Cichorium endivia", size: "887  Mb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023376185.1/", date: "2022", refLink: "https://doi.org/10.1111/1755-0998.13675" },
+            { id: 128, genus: "Cichorium", name: "Cichorium endivia", size: "641 Mb", chr: "2n=18", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/gsa/search?searchTerm=CRA005068", date: "2022", refLink: "https://doi.org/10.1016/j.ygeno.2022.110400" },
+            { id: 129, genus: "Cichorium", name: "Cichorium intybus", size: "926 Mb", chr: "2n=18", assembly: "Chromosome", source: "ORCAE", sourceLink: "https://bioinformatics.psb.ugent.be/gdb/Cichorium_intybus/", date: "2023", refLink: "https://doi.org/10.3389/fpls.2023.1181529" },
+            { id: 130, genus: "Cichorium", name: "Cichorium intybus", size: "1.28 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525715.1/", date: "2023", refLink: "https://doi.org/10.1111/1755-0998.13675" },
+            { id: 131, genus: "Cichorium", name: "Cichorium intybus", size: "1.8 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030463085.1/", date: "2023", refLink: "https://doi.org/10.3389/fpls.2023.1111110" },
+            { id: 132, genus: "Lactuca", name: "Lactuca sativa var. crispa", size: "2.6 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041283435.1/", date: "NA", refLink: "NA" },
+            { id: 133, genus: "Lactuca", name: "Lactuca saligna", size: "2.2 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949927565.1/", date: "2023", refLink: "https://doi.org/10.1111/tpj.16212" },
+            { id: 134, genus: "Lactuca", name: "Lactuca sativa", size: "1.1 Gb", chr: "2n=18", assembly: "Contig", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000227445.1/", date: "2011", refLink: "The Compositae Genome Project" },
+            { id: 135, genus: "Lactuca", name: "Lactuca sativa", size: "2 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900198505.1/", date: "2018", refLink: "https://doi.org/10.1016/j.jbiotec.2017.12.021" },
+            { id: 136, genus: "Lactuca", name: "Lactuca sativa", size: "2.2 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900243165.1/", date: "2018", refLink: "https://doi.org/10.1016/j.jbiotec.2017.12.021" },
+            { id: 137, genus: "Lactuca", name: "Lactuca sativa", size: "2.59 Gb", chr: "2n=18", assembly: "Chromosome", source: "FigShare", sourceLink: "https://figshare.com/s/f5f0e8068d5a236ea408", date: "2024", refLink: "https://doi.org/10.1016/j.xplc.2024.101011" },
+            { id: 138, genus: "Lactuca", name: "Lactuca sativa", size: "2.6 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039583335.1/", date: "NA", refLink: "NA" },
+            { id: 139, genus: "Lactuca", name: "Lactuca sativa cv. Salinas", size: "2.4 Gb", chr: "2n=18", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002870075.4/", date: "2017", refLink: "https://doi.org/10.1038/ncomms14953" },
+            { id: 140, genus: "Lactuca", name: "Lactuca sativa var. angustana", size: "2.59 Gb", chr: "2n=18", assembly: "Chromosome", source: "LettuceGDB", sourceLink: "https://lettucegdb.com/genome", date: "2023", refLink: "https://doi.org/10.1038/s41467-023-40002-9" },
+            { id: 141, genus: "Lactuca", name: "Lactuca serriola", size: "2.8 Gb", chr: "2n=18", assembly: "Contig", source: "LettuceGDB", sourceLink: "https://lettucegdb.com/genome", date: "2021", refLink: "https://doi.org/10.1038/s41588-021-00831-0" },
+            { id: 142, genus: "Lactuca", name: "Lactuca virosa", size: "3.4 Gb", chr: "2n=18", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_928212115.1/", date: "2023", refLink: "https://doi.org/10.1093/g3journal/jkad204" },
+            { id: 143, genus: "Pilosella", name: "Pilosella piloselloides", size: "3.3 Gb", chr: "NA", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040114295.1/", date: "2023", refLink: "https://doi.org/10.3389/fpls.2023.1239191" },
+            { id: 144, genus: "Taraxacum", name: "Taraxacum kok-saghyz", size: "1.08 Gb", chr: "2n=16", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA005187", date: "2021", refLink: "https://doi.org/10.1007/s11427-021-2033-2" },
+            { id: 145, genus: "Taraxacum", name: "Taraxacum kok-saghyz", size: "1.29 Gb", chr: "2n=16", assembly: "Contig", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA000437", date: "2018", refLink: "https://doi.org/10.1093/nsr/nwx101" },
+            { id: 146, genus: "Taraxacum", name: "Taraxacum mongolicum", size: "790Mb", chr: "3x=24", assembly: "Chromosome", source: "NGDC", sourceLink: "https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA005187", date: "2021", refLink: "https://doi.org/10.1007/s11427-021-2033-2" },
+            { id: 147, genus: "Tragopogon", name: "Tragopogon pratensis", size: "2.1 Gb", chr: "2n=12", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059535.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 148, genus: "Tragopogon", name: "Tragopogon pratensis", size: "2 Gb", chr: "2n=12", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059265.1/", date: "2022", refLink: "https://www.darwintreeoflife.org/" },
+            { id: 149, genus: "Gerbera", name: "Gerbera hybrida", size: "2.23G", chr: "2n=50", assembly: "Chromosome", source: "FigShare", sourceLink: "https://doi.org/10.6084/m9.figshare.29482379.v1", date: "2026", refLink: "https://doi.org/10.1093/hr/uhaf357" },
+            { id: 150, genus: "Buxus", name: "Buxus sinica", size: "764 Mb", chr: "2n=28", assembly: "Chromosome", source: "Dryad", sourceLink: "https://datadryad.org/dataset/doi:10.5061/dryad.cjsxksn6d", date: "2022", refLink: "https://doi.org/10.1038/s41467-022-28312-w" },
+            { id: 151, genus: "Euptelea", name: "Euptelea pleiosperma", size: "613.4 Mb", chr: "2n=28", assembly: "Chromosome", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035048495.1/", date: "2024", refLink: "https://doi.org/10.1007/s11427-023-2448-x" },
+            { id: 152, genus: "Nelumbo", name: "Nelumbo nucifera", size: "807.01 Mb", chr: "2n=16", assembly: "Chromosome", source: "CoGe", sourceLink: "https://genomevolution.org/CoGe/GenomeInfo.pl?gid=60468", date: "2022", refLink: "https://doi.org/10.1093/hr/uhac029" },
+            { id: 153, genus: "Nymphoides", name: "Nymphoides indica", size: "523.96 MB", chr: "2n=18", assembly: "Chromosome", source: "CNGBdb", sourceLink: "https://db.cngb.org/data_resources/assembly/CNA0046512", date: "2022", refLink: "https://doi.org/10.1093/dnares/dsac022" },
+            { id: 154, genus: "Tetracentron", name: "Tetracentron sinense", size: "908 Mb", chr: "2n=38", assembly: "Chromosome", source: "Dryad", sourceLink: "https://datadryad.org/dataset/doi:10.5061/dryad.cjsxksn6d", date: "2022", refLink: "https://doi.org/10.1038/s41467-022-28312-w" },
+            { id: 155, genus: "Vitis", name: "Vitis vinifera", size: "487 Mb", chr: "2n=38", assembly: "Chromosome", source: "JGI", sourceLink: "https://phytozome-next.jgi.doe.gov/", date: "2007", refLink: "https://doi.org/10.1038/nature06148" },
+            { id: 156, genus: "Centrapalus", name: "Centrapalus pauciflorus", size: "1.4 Gb", chr: "2n=36", assembly: "Scaffold", source: "NCBI", sourceLink: "https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_020465985.1/", date: "2021", refLink: "NA" }
+        ];
+
+        const rowsPerPage = 10;
+        const genomeTableBody = document.getElementById('genomeTableBody');
+        const genomePagination = document.getElementById('genomePagination');
+        let currentPage = 1;
+
+        function displayTable(page) {
+            genomeTableBody.innerHTML = "";
+            page--; // 0-indexed for array slicing
+
+            let start = rowsPerPage * page;
+            let end = start + rowsPerPage;
+            let paginatedItems = genomeData.slice(start, end);
+
+            paginatedItems.forEach(item => {
+                // Link Logic: Source
+                let sourceHtml = item.sourceLink && item.sourceLink !== 'NA'
+                    ? `<a href="${item.sourceLink}" target="_blank" class="data-link-btn">${item.source}</a>`
+                    : item.source;
+
+                // Link Logic: Date/Reference
+                let dateHtml = item.refLink && item.refLink !== 'NA'
+                    ? `<a href="${item.refLink}" target="_blank" class="date-link">${item.date}</a>`
+                    : item.date;
+
+                let row = `<tr>
+                    <td>${item.id}</td>
+                    <td class="genus-name">${item.genus}</td>
+                    <td class="scientific-name">${item.name}</td>
+                    <td>${item.size}</td>
+                    <td>${item.chr}</td>
+                    <td>${item.assembly}</td>
+                    <td>${sourceHtml}</td>
+                    <td>${dateHtml}</td>
+                </tr>`;
+                genomeTableBody.innerHTML += row;
+            });
+        }
+
+        function setupPagination() {
+            genomePagination.innerHTML = "";
+            let pageCount = Math.ceil(genomeData.length / rowsPerPage);
+
+            // Prev Button
+            let prevClass = currentPage === 1 ? "disabled" : "";
+            let prevBtn = `<li class="page-item ${prevClass}">
+                <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">Previous</a>
+            </li>`;
+            genomePagination.innerHTML += prevBtn;
+
+            // Simple Pagination Logic: Show First, Last, and surrounding
+            // For simplicity in this large list, we show standard all-buttons or a simplified set.
+            // Using standard logic for now (limited range could be added for 16 pages)
+
+            // Limit visible pages for better UI if page count > 10
+            let startPage, endPage;
+            if (pageCount <= 10) {
+                startPage = 1;
+                endPage = pageCount;
+            } else {
+                if (currentPage <= 6) {
+                    startPage = 1;
+                    endPage = 10;
+                } else if (currentPage + 4 >= pageCount) {
+                    startPage = pageCount - 9;
+                    endPage = pageCount;
+                } else {
+                    startPage = currentPage - 5;
+                    endPage = currentPage + 4;
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                let activeClass = currentPage === i ? "active" : "";
+                let btn = `<li class="page-item ${activeClass}">
+                    <a class="page-link" href="javascript:void(0);" onclick="changePage(${i})">${i}</a>
+                </li>`;
+                genomePagination.innerHTML += btn;
+            }
+
+            // Next Button
+            let nextClass = currentPage === pageCount ? "disabled" : "";
+            let nextBtn = `<li class="page-item ${nextClass}">
+                <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">Next</a>
+            </li>`;
+            genomePagination.innerHTML += nextBtn;
+        }
+
+        window.changePage = function(page) {
+            let pageCount = Math.ceil(genomeData.length / rowsPerPage);
+            if (page < 1 || page > pageCount) return;
+            currentPage = page;
+            displayTable(currentPage);
+            setupPagination();
+        };
+
+        // Initialize Table
+        displayTable(currentPage);
+        setupPagination();
+    });
+</script>
+{% endblock extra_js %}

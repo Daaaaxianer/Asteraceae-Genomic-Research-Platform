@@ -1,0 +1,78 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Arachis hypogaea</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; dalbergioids sensu lato; Dalbergieae; Pterocarpus clade; Arachis</p>
+                    <p><b>Abbr: </b> Ahy</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=4X=40</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Ahy.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> The native range of this species is a cultigen from Bolivia. It is an annual and grows primarily in the seasonally dry tropical biome. It is used as animal food, a poison, a medicine and invertebrate food, has environmental uses and social uses and for fuel and food.
+                    </p>
+                    <p><b>Distribution: </b> Alabama, Angola, Assam, Bangladesh, Belarus, Benin, Brazil North, Brazil Northeast, Brazil South, Brazil Southeast, Brazil West-Central, Bulgaria, Burkina, Burundi, Cameroon, Caroline Is., Central African Repu, Central European Rus, Chad, China North-Central, China South-Central, China Southeast, Colombia, Comoros, East European Russia, East Himalaya, Ecuador, Eritrea, Ethiopia, Gabon, Galápagos, Gambia, Ghana, Guinea, Guinea-Bissau, Gulf of Guinea Is., Hainan, Illinois, India, Inner Mongolia, Iraq, Ivory Coast, Jawa, Kazakhstan, Kirgizstan, Korea, Krym, KwaZulu-Natal, Laccadive Is., Laos, Liberia, Malawi, Malaya, Mali, Manchuria, Marianas, Maryland, Mauritania, Mexico Southwest, Mongolia, Mozambique, Myanmar, Namibia, Nepal, New Guinea, Niger, Nigeria, North Caucasus, Northern Provinces, Pakistan, Paraguay, Peru, Philippines, Queensland, Rwanda, Santa Cruz Is., Senegal, Sierra Leone, Society Is., South European Russi, Sri Lanka, Sudan, Sumatera, Tadzhikistan, Taiwan, Tanzania, Thailand, Togo, Transcaucasus, Trinidad-Tobago, Turkmenistan, Uganda, Ukraine, Uzbekistan, Vietnam, West Himalaya, Western Australia, Yemen, Zambia, Zaïre, Zimbabwe</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://www.nature.com/articles/s41588-019-0405-z">The genome sequence of segmental allotetraploid peanut Arachis hypogaea</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> The datasets generated during and/or analyzed for this study are available in the public repository of the National Center for Biotechnology Information (NCBI;
+                        <a href="https://www.ncbi.nlm.nih.gov">https://www.ncbi.nlm.nih.gov</a>) and/or the open access internet sites PeanutBase (<a
+                                href="https://peanutbase.org/">https://peanutbase.org/</a>). Genome assemblies and annotations, identified transposable elements, transcript assemblies, base methylation states and map data are available at Peanutbase (<a
+                                href="https://peanutbase.org/peanut_genome">https://peanutbase.org/peanut_genome</a>). A. hypogaea cv. Tifrunner sequence reads are archived in the NCBI under BioProject accession number PRJNA419393, the genome assembly has GenBank accession numbers CM009801–CM009820. Small RNA sequences are deposited in the NCBI Sequence Read Archive (SRA) under accession numbers SAMN06658954, SAMN06658955 and SAMN06658956. Datasets 1–9, as cited in manuscript, are deposited at <a href="https://doi.org/10.25739/hb5x-wx74">https://doi.org/10.25739/hb5x-wx74</a>, Cyverse (<a href="http://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/Bertioli_Arachis_genome_supplement_TVDM_Mar2019">http://datacommons.cyverse.org</a>) and PeanutBase (<a href="https://peanutbase.org/data/public/Arachis_hypogaea/Tifrunner.esm.TVDM/">https://peanutbase.org/data/public/Arachis_hypogaea/Tifrunner.esm.TVDM/</a>). Whole-genome sequencing data of diverse accessions are deposited in the NCBI under BioProject accession numbers PRJNA525866, PRJNA511155 and PRJNA490832.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Vigna subterranea</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Vigna</p>
+                    <p><b>Abbr: </b> Vsu</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=22</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Vsu.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Vigna subterranea (common names: Bambara groundnut, Bambara nut, Bambara bean, Congo goober, earth pea, ground-bean, or hog-peanut) is a member of the family Fabaceae. Its name is derived from the Bambara tribe, who currently lives in Mali. The plant originated in West Africa. As a food and source of income, the Bambara groundnut is considered to be the third most important leguminous crop in those African countries where it is grown, after peanut and cowpea. The crop is mainly cultivated, sold and processed by women, and is, thus, particularly valuable for female subsistence farmers.
+
+Bambara groundnut represents the third most important grain legume in semi-arid Africa. It is resistant to high temperatures and is suitable for marginal soils where other leguminous crops cannot be grown. It is a low-impact crop. The entire plant is known for soil improvement because of nitrogen fixation.
+
+Vigna subterranea ripens its pods underground, much like the peanut (also called a groundnut). They can be eaten fresh or boiled after drying, and can be ground either fresh or dry to make puddings.
+                    </p>
+                    <p><b>Distribution: </b> Cameroon, Central African Repu, Chad, Nigeria, Sudan</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://academic.oup.com/gigascience/article/8/3/giy152/5232229">The draft genomes of five agriculturally important African orphan crops</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> The raw data from our genome project was deposited in the NCBI Sequence Read Archive database with Bioproject IDs PRJNA453822 and PRJNA474418. Assembly and annotation of the five genomes and other supporting data, including BUSCO results, are available in the GigaDB repository [85], and the data reported in this study are also available in the CNGB Nucleotide Sequence Archive (CNSA: <a href="https://db.cngb.org/cnsa">https://db.cngb.org/cnsa</a>; accession number CNP0000096). All genome annotations described here are also available at <a href="http://bioinformatics.psb.ugent.be/orcae/AOCC">http://bioinformatics.psb.ugent.be/orcae/AOCC</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

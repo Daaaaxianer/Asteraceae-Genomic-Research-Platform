@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Synvisio - AGRP{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables CSS -->
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: 2px solid #e67e22;
+    }
+
+    .species-name {
+        font-weight: 700;
+        font-style: italic;
+        color: #2c3e50;
+    }
+
+    .btn-action {
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        margin-right: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-view {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border: 1px solid #bbdefb;
+    }
+
+    .btn-down {
+        background-color: #fbe9e7;
+        color: #d84315;
+        border: 1px solid #ffccbc;
+    }
+    #myTable td {
+        white-space: nowrap;
+    }
+    td.checkbox-cell {
+        text-align: center;  /* 水平居中 */
+        vertical-align: middle;  /* 垂直居中 */
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="page-wrapper">
+            <iframe src="https://synteny_viewer.cgrpoee.top/#/dashboard/{{ sp_data_1 }}_{{ sp_data_2 }}" class="custom-iframe w-100" style="height: 1400px;width: 100%"></iframe>
+        </div>
+    </div>
+{% endblock %}

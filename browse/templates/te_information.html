@@ -1,0 +1,353 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+zJ3e4+78W5OwU6/A8gtt2Cxg4zg5hq6GwRbW4M" crossorigin="anonymous">
+    <style>
+        .form-check-label {
+            padding-left: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+
+{% endblock %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Transposable elements</b><i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-12" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5;">
+            &emsp;&emsp;Transposable elements (TEs): also known as jumping genes, are DNA sequences that can change their position in a cell. There are two types of transposons: type I transposons (Retrotransposon) and type II transposons (DNA transposons).
+            <br>&emsp;&emsp;Type I transposons: DNA is used as a template and is transcribed into mRNA, which is then reverse transcribed into cDNA and inserted into a new position in the genome by the action of integrase. Type II transposon: The mechanism of transposition of type II transposon is called "cut-and-paste". The transposase cuts the TE from its original position in the genome and pastes it into other regions of the genome. The gaps formed by the cut are repaired by DNA.
+        </h6>
+        <hr width="100%" style="border: dotted 2px">
+
+
+        <form action="te_information" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+        {% load static %}
+
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8" style="padding-top: 20px">
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Models</label>
+                        <div class="input-group">
+                            <select id="select1" name="select1" onchange="showOptions('select1', 'select2')" value="{{ select1 }}">
+                              <option value="">Select Class</option>
+                              <option value="ClassI">ClassI</option>
+                              <option value="ClassII">ClassII</option>
+                              <option value="ClassIII">ClassIII</option>
+                              <option value="Low_complexity">Low Complexity</option>
+                              <option value="Simple_repeat">Simple Repeat</option>
+                              <option value="unknown">Unknown</option>
+                            </select>
+
+                            <select id="select2" name="select2" class="hidden" onchange="showOptions('select2', 'select3')" value="{{ select2 }}">
+                              <option value="">Select Subclass</option>
+                            </select>
+
+                            <select id="select3" name="select3" class="hidden" onchange="showOptions('select3', 'select4')" value="{{ select3 }}">
+                              <option value="">Select Order</option>
+                            </select>
+
+                            <select id="select4" name="select4" class="hidden" value="{{ select4 }}">
+                              <option value="">Select Type</option>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+
+                <div class="col-sm-2"></div>
+                <div class="col-md-8">
+                    <label for="state" class="form-label">Species</label>
+                    <select class="form-control" id="state" name="sp_data_1" value="{{ sp_data_1 }}" required>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Ceso">Centaurea solstitialis</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata</option>
+                            <option value="Desu">Deinandra increscens subsp</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago caesia</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                    </select>
+                </div>
+                <div class="col-sm-2"></div>
+
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+                </div>
+            </div>
+
+<script>
+function showOptions(currentSelectId, nextSelectId) {
+  var currentSelect = document.getElementById(currentSelectId);
+  var nextSelect = document.getElementById(nextSelectId);
+  var selectedValue = currentSelect.value;
+  var optionsToShow = [];
+
+  if (currentSelectId === 'select1') {
+    if (selectedValue === 'ClassI') {
+      optionsToShow = ['-', 'LTR', 'nLTR'];
+    } else if (selectedValue === 'ClassII') {
+      optionsToShow = ['DNA', 'MITE', 'nMITE'];
+    } else if (selectedValue === 'ClassIII') {
+      optionsToShow = ['Helitron'];
+    } else if (selectedValue === 'Low_complexity') {
+      optionsToShow = ['-'];
+    } else if (selectedValue === 'Simple_repeat') {
+      optionsToShow = ['-'];
+    } else if (selectedValue === 'unknown') {
+      optionsToShow = ['-'];
+    }
+  } else if (currentSelectId === 'select2') {
+    if (selectedValue === 'LTR') {
+      optionsToShow = ['-', 'Copia', 'Gypsy'];
+    } else if (selectedValue === 'nLTR') {
+      optionsToShow = ['DIRS', 'LINE', 'PLE', 'SINE'];
+    } else if (selectedValue === 'DNA') {
+      optionsToShow = ['CACTA', 'Harbinger', 'hAT', 'Mutator', 'TcMar'];
+    } else {
+      optionsToShow = ['-'];
+    }
+  } else if (currentSelectId === 'select3') {
+    if (selectedValue === 'LINE') {
+      optionsToShow = ['I', 'L1'];
+    } else if (selectedValue === 'CACTA') {
+      optionsToShow = ['MITE', 'nMITE'];
+    } else if (selectedValue === 'Harbinger') {
+      optionsToShow = ['MITE', 'nMITE'];
+    } else if (selectedValue === 'hAT') {
+      optionsToShow = ['MITE', 'nMITE', 'unknown'];
+    } else if (selectedValue === 'Mutator') {
+      optionsToShow = ['MITE', 'nMITE', 'unknown'];
+    } else if (selectedValue === 'TcMar') {
+      optionsToShow = ['MITE', 'nMITE', 'unknown'];
+    } else {
+      optionsToShow = ['-'];
+    }
+  }
+
+  // Reset next select options
+  nextSelect.innerHTML = '<option value="">Select Option</option>';
+
+  // Show corresponding options in the next select
+  optionsToShow.forEach(function(optionValue) {
+    var option = document.createElement('option');
+    option.value = option.innerHTML = optionValue;
+    nextSelect.appendChild(option);
+  });
+
+  // Show next select and hide the rest
+  nextSelect.classList.remove('hidden');
+  var nextSibling = nextSelect.nextElementSibling;
+  while (nextSibling) {
+    if (nextSibling.tagName === 'SELECT') {
+      nextSibling.classList.add('hidden');
+    }
+    nextSibling = nextSibling.nextElementSibling;
+  }
+}
+</script>
+{% if page_obj %}
+    <div class="col-md-12" style="overflow-x: auto;">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Species</th>
+                    <th>id</th>
+                    <th>start</th>
+                    <th>end</th>
+                    <th>class_1</th>
+                    <th>class_2</th>
+                    <th>class_3</th>
+                    <th>class_4</th>
+                    <th>sequence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in page_obj %}
+                    <tr>
+                        <td>{{ sp_name }}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.start_position }}</td>
+                        <td>{{ item.end_position }}</td>
+                        <td>{{ item.te_class_1 }}</td>
+                        <td>{{ item.te_class_2 }}</td>
+                        <td>{{ item.te_class_3 }}</td>
+                        <td>{{ item.te_class_4 }}</td>
+                        <td style="text-align: left">{{ item.sequence }}</td>
+                    </tr>
+                {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="sp_data_1" value="{{ sp_data_1 }}">
+        <input type="hidden" name="select1" value="{{ select1 }}">
+        <input type="hidden" name="select2" value="{{ select2 }}">
+        <input type="hidden" name="select3" value="{{ select3 }}">
+        <input type="hidden" name="select4" value="{{ select4 }}">
+
+        <!-- 其他表单字段 -->
+
+        <input type="submit" value="Search">
+    </form>
+            </tbody>
+        </table>
+
+
+
+        <!-- 分页导航 -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&sp_data_1={{ sp_data_1 }}">&laquo; 第一页</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&sp_data_1={{ sp_data_1 }}">上一页</a>
+                {% endif %}
+
+                <span class="current">
+                    第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }} 页
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&sp_data_1={{ sp_data_1 }}">下一页</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&sp_data_1={{ sp_data_1 }}">最后一页 &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endif %}
+
+
+
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

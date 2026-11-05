@@ -1,0 +1,498 @@
+{
+  "verified_at": "2026-10-29 03:11",
+  "metrics": [
+    {
+      "label": "Sequence datasets",
+      "count": 59,
+      "scope": "Current CDS/peptide tables; not a species count"
+    },
+    {
+      "label": "Sequence records",
+      "count": 3098096,
+      "scope": "Rows in current CDS/peptide tables"
+    },
+    {
+      "label": "Expression datasets",
+      "count": 19,
+      "scope": "Tables with expression measurements"
+    },
+    {
+      "label": "Plant metabolomics records",
+      "count": 39043,
+      "scope": "Compound–species associations; not unique compounds"
+    },
+    {
+      "label": "Scent metabolomics records",
+      "count": 3075,
+      "scope": "Current table rows; not unique compounds"
+    },
+    {
+      "label": "Regulatory-family annotations",
+      "count": 266111,
+      "scope": "Annotation rows; a gene may have multiple rows"
+    },
+    {
+      "label": "m6A-related annotations",
+      "count": 2134,
+      "scope": "Annotation rows; a gene may have multiple rows"
+    },
+    {
+      "label": "Functional-family matches",
+      "count": 1085329,
+      "scope": "Alignment rows; a gene may have multiple matches"
+    },
+    {
+      "label": "Orthogroup summary rows",
+      "count": 116294,
+      "scope": "Historical summary scope; membership totals require version reconciliation"
+    },
+    {
+      "label": "Eupl alignment rows",
+      "count": 25104,
+      "scope": "Current multiple-genome alignment table"
+    },
+    {
+      "label": "Hean alignment rows",
+      "count": 70843,
+      "scope": "Current multiple-genome alignment table"
+    },
+    {
+      "label": "Lssa alignment rows",
+      "count": 31441,
+      "scope": "Current multiple-genome alignment table"
+    },
+    {
+      "label": "Vivi alignment rows",
+      "count": 23647,
+      "scope": "Current multiple-genome alignment table"
+    }
+  ],
+  "sequence_datasets": [
+    {
+      "code": "Aann",
+      "count": 44457
+    },
+    {
+      "code": "Aary",
+      "count": 60974
+    },
+    {
+      "code": "Amar",
+      "count": 29018
+    },
+    {
+      "code": "Amtr",
+      "count": 73453
+    },
+    {
+      "code": "Arla",
+      "count": 31441
+    },
+    {
+      "code": "Armi",
+      "count": 48435
+    },
+    {
+      "code": "Artr",
+      "count": 114173
+    },
+    {
+      "code": "Bial",
+      "count": 81835
+    },
+    {
+      "code": "Busi",
+      "count": 26971
+    },
+    {
+      "code": "Cati",
+      "count": 45331
+    },
+    {
+      "code": "Ccar",
+      "count": 23562
+    },
+    {
+      "code": "Ceso",
+      "count": 33537
+    },
+    {
+      "code": "Chla",
+      "count": 64257
+    },
+    {
+      "code": "Chma",
+      "count": 93205
+    },
+    {
+      "code": "Chmo",
+      "count": 138749
+    },
+    {
+      "code": "Chna",
+      "count": 43820
+    },
+    {
+      "code": "Cich",
+      "count": 39764
+    },
+    {
+      "code": "Cien",
+      "count": 32025
+    },
+    {
+      "code": "Cind",
+      "count": 50061
+    },
+    {
+      "code": "Cobi",
+      "count": 46076
+    },
+    {
+      "code": "Cpa",
+      "count": 22128
+    },
+    {
+      "code": "Dapi",
+      "count": 84478
+    },
+    {
+      "code": "Desu",
+      "count": 33093
+    },
+    {
+      "code": "Ecan",
+      "count": 34258
+    },
+    {
+      "code": "Enbr",
+      "count": 42616
+    },
+    {
+      "code": "Eupl",
+      "count": 25269
+    },
+    {
+      "code": "Fbi",
+      "count": 22953
+    },
+    {
+      "code": "Fbr",
+      "count": 65398
+    },
+    {
+      "code": "Ffl",
+      "count": 81422
+    },
+    {
+      "code": "Fli",
+      "count": 39773
+    },
+    {
+      "code": "Fra",
+      "count": 36162
+    },
+    {
+      "code": "Fro",
+      "count": 34785
+    },
+    {
+      "code": "Fso",
+      "count": 46602
+    },
+    {
+      "code": "Ftr",
+      "count": 51107
+    },
+    {
+      "code": "Glco",
+      "count": 66293
+    },
+    {
+      "code": "Hean",
+      "count": 70843
+    },
+    {
+      "code": "Hetu",
+      "count": 181093
+    },
+    {
+      "code": "Heub",
+      "count": 25670
+    },
+    {
+      "code": "Laca",
+      "count": 35986
+    },
+    {
+      "code": "Lasa",
+      "count": 45452
+    },
+    {
+      "code": "Lomi",
+      "count": 41024
+    },
+    {
+      "code": "Lssa",
+      "count": 44232
+    },
+    {
+      "code": "Mimi",
+      "count": 41487
+    },
+    {
+      "code": "Nenu",
+      "count": 27603
+    },
+    {
+      "code": "Nin",
+      "count": 27392
+    },
+    {
+      "code": "Pdy",
+      "count": 36185
+    },
+    {
+      "code": "Pin",
+      "count": 75153
+    },
+    {
+      "code": "Pslu",
+      "count": 121694
+    },
+    {
+      "code": "Sain",
+      "count": 46781
+    },
+    {
+      "code": "Scae",
+      "count": 70771
+    },
+    {
+      "code": "Sesq",
+      "count": 44865
+    },
+    {
+      "code": "Smso",
+      "count": 80604
+    },
+    {
+      "code": "Soca",
+      "count": 54448
+    },
+    {
+      "code": "Stre",
+      "count": 40335
+    },
+    {
+      "code": "Taer",
+      "count": 41444
+    },
+    {
+      "code": "Tako",
+      "count": 45406
+    },
+    {
+      "code": "Tamo",
+      "count": 37820
+    },
+    {
+      "code": "Tesi",
+      "count": 30680
+    },
+    {
+      "code": "Vivi",
+      "count": 23647
+    }
+  ],
+  "expression_datasets": [
+    {
+      "code": "Aann",
+      "samples": [
+        "SRR29790061",
+        "SRR29790062",
+        "SRR29790063"
+      ]
+    },
+    {
+      "code": "Aary",
+      "samples": [
+        "SRR27586298",
+        "SRR27586299",
+        "SRR27586300"
+      ]
+    },
+    {
+      "code": "Amtr",
+      "samples": [
+        "SRR27358298",
+        "SRR27358299",
+        "SRR27358303",
+        "SRR27358306",
+        "SRR27358312"
+      ]
+    },
+    {
+      "code": "Arla",
+      "samples": [
+        "SRR17633630",
+        "SRR17633631",
+        "SRR17633632"
+      ]
+    },
+    {
+      "code": "Cati",
+      "samples": [
+        "SRR31658029",
+        "SRR31658030"
+      ]
+    },
+    {
+      "code": "Ccar",
+      "samples": [
+        "SRR24696150",
+        "SRR24696151",
+        "SRR29420464"
+      ]
+    },
+    {
+      "code": "Chmo",
+      "samples": [
+        "SRR25553158",
+        "SRR25553159",
+        "SRR25553160"
+      ]
+    },
+    {
+      "code": "Chna",
+      "samples": [
+        "SRR18155269",
+        "SRR18155270"
+      ]
+    },
+    {
+      "code": "Cich",
+      "samples": [
+        "SRR22213225",
+        "SRR22213226",
+        "SRR22213229",
+        "SRR22213231",
+        "SRR22213233",
+        "SRR22213235",
+        "SRR22213237",
+        "SRR22213240"
+      ]
+    },
+    {
+      "code": "Cien",
+      "samples": [
+        "SRR17658302",
+        "SRR17658303",
+        "SRR17658304",
+        "SRR6283160",
+        "SRR6283161"
+      ]
+    },
+    {
+      "code": "Cind",
+      "samples": [
+        "SRR30835664",
+        "SRR30835667",
+        "SRR30835670"
+      ]
+    },
+    {
+      "code": "Enbr",
+      "samples": [
+        "SRR18030151",
+        "SRR18030152",
+        "SRR18030153",
+        "SRR18030154",
+        "SRR18030155",
+        "SRR18030156"
+      ]
+    },
+    {
+      "code": "Hean",
+      "samples": [
+        "SRR30043016",
+        "SRR30043017",
+        "SRR30043018",
+        "SRR30043019",
+        "SRR30043020",
+        "SRR30043021",
+        "SRR30043028",
+        "SRR33234362",
+        "SRR33234363"
+      ]
+    },
+    {
+      "code": "Mimi",
+      "samples": [
+        "SRR22318175",
+        "SRR22318176",
+        "SRR22318177",
+        "SRR22318178"
+      ]
+    },
+    {
+      "code": "Smso",
+      "samples": [
+        "SRR18215731",
+        "SRR18215732",
+        "SRR18215740"
+      ]
+    },
+    {
+      "code": "Soca",
+      "samples": [
+        "F1",
+        "F2",
+        "F3",
+        "L1",
+        "L2",
+        "L3",
+        "R1",
+        "R2",
+        "R3",
+        "RH1",
+        "RH2",
+        "RH3",
+        "TI-gen",
+        "TI-guo",
+        "TI-hua",
+        "TI-jing",
+        "TI-ye"
+      ]
+    },
+    {
+      "code": "Stre",
+      "samples": [
+        "SRR23989589",
+        "SRR23989590",
+        "SRR23989591"
+      ]
+    },
+    {
+      "code": "Tako",
+      "samples": [
+        "SRR24968334",
+        "SRR24968335"
+      ]
+    },
+    {
+      "code": "Tamo",
+      "samples": [
+        "SRR30594501",
+        "SRR30594502",
+        "SRR30594503",
+        "SRR30594504",
+        "SRR30594505",
+        "SRR30594506",
+        "SRR30594507",
+        "SRR30594508",
+        "SRR30594509"
+      ]
+    }
+  ]
+}

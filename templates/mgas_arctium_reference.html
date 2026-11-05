@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}MGAs of Arctium lappa - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 白色卡片容器样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 页面主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图片容器与交互样式 */
+        .img-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .clickable-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            /* 交互效果 */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        /* 鼠标悬停时轻微放大并加深阴影 */
+        .clickable-image:hover {
+            transform: scale(1.015);
+            box-shadow: 0 10px 30px rgba(230, 126, 34, 0.15);
+            border-color: rgba(230, 126, 34, 0.2);
+        }
+        
+        /* 5. 小标题样式 (无图标) */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">MGAs of <i>Arctium lappa</i> as reference</h2>
+            <p class="section-subtitle">Macrosynteny analysis visualization</p>
+        </div>
+        <hr class="section-divider">
+
+        <h3 class="chart-header">
+            Reference Map (Click to zoom/details)
+        </h3>
+        
+        <div class="img-container">
+            <a href="{% url 'hierarchical_alignments_Lssa_all_url' %}" title="Click to view details">
+                <img src="{% static 'image/MGAs of Arctium lappa as reference.png' %}" 
+                     alt="MGAs of Arctium lappa as reference" 
+                     class="clickable-image">
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    {% endblock %}

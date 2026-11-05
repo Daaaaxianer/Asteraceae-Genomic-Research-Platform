@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terpenoid Biosynthesis - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 白色卡片容器样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 页面主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图表标题样式 (无图标) */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22; /* 橙色左边框 */
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">Terpenoid Biosynthesis</h2>
+            <p class="section-subtitle">Gene families involved in the terpenoid biosynthesis pathway across species</p>
+        </div>
+        <hr class="section-divider">
+
+        <h3 class="chart-header">
+            Gene Count Statistics (Stacked Bar)
+        </h3>
+        <div id="container_bar" style="height: 1200px; width: 100%;"></div>
+
+        <div class="my-5 border-top" style="border-top-style: dashed !important; opacity: 0.3;"></div>
+
+        <h3 class="chart-header">
+            Gene Distribution Heatmap
+        </h3>
+        <div id="container_heatmap" style="height: 1200px; width: 100%;"></div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // =========================================================
+            // 1. 数据源 (Generated from Excel)
+            // =========================================================
+            var speciesData = ["Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Gerbera hybrida", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum kok-saghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"];
+            
+            var geneCategories = ["ACAT", "HMGS", "HMGR", "MVK", "PMK", "PMD", "DXS", "DXR", "CMS", "CMK", "MCS", "HDS", "HDR", "IPPI", "GPS", "FPS", "GGPS", "TPS"];
+            
+            var data_ACAT = [7, 12, 4, 6, 5, 5, 10, 10, 8, 6, 4, 1, 12, 10, 10, 9, 7, 4, 9, 4, 3, 10, 6, 5, 3, 6, 4, 4, 5, 4, 5, 5, 4, 4, 13, 5, 4, 9, 5, 5, 9, 4, 5, 3, 4, 5, 4, 5, 6, 9, 5, 7, 12, 6, 5, 4, 8, 5, 7];
+            var data_HMGS = [2, 5, 3, 2, 2, 2, 1, 3, 2, 2, 1, 1, 3, 3, 5, 2, 2, 2, 4, 3, 2, 4, 2, 3, 2, 2, 2, 2, 1, 2, 2, 3, 2, 0, 4, 1, 2, 6, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 3, 6, 2, 2, 3, 1, 1, 4, 4];
+            var data_HMGR = [6, 12, 9, 5, 9, 8, 6, 10, 3, 9, 10, 5, 5, 10, 10, 10, 11, 10, 10, 6, 3, 10, 4, 5, 5, 2, 3, 4, 4, 5, 5, 9, 5, 5, 7, 5, 7, 12, 6, 8, 8, 7, 5, 2, 8, 5, 6, 6, 8, 7, 6, 10, 6, 10, 6, 10, 7, 7, 3];
+            var data_MVK = [2, 2, 2, 1, 1, 1, 2, 2, 0, 1, 1, 1, 2, 2, 6, 0, 0, 1, 2, 1, 1, 2, 1, 1, 3, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 3, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 1];
+            var data_PMK = [0, 4, 1, 2, 0, 0, 2, 2, 0, 1, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 2, 5, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 5, 3, 2, 0, 1, 1, 1];
+            var data_PMD = [2, 1, 2, 1, 2, 2, 1, 2, 8, 1, 2, 1, 2, 3, 3, 1, 2, 1, 1, 1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 8, 1, 2, 2, 2, 2, 1, 2, 1, 1, 1, 2, 1, 1, 4, 1, 2, 1, 1, 0, 5, 1];
+            var data_DXS = [4, 7, 4, 6, 6, 6, 3, 11, 5, 6, 4, 6, 3, 6, 12, 4, 5, 4, 3, 7, 1, 10, 4, 7, 7, 7, 4, 3, 4, 2, 2, 5, 5, 2, 8, 4, 6, 12, 6, 5, 10, 4, 4, 3, 3, 4, 4, 5, 5, 6, 8, 10, 6, 4, 6, 2, 3, 7, 8];
+            var data_DXR = [3, 7, 3, 2, 2, 2, 3, 8, 1, 2, 1, 1, 2, 3, 7, 3, 1, 1, 3, 4, 2, 8, 1, 1, 0, 1, 3, 3, 4, 4, 4, 4, 4, 3, 2, 2, 3, 9, 2, 2, 3, 2, 3, 1, 1, 2, 2, 3, 2, 1, 2, 4, 1, 2, 4, 2, 2, 2, 1];
+            var data_CMS = [1, 2, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 10, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 3, 1, 0, 1, 0, 1];
+            var data_CMK = [0, 0, 2, 0, 1, 1, 0, 2, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 2, 1, 1, 1, 0, 1, 0, 1, 1, 2, 1, 0, 0, 1, 0, 1, 3, 1, 1, 2, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 1, 0, 1, 1, 0, 1, 0];
+            var data_MCS = [2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 1, 1, 5, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 2, 1, 2, 1, 2, 3, 2, 1, 1, 1, 1, 3, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 0, 0, 2, 1];
+            var data_HDS = [1, 3, 4, 2, 1, 2, 4, 3, 1, 1, 1, 2, 3, 9, 10, 2, 1, 1, 8, 2, 1, 4, 2, 1, 2, 1, 2, 3, 4, 2, 2, 2, 2, 2, 1, 1, 8, 10, 1, 1, 2, 1, 3, 1, 1, 1, 1, 1, 2, 1, 3, 3, 1, 1, 3, 1, 1, 2, 1];
+            var data_HDR = [4, 5, 2, 4, 1, 1, 4, 3, 2, 3, 1, 3, 7, 10, 10, 10, 4, 3, 6, 2, 2, 4, 2, 2, 3, 1, 3, 1, 2, 3, 3, 5, 3, 3, 4, 6, 5, 10, 2, 5, 4, 4, 4, 1, 0, 2, 2, 2, 1, 2, 3, 9, 2, 3, 2, 6, 3, 1, 1];
+            var data_IPPI = [4, 11, 4, 4, 3, 4, 4, 6, 1, 5, 3, 3, 3, 1, 8, 3, 3, 3, 5, 3, 3, 9, 4, 4, 4, 3, 4, 2, 3, 3, 4, 4, 4, 3, 8, 4, 4, 7, 4, 4, 7, 4, 4, 2, 4, 4, 2, 4, 3, 5, 5, 8, 8, 5, 3, 4, 5, 2, 2];
+            var data_GPS = [4, 11, 12, 7, 6, 5, 4, 19, 4, 5, 5, 4, 13, 8, 13, 11, 8, 7, 12, 10, 5, 17, 9, 7, 4, 9, 7, 8, 12, 6, 8, 8, 6, 8, 7, 6, 12, 14, 5, 7, 9, 9, 9, 11, 7, 6, 7, 7, 5, 7, 7, 17, 9, 13, 7, 8, 6, 10, 7];
+            var data_FPS = [5, 10, 7, 6, 2, 2, 7, 4, 1, 3, 2, 3, 6, 10, 10, 10, 2, 2, 7, 2, 3, 10, 2, 7, 4, 2, 4, 1, 3, 3, 6, 5, 3, 5, 3, 8, 9, 10, 2, 2, 5, 2, 4, 4, 1, 2, 5, 8, 2, 4, 3, 10, 11, 4, 2, 3, 3, 3, 1];
+            var data_GGPS = [6, 9, 11, 9, 8, 7, 6, 11, 5, 5, 5, 4, 9, 7, 13, 9, 10, 8, 7, 9, 7, 12, 10, 8, 5, 10, 8, 9, 13, 8, 9, 10, 9, 8, 9, 9, 10, 15, 7, 8, 9, 8, 9, 10, 8, 6, 9, 7, 7, 7, 7, 10, 8, 13, 9, 8, 6, 10, 7];
+            var data_TPS = [72, 127, 73, 82, 54, 42, 70, 158, 59, 84, 29, 67, 138, 181, 345, 129, 40, 48, 128, 60, 18, 139, 44, 54, 81, 32, 16, 24, 20, 37, 43, 40, 42, 36, 41, 77, 116, 255, 51, 43, 34, 60, 84, 23, 38, 50, 51, 47, 50, 83, 59, 165, 80, 93, 67, 30, 32, 71, 24];
+
+            // 整合 Series 数据对象
+            var seriesMap = [
+                { name: 'ACAT', data: data_ACAT },
+                { name: 'HMGS', data: data_HMGS },
+                { name: 'HMGR', data: data_HMGR },
+                { name: 'MVK', data: data_MVK },
+                { name: 'PMK', data: data_PMK },
+                { name: 'PMD', data: data_PMD },
+                { name: 'DXS', data: data_DXS },
+                { name: 'DXR', data: data_DXR },
+                { name: 'CMS', data: data_CMS },
+                { name: 'CMK', data: data_CMK },
+                { name: 'MCS', data: data_MCS },
+                { name: 'HDS', data: data_HDS },
+                { name: 'HDR', data: data_HDR },
+                { name: 'IPPI', data: data_IPPI },
+                { name: 'GPS', data: data_GPS },
+                { name: 'FPS', data: data_FPS },
+                { name: 'GGPS', data: data_GGPS },
+                { name: 'TPS', data: data_TPS }
+            ];
+
+            // =========================================================
+            // 2. 初始化堆积柱形图 (Stacked Bar Chart)
+            // =========================================================
+            var domBar = document.getElementById('container_bar');
+            if (domBar) {
+                var myChartBar = echarts.init(domBar, null, {renderer: 'canvas'});
+                
+                var barSeries = seriesMap.map(function(item) {
+                    return {
+                        name: item.name,
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: { focus: 'series' },
+                        data: item.data
+                    };
+                });
+
+                var optionBar = {
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    legend: { top: 'top', data: geneCategories, type: 'scroll' }, // 启用滚动图例
+                    grid: { left: '3%', right: '4%', bottom: '1%', top: '100px', containLabel: true },
+                    xAxis: {
+                        type: 'value',
+                        name: 'Gene Count',
+                        position: 'top', 
+                        splitLine: { lineStyle: { type: 'dashed' } }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: speciesData,
+                        axisLabel: { fontStyle: 'italic', interval: 0, fontSize: 11 },
+                        inverse: true
+                    },
+                    series: barSeries
+                };
+                myChartBar.setOption(optionBar);
+            }
+
+            // =========================================================
+            // 3. 初始化热图 (Heatmap)
+            // =========================================================
+            var domHeatmap = document.getElementById('container_heatmap');
+            if (domHeatmap) {
+                var myChartHeatmap = echarts.init(domHeatmap, null, {renderer: 'canvas'});
+
+                // 转换数据为热图格式 [[xIndex, yIndex, value], ...]
+                var heatmapData = [];
+                // x轴: 基因类别, y轴: 物种
+                speciesData.forEach(function(species, yIndex) {
+                    seriesMap.forEach(function(seriesItem, xIndex) {
+                        // Value = seriesItem.data[yIndex]
+                        heatmapData.push([xIndex, yIndex, seriesItem.data[yIndex]]);
+                    });
+                });
+
+                var optionHeatmap = {
+                    tooltip: {
+                        position: 'top',
+                        formatter: function (params) {
+                            return params.name + '<br/>' + 
+                                   geneCategories[params.value[0]] + ': ' + params.value[2];
+                        }
+                    },
+                    grid: {
+                        height: '90%',
+                        top: '5%',
+                        right: '10%', // 右侧留白给 visualMap
+                        left: '15%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: geneCategories,
+                        splitArea: { show: true },
+                        axisLabel: { interval: 0, rotate: 30, fontWeight: 'bold' },
+                        position: 'top'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: speciesData,
+                        splitArea: { show: true },
+                        axisLabel: { fontStyle: 'italic', interval: 0, fontSize: 10 },
+                        inverse: true
+                    },
+                    visualMap: {
+                        min: 0,
+                        max: 150, // TPS有较大值(345)，但大部分在150以下，设为150以突出差异
+                        calculable: true,
+                        orient: 'vertical',
+                        right: '2%',
+                        top: 'center',
+                        inRange: {
+                            color: ['#f6efa6', '#d88273', '#bf444c']
+                        }
+                    },
+                    series: [{
+                        name: 'Gene Counts',
+                        type: 'heatmap',
+                        data: heatmapData,
+                        label: {
+                            show: true,
+                            color: '#333',
+                            fontSize: 9
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }]
+                };
+                myChartHeatmap.setOption(optionHeatmap);
+            }
+
+            // =========================================================
+            // 4. 窗口缩放监听
+            // =========================================================
+            window.addEventListener('resize', function() {
+                if (domBar) myChartBar.resize();
+                if (domHeatmap) myChartHeatmap.resize();
+            });
+        });
+    </script>
+{% endblock %}

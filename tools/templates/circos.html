@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ShinyCircos - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 40px;  
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .iframe-container {
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;  
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            background: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">ShinyCircos Visualization</h2>
+            <p class="section-subtitle">Interactive Circular Genome Plotting Tool</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-11">
+                <p style="text-align: justify; color: #5d4037; line-height: 1.6; font-size: 1rem;">
+                    &emsp;&emsp;This tool allows for the interactive creation of Circos plots. You can visualize genomic data relationships, synteny, and other features directly within this interface.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="iframe-container">
+                    <iframe style="height: 1400px; width: 100%; display: block;" src="https://venyao.xyz/shinyCircos/" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vendor/js/jquery-3.5.1.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../../static/vendor/css/style.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../../static/interproscan_json/Ahy.interproscan.json",
+                "deferRender": true,
+                "scrollX": true
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Ssu syntenic<i></i>
+    </h3>
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display container">
+            <thead>
+                <tr>
+                    <th>Seq ID</th>
+                    <th>Length</th>
+                    <th>Analysis</th>
+                    <th>Description</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>IPR</th>
+                    <th>GO</th>
+                </tr>
+            </thead>
+        </table>
+		<div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

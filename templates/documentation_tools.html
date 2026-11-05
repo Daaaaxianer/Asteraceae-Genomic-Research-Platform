@@ -1,0 +1,3020 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png)"><b>Pipeline flow examples</b><i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-3 bg-light">
+            <div class="">
+                <ol class="flex-column">
+                    <li><a href="#2022/09/24">Blast</a></li>
+                    <li><a href="#2022/08/14">Diamond</a></li>
+                    <li><a href="#2022/05/04">MCScanX</a></li>
+                    <li><a href="#2022/04/23">ColinearScan</a></li>
+                    <li><a href="#2022/03/23">WGDI</a></li>
+                    <li><a href="#2022/02/18">ParaAT</a></li>
+                    <li><a href="#2022/01/01">KaKs_Calculator</a></li>
+                    <li><a href="#2021/12/24">Dupgen finder</a></li>
+                    <li><a href="#2021/12/09">Hmmer</a></li>
+                    <li><a href="#2021/12/02">Pfam</a></li>
+                    <li><a href="#2021/11/11">MEME</a></li>
+                    <li><a href="#2021/10/19">CpgFinder</a></li>
+                    <li><a href="#2021/10/01">Codonw</a></li>
+                    <li><a href="#2021/08/12">IQ-Tree</a></li>
+                    <li><a href="#2021/07/19">FastTree</a></li>
+                    <li><a href="#2021/06/01">SequenceServer</a></li>
+                    <li><a href="#2021/05/17">Blast match</a></li>
+                    <li><a href="#2021/05/15">Synvisio</a></li>
+                    <li><a href="#2021/01/05">NG_KaKs_Cal</a></li>
+                    <li><a href="#Hmmer">BBK_Dotter</a></li>
+                    <li><a href="#pfam">GSDS</a></li>
+                    <li><a href="#meme">Seq alignment</a></li>
+                    <li><a href="#cpgfinder">Phyml</a></li>
+                    <li><a href="#codonw">SS-extractor</a></li>
+                    <li><a href="#gsds">SAF-converter</a></li>
+                    <li><a href="#paraat">BDI-deduplicator</a></li>
+                    <li><a href="#kaks_calculator">BDI-extractor</a></li>
+                    <li><a href="#Sequence_screening">BDI-combiner</a></li>
+                    <li><a href="#File_merge">JBrowse2</a></li>
+                    <li><a href="#Find_alternative">ShinyCircos</a></li>
+
+                    <li><a href="#Extract_column">Transcriptome analysis</a></li>
+                    <li><a href="#Duplicate_removal">Syn_Ks_Dis</a></li>
+                    <li><a href="#Format_conversion">B_Dotter</a></li>
+                    <li><a href="#Format_conversio">BB_Dotter</a></li>
+                    <li><a href="#Format_conversi">Paleo-gene_identifer</a></li>
+                    <li><a href="#Format_convers">Paleo-gene_RI</a></li>
+                    <li><a href="#Format_conver">Paleo-gene_RII</a></li>
+                    <li><a href="#Format_conve">GF_circos</a></li>
+                    <li><a href="#bwa">Bwa</a></li>
+                    <li><a href="#fastp">Fastp</a></li>
+                    <li><a href="#fastqc">Fastqc</a></li>
+                    <li><a href="#glimmer">Glimmer</a></li>
+                    <li><a href="#prodigal">Prodigal</a></li>
+                    <li><a href="#mummer">Mummer</a></li>
+                    <li><a href="#canu">Canu</a></li>
+                    <li><a href="#flash">Flash</a></li>
+                    <li><a href="#velvet">Velvet</a></li>
+                    <li><a href="#trf">Trf</a></li>
+                    <li><a href="#blat">Blat</a></li>
+                    <li><a href="#wgsim">Wgsim</a></li>
+                    <li><a href="#svsim">Svsim</a></li>
+                    <li><a href="#falcon">Falcon</a></li>
+                    <li><a href="#quast">Quast</a></li>
+                    <li><a href="#sOAPdenovo">SOAPdenovo</a></li>
+                    <li><a href="#featureCounts">FeatureCounts</a></li>
+                    <li><a href="#subread">Subread</a></li>
+                    <li><a href="#subjunc">Subjunc</a></li>
+                    <li><a href="#sublong">Sublong</a></li>
+                    <li><a href="#exactSNP">ExactSNP</a></li>
+                    <li><a href="#hisat2">Hisat2</a></li>
+                    <li><a href="#lumpy">Lumpy</a></li>
+                    <li><a href="#cope">Cope</a></li>
+                    <li><a href="#spades">Spades</a></li>
+                    <li><a href="#tRNAscan">TRNAscan</a></li>
+                    <li><a href="#rnammer">Rnammer</a></li>
+                    <li><a href="#trimmomatic">Trimmomatic</a></li>
+                    <li><a href="#seqtk">Seqtk</a></li>
+                    <li><a href="#doCM">DoCM</a></li>
+                    <li><a href="#clinVar">ClinVar</a></li>
+                    <li><a href="#oncoKB">OncoKB</a></li>
+                    <li><a href="#cancer_Hotspots">Cancer Hotspots</a></li>
+                    <li><a href="#lncRNADisease">LncRNADisease</a></li>
+                    <li><a href="#fusionGDB">FusionGDB</a></li>
+                    <li><a href="#pRINSEQ">PRINSEQ</a></li>
+                    <li><a href="#solexaqa">Solexaqa</a></li>
+                    <li><a href="#cutadapt">Cutadapt</a></li>
+                    <li><a href="#mosdepth">Mosdepth</a></li>
+                    <li><a href="#multiQC">MultiQC</a></li>
+                    <li><a href="#sTAR">STAR</a></li>
+                    <li><a href="#tMAP">TMAP</a></li>
+                    <li><a href="#novoAlign">NovoAlign</a></li>
+                    <li><a href="#gMAP">GMAP</a></li>
+                    <li><a href="#gSNAP">GSNAP</a></li>
+                    <li><a href="#bowtie2">Bowtie2</a></li>
+                    <li><a href="#tophat">Tophat</a></li>
+                    <li><a href="#hisat2">Hisat2</a></li>
+                    <li><a href="#abyss">Abyss</a></li>
+                    <li><a href="#oases">Oases</a></li>
+                    <li><a href="#trinityrnaseq">Trinityrnaseq</a></li>
+                    <li><a href="#rum">Rum</a></li>
+                    <li><a href="#mECAT">MECAT</a></li>
+                    <li><a href="#dart">Dart</a></li>
+                    <li><a href="#rHAT">rHAT</a></li>
+                    <li><a href="#taxmaps">Taxmaps</a></li>
+                    <li><a href="#mARVEL">MARVEL</a></li>
+                    <li><a href="#vg">vg</a></li>
+                    <li><a href="#stringtie">Stringtie</a></li>
+                    <li><a href="#transLiG">TransLiG</a></li>
+                    <li><a href="#sTRiP">STRiP</a></li>
+                    <li><a href="#loFreq">LoFreq</a></li>
+                    <li><a href="#TS">TS</a></li>
+                    <li><a href="#speedSeq">SpeedSeq</a></li>
+                    <li><a href="#somaticSniper">SomaticSniper</a></li>
+                    <li><a href="#fusionCatcher">FusionCatcher</a></li>
+                    <li><a href="#pindel">Pindel</a></li>
+                    <li><a href="#breakDancer">BreakDancer</a></li>
+                    <li><a href="#delly">Delly</a></li>
+                    <li><a href="#cnvkit">Cnvkit</a></li>
+                    <li><a href="#gridss">Gridss</a></li>
+                    <li><a href="#svtools">Svtools</a></li>
+                    <li><a href="#RDDpred">RDDpred</a></li>
+                    <li><a href="#iseq">Iseq</a></li>
+                    <li><a href="#deepvariant">Deepvariant</a></li>
+                    <li><a href="#JAFFA">JAFFA</a></li>
+                    <li><a href="#Picky">Picky</a></li>
+                    <li><a href="#Control_FREEC">Control-FREEC</a></li>
+                    <li><a href="#BreaKmer">BreaKmer</a></li>
+                    <li><a href="#DeTiN">DeTiN</a></li>
+                    <li><a href="#CN_Learn">CN-Learn</a></li>
+                    <li><a href="#SoftSV">SoftSV</a></li>
+                    <li><a href="#wham">Wham</a></li>
+                    <li><a href="#SnpEff">SnpEff</a></li>
+                    <li><a href="#VEP">VEP</a></li>
+                    <li><a href="#GEMINI">GEMINI</a></li>
+                    <li><a href="#vcfanno">Vcfanno</a></li>
+                    <li><a href="#PCGR">PCGR</a></li>
+                    <li><a href="#anor">Anor</a></li>
+                    <li><a href="#Bystro">Bystro</a></li>
+                    <li><a href="#PathoPredictor">PathoPredictor</a></li>
+                    <li><a href="#LARVA">LARVA</a></li>
+                    <li><a href="#MATS">MATS</a></li>
+                    <li><a href="#tappAS">TappAS</a></li>
+                    <li><a href="#dSreg">DSreg</a></li>
+                    <li><a href="#IsoformSwitchAnalyzeR">IsoformSwitchAnalyzeR</a></li>
+                    <li><a href="#Yanagi">Yanagi</a></li>
+                    <li><a href="#Astrap">Astrap</a></li>
+                    <li><a href="#DSC">DSC</a></li>
+                    <li><a href="#CATANA">CATANA</a></li>
+                    <li><a href="#benchmarkingDiffExprAndSpl">BenchmarkingDiffExprAndSpl</a></li>
+                    <li><a href="#Matt">Matt</a></li>
+                    <li><a href="#htseq">Htseq</a></li>
+                    <li><a href="#edgeR">EdgeR</a></li>
+                    <li><a href="#DESeq2">DESeq2</a></li>
+                    <li><a href="#Cufflinks">Cufflinks</a></li>
+                    <li><a href="#PRADA">PRADA</a></li>
+                    <li><a href="#Ballgown">Ballgown</a></li>
+                    <li><a href="#Manual">Manual</a></li>
+                    <li><a href="#Salmon">Salmon</a></li>
+                    <li><a href="#VirusFinder_2">VirusFinder 2</a></li>
+                    <li><a href="#VirusSeq">VirusSeq</a></li>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="col-9">
+            <h3 style="margin-bottom: 20px;" id="2022/09/24"><b>Blast</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022283605803602?via%3Dihub" > Basic local alignment search tool</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/ncbi-blast-2.13.0+-x64-linux.tar.gz" > ncbi-blast-2.13.0+-x64-linux.tar.gz</a>
+            <p>wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz</p>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>#Unzip <br>
+                tar -zxvf ncbi-blast-2.13.0+-x64-linux.tar.gz <br>
+                #Rename <br>
+                mv ncbi-blast-2.13.0+-x64-linux blast <br>
+                #Environment variable settings <br>
+                Edit the ~/.bashrc file and add the following line at the end: <br>
+                export PATH=/home/local/Software/blast/bin:$PATH <br>
+                #Configuration effective <br>
+                source ~/.bashrc</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+# Makeblastdb:
+makeblastdb -in db.fasta -dbtype prot -parse_seqids -out dbname(format database)
+# Parameter description:
+-in: the sequence file to be formatted
+-dbtype: database type, prot or nucl
+-out: database name
+-parse_seqids: parse sequence identifier (recommended to add)
+# Blastp:
+blastp -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (protein sequence comparison protein database)
+# Blastn:
+blastn -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (nucleic acid sequence comparison nucleic acid database)
+# Blatsx:
+blastx -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (nucleic acid sequence comparison protein database)
+# Parameter Description:
+-query: input file path and file name
+-out: output file path and file name
+-db: formatted database path and database name
+-outfmt: output file format, there are 12 formats in total, 6 are tabular format corresponding to BLAST's m8 format
+-evalue: set the e-value value of the output result
+-num_descriptions: the number of output results in tabular format
+-num_threads: number of threads
+-max_target_seqs 5: output the result of up to 5 comparisons, if it is 1, it is the best match
+## Above is the comparison result of blast, there are 12 columns, which represent.
+1, Query id: query sequence ID identification (blast comparison sequence)
+2、Subject id: the ID of the target sequence on the comparison (library building sequence)
+3、identity: the consistency percentage of sequence matching
+4、alignment length: the length of the alignment area that matches the comparison
+5、mismatches: the number of mismatches in the alignment area
+6、gap openings: the number of gaps in the matching region
+7, start: the starting position of the matching region on the query sequence (Query id)
+8, end: the end point of the comparison region on the query id
+9, start: the start of the comparison region in the target sequence (Subject id)
+10, end: the end point of the comparison region in the target sequence (Subject id)
+11, e-value: the expected value of the comparison result
+12、bit score: the bit score value of the comparison result
+In general, we look at columns 3, 11 and 12, the smaller the e-value, the more reliable.
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2022/08/14"><b>Diamond</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nmeth.3176" > Fast and sensitive protein alignment using DIAMOND</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/diamond-linux64.tar.gz" > diamond-linux64.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>#Unzip <br>
+                tar zxf diamond-linux64.tar.gz <br>
+                #Rename <br>
+                mv diamond ~/bin <br>
+                #Environment variable settings <br>
+                echo 'PATH=$PATH:/root/bin' >> ~/.bashrc <br>
+                #Configuration effective <br>
+                source ~/.bashrc</p>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+            ## linux command: <br>
+            # Build a database <br>
+                diamond makedb --in nr --db nr <br>
+            ## Sequence alignment <br>
+            # Nucleic acid <br>
+                diamond blastx --db nr -q reads.fna -o dna_matches_fmt6.txt <br>
+            # Protein <br>
+                diamond blastp --db nr -q reads.faa -o protein_matches_fmt6.txt <br>
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="2022/05/04"><b>MCScanX</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/nar/article/40/7/e49/1202057" > MCScanX: a toolkit for detection and evolutionary analysis of gene synteny and collinearity</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/MCScanX-master.zip" > MCScanX-master.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>#Unzip: <br>
+                unzip MCScanX-master.zip <br>
+                #Compile <br>
+                make</p>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+## Before running MCScanX, we need to put the gff file, blast file into the same folder and the gff file is the gff of two species gff files merged. the other two files need to have the same name.
+MCScanX se_so
+# Plotting covariance points
+java dot_plotter -g se_so.gff -s se_so.collinearity -c dot.ctl -o dot.PNG
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2022/04/23"><b>ColinearScan</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-447" > Statistical inference of chromosomal homology based on gene colinearity and applications to Arabidopsis and rice</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+# Extracting gene pairs from BLAST results
+cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs
+# Masking of highly repetitive loci
+cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged
+# Estimate maximum gap length
+max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged
+# Detect covariate fragments
+block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged
+## For efficiency, the above process can also be written as a shell script with the following code.
+
+#!/bin/sh
+do_error()
+{
+    echo "Error occured when running $1"
+    exit 1
+}
+​
+echo "Start to run the working example..."
+echo
+​
+echo "* STEP1 Extract pairs from BLAST results"
+echo "  We should parse BLAST results and extract pairs of anchors (genes in this example) satisfying our rule (score >= 100)."
+echo
+echo "  > cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs"
+echo
+cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs || do_error get_pairs.pl
+echo
+​
+echo "* STEP2 Mask highly repeated anchor"
+echo "  Highly repeated anchors which are mostly generated by continuous single gene duplication events make those colinear segements vague to be detected. We mask them off using a very simple algorithm."
+echo
+echo "  > cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged"
+echo
+cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged || do_error repeat_mask.pl
+echo
+​
+echo "* STEP3 Estimate maximum gap length"
+echo "  Use pair files with repeats masked to estimate mg values which will be used to detected colinear blocks."
+echo
+echo "  > max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged"
+echo
+max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged || do_error max_gap.pl
+echo
+​
+echo "* SETP4 Detect blocks from pair file(s)"
+echo "  Everything's ready do scan at last."
+echo
+echo "  > block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged"
+echo
+block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged || do_error block_scan.pl
+echo
+​
+echo "Now ath_chr2_indica_chr5.blocks contains predicted colinear blocks."
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2022/03/23"><b>WGDI</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.sciencedirect.com/science/article/pii/S1674205222003707?via%3Dihub" > WGDI: A user-friendly toolkit for evolutionary analyses of whole-genome duplications and ancestral karyotypes</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+## More details on the steps or process of using WGDI can be found. https://wgdi.readthedocs.io/en/latest/Introduction.html
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2022/02/18"><b>ParaAT</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.sciencedirect.com/science/article/abs/pii/S0006291X12003518?via%3Dihub" > ParaAT: A parallel tool for constructing multiple protein-coding DNA alignments, Biochem Biophys Res Commun</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/ParaAT2.0.tar.gz" > ParaAT2.0.tar.gz</a>
+            <p>ParaAT2.0 download address is: https://ngdc.cncb.ac.cn/tools/paraat</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+# "ParaAT.pl" is the running script, you can use it directly after downloading and unpacking. You can add the unpacked path to the environment variable or use the absolute path where the script is located to run it.
+# Dependency Tools Download
+# 1. Protein comparison tools: such as clustalw2, mafft, muscle, etc.
+# 2. Kaks_Calculator <a href="(https://ngdc.cncb.ac.cn/tools/kaks)">(https://ngdc.cncb.ac.cn/tools/kaks)</a>
+Run ParaAT
+ParaAT.pl -h test.homologs -n test.cds -a test.pep -p proc -m muscle -f axt -g -k -o result_dir
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2022/01/01"><b>KaKs_Calculator</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="#" > KaKs_Calculator 3.0: Calculating Selective Pressure on Coding and Non-coding Sequences</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/KaKs_Calculator3.0.zip" > KaKs_Calculator3.0.zip</a>
+            <p>KaKs_Calculator3 download address is: https://ngdc.cncb.ac.cn/biocode/tools/BT000001</p>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>unzip KaKs_Calculator3.0.zip <br>
+                # Compile KaKs <br>
+                cd KaKs_Calculator3.0 && make <br>
+                # Main programs: KaKs, KnKs, AXTConvertor <br>
+                # Unzip and add environment variables <br>
+                Install ParaAT, the installation method can be seen in Hear.</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                # Prepare input files <br>
+                test.cds # DNA sequence of each gene <br>
+                test.pep #Protein sequences for each gene <br>
+                The proc file contains a number indicating the number of CPU calls <br>
+            # Start analysis <br>
+                ParaAT.pl -h test.homolog -n test.cds -a test.pep -p proc -m mafft -f axt -g -k -o result_dir <br>
+            # ParaAT.pl parameters explained. <br>
+                 -h, homologous gene name file <br>
+                 -n, file of specified nucleic acid sequences <br>
+                 -a, specified protein sequence file <br>
+                 -p, specifies the multithreaded file numbers <br>
+                 -m, specifies the comparison tool (clustalw2 | t_coffee | mafft | muscle), multiple choice <br>
+                 -g, remove codons with gaps <br>
+                 -k, use KaKs_Calculator to calculate kaks values <br>
+                 -o, output the directory of the result <br>
+                 -f, the format of the output comparison file <br>
+                 *** The -f parameter can also be used to get the format needed by other software to analyze ka/ks
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/12/24"><b>Dupgen finder</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/DupGen_finder-master.zip" > DupGen_finder-master.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>cd DupGen_finder <br>
+                make <br>
+                chmod 775 DupGen_finder.pl <br>
+                chmod 775 DupGen_finder-unique.pl <br>
+                chmod 775 set_PATH.sh <br>
+                source set_PATH.sh</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+# geneDuplication analysis
+# The geneDuplication analysis, using DupGen-finder, can classify all genes i
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1650-2" > Gene duplication and evolution in recurring polyploidization-diploidization cycles in plants</a>
+            <br>nto 5 categories according to their replication types
+WGD: whole genome duplication
+TD: Tandem duplication (two duplicated genes next to each other)
+PD: proximal duplication (duplicated genes within 10 genes apart)
+TRD: Transpositional duplication (duplicated genes consisting of an ancestor and a new locus)
+DSD: scattered duplication (duplicated genes that are not adjacent nor coterminous)
+SL: single copy
+# require input file
+
+# analysis of mode 1 (comparison with itself) and mode 2 (comparison with other species)
+# analyze mode 1
+cat Spd.bed |sed 's/^/Spd-/g'|awk '{print $1"\t"$4"\t"$2"\t"$3}' >Spd.gff
+cat Ath.bed |sed 's/^/Ath-Chr/g'|awk '{print $1"\t"$4"\t"$2"\t"$3}' >Ath.gff
+sed -i 's/Chr0/Chr/g' Spd.gff
+
+cat Spd.gff Ath.gff >Spd_Ath.gff
+
+makeblastdb -in Spd.pep -dbtype prot -title Spd -parse_seqids -out Spd
+blastp -query Spd.pep -db Spd -evalue 1e-10 -max_target_seqs 5 -outfmt 6 -out Spd.blast
+# Create a reference database
+makeblastdb -in Ath.pep -dbtype prot -title Ath -parse_seqids -out Ath
+# Align protein query sequences against the reference database
+blastp -query Ath.pep -db Ath -evalue 1e-10 -max_target_seqs 5 -outfmt 6 -out Ath.blast
+mkdir Spd_Ath
+cat Spd.blast Ath.blast >Spd_Ath.blast
+
+# -t is the experimental group -c is the exogenous control group
+# General mode
+DupGen_finder.pl -i $PWD -t Spd -c Ath -o ${PWD}/Spd_Ath/results1
+# Strict mode
+DupGen_finder-unique.pl -i $PWD -t Spd -c Ath -o ${PWD}/Spd_Ath/results2
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2021/12/09"><b>Hmmer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="#" > HMMER: biosequence analysis using profile hidden Markov models</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/hmmer-3.3.tar.gz" > hmmer-3.3.tar.gz</a>
+            <p>Online address. <a href="http://www.ebi.ac.uk/Tools/hmmer/">http://www.ebi.ac.uk/Tools/hmmer/</a> <br>
+                Local download address. <a href="http://hmmer.org/">http://hmmer.org/</a></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+            ## HMMER is a very powerful software package for biological sequence analysis work based on Hidden Markov Model, its general use is to identify homologous protein or nucleotide sequences and perform sequence comparison. Compared to sequence alignment and database search tools such as BLAST and FASTA, HMMER is more accurate.
+            1. Usage
+            HMMER can be accessed online or as a command line tool for local download and installation.
+
+            # hmmbuild [-options]
+
+            # The input file msafile is the file after multiple sequence alignment and supports many biological data formats such as: CLUSTALW, SELEX, GCG MSF.
+            # hmmbuild can automatically determine the type of input sequences (nucleic acid or protein), and the user can specify the type of input sequences as follows
+                --amino: protein comparison sequence
+                --dna: DNA alignment sequence
+                --rna: RNA alignment sequence
+            # The output file hmmfile_out is generally named with .hmm suffix, the result of the HMM database, the user does not get much readable information.
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2021/12/02"><b>Pfam</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/nar/article/42/D1/D222/1062431?login=false" > Pfam: the protein families database</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/Pfam-A.hmm.gz" > Pfam-A.hmm.gz</a>
+            <p><a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz"> Pfam-A.hmm.dat.gz</a> </p>
+            <p><a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.seed.gz"> Pfam-A.seed.gz </a></p>
+            <p><a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.full.gz"> Pfam-A.full.gz </a></p>
+            <p>Formatting the Pfam database via hmmerspress</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+Run the program
+nohup pfam_scan.pl -fasta /your_path/masp.protein.fasta -dir /your_path/PfamScan/Pfam_data -outfile masp_pfam -cpu 16 &
+
+# The results of the analysis of the structural domain part of the pfamscan protein are described below:
+(1) seq_id: transcript ID+[0,1,2], transcripts that do not exist in the list are noncoding
+(2) hmm start: the starting position of the domain compared to the structure
+(3) hmm end: compare to the end position of the structural domain
+(4) hmm acc: ID of the pfam domain
+(5) hmm name: the name of the pfam structured domain
+(6) hmm length: the length of the pfam structured domain
+(7) bit score: the score of the pair
+(8) E-value: the E-value of the comparison, the pfam structure domain filtering condition is: Evalue < 0.001
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2021/11/11"><b>MEME</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/nar/article/37/suppl_2/W202/1135092?login=false" > MEME SUITE: tools for motif discovery and searching</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/meme-5.5.4.tar.gz" > meme-5.5.4.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>
+# The latest version of MEME relies on perl version 5.10.1 and above, so perl needs to be installed. Download perl and install it.
+#
+tar zxvf perl.tar.gz
+cd /yourpath/perl
+. /Configure -des -Dprefix= /yourpath/perl_Dusethreads
+make ##take a lot of time
+make test
+make install
+.bash_profile #Write your installation path
+
+tar zxf meme.tar.gz
+cd meme_4.11.3
+./configure --prefix=/yourpath/meme --with-url=http://meme-suite.org --enable-build-libxml2 --enable-build-libxslt
+make
+make test
+make install
+
+MEME Official download page.
+<a href="https://meme-suite.org/meme/doc/download.html">Download Releases - MEME Suite (meme-suite.org)</a>
+            </pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>The following is referenced in the MEME Manual <a href="http://meme-suite.org/doc/overview.html?man_type=web">(http://meme-suite.org/doc/overview.html?man_type=web)</a></p>
+
+
+            <h3 style="margin-bottom: 20px;" id="2021/10/19"><b>CpgFinder</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/commands" > CPG Island Finder with Sliding Window Algorithm: String Index Out of Bound Exception intermittently</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+The program is intended to search for CpG islands in sequences.
+
+Program options:
+Min length of island to find - searching CpG islands with a length (bp) not less than specified in the field.
+Min percent G and C - searching CpG islands with a composition not less than specified in the field.
+Min CpG number - the minimal number of CpG dinucleotides in the island.
+Min gc_ratio=P(CpG)/(expected)P(CpG) - the minimal ratio of the observed to expected frequency of CpG dinucleotide in the island.
+Extend island if its lengths less then required - extending the CpG island, if its length is shorter than required.
+            </pre>
+            <pre>
+<strong>Output example:</strong>
+
+Search parameters:  len: 200   %GC: 50.0   CpG number: 0   P(CpG)/exp: 0.600   extend island: no   A: 21   B: -2
+Locus name:  9003..16734 note="CpG_island (%GC=65.4, o/e=0.70, #CpGs=577)"
+Locus reference:   expected P(CpG): 0.086   length: 25020
+20.1%(a)  29.9%(c)  28.6%(g)  21.4%(t)   0.0%(other)
+
+            FOUND 4 ISLANDS
+#     start      end   chain   CpG    %CG    CG/GC    P(CpG)/exp     P(CpG)    len
+1      9192    10496     +     161   73.0    0.847   0.927( 1.44)    0.123    1305
+2     11147    11939     +      87   69.2    0.821   0.917( 1.28)    0.110     793
+3     15957    16374     +      57   79.4    0.781   0.871( 1.60)    0.137     418
+4     14689    15091     +      49   74.2    0.817   0.887( 1.42)    0.122     403
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2021/10/01"><b>Codonw</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/commands" > Codon Pattern of Papillomavirus (Type I) from Bos Grunniens Based on the CodonW Software</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/CodonWSourceCode_1_4_4.zip" >  CodonWSourceCode_1_4_4.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p># Linux version. <br>
+                # Install directly with conda, just type the command. <br>
+                    conda install codonw <br>
+                    codonw <br>
+                        Welcome to CodonW  for Help type h <br>
+                     Initial Menu <br>
+                    Option <br>
+                    (1) Load sequence file <br>
+                    ( ) <br>
+                    (3) Change defaults <br>
+                    (4) Codon usage indices <br>
+                    (5) Correspondence analysis <br>
+                    ( ) <br>
+                    (7) Teach yourself codon usage <br>
+                    (8) Change the output written to file <br>
+                    (9) About C-codons <br>
+                    (R) Run C-codons <br>
+                    (Q) Quit <br>
+                    Select a menu choice, (Q)uit or (H)elp -></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                Codon usage indices <br>
+                Options <br>
+                ( 1) {Codon Adaptation Index       (CAI)           } <br>
+                ( 2) {Frequency of OPtimal codons  (Fop)           } <br>
+                ( 3) {Codon bias index             (CBI)           } <br>
+                ( 4) {Effective Number of Codons   (ENc)           } <br>
+                ( 5) {GC content of gene           (G+C)           } <br>
+                ( 6) {GC of silent 3rd codon posit.(GC3s)          } <br>
+                ( 7) {Silent base composition                      } <br>
+                ( 8) {Number of synonymous codons  (L_sym)         } <br>
+                ( 9) {Total number of amino acids  (L_aa )         } <br>
+                (10) {Hydrophobicity of protein    (Hydro)         } <br>
+                (11) {Aromaticity of protein       (Aromo)         } <br>
+                (12)  Select all <br>
+                (X)  Return to previous menu <br>
+                Choices enclosed with curly brackets are the current selections <br>
+                Select a menu choice, (Q)uit or (H)elp -> <br>
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/08/12"><b>IQ-Tree</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/mbe/article/32/1/268/2925592?login=false" > IQ-TREE: a fast and effective stochastic algorithm for estimating maximum-likelihood phylogenies</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>conda install iqtree</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                iqtree -s example.phy -m MF -mtree -T AUTO <br>
+                iqtree -s example.phy -m GTR+I+G <br>
+                iqtree -s example.phy -m MFP -b 1000 -T AUTO <br>
+                iqtree -s example.phy -m MFP -B 1000 --bnni -T AUTO
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/07/19"><b>FastTree</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/mbe/article/26/7/1641/1128976?login=false" > FastTree: computing large minimum evolution trees with profiles instead of a distance matrix</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/FastTree" > FastTree</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>conda install fasttree</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                fasttree -nt nucleotide_alignment_file > tree_file <br>
+                fasttree protein_alignment_file  tree_file br
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/06/01"><b>SequenceServer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/mbe/article/36/12/2922/5549819?login=false" > Sequenceserver: A Modern Graphical User Interface for Custom BLAST Databases</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>sudo apt-get install ruby gem ruby-dev <br>
+                sudo gem install sequenceserver <br>
+                scp /dbindex usr@ip:/home/db <br>
+                sequenceserver -m -d /db</p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/05/17"><b>Blast match</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>Perform Blast sequence alignment between the target sequence and the entire genome.</p>
+
+            <h3 style="margin-bottom: 20px;" id="2021/05/15"><b>Synvisio</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+Synvisio is an interactive multiscale visualization tool that allows you to explore the results of McScanX. We have created a complete genome library of species on the server, where users can select species for synteny analysis and display detailed synteny relationships between different chromosomes.
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="2021/01/05"><b>NG_KaKs_Cal</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/run_ks.py" > run_ks.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+KaKs represents the ratio between the non synonymous substitution rate (Ka) and synonymous substitution rate (Ks) of two protein coding genes. This ratio can determine whether there is selective pressure on the protein coding gene. Upload block file and CDS file.
+            </pre>
+
+            <h3 style="margin-bottom: 20px;" id="Hmmer"><b>BBK_Dotter</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/run_ks_dot.py" > run_ks_dot.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre> BBK_Dotter is a genome structure lattice diagram drawn based on the results of blast sequence alignment and block synteny, with Ks values labeled next to the block. Upload BLAST file, block file, Ks file, species lens file and species gff file.</pre>
+
+            <h3 style="margin-bottom: 20px;" id="pfam"><b>GSDS</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/31/8/1296/213025?login=false" > GSDS 2.0: an upgraded gene feature visualization server</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/gsds_v2.tar.gz" > gsds_v2.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>a. Change to the path for installing GSDS 2.0 and unpack the tar package. <br>
+                cd $PATH2INSTALL_GSDS <br>
+                tar -zxvf gsds_v2.tar.gz <br>
+            b. Modify the authetification of task directories and log file <br>
+                cd $PATH2INSTALL_GSDS/gsds_v2 <br>
+                mkdir task, task/upload_file <br>
+                chmod 777 task/ <br>
+                chmod 777 task/upload_file/ <br>
+                chmod a+w gsds_log <br>
+            c. Link CGI commands in directory gcgi_bin to the commands in your system <br>
+                cd $PATH2INSTALL_GSDS/gsds_v2/gcgi_bin <br>
+                ln -s -f  seqretsplit <br>
+                ln -s -f  est2genome <br>
+                ln -s -f   bedtools <br>
+                ln -s -f  rsvg-convert <br>
+            d. Configure Apache2 for accessing GSDS 2.0</p>
+
+            <h3 style="margin-bottom: 20px;" id="meme"><b>Seq alignment</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p> Multiple sequence alignment tool selection, including mafft, muscle and clustalw2.</p>
+
+            <h3 style="margin-bottom: 20px;" id="cpgfinder"><b>Phyml</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/sysbio/article/59/3/307/1702850?login=false" > New algorithms and methods to estimate maximum-likelihood phylogenies: assessing the performance of PhyML 3.0</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/PhyML-3.1.zip" >  PhyML-3.1.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ unzip PhyML-3.1.zip <br>
+                $ mv PhyML-3.1 /opt/biosoft/ <br>
+                $ ln -s /opt/biosoft/PhyML-3.1/PhyML-3.1_linux64 /opt/biosoft/PhyML-3.1/PhyML <br>
+                $ echo 'PATH=$PATH:/opt/biosoft/PhyML-3.1/' >> ~/. <br>
+                $ source ~/.bashrc</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                $ PhyML -i proteins.phy -d aa -b 1000 -m LG -f m -v e -a e -o tlr <br>
+                -i seq_file_name <br>
+                -d data_type default：nt <br>
+                -b int <br>
+                -m model <br>
+                -f e,m or fA,fC,fG,fT <br>
+                -v prop_invar <br>
+                -a gamma <br>
+                -o params
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="codonw"><b>SS-extractor</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+class sequence_run2(object): <br>
+def __init__(self, place): <br>
+    self.id_list = [] <br>
+    self.place = place <br>
+    <br>
+def new_prot(self): <br>
+    new_prot = open(f'{path_get}/file_keep/{self.place}/new_pro.txt', 'w') <br>
+    for line in SeqIO.parse(f'{path_get}/file_keep/{self.place}/protein.fasta', 'fasta'): <br>
+        if line.id in self.id_list: <br>
+            new_prot.write('>' + str(line.id) + '\n' + str(line.seq) + '\n') <br>
+            <br>
+def new_cds(self): <br>
+    new_cds = open(f'{path_get}/file_keep/{self.place}/new_cds.txt', 'w') <br>
+    for line in SeqIO.parse(f'{path_get}/file_keep/{self.place}/gene.fasta', 'fasta'): <br>
+        if line.id in self.id_list: <br>
+            new_cds.write('>' + str(line.id) + '\n' + str(line.seq) + '\n') <br>
+            <br>
+def new_gff(self): <br>
+    new_gff = open(f'{path_get}/file_keep/{self.place}/new_gff.txt', 'w') <br>
+    gff_file = open(f'{path_get}/file_keep/{self.place}/gff.fasta', 'r') <br>
+    for line in gff_file: <br>
+        gff_id = line.split()[1] <br>
+        if gff_id in self.id_list: <br>
+            new_gff.write(line) <br>
+            <br>
+def main(self): <br>
+    id_file = open(f'{path_get}/file_keep/{self.place}/id.fasta', 'r') <br>
+    for line in id_file.readlines(): <br>
+        self.id_list.append(line.split()[0]) <br>
+        self.new_prot() <br>
+        self.new_cds() <br>
+        self.new_gff()
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="gsds"><b>SAF-converter</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+def format_fasta_run(place, file_name, patten, patten_end, file_last): <br>
+SeqIO.convert(f"{path_get}/file_keep/{place}/{file_name}.{file_last}", f"{patten}", <br>
+f"{path_get}/file_keep/{place}/{file_name}.{patten_end}", f"{patten_end}") <br>
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="paraat"><b>BDI-deduplicator</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>def quchong_run(place): <br>
+                id_list = [] <br>
+                new_file = open(f'{path_get}/file_keep/{place}/new.fasta', 'w') <br>
+                for line in SeqIO.parse(f'{path_get}/file_keep/{place}/1.fasta', 'fasta'): <br>
+                    if line.id not in id_list: <br>
+                        id_list.append(line.id) <br>
+                        new_file.write(">" + str(line.id) + "\n" + str(line.seq) + "\n") <br>
+                new_file.close()</p>
+
+            <h3 style="margin-bottom: 20px;" id="kaks_calculator"><b>BDI-extractor</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+    def extr_row_run(place, row_num, row_name, row_last): <br>
+            cmd = f""" <br>
+            cd {path_get}/file_keep/{place} <br>
+            cut -f {row_num} {row_name}.{row_last} > {row_name}.new.{row_last} <br>
+            """ <br>
+            subprocess.run(cmd, shell=True, check=True)
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Sequence_screening"><b>BDI-combiner</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+def file_merge_run_tools(place): <br>
+cmd = f""" <br>
+    cd '{path_get}/file_keep/{place}' <br>
+    cat orthomcl/* >> result.txt <br>
+""" <br>
+subprocess.run(cmd, shell=True, check=True) <br>
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="File_merge"><b>JBrowse2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02914-z" > JBrowse 2: a modular genome browser with views of synteny and structural variation</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/jbrowse-desktop-v2.8.0-linux.AppImage" > jbrowse-desktop-v2.8.0-linux.AppImage</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p> npm install -g @jbrowse/cli <br>
+                jbrowse --version</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>jbrowse create jbrowse2 <br>
+                jbrowse2/ <br>
+            - asset-manifest.json <br>
+            - favicon.ico <br>
+            - index.html <br>
+            - manifest.json <br>
+            - robots.txt <br>
+            - static/ <br>
+            - test_data/ <br>
+            - version.txt <br>
+                cd jbrowse2/ <br>
+            npx serve . <br>
+            # or <br>
+            npx serve -S . # if you want to refer to symlinked data later on</p>
+
+            <h3 style="margin-bottom: 20px;" id="Find_alternative"><b>ShinyCircos</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/34/7/1229/4657077?login=false" > shinyCircos: an R/Shiny application for interactive creation of Circos plot</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/shinyCircos-master.zip" > shinyCircos-master.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>install.packages("shiny") <br>
+                install.packages("circlize") <br>
+                install.packages("RColorBrewer") <br>
+                install.packages("data.table") <br>
+                install.packages("RLumShiny") <br>
+                ## try http:// if https:// URLs are not supported <br>
+                source("https://bioconductor.org/biocLite.R") <br>
+                biocLite("GenomicRanges")</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p># Define the user to spawn R Shiny processes <br>
+                run_as shiny; <br>
+                <br>
+                # Define a top-level server which will listen on a port <br>
+                server { <br>
+                  # Use port 3838 <br>
+                  listen 3838; <br>
+                  # Define the location available at the base URL <br>
+                  location /shinycircos { <br>
+                    # Directory containing the code and data of shinyCircos <br>
+                    app_dir /srv/shiny-server/shinyCircos; <br>
+                    # Directory to store the log files <br>
+                    log_dir /var/log/shiny-server; <br>
+                  } <br>
+                }</p>
+
+            <h3 style="margin-bottom: 20px;" id="Duplicate_removal"><b>Syn_Ks_Dis</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/new-ksdistribution.V3.R" > new-ksdistribution.V3.R</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                Rscript new-ksdistribution.V3.R ks_input.csv ksargs.png 6 5 300
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Format_conversion"><b>B_Dotter</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/dotplot.pl" > dotplot.pl</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                perl dotplot.pl
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Format_conversio"><b>BB_Dotter</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/dotplot_block.2400.pd.py" > dotplot_block.2400.pd.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                python dotplot_block.2400.pd.py
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Format_conversi"><b>Paleo-gene_identifer</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/corr_dotplot_spc_last.py" > corr_dotplot_spc_last.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                python corr_dotplot_spc_last.py
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Format_convers"><b>Paleo-gene_RI</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/baoliu.py" >  baoliu.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                python baoliu.py
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Format_conver"><b>Paleo-gene_RII</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/dotplot.pl" >  lost.py</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>
+                python lost.py
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="Extract_column"><b>Transcriptome analysis</b></h3>
+<pre>
+I: Deal SRA
+# fasterq-dump --split-3 SRR5318040.sra
+II: Data quality control (Double-ended sequencing)
+# trimmomatic PE -threads 4 -phred33 SRR13481183_1.fastq.gz SRR13481183_2.fastq.gz SRR13481183_1_clean.fq SRR13481183_1_unpaired.fq SRR13481183_2_clean.fq SRR13481183_2_unpaired.fq
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:50
+III: Conversion of GFF and GTF
+# gffread -T -o Ptr.gtf Ptr.gff3
+IV: Indexing
+# hisat2-build -p 3 Ptr.fa Ptr.index
+V: Alignment
+# hisat2 --new-summary --rna-strandness RF -p 4 -x Ptr.index -1 SRR13481183_1_clean.fq -2 SRR13481183_2_clean.fq -S Ptr_1.sam
+VI: Conversion of bam and sam
+# samtools sort -o Ptr.bam Ptr_1.sam
+VII: Ration
+# stringtie -e -A SRR13481183_gene_exp.out -p 4 -G Ptr.gtf -o SRR13481183.gtf Ptr.bam
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="Format_conve"><b>GF_circos</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.oleaceae.cgrpoee.top/static/bio_package/Excircle.zip" >  Excircle.zip</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>GF_circos is a tool for analyzing chromosomal localization and expansion patterns of family genes. <br>
+The installation package contains instances, prepare files based on the examples, and conf is the <br>
+configuration file. Fill in the corresponding data file. <br>
+<br>
+<strong>Command: </strong>   python .\run.py excircle -c excircle.conf
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="bwa"><b>Bwa</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/bwa-0.7.17.tar.bz2" >  bwa-0.7.17.tar.bz2</a>
+            <p>http://superb-sea2.dl.sourceforge.net/project/bio-bwa/bwa-0.7.12.tar.bz2</p>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ tar jxf bwa-0.7.12.tar.bz2 <br>
+                $ cd bwa-0.7.12<br>
+                $ make<br>
+                $ echo 'PATH=$PATH:/your/bwa/path' >> ~/.bashrc<br>
+                $ source ~/.bashrc</p>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>git clone https://github.com/lh3/bwa.git <br>
+                cd bwa; make<br>
+                ./bwa index ref.fa<br>
+                ./bwa mem ref.fa read-se.fq.gz | gzip -3 > aln-se.sam.gz<br>
+                ./bwa mem ref.fa read1.fq read2.fq | gzip -3 > aln-pe.sam.gz</p>
+
+            <h3 style="margin-bottom: 20px;" id="fastp"><b>Fastp</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/30423086/" > fastp: an ultra-fast all-in-one FASTQ preprocessor</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/linux-64_fastp-0.23.4-hadf994f_2.tar.bz2" >  linux-64_fastp-0.23.4-hadf994f_2.tar.bz2</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p># download the latest build <br>
+                wget http://opengene.org/fastp/fastp <br>
+                chmod a+x ./fastp <br>
+                <br>
+                # or download specified version, i.e. fastp v0.23.4 <br>
+                wget http://opengene.org/fastp/fastp.0.23.4 <br>
+                mv fastp.0.23.4 fastp <br>
+                chmod a+x ./fastp</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>usage: ./fastp [options] ...
+                options:
+                  -i, --in1                            read1 input file name (string [=])
+                  -o, --out1                           read1 output file name (string [=])
+                  -I, --in2                            read2 input file name (string [=])
+                  -O, --out2                           read2 output file name (string [=])
+                      --unpaired1                      for PE input, if read1 passed QC but read2 not, it will be written to unpaired1. Default is to discard it. (string [=])
+                      --unpaired2                      for PE input, if read2 passed QC but read1 not, it will be written to unpaired2. If --unpaired2 is same as --umpaired1 (default mode), both unpaired reads will be written to this same file. (string [=])
+                      --failed_out                     specify the file to store reads that cannot pass the filters. (string [=])
+                  -m, --merge                          for paired-end input, merge each pair of reads into a single read if they are overlapped. The merged reads will be written to the file given by --merged_out, the unmerged reads will be written to the files specified by --out1 and --out2. The merging mode is disabled by default.
+                      --merged_out                     in the merging mode, specify the file name to store merged output, or specify --stdout to stream the merged output (string [=])
+                      --include_unmerged               in the merging mode, write the unmerged or unpaired reads to the file specified by --merge. Disabled by default.
+                  -6, --phred64                        indicate the input is using phred64 scoring (it'll be converted to phred33, so the output will still be phred33)
+                  -z, --compression                    compression level for gzip output (1 ~ 9). 1 is fastest, 9 is smallest, default is 4. (int [=4])
+                      --stdin                          input from STDIN. If the STDIN is interleaved paired-end FASTQ, please also add --interleaved_in.
+                      --stdout                         stream passing-filters reads to STDOUT. This option will result in interleaved FASTQ output for paired-end output. Disabled by default.
+                      --interleaved_in                 indicate that <in1> is an interleaved FASTQ which contains both read1 and read2. Disabled by default.
+                      --reads_to_process               specify how many reads/pairs to be processed. Default 0 means process all reads. (int [=0])
+                      --dont_overwrite                 don't overwrite existing files. Overwritting is allowed by default.
+                  -V, --verbose                        output verbose log information (i.e. when every 1M reads are processed).
+                  -A, --disable_adapter_trimming       adapter trimming is enabled by default. If this option is specified, adapter trimming is disabled
+                  -a, --adapter_sequence               the adapter for read1. For SE data, if not specified, the adapter will be auto-detected. For PE data, this is used if R1/R2 are found not overlapped. (string [=auto])
+                      --adapter_sequence_r2            the adapter for read2 (PE data only). This is used if R1/R2 are found not overlapped. If not specified, it will be the same as <adapter_sequence> (string [=auto])
+                      --adapter_fasta                  specify a FASTA file to trim both read1 and read2 (if PE) by all the sequences in this FASTA file (string [=])
+                      --detect_adapter_for_pe          by default, the auto-detection for adapter is for SE data input only, turn on this option to enable it for PE data.
+                  -f, --trim_front1                    trimming how many bases in front for read1, default is 0 (int [=0])
+                  -t, --trim_tail1                     trimming how many bases in tail for read1, default is 0 (int [=0])
+                  -b, --max_len1                       if read1 is longer than max_len1, then trim read1 at its tail to make it as long as max_len1. Default 0 means no limitation (int [=0])
+                  -F, --trim_front2                    trimming how many bases in front for read2. If it's not specified, it will follow read1's settings (int [=0])
+                  -T, --trim_tail2                     trimming how many bases in tail for read2. If it's not specified, it will follow read1's settings (int [=0])
+                  -B, --max_len2                       if read2 is longer than max_len2, then trim read2 at its tail to make it as long as max_len2. Default 0 means no limitation. If it's not specified, it will follow read1's settings (int [=0])
+                  -g, --trim_poly_g                    force polyG tail trimming, by default trimming is automatically enabled for Illumina NextSeq/NovaSeq data
+                      --poly_g_min_len                 the minimum length to detect polyG in the read tail. 10 by default. (int [=10])
+                  -G, --disable_trim_poly_g            disable polyG tail trimming, by default trimming is automatically enabled for Illumina NextSeq/NovaSeq data
+                  -x, --trim_poly_x                    enable polyX trimming in 3' ends.
+                      --poly_x_min_len                 the minimum length to detect polyX in the read tail. 10 by default. (int [=10])
+                  -5, --cut_front                      move a sliding window from front (5') to tail, drop the bases in the window if its mean quality < threshold, stop otherwise.
+                  -3, --cut_tail                       move a sliding window from tail (3') to front, drop the bases in the window if its mean quality < threshold, stop otherwise.
+                  -r, --cut_right                      move a sliding window from front to tail, if meet one window with mean quality < threshold, drop the bases in the window and the right part, and then stop.
+                  -W, --cut_window_size                the window size option shared by cut_front, cut_tail or cut_sliding. Range: 1~1000, default: 4 (int [=4])
+                  -M, --cut_mean_quality               the mean quality requirement option shared by cut_front, cut_tail or cut_sliding. Range: 1~36 default: 20 (Q20) (int [=20])
+                      --cut_front_window_size          the window size option of cut_front, default to cut_window_size if not specified (int [=4])
+                      --cut_front_mean_quality         the mean quality requirement option for cut_front, default to cut_mean_quality if not specified (int [=20])
+                      --cut_tail_window_size           the window size option of cut_tail, default to cut_window_size if not specified (int [=4])
+                      --cut_tail_mean_quality          the mean quality requirement option for cut_tail, default to cut_mean_quality if not specified (int [=20])
+                      --cut_right_window_size          the window size option of cut_right, default to cut_window_size if not specified (int [=4])
+                      --cut_right_mean_quality         the mean quality requirement option for cut_right, default to cut_mean_quality if not specified (int [=20])
+                  -Q, --disable_quality_filtering      quality filtering is enabled by default. If this option is specified, quality filtering is disabled
+                  -q, --qualified_quality_phred        the quality value that a base is qualified. Default 15 means phred quality >=Q15 is qualified. (int [=15])
+                  -u, --unqualified_percent_limit      how many percents of bases are allowed to be unqualified (0~100). Default 40 means 40% (int [=40])
+                  -n, --n_base_limit                   if one read's number of N base is >n_base_limit, then this read/pair is discarded. Default is 5 (int [=5])
+                  -e, --average_qual                   if one read's average quality score <avg_qual, then this read/pair is discarded. Default 0 means no requirement (int [=0])
+                  -L, --disable_length_filtering       length filtering is enabled by default. If this option is specified, length filtering is disabled
+                  -l, --length_required                reads shorter than length_required will be discarded, default is 15. (int [=15])
+                      --length_limit                   reads longer than length_limit will be discarded, default 0 means no limitation. (int [=0])
+                  -y, --low_complexity_filter          enable low complexity filter. The complexity is defined as the percentage of base that is different from its next base (base[i] != base[i+1]).
+                  -Y, --complexity_threshold           the threshold for low complexity filter (0~100). Default is 30, which means 30% complexity is required. (int [=30])
+                      --filter_by_index1               specify a file contains a list of barcodes of index1 to be filtered out, one barcode per line (string [=])
+                      --filter_by_index2               specify a file contains a list of barcodes of index2 to be filtered out, one barcode per line (string [=])
+                      --filter_by_index_threshold      the allowed difference of index barcode for index filtering, default 0 means completely identical. (int [=0])
+                  -c, --correction                     enable base correction in overlapped regions (only for PE data), default is disabled
+                      --overlap_len_require            the minimum length to detect overlapped region of PE reads. This will affect overlap analysis based PE merge, adapter trimming and correction. 30 by default. (int [=30])
+                      --overlap_diff_limit             the maximum number of mismatched bases to detect overlapped region of PE reads. This will affect overlap analysis based PE merge, adapter trimming and correction. 5 by default. (int [=5])
+                      --overlap_diff_percent_limit     the maximum percentage of mismatched bases to detect overlapped region of PE reads. This will affect overlap analysis based PE merge, adapter trimming and correction. Default 20 means 20%. (int [=20])
+                  -U, --umi                            enable unique molecular identifier (UMI) preprocessing
+                      --umi_loc                        specify the location of UMI, can be (index1/index2/read1/read2/per_index/per_read, default is none (string [=])
+                      --umi_len                        if the UMI is in read1/read2, its length should be provided (int [=0])
+                      --umi_prefix                     if specified, an underline will be used to connect prefix and UMI (i.e. prefix=UMI, UMI=AATTCG, final=UMI_AATTCG). No prefix by default (string [=])
+                      --umi_skip                       if the UMI is in read1/read2, fastp can skip several bases following UMI, default is 0 (int [=0])
+                  -p, --overrepresentation_analysis    enable overrepresented sequence analysis.
+                  -P, --overrepresentation_sampling    one in (--overrepresentation_sampling) reads will be computed for overrepresentation analysis (1~10000), smaller is slower, default is 20. (int [=20])
+                  -j, --json                           the json format report file name (string [=fastp.json])
+                  -h, --html                           the html format report file name (string [=fastp.html])
+                  -R, --report_title                   should be quoted with ' or ", default is "fastp report" (string [=fastp report])
+                  -w, --thread                         worker thread number, default is 2 (int [=2])
+                  -s, --split                          split output by limiting total split file number with this option (2~999), a sequential number prefix will be added to output name ( 0001.out.fq, 0002.out.fq...), disabled by default (int [=0])
+                  -S, --split_by_lines                 split output by limiting lines of each file with this option(>=1000), a sequential number prefix will be added to output name ( 0001.out.fq, 0002.out.fq...), disabled by default (long [=0])
+                  -d, --split_prefix_digits            the digits for the sequential number padding (1~10), default is 4, so the filename will be padded as 0001.xxx, 0 to disable padding (int [=4])
+                      --cut_by_quality5                DEPRECATED, use --cut_front instead.
+                      --cut_by_quality3                DEPRECATED, use --cut_tail instead.
+                      --cut_by_quality_aggressive      DEPRECATED, use --cut_right instead.
+                      --discard_unmerged               DEPRECATED, no effect now, see the introduction for merging.
+                  -?, --help                           print this message</pre>
+
+            <h3 style="margin-bottom: 20px;" id="fastqc"><b>Fastqc</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" >FastQC is a powerful and easy-to-use software primarily used for quality control of sequencing data. </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/fastqc_v0.12.1.zip" >  fastqc_v0.12.1.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>conda install fastqc
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>#dispose enviroment
+                # fastQC
+                #export PATH="
+                export PATH="/home/cyh/biosoft/FastQC: $PATH" </p>
+
+            <h3 style="margin-bottom: 20px;" id="glimmer"><b>Glimmer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://arxiv.org/abs/2306.10231" > Glimmer is a system for finding genes in microbial DNA, especially the genomes of bacteria, archaea, and viruses.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/glimmer302b.tar.gz" >  glimmer302b.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>% tar xzf glimmer302b.tar.gz</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>sed -e '/>/d' K12.fna |tr -d '\n' |awk 'BEGIN {print ">wholefile"}{print $0}' >wholefile <br>
+                long-orfs -n -t 1.15 $wholefile $tagname.longorfs  1>/dev/null 2>/dev/null <br>
+                extract -t $wholefile $tagname.longorfs > $tagname.train  2>/dev/null <br>
+                build-icm  -r $tagname.icm < $tagname.train 1>/dev/null 2>/dev/null
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="prodigal"><b>Prodigal</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/20211023/" > Gene prediction in prokaryotes</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/Prodigal-2.60.tar.gz" >  Prodigal-2.60.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone https://github.com/hyattpd/Prodigal.git <br>
+                cd Prodigal/ <br>
+                make install <br>
+                prodigal
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>prodigal -i test_genome.fasta -o gene.gff -d gene.fasta -a protein.fasta -p single -f gff </pre>
+
+            <h3 style="margin-bottom: 20px;" id="mummer"><b>Mummer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.x-mol.com/paper/1213054886731780107?recommendPaper=5912404" >MUMmer is a system for rapidly aligning entire genomes, whether in complete or draft form. </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/MUMmer3.23.tar.gz" >  MUMmer3.23.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>tar -xvzf MUMmer3.0.tar.gz <br>
+                MUMmer3.0 <br>
+                make check <br>
+                make install <br>
+                makemakegccPATHLD_LIBRARY_PATH
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="https://mummer.sourceforge.net/manual/#running">Running MUMmer</a>
+
+            <h3 style="margin-bottom: 20px;" id="canu"><b>Canu</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genome.cshlp.org/content/27/5/722" > Canu is a fork of the Celera Assembler, designed for high-noise single-molecule sequencing</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>  git clone https://github.com/marbl/canu.git
+                cd canu/src
+                make -j <number of threads></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>../<architecture>/bin/canu -options</p>
+
+            <h3 style="margin-bottom: 20px;" id="Flash"><b>Flash</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://ccb.jhu.edu/software/FLASH/FLASH-reprint.pdf" >FLASH is a very fast and accurate software tool to merge paired-end reads from next-generation sequencing experiments. </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://ccb.jhu.edu/software/FLASH/FLASH-1.2.11.tar.gz" >  FLASH-1.2.11.tar.gz</a>
+
+            <h3 style="margin-bottom: 20px;" id="velvet"><b>Velvet</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.plob.org/article/1127.html" >Velvet is an early and well-known short sequence splicing software </a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget http://www.ebi.ac.uk/~zerbino/velvet/velvet_1.1.05.tgz ./ <br>
+                tar zxvf velvet_1.1.05.tgz <br>
+                cd velvet_1.1.05 <br>
+                make color 'CATEGORIES=57' 'MAXKMERLENGTH=127' 'BIGASSEMBLY=1' 'LONGSEQUENCES=1' 'OPENMP=1'
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>shuffleSequences_fasta.pl  s1_1.fasta s1_2.fasta s1.fasta <br>
+                ./velveth directory hash_length { [-file_format] [-read_type] [filename] } [options]
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="trf"><b>Trf</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://tandem.bu.edu/trf/trf.html" > Trf is the abbreviation for Tandem Repeat Finder, used to search for tandem repeat sequences in DNA sequences (i.e. adjacent repeat sequences with two or more specific nucleic acid sequence patterns).</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/TRF-4.09.1.zip" >  TRF-4.09.1.zip</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>trf yourfile.fa 2 5 7 80 10 50 2000 <br>
+                trf yoursequence.txt 2 7 7 80 10 50 500 -f -d -m
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="blat"><b>Blat</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/11932250/" > The full name of Blat is The BLAST Like Alignment Tool, which can be referred to as a "BLAST like alignment tool"</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/blatSuite.36.zip" >blatSuite.36.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/blat/blat
+                chmod u+x blat
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>blat database query [-ooc=11.ooc] output.psl <br>
+                <br>
+                blat nt test.fa test.out -out=blast8
+                </p>
+
+            <h3 style="margin-bottom: 20px;" id="wgsim"><b>Wgsim</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/lh3/wgsim" >Wgsim is a small tool for simulating sequence reads from a reference genome. </a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>~/app$ git clone https://github.com/lh3/wgsim.git && cd wgsim
+                ~/app$ gcc -g -O2 -Wall -o wgsim wgsim.c -lz -lm
+                ~/app$ sudo ln -s `pwd`/wgsim /usr/local/sbin
+                ~/app$ wsgim -h
+
+                Program: wgsim (short read simulator)
+                Version: 0.3.1-r13
+                Contact: Heng Li <lh3@sanger.ac.uk>
+
+                Usage:   wgsim [options] <in.ref.fa> <out.read1.fq> <out.read2.fq>
+
+                Options: -e FLOAT      base error rate [0.020]
+                         -d INT        outer distance between the two ends [500]
+                         -s INT        standard deviation [50]
+                         -N INT        number of read pairs [1000000]
+                         -1 INT        length of the first read [70]
+                         -2 INT        length of the second read [70]
+                         -r FLOAT      rate of mutations [0.0010]
+                         -R FLOAT      fraction of indels [0.15]
+                         -X FLOAT      probability an indel is extended [0.30]
+                         -S INT        seed for random generator [-1]
+                         -A FLOAT      disgard if the fraction of ambiguous bases higher than FLOAT [0.05]
+                         -h            haplotype mode</pre>
+
+
+            <h3 style="margin-bottom: 20px;" id="svsim"><b>Svsim</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/sysbio/article/59/3/307/1702850?login=falsehttps://www.researchgate.net/publication/356188663_SV-sim_scalable_PGAS-based_state_vector_simulation_of_quantum_circuits" >SVsim is written in Python 2.6+, and requires pysam. </a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone git://github.com/GregoryFaust/SVsim.git <br>
+                cp SVsim/SVsim /usr/local/bin/</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>SVsim -i commands.sim -r genome.fasta -o output</p>
+
+            <h3 style="margin-bottom: 20px;" id="falcon"><b>Falcon</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/PacificBiosciences/FALCON?tab=readme-ov-file" > Falcon: a set of tools for fast aligning long reads for consensus and assembly</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>mkdir -p ${FALCON_PREFIX}/bin</p>
+
+            <h3 style="margin-bottom: 20px;" id="quast"><b>Quast</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3624806/" >QUAST: quality assessment tool for genome assemblies </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/quast/files/" >Quast</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget https://downloads.sourceforge.net/project/quast/quast-5.2.0.tar.gz <br>
+                tar zvxf quast-5.2.0.tar.gz <br>
+                cd quast-5.2.0.tar.gz <br>
+                ./quast.py  <br>
+                or <br>
+                python quast.py --help or python quast.py --version <br>
+                echo 'export PATH=~/quast-5.2.0:$PATH' >> ~/.bashrc <br>
+                source ~/.bashrc <br>
+                cd~ <br>
+                quast.py --help
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>quast.py contigs.fasta -o quast_out2</p>
+
+            <h3 style="margin-bottom: 20px;" id="sOAPdenovo"><b>SOAPdenovo</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/23587118/" > SOAPdenovo is mainly used for short sequence reads concatenation, especially for Illumina sequencing data.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>tar -zxf ${destination folder} download.tgz</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>1) avg_ins
+                This value indicates the average insert size of this library or the peak value position in the insert size distribution figure.
+             2) reverse_seq
+                This option takes value 0 or 1. It tells the assembler if the read sequences need to be complementarily reversed.
+             Illumima GA produces two types of paired-end libraries: a) forward-reverse, generated from fragmented DNA ends with typical insert size less than 500 bp; b) reverse-forward, generated from circularizing libraries with typical insert size greater than 2 Kb. The parameter "reverse_seq" should be set to indicate this: 0, forward-reverse; 1, reverse-forward.
+             3) asm_flags
+                This indicator decides in which part(s) the reads are used. It takes value 1(only contig assembly), 2 (only scaffold assembly), 3(both contig and scaffold assembly), or 4 (only gap closure).
+             4) rd_len_cutof
+                The assembler will cut the reads from the current library to this length.
+             5) rank
+                It takes integer values and decides in which order the reads are used for scaffold assembly. Libraries with the same "rank" are used at the same time during scaffold assembly.
+             6) pair_num_cutoff
+                This parameter is the cutoff value of pair number for a reliable connection between two contigs or pre-scaffolds. The minimum number for paired-end reads and mate-pair reads is 3 and 5 respectively.</pre>
+
+            <h3 style="margin-bottom: 20px;" id="featureCounts"><b>FeatureCounts</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/24227677/" >featureCounts: a software program developed for counting reads to genomic features such as genes, exons, promoters and genomic bins.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <p>wget https://sourceforge.net/projects/subread/files/subread-2.0.2/subread-2.0.2-Linux-x86_64.tar.gz</p>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>tar zxvf subread-1.5.3-Linux-x86_64.tar.gz <br>
+                cd subread-2.0.2-Linux-x86_64/bin/ <br>
+                ls -h <br>
+                #exactSNP  featureCounts  subindel  subjunc  sublong  subread-align  subread-buildindex  utilities</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>/public/vip/biosoft/subread-2.0.2-Linux-x86_64/bin/featureCounts </p>
+
+            <h3 style="margin-bottom: 20px;" id="subread"><b>Subread</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3664803/" >A general-purpose read aligner which can align both genomic DNA-seq and RNA-seq reads. It can also be used to discover genomic mutations including short indels and structural variants.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://sourceforge.net/projects/subread/files/subread-2.0.6/" >Latest version 2.0.6</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>
+                wget -c https://sourceforge.net/projects/subread/files/subread-2.0.0/subread-2.0.0-Linux-x86_64.tar.gz <br>
+                <br>
+                tar zxvf subread-2.0.0-Linux-x86_64.tar.gz <br>
+
+        </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>nano /etc/profile <br>
+                export PATH=/mnt/d/workplace/biosoft/subread-2.0.1-source/bin:$PATH <br>
+                <br>
+                source /etc/profile</p>
+
+            <h3 style="margin-bottom: 20px;" id="subjunc"><b>Subjunc</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/23558742/" >Subjunc: a read aligner developed for aligning RNA-seq reads and for the detection of exon-exon junctions. Gene fusion events can be detected as well.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/subread/files/" >Subjunc</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>tar zxvf subread-1.x.x.tar.gz <br>
+                make -f Makefile.Linux <br>
+                make -f Makefile.MacOS <br>
+                make -f Makefile.FreeBSD <br>
+                make -f Makefile.SunOS
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>subread-buildindex -o my_index chr1.fa chr2.fa ... <br>
+                subjunc -T 5 -i my_index -r reads1.txt -o subjunc_results.bam <br>
+                subjunc --multiMapping -B 3 -T 5 -i my_index -r reads1.txt -o subjunc_results.bam <br>
+                subjunc -I 16 -i my_index -r reads1.txt -o subjunc_results.bam <br>
+                subjunc -d 50 -D 600 -i my_index -r reads1.txt -R reads2.txt -o subjunc_results.bam</p>
+
+            <h3 style="margin-bottom: 20px;" id="sublong"><b>Sublong</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://rdrr.io/bioc/Rsubread/man/sublong.html" >Sublong: a long-read aligner that is designed based on seed-and-vote.</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>sublong( <br>
+                <br>
+                # basic input/output options <br>
+                index, <br>
+                readFiles, <br>
+                outputFiles, <br>
+                outputFormat = "BAM", <br>
+                nthreads = 1)</p>
+
+            <h3 style="margin-bottom: 20px;" id="exactSNP"><b>ExactSNP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://rdrr.io/bioc/Rsubread/man/exactSNP.html" >exactSNP: a SNP caller that discovers SNPs by testing signals against local background noises.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/subread/files/" >ExactSNP</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>tar zxvf subread-1.x.x.tar.gz <br>
+                make -f Makefile.Linux <br>
+                make -f Makefile.MacOS
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>exactSNP( <br>
+                <br>
+                # basic input/output options <br>
+                readFile, <br>
+                isBAM = FALSE, <br>
+                refGenomeFile, <br>
+                SNPAnnotationFile = NULL, <br>
+                outputFile = paste0(readFile, ".exactSNP.VCF"), <br>
+                <br>
+                # fine tuning parameters  <br>
+                qvalueCutoff = 12, <br>
+                minAllelicFraction = 0, <br>
+                minAllelicBases = 1, <br>
+                minReads = 1, <br>
+                maxReads = 1000000, <br>
+                minBaseQuality = 13, <br>
+                nTrimmedBases = 3, <br>
+                nthreads = 1)</p>
+
+            <h3 style="margin-bottom: 20px;" id="hisat2"><b>Hisat2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://daehwankimlab.github.io/hisat2/" >HISAT2 is a fast and sensitive alignment program for mapping next-generation sequencing reads (both DNA and RNA) to a population of human genomes as well as to a single reference genome.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://daehwankimlab.github.io/hisat2/download/" >Hisat2</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>
+                wget https://cloud.biohpc.swmed.edu/index.php/s/oTtGWbWjaxsQ2Ho/download
+                <br>
+                unzip download
+                rm download
+                <br>
+                echo 'export PATH=~/hisat2-2.2.1:$PATH' >> ~/.bashrc
+                <br>
+                source ~/.bashrc
+                <br>
+                hisat2</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>extract_exons.py *.gtf > genome.exon
+<br>
+                extract_splice_sites.py *.gtf > genome.ss
+                <br>
+                hisat2-build genome.fa -p 10 --ss genome.ss--exon genome.exon /path/to/genome_snp_tran</p>
+
+            <h3 style="margin-bottom: 20px;" id="lumpy"><b>Lumpy</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/24970577/" >SV detection</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone --recursive https://github.com/arq5x/lumpy-sv.git <br>
+                cd lumpy-sv <br>
+                make <br>
+                cp bin/* /usr/local/bin/.</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>lumpyexpress \ <br>
+                -B my.bam \ <br>
+                -S my.splitters.bam \ <br>
+                -D my.discordants.bam \ <br>
+                -o output.vcf</p>
+
+            <h3 style="margin-bottom: 20px;" id="cope"><b>Cope</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://publicationethics.org/" >COPE: An accurate k-mer based pair-end reads connection tool to facilitate genome assembly</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://link.zhihu.com/?target=http%3A//sourceforge.net/projects/coperead/" >Cope</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget https://netix.dl.sourceforge.net/project/coperead/bin/cope-v1.2.5.tgz <br>
+                tar -zxvf cope-v1.2.5.tgz <br>
+                cd cope-v1.2.5 <br>
+                make</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>cope -a reads.1.fq.gz -b reads.2.fq.gz -o connect.fq -2 left1.fq -3 left2.fq -m 0 -s 33 >cope.log 2>cope.error</p>
+
+            <h3 style="margin-bottom: 20px;" id="cpgfinder"><b>Spades</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/" >sequence assembly</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/ablab/spades/releases/download/v3.15.5/SPAdes-3.15.5-Linux.tar.gz" >Spades</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>
+                wget http://cab.spbu.ru/files/release3.13.0/SPAdes-3.13.0-Linux.tar.gz <br>
+                tar -xzf SPAdes-3.13.0-Linux.tar.gz <br>
+                cd SPAdes-3.13.0-Linux/bin/
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="tRNAscan"><b>TRNAscan</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6768409/" >tRNAscan-SE: Searching for tRNA Genes in Genomic Sequences</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://trna.ucsc.edu/software/trnascan-se-2.0.12.tar.gz" >tRNAscan-SE-2.0.12.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ wget -c http://eddylab.org/infernal/infernal-1.1.2-linux-intel-gcc.tar.gz <br>
+                $ tar xzvf infernal-1.1.2-linux-intel-gcc.tar.gz <br>
+                $ cd infernal-1.1.2-linux-intel-gcc/ <br>
+                $ ./configure --prefix=/user/software/infernal-1.1.2-linux-intel-gcc <br>
+                $ make && make install <br>
+                $ cp binaries/*  bin</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>$ tRNAscan-SE --help
+                tRNAscan-SE /user/database/GeZi_ncbi_1.0/final.fa -o final.out -f final.ss -s final.iso  -m final.stats -b final.bed -c /user/software/tRNAscan-SE-2.0_installed/bin/tRNAscan-SE.conf</p>
+
+            <h3 style="margin-bottom: 20px;" id="rnammer"><b>Rnammer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/17452365/" >RNAmer can directly predict ribosomal RNA.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://services.healthtech.dtu.dk/cgi-bin/sw_request?software=rnammer&version=1.2&packageversion=1.2&platform=Unix" >Rnammer</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>1：./configure <br>
+                <br>
+                2：make <br>
+                <br>
+                3：make check <br>
+                <br>
+                4：make install</p>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>eg:$ /opt/biosoft/rnammer-1.2/rnammer -S euk -multi -f rRNA.fasta -h rRNA.hmmreport -xml rRNA.xml -gff rRNA.gff2 genome.fasta</p>
+
+            <h3 style="margin-bottom: 20px;" id="trimmomatic"><b>Trimmomatic</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/24695404/" >Trimmomatic: A flexible read trimming tool for Illumina NGS data</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>
+                wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
+                unzip Trimmomatic-0.39.zip
+                $ java -jar Trimmomatic-0.39/trimmomatic-0.39.jar -h
+Usage: 
+   PE [-version] [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] [-summary <statsSummaryFile>] [-quiet] [-validatePairs] [-basein <inputBase> | <inputFile1> <inputFile2>] [-baseout <outputBase> | <outputFile1P> <outputFile1U> <outputFile2P> <outputFile2U>] <trimmer1>...
+or:
+   SE [-version] [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] [-summary <statsSummaryFile>] [-quiet] <inputFile> <outputFile> <trimmer1>...
+or:
+   -version                    </pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>java -jar <path to trimmomatic.jar> PE [-threads <threads] [-phred33 | -phred64] [-trimlog <logFile>] >] [-basein <inputBase> | <input 1> <input 2>] [-baseout <outputBase> | <unpaired output 1> <paired output 2> <unpaired output 2> <step 1> ...
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="seqtk"><b>Seqtk</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5051824/" >Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="static/bio_package/PhyML-3.1.zip" >  PhyML-3.1.zip</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone https://github.com/lh3/seqtk <br>
+<br>
+                　　　　cd seqtk <br>
+                 <br>
+                　　　　make</p>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>$ ${seqtk_dir}/seqtk-1.2/seqtk
+==============================================================
+Usage:   seqtk <command> <arguments>
+Version: 1.2-r94
+
+Command: seq       common transformation of FASTA/Q
+            comp      get the nucleotide composition of FASTA/Q
+            sample    subsample sequences
+            subseq    extract subsequences from FASTA/Q
+            fqchk     fastq QC (base/quality summary)
+            mergepe   interleave two PE FASTA/Q files
+            trimfq    trim FASTQ using the Phred algorithm
+
+            hety      regional heterozygosity
+            gc        identify high- or low-GC regions
+            mutfa     point mutate FASTA at specified positions
+            mergefa   merge two FASTA/Q files
+            famask    apply a X-coded FASTA to a source FASTA
+            dropse    drop unpaired from interleaved PE FASTA/Q
+            rename    rename sequence names
+            randbase  choose a random base from hets
+            cutN      cut sequence at long N
+            listhet   extract the position of each het
+==============================================================
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="doCM"><b>DoCM</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="#" >DoCM, the Database of Curated Mutations, is a highly curated database of known, disease-causing mutations that provides easily explorable variant lists with direct links to source</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="http://www.docm.info/">http://www.docm.info/</a>
+
+            <h3 style="margin-bottom: 20px;" id="clinVar"><b>ClinVar</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/" >ClinVar is a freely accessible, public archive of reports of human variations classified for diseases and drug responses, with supporting evidence.</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
+
+            <h3 style="margin-bottom: 20px;" id="oncoKB"><b>OncoKB</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/28890946/" >OncoKB™ is a precision oncology knowledge base developed at Memorial Sloan Kettering Cancer Center that contains biological and clinical information about genomic alterations in cancer.</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="https://www.oncokb.org/">OncoKB</a>
+
+            <h3 style="margin-bottom: 20px;" id="cancer_Hotspots"><b>Cancer Hotspots</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/33304455/" > </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://www.cancerhotspots.org/files/hotspots_v2.xls" >Cancer Hotspots</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="https://www.cancerhotspots.org/#/home">Cancer Hotspots</a>
+
+            <h3 style="margin-bottom: 20px;" id="lncRNADisease"><b>LncRNADisease</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.cuilab.cn/lncrnadisease" >Not only a resource that curated the experimentally supported lncRNA-disease association data but also a platform that integrated tool(s) for predicting novel lncRNA-disease associatons</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://www.rnanut.net/lncrnadisease/static/download/website_alldata.tsv" >LncRNADisease v3.0</a>
+
+            <h3 style="margin-bottom: 20px;" id="fusionGDB"><b>FusionGDB</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <p>FusionGDB is the Fusion Gene annotation DataBase, aiming to provide a resource or reference for functional annotation of fusion genes in cancer for better therapeutic targets.</p>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://ccsm.uth.edu/FusionGDB/download.html" >FusionGDB</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <a href="https://ccsm.uth.edu/FusionGDB/">FusionGDB</a>
+
+            <h3 style="margin-bottom: 20px;" id="pRINSEQ"><b>PRINSEQ</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/21278185/" >A bioinformatics tool to PRe-process and show INformation of SEQuence data. </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/prinseq/" >PRINSEQ</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>cd ~/biosoft <br>
+                mkdir PRINSEQ &&  cd PRINSEQ <br>
+                wget  https://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz <br>
+                tar zxvf  prinseq-lite-0.20.4.tar.gz</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>perl prinseq-lite.pl -verbose -fastq test.fq -graph_data test.gd -out_good null -out_bad null <br>
+                perl prinseq-graphs.pl -i test.gd -png_all -o test <br>
+                perl prinseq-graphs.pl -i test.gd -html_all -o test</p>
+
+            <h3 style="margin-bottom: 20px;" id="solexaqa"><b>Solexaqa</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/20875133/" >SolexaQA is a software to calculate quality statistics and visual representations of data quality for second-generation sequencing data.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/solexaqa/files/" >Solexaqa</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>for id in *fastq <br>
+                do <br>
+                echo $id <br>
+                perl DynamicTrim.pl -454 $id <br>
+                done <br>
+                for id in *trimmed <br>
+                do <br>
+                echo $id <br>
+                perl LengthSort.pl $id <br>
+                done</p>
+
+            <h3 style="margin-bottom: 20px;" id="cutadapt"><b>Cutadapt</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="http://dx.doi.org/10.14806/ej.17.1.200" >Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://pypi.python.org/pypi/cutadapt/" >Cutadapt</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>sudo apt install python3-virtualenv <br>
+                virtualenv cutadapt-venv <br>
+                cutadapt-venv/bin/pip --upgrade pip <br>
+                cutadapt-venv/bin/pip install cutadapt <br>
+                cutadapt-venv/bin/cutadapt --version <br>
+                source cutadapt-venv/bin/activate <br>
+                cutadapt --version
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>-j CORES, --cores CORES Number of CPU cores to use. Use 0 to auto-detect. Default: 1 <br>
+                -m LEN[:LEN2], --minimum-length LEN[:LEN2] Discard reads shorter than LEN. Default: 0
+                </p>
+
+            <h3 style="margin-bottom: 20px;" id="mosdepth"><b>Mosdepth</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/29096012/" >Mosdepth: quick coverage calculation for genomes and exomes</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.gz <br>
+                tar zxvf pcre-8.41.tar.gz <br>
+                cd pcre-8.41/ <br>
+                ./configure <br>
+                make</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>mosdepth 0.3.4
+
+Usage: mosdepth [options] <prefix> <BAM-or-CRAM>
+
+Arguments:
+
+<prefix>       outputs: `{prefix}.mosdepth.global.dist.txt`
+                        `{prefix}.mosdepth.summary.txt`
+                        `{prefix}.mosdepth.region.dist.txt` (if --by is specified)
+                        `{prefix}.per-base.bed.gz|per-base.d4` (unless -n/--no-per-base is specified)
+                        `{prefix}.regions.bed.gz` (if --by is specified)
+                        `{prefix}.quantized.bed.gz` (if --quantize is specified)
+                        `{prefix}.thresholds.bed.gz` (if --thresholds is specified)
+
+<BAM-or-CRAM>  the alignment file for which to calculate depth.
+
+Common Options:
+
+-t --threads <threads>     number of BAM decompression threads. (use 4 or fewer) [default: 0]
+-c --chrom <chrom>         chromosome to restrict depth calculation.
+-b --by <bed|window>       optional BED file or (integer) window-sizes.
+-n --no-per-base           dont output per-base depth. skipping this output will speed execution
+                            substantially. prefer quantized or thresholded values if possible.
+-f --fasta <fasta>         fasta file for use with CRAM files.
+--d4                       output per-base depth in d4 format. This is much faster.
+
+
+Other options:
+
+-F --flag <FLAG>              exclude reads with any of the bits in FLAG set [default: 1796]
+-i --include-flag <FLAG>      only include reads with any of the bits in FLAG set. default is unset. [default: 0]
+-x --fast-mode                dont look at internal cigar operations or correct mate overlaps (recommended for most use-cases).
+-q --quantize <segments>      write quantized output see docs for description.
+-Q --mapq <mapq>              mapping quality threshold. reads with a mapping quality less than this are ignored [default: 0]
+-T --thresholds <thresholds>  for each interval in --by, write number of bases covered by at
+                                least threshold bases. Specify multiple integer values separated
+                                by ','.
+-m --use-median               output median of each region (in --by) instead of mean.
+-R --read-groups <string>     only calculate depth for these comma-separated read groups IDs.
+-h --help                     show help
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="multiQC"><b>MultiQC</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/27312411/" >MultiQC: summarize analysis results for multiple tools and samples in a single report</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>pip install multiqc <br>
+                pip install --upgrade --force-reinstall git+https://github.com/MultiQC/MultiQC.git
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>multiqc .</p>
+
+            <h3 style="margin-bottom: 20px;" id="sTAR"><b>STAR</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/29/1/15/272537?login=false" >STAR: ultrafast universal RNA-seq aligner</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/alexdobin/STAR/releases/tag/STAR_2.4.2a" >STAR</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget https://github.com/alexdobin/STAR/releases/tag/STAR_2.4.2a <br>
+                tar -xzf STAR_2.4.2a.tar.gz <br>
+                cd STAR_2.4.2a <br>
+                # Build STAR <br>
+                cd source <br>
+                make STAR</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>STAR --runThreadN 20 --genomeDir ~/reference/index/STAR/mm10/ \ <br>
+                --readFilesIn  test_1.fastq test_2.fastq \ <br>
+                --outSAMtype BAM SortedByCoordinate \ <br>
+                --outFileNamePrefix ./test</p>
+
+            <h3 style="margin-bottom: 20px;" id="tMAP"><b>TMAP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/31870407/" >tmap: an integrative framework based on topological data analysis for population-scale microbiome stratification and association studies</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone git://github.com/iontorrent/TMAP.git <br>
+                cd TMAP <br>
+                git submodule init <br>
+                git submodule update <br>
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre># The number of permutations used by the MinHashing algorithm
+perm = 512
+
+# Initializing the MHFP encoder with 512 permutations
+enc = MHFPEncoder(perm)
+
+# Create MHFP fingerprints from SMILES
+# The fingerprint vectors have to be of the tm.VectorUint data type
+fingerprints = [tmap.VectorUint(enc.encode(s)) for s in df["smiles"]]</pre>
+
+            <h3 style="margin-bottom: 20px;" id="novoAlign"><b>NovoAlign</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8208613/" >Powerful tool designed for mapping of short reads onto a reference genome from Illumina, Ion Torrent, and 454 NGS platforms.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://www.novocraft.com/support/download/" >NovoAlign</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>Open shell at desired install location <br>
+                Untar with command tar -xzf novo…tar.gz <br>
+                Add the novocraft folder to your path.
+                 </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>./novocraft/novoindex ssuis.nix ./sampledata/S_suis.dna <br>
+                ./novocraft/novoalign -d ssuis.nix -f ./sampledata/s_1_sequence.txt <br>
+                ./novocraft/novoalign -d ssuis.nix -f ./sampledata/s_1_0000.1.fastq ./sampledata/s_1_0000.2.fastq
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="gMAP"><b>GMAP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://link.springer.com/protocol/10.1007/978-1-4939-3578-9_15" >GMAP and GSNAP for Genomic Sequence Alignment: Enhancements to Speed, Accuracy, and Functionality</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://research-pub.gene.com/gmap/src/gmap-gsnap-2023-12-01.tar.gz" >Version 2023-12-01</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget -c http://research-pub.gene.com/gmap/src/gmap-gsnap-2017-11-15.tar.gz <br>
+                tar -xvf gmap-gsnap-2017-11-15.tar.gz <br>
+                mkdir gmap <br>
+                cd gmap-gsnap-2017-11-15 <br>
+                ./configure --prefix=/path/biosoft/gmap <br>
+                make && make install
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>   -f, --format=INT               Other format for output (also note the -A and -S options
+and other options listed under Output types):
+psl (or 1) = PSL (BLAT) format,
+gff3_gene (or 2) = GFF3 gene format,
+gff3_match_cdna (or 3) = GFF3 cDNA_match format,
+gff3_match_est (or 4) = GFF3 EST_match format,
+splicesites (or 6) = splicesites output (for GSNAP splicing file),
+introns = introns output (for GSNAP splicing file),
+map_exons (or 7) = IIT FASTA exon map format,
+map_ranges (or 8) = IIT FASTA range map format,
+coords (or 9) = coords in table format,
+sampe = SAM format (setting paired_read bit in flag),
+samse = SAM format (without setting paired_read bit)</pre>
+
+            <h3 style="margin-bottom: 20px;" id="gSNAP"><b>GSNAP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://link.springer.com/protocol/10.1007/978-1-4939-3578-9_15" >GMAP and GSNAP for Genomic Sequence Alignment: Enhancements to Speed, Accuracy, and Functionality</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://research-pub.gene.com/gmap/src/gmap-gsnap-2023-12-01.tar.gz" >Version 2023-12-01</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget -c http://research-pub.gene.com/gmap/src/gmap-gsnap-2017-11-15.tar.gz <br>
+                tar -xvf gmap-gsnap-2017-11-15.tar.gz <br>
+                mkdir gmap <br>
+                cd gmap-gsnap-2017-11-15 <br>
+                ./configure --prefix=/path/biosoft/gmap <br>
+                make && make install
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>   -f, --format=INT               Other format for output (also note the -A and -S options
+and other options listed under Output types):
+psl (or 1) = PSL (BLAT) format,
+gff3_gene (or 2) = GFF3 gene format,
+gff3_match_cdna (or 3) = GFF3 cDNA_match format,
+gff3_match_est (or 4) = GFF3 EST_match format,
+splicesites (or 6) = splicesites output (for GSNAP splicing file),
+introns = introns output (for GSNAP splicing file),
+map_exons (or 7) = IIT FASTA exon map format,
+map_ranges (or 8) = IIT FASTA range map format,
+coords (or 9) = coords in table format,
+sampe = SAM format (setting paired_read bit in flag),
+samse = SAM format (without setting paired_read bit)</pre>
+
+            <h3 style="margin-bottom: 20px;" id="bowtie2"><b>Bowtie2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://bowtie-bio.sourceforge.net/bowtie2/index.shtml" >Bowtie 2 is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://link.zhihu.com/?target=https%3A//sourceforge.net/projects/bowtie-bio/" >Bowtie2</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p># Building a small index <br>
+                bowtie2-build example/reference/lambda_virus.fa example/index/lambda_virus <br>
+                <br>
+                # Building a large index <br>
+                bowtie2-build --large-index example/reference/lambda_virus.fa example/index/lambda_virus</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>bowtie2-build [options]* <reference_in> <bt2_base></bt2_base></p>
+
+            <h3 style="margin-bottom: 20px;" id="tophat"><b>Tophat</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://ccb.jhu.edu/software/tophat/index.shtml" >Tophat</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz" >Linux x86_64 binary</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p> wget ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz gunzip Homo_sapiens.GRCh38.dna.toplevel.fa.gz <br>
+                wget ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/Homo_sapiens/bigZips/chromFa.tar.gz gunzip chromFa.tar.gz </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>bowtie2-build [options]* <reference_in> <bt2_base></bt2_base></p>
+
+            <h3 style="margin-bottom: 20px;" id="hisat2"><b>Hisat2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="http://daehwankimlab.github.io/hisat2/manual/" >HISAT2 is a fast and sensitive alignment program for mapping next-generation sequencing reads (whole-genome, transcriptome, and exome sequencing data) to a population of human genomes (as well as to a single reference genome).</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://daehwankimlab.github.io/hisat2/download/" >Hisat2</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+<pre>
+wget https://cloud.biohpc.swmed.edu/index.php/s/oTtGWbWjaxsQ2Ho/download
+
+unzip download
+rm download
+
+echo 'export PATH=~/hisat2-2.2.1:$PATH' >> ~/.bashrc
+
+source ~/.bashrc
+
+hisat2</pre>
+
+            <h3 style="margin-bottom: 20px;" id="abyss"><b>Abyss</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/bcgsc/abyss" >ABySS is a de novo sequence assembler intended for short paired-end reads and genomes of all sizes.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+<pre>open MPI-4.0.4：https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.4.tar.bz2
+tar xf openmpi-4.0.4.tar.bz2
+cd openmpi-4.0.4.tar.bz2/
+configure –prefix=/home/XXX/soft/openmpi-4.0.4
+make all install
+tar jxf boost_1_73_0.tar.bz2
+
+</pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>$ ABYSS -k 31 -o 31_contigs.fa read1.fastq reads2.fastq</p>
+
+            <h3 style="margin-bottom: 20px;" id="oases"><b>Oases</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/28/8/1086/195757?login=false" >Oases: robust de novo RNA-seq assembly across the dynamic range of expression levels</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>> git clone --recursive https://github.com/dzerbino/oases <br>
+                > cd oases <br>
+                > make <br>
+                > ./oases --version <br>
+                0.2.09</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre># hash reads for k=31 and k=23
+> velveth directory 31,23 data/test_reads.fa
+
+# assemble the k=31 reads
+> velvetg directory_31 -read_trkg yes
+> oases directory_31
+
+# assemble the k=23 reads
+> velvetg directory_23 -read_trkg yes
+> oases directory_23
+
+# merge the above assemblies with a nominal k=23
+> velveth mergedAssembly 23 -long directory*/transcripts.fa
+> velvetg mergedAssembly -read_trkg yes -conserveLong yes
+> oases mergedAssembly -merge yes</pre>
+
+            <h3 style="margin-bottom: 20px;" id="trinityrnaseq"><b>Trinityrnaseq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/trinityrnaseq/trinityrnaseq/wiki" >Trinity RNA-Seq de novo transcriptome assembly see the Trinity wiki</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/trinityrnaseq/trinityrnaseq/releases" >Trinityrnaseq</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>–min_contig_length 
+–long_reads : fasta file containing error-corrected or circular consensus (CCS) pac bio reads
+–genome_guided_bam : genome guided mode, provide path to coordinate-sorted bam file
+–jaccard_clip
+–no_normalize_reads
+–output
+–full_cleanup : only retain the Trinity fasta file, rename as ${output_dir}.Trinity.fasta</pre>
+
+            <h3 style="margin-bottom: 20px;" id="rum"><b>Rum</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/21775302/" >Comparative analysis of RNA-Seq alignment algorithms and the RNA-Seq unified mapper (RUM)</a>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>perl Makefile.PL <br>
+                make <br>
+                make install # (may need sudo)</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>rum_runner help</p>
+
+            <h3 style="margin-bottom: 20px;" id="mECAT"><b>MECAT</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nmeth.4432" >MECAT is an ultra-fast Mapping, Error Correction and de novo Assembly Tools for single molecula sequencing (SMRT) reads.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+<pre>wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.15-patch1/src/hdf5-1.8.15-patch1.tar.gz
+tar xzvf hdf5-1.8.15-patch1.tar.gz
+mkdir hdf5
+cd hdf5-1.8.15-patch1
+./configure --enable-cxx --prefix=/public/users/chenying/smrt_asm/hdf5
+make
+make install
+cd ..</pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+mecat2pw -j 0 -d ecoli_filtered.fastq -o ecoli_filtered.fastq.pm.can -w wrk_dir -t 16
+mecat2cns -i 0 -t 16 ecoli_filtered.fastq.pm.can ecoli_filtered.fastq corrected_ecoli_filtered
+extract_sequences corrected_ecoli_filtered.fasta corrected_ecoli_25x.fasta 4800000 25
+mecat2canu -trim-assemble -p ecoli -d ecoli genomeSize=4800000 ErrorRate=0.02 maxMemory=40 maxThreads=16 useGrid=0 Overlapper=mecat2asmpw -pacbio-corrected corrected_ecoli_25x.fasta
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="dart"><b>Dart</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/hsinnan75/DART" >Dart</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ git clone https://github.com/hsinnan75/Dart.git <br>
+                $ ./dart [options]</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>$ ./bwt_index ref_file[ex.ecoli.fa] index_prefix[ex. Ecoli] <br>
+                $ ./dart index ref_file[ex.ecoli.fa] index_prefix[ex. Ecoli] <br>
+                $ bwa index -p index_prefix ref.fa</p>
+
+            <h3 style="margin-bottom: 20px;" id="rHAT"><b>rHAT</b></h3>
+            <b style="margin-left: 10px">Download: </b>
+            <a href=" https://github.com/derekguan/rHAT" >rHAT</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>                    rHAT-indexer:
+-k, --kmer-size      INT    The size of the k-mers extracted from the reference genome for indexing[13].
+
+rHAT-aligner:
+-w, --window-hits    INT    The max allowed number of windows hit by a k-mer, if a k-mer
+                        hits more than -w genomic windows, rHAT would consider the k-mer
+                        is too repetitive, and discard the k-mer. (default = 1000)
+
+-m, --candidates     INT    The number of candidates for extension, this is one of the
+                        major heuristic parameters in rHAT. Setting -m high will let
+                        rHAT aligns the read to many local sites, which could affect
+                        the throughput, while setting -m low may make too few candidates
+                        which could affect the sensitivity and accuracy of the alignment.
+                        Based on the benchmarking on a series of simulated and real datasets
+                        from various genomes, we suggest that setting the -m parameter to
+                        5-10 could reconcile the effectiveness and efficiency in most cases. (default = 5)
+
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="taxmaps"><b>Taxmaps</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/29588360/" >taxMaps: comprehensive and highly accurate taxonomic classification of short-read data in reasonable time</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="$ git clone git://github.com/nygenome/taxmaps.git" >$ tar -zxvf taxmaps.{latest_version}.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ export PERL5LIB=path_to_krona/lib/ <br>
+                $ python --version ; python -c "import numpy; print 'NumPy ' + numpy.__version__"</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>$ taxMaps -f reads.fq -d refseq_viral.gem -e 0.16 -c 8 -t taxonomy.tbl -p samp1 -o txM/sample1</p>
+
+            <h3 style="margin-bottom: 20px;" id="mARVEL"><b>MARVEL</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.biorxiv.org/content/10.1101/2022.08.25.505258v1.full.pdf" >MARVEL consists of a set of tools that facilitate the overlapping, patching, correction and assembly of noisy (not so noisy ones as well) long reads.</a>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>in case your source package didn't come with a "configure" script you need to run "autoreconf".
+                run "configure --prefix=<marvel.install.dir>" replacing <marvel.install.dir> with the path where MARVEL should be installed
+                make
+                make install
+                add <marvel.install.dir>/lib.python to your python's module search path PYTHONPATH</pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre># set various constants
+
+DB         = "ECOL"                         # database name
+COVERAGE   = 25                             # coverage of the dataset
+DB_FIX     = DB + "_FIX"                    # name of the database containing the patched reads
+PARALLEL   = multiprocessing.cpu_count()    # number of available processors
+
+### patch raw reads
+
+q = marvel.queue.queue(DB, COVERAGE, PARALLEL)
+
+# run daligner to create initial overlaps
+q.plan("{db}.dalign.plan")
+
+# run LAmerge to merge overlap blocks
+q.plan("{db}.merge.plan")
+
+# create quality and trim annotation (tracks) for each overlap block
+q.block("{path}/LAq -b {block} {db} {db}.{block}.las")
+
+# since q and trim tracks have been produced for each block, we need to merge them
+q.single("{path}/TKmerge -d {db} q")
+q.single("{path}/TKmerge -d {db} trim")
+
+# run LAfix to patch reads based on overlaps
+# the -g parameter specifies the maximum gap size that gets patched
+q.block("{path}/LAfix -g -1 {db} {db}.{block}.las {db}.{block}.fixed.fasta")
+
+# join all fasta files containing the repaired reads
+q.single("!cat {db}.*.fixed.fasta > {db}.fixed.fasta")
+
+# create a new database with them
+# -s ... block size in megabytes/bases
+# -r ... run id
+# -j ... threads used by the overlapper
+# -g ... genome size
+q.single("{path_scripts}/DBprepare.py -s 50 -r 2 -j 4 -g 4600000 {db_fixed} {db}.fixed.fasta", db_fixed = DB_FIX)
+
+# run the commands build using the above statements
+q.process()
+
+# alternatively you can dump the set of statements build to a text file
+# that you then lateron could use for running jobs on a queuing system
+# q.dump("statements.txt")
+
+# build a new queue for the assembly of the patched reads
+q = marvel.queue.queue(DB_FIX, COVERAGE, PARALLEL)
+
+# put the daligner statements in the queue
+q.plan("{db}.dalign.plan")
+
+# put the LAmerge statements in the queue
+q.plan("{db}.merge.plan")
+
+# stitch reads, this will repair/join alignments that have split into two (or more)
+# due to leftover weak regions in the reads
+q.block("{path}/LAstitch -f 50 {db} {db}.{block}.las {db}.{block}.stitch.las")
+
+# create quality and trim annotation for each overlap block
+q.block("{path}/LAq -s 5 -T trim0 -b {block} {db} {db}.{block}.stitch.las")
+
+# and merge them
+q.single("{path}/TKmerge -d {db} q")
+q.single("{path}/TKmerge -d {db} trim0")
+
+# create a repeat annotation for each overlap block
+q.block("{path}/LArepeat -c {coverage} -b {block} {db} {db}.{block}.stitch.las")
+
+# and merge them
+q.single("{path}/TKmerge -d {db} repeats")
+
+# detect chimeric breaks and other leftover structural problems with the reads/alignments
+# that result in "gap", ie. regions that are not spanned by any alignment and discard
+# all alignments on one side of the gap
+q.block("{path}/LAgap -t trim0 {db} {db}.{block}.stitch.las {db}.{block}.gap.las")
+
+# create a new trim annotation, since LAgap might have resulted in regions of some reads
+# not being overed by an alignments (ie. appearing like "dead" sequence)
+q.block("{path}/LAq -s 5 -u -t trim0 -T trim1 -b {block} {db} {db}.{block}.gap.las")
+
+# merge the block-based tracks
+q.single("{path}/TKmerge -d {db} trim1")
+
+# filter all non true-overlap induced alignments
+# -r ... which repeat track to use
+# -t ... which trim track to use
+# -T ... actually apply the trim (ie. update alignments based on its information)
+# -o ... discard all alignments shorter than 2k
+# -u ... discard all local alignments with >0 unaligned bases
+# -n ... require alignments that span a repeat to cover at least 300 non-repeat annotated bases
+# -p ... actually discard the filtered alignments, and not just flag them as discarded
+q.block("{path}/LAfilter -n 300 -r repeats -t trim1 -T -o 2000 -u 0 {db} {db}.{block}.gap.las {db}.{block}.filtered.las")
+
+# merge all filtered overlap files
+q.single("{path}/LAmerge -S filtered {db} {db}.filtered.las")
+
+# create the overlap graph
+q.single("{path}/OGbuild -t trim1 {db} {db}.filtered.las {db}.graphml")
+
+# tour the overlap graph and create contigs paths
+q.single("{path_scripts}/OGtour.py -c {db} {db}.graphml")
+
+# correct the reads used in the touring of the overlap graph
+# and put them into a new database
+# -j ... number of threads to use
+# -r ... only correct the reads with the ids contained in ECOL_FIX.tour.rids
+# Note: LAcorrect could be run directly after the initial overlapping in order to produce a set
+#       of corrected reads
+q.single("{path}/LAcorrect -j 4 -r {db}.tour.rids {db} {db}.filtered.las {db}.corrected")
+q.single("{path}/FA2db -c {db}_CORRECTED [expand:{db}.corrected.*.fasta]")
+
+# output fasta files of the paths found in the touring
+# -c ... use the corrected reads, of not present the contigs would be built using the
+#        the uncorrected (patched) reads
+# -t ... which trim track to use
+q.single("{path_scripts}/tour2fasta.py -c {db}_CORRECTED -t trim1 {db} {db}.tour.graphml {db}.tour.paths")
+
+# optional: calculate a layout (arrange the graph's nodes in such a way that they are easy to look at)
+#           for the toured overlap graph and write it to a dot file
+q.single("{path}/OGlayout -R {db}.tour.graphml {db}.tour.layout.dot")
+
+# run the commands
+q.process()</pre>
+
+            <h3 style="margin-bottom: 20px;" id="vg"><b>vg</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nbt.4227" >Variation graph toolkit improves read mapping by representing genetic variation in the reference</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/vgteam/vg/releases/download/v1.54.0/vg-v1.54.0.tar.gz" > vg-v1.54.0.tar.gz</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>vg construct -r small/x.fa -v small/x.vcf.gz >x.vg</p>
+
+            <h3 style="margin-bottom: 20px;" id="stringtie"><b>Stringtie</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nbt.3122" >StringTie enables improved reconstruction of a transcriptome from RNA-seq reads</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://ccb.jhu.edu/software/stringtie/dl/stringtie-2.2.1.Linux_x86_64.tar.gz" >stringtie-2.2.1.Linux_x86_64.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget http://ccb.jhu.edu/software/stringtie/dl/stringtie-2.2.1.Linux_x86_64.tar.gz <br>
+                tar -zxvf stringtie-2.2.1.Linux_x86_64.tar.gz <br>
+                vim ~/.bashrc <br>
+                export PATH=$PATH:"/home/cyh/biosoft/stringtie-2.2.1.Linux_x86_64: $PATH" <br>
+                source ~/.bsahrc</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre> --mix : both short and long read data alignments are provided
+                (long read alignments must be the 2nd BAM/CRAM input file)
+         --rf : assume stranded library fr-firststrand
+         --fr : assume stranded library fr-secondstrand
+         -G reference annotation to use for guiding the assembly process (GTF/GFF)
+         --conservative : conservative transcript assembly, same as -t -c 1.5 -f 0.05
+         --ptf : load point-features from a given 4 column feature file <f_tab>
+         -o output path/file name for the assembled transcripts GTF (default: stdout)
+         -l name prefix for output transcripts (default: STRG)
+         -f minimum isoform fraction (default: 0.01)
+         -L long reads processing; also enforces -s 1.5 -g 0 (default:false)
+         -R if long reads are provided, just clean and collapse the reads but
+            do not assemble
+         -m minimum assembled transcript length (default: 200)
+         -a minimum anchor length for junctions (default: 10)
+         -j minimum junction coverage (default: 1)
+         -t disable trimming of predicted transcripts based on coverage
+            (default: coverage trimming is enabled)
+         -c minimum reads per bp coverage to consider for multi-exon transcript
+            (default: 1)
+         -s minimum reads per bp coverage to consider for single-exon transcript
+            (default: 4.75)
+         -v verbose (log bundle processing details)
+         -g maximum gap allowed between read mappings (default: 50)
+         -M fraction of bundle allowed to be covered by multi-hit reads (default:1)
+         -p number of threads (CPUs) to use (default: 1)
+         -A gene abundance estimation output file
+         -E define window around possibly erroneous splice sites from long reads to
+            look out for correct splice sites (default: 25)
+         -B enable output of Ballgown table files which will be created in the
+            same directory as the output GTF (requires -G, -o recommended)
+         -b enable output of Ballgown table files but these files will be
+            created under the directory path given as <dir_path>
+         -e only estimate the abundance of given reference transcripts (requires -G)
+         --viral : only relevant for long reads from viral data where splice sites
+            do not follow consensus (default:false)
+         -x do not assemble any transcripts on the given reference sequence(s)
+         -u no multi-mapping correction (default: correction enabled)
+         --ref/--cram-ref reference genome FASTA file for CRAM input
+        Transcript merge usage mode:
+          stringtie --merge [Options] { gtf_list | strg1.gtf ...}
+        With this option StringTie will assemble transcripts from multiple
+        input files generating a unified non-redundant set of isoforms. In this mode
+        the following options are available:
+          -G <guide_gff>   reference annotation to include in the merging (GTF/GFF3)
+          -o <out_gtf>     output file name for the merged transcripts GTF
+                            (default: stdout)
+          -m <min_len>     minimum input transcript length to include in the merge
+                            (default: 50)
+          -c <min_cov>     minimum input transcript coverage to include in the merge
+                            (default: 0)
+          -F <min_fpkm>    minimum input transcript FPKM to include in the merge
+                            (default: 1.0)
+          -T <min_tpm>     minimum input transcript TPM to include in the merge
+                            (default: 1.0)
+          -f <min_iso>     minimum isoform fraction (default: 0.01)
+          -g <gap_len>     gap between transcripts to merge together (default: 250)
+          -i               keep merged transcripts with retained introns; by default
+                           these are not kept unless there is strong evidence for them
+          -l <label>       name prefix for output transcripts (default: MSTRG)</pre>
+
+            <h3 style="margin-bottom: 20px;" id="transLiG"><b>TransLiG</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1690-7" >TransLiG: a de novo transcriptome assembler that uses line graph iteration</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/transcriptomeassembly/files/latest/download" >TransLiG</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>$ wget https://sourceforge.net/projects/boost/files/boost/1.78.0/boost_1_78_0.tar.gz <br>
+                $ tar zxvf boost_1_78_0.tar.gz <br>
+                $ cd  boost_1_78_0 <br>
+                $ ./bootstrap.sh <br>
+                $ ./b2 install --prefix=<YOUR_BOOST_INSTALL_DIRECTORY> <br>
+                #eg:./b2 install --prefix=/home/zflan/boost</p>
+
+            <h3 style="margin-bottom: 20px;" id="sTRiP"><b>STRiP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://software.broadinstitute.org/software/genomestrip/" >STRiP</a>
+
+
+            <h3 style="margin-bottom: 20px;" id="loFreq"><b>LoFreq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/nar/article/40/22/11189/1152727?login=false" > </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://csb5.github.io/lofreq/" >LoFreq</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>conda install -c bioconda lofreq</p>
+
+            <h3 style="margin-bottom: 20px;" id="TS"><b>TS</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/iontorrent/TS" >TS</a>
+
+            <h3 style="margin-bottom: 20px;" id="speedSeq"><b>SpeedSeq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nmeth.3505" >SpeedSeq: ultra-fast personal genome analysis and interpretation</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://root.cern.ch/download/root_v6.10.08.Linux-ubuntu14-x86_64-gcc4.8.tar.gz" >root_v6.10.08.Linux-ubuntu14-x86_64-gcc4.8.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget https://root.cern.ch/download/root_v6.10.08.Linux-ubuntu14-x86_64-gcc4.8.tar.gz <br>
+                tar -zxvf root_v6.10.08.Linux-ubuntu14-x86_64-gcc4.8.tar.gz <br>
+                export PATH=/Path/to/rootdir/bin:$PATH <br>
+                export LD_LIBRARY_PATH=/Path/to/rootdir/lib:$LD_LIBRARY_PATH <br>
+                cd root <br>
+                . bin/thisroot.sh <br>
+                git clone --recursive https://github.com/hall-lab/speedseq <br>
+                cd speedseq <br>
+                make</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>speedseq align -R "@RG\tID:id\tSM:sample\tLB:lib" \ <br>
+                human_g1k_v37.fasta \ <br>
+                sample.1.fq \ <br>
+                sample.2.fq</p>
+
+            <h3 style="margin-bottom: 20px;" id="somaticSniper"><b>SomaticSniper</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/28/3/311/188933?login=false" >SomaticSniper: identification of somatic point mutations in whole genome sequencing data</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://gmt.genome.wustl.edu/packages/somatic-sniper/install.html" >SomaticSniper</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>sudo apt-get install build-essential git-core cmake zlib1g-dev libncurses-dev <br>
+                sudo yum groupinstall "Development tools" <br>
+                sudo yum install zlib-devel ncurses-devel cmake</p>
+
+            <h3 style="margin-bottom: 20px;" id="fusionCatcher"><b>FusionCatcher</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.biorxiv.org/content/10.1101/011650v1" >Finder of somatic fusion-genes in RNA-seq data.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget http://sf.net/projects/fusioncatcher/files/bootstrap.py -O bootstrap.py && python bootstrap.py -t --download <br>
+                bootstrap.py --help <br>
+                sudo apt-get install wget gawk gcc g++ make cmake automake curl unzip zip bzip2 tar gzip pigz parallel build-essential libncurses5-dev libc6-dev zlib1g zlib1g-dev libtbb-dev libtbb2 python python-dev python-numpy python-biopython python-xlrd python-openpyxl default-jdk <br>
+                git clone https://github.com/ndaniel/fusioncatcher <br>
+                cd fusioncatcher/tools/ <br>
+                ./install_tools.sh <br>
+                cd ../data <br>
+                ./download-human-db.sh
+            </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>fusioncatcher \ <br>
+                -d  database_directory  \ <br>
+                -i   fastq_directory  \ <br>
+                -o  output_directory</p>
+
+            <h3 style="margin-bottom: 20px;" id="pindel"><b>Pindel</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2781750/" >Pindel: a pattern growth approach to detect break points of large deletions and medium sized insertions from paired-end short reads</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>./INSTALL [path-to-htslib] <br>
+                <br>
+                for example <br>
+                <br>
+                ./INSTALL ../htslib <br>
+                <br>
+                After this, you can run pindel by using <br>
+                <br>
+                ./pindel [options]</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>module load miniconda3 <br>
+                conda create -n mypy_py27 python=2.7 <br>
+                source activate mypy_py27 <br>
+                conda install -c bioconda pindel
+                </p>
+
+            <h3 style="margin-bottom: 20px;" id="breakDancer"><b>BreakDancer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/nmeth.1363" >BreakDancer: an algorithm for high-resolution mapping of genomic structural variation</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone --recursive https://github.com/genome/breakdancer.git <br>
+                <br>
+                cd build-common/ <br>
+                <br>
+                cmake .. -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr/local <br>
+                <br>
+                make
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>    readgroup:sample <br>
+                platform:illumina <br>
+                map:sample.bam <br>
+                readlen: <br>
+                lib: <br>
+                num: <br>
+                lower: <br>
+                upper: <br>
+                mean: <br>
+                std: <br>
+                SWnormality: <br>
+                exe:samtools view</p>
+
+            <h3 style="margin-bottom: 20px;" id="delly"><b>Delly</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3436805/" >DELLY: structural variant discovery by integrated paired-end and split-read analysis</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/dellytools/delly/releases/" >delly v1.2.6</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>wget https://github.com/dellytools/delly/releases/download/v1.1.6/delly_v1.1.6_linux_x86_64bit <br>
+                chmod +x delly_v1.1.6_linux_x86_64bit <br>
+                (py38) root@DESKTOP-A31BQ38:/home/software/delly# ./delly_v1.1.6_linux_x86_64bit</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>delly call -g hg38.fa input.bam > delly.vcf <br>
+                delly call -o delly.bcf -g hg38.fa input.bam <br>
+                bcftools view delly.bcf > delly.vcf</p>
+
+            <h3 style="margin-bottom: 20px;" id="cnvkit"><b>Cnvkit</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004873" >CNVkit: Genome-Wide Copy Number Detection and Visualization from Targeted DNA Sequencing</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://cnvkit.readthedocs.io/en/latest/" >Cnvkit</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p># Configure the sources where conda will find packages <br>
+                conda config --add channels defaults <br>
+                conda config --add channels bioconda <br>
+                conda config --add channels conda-forge <br>
+                conda install cnvkit</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>cd test/ <br>
+                make <br>
+            python_exe=python3 <br>
+            rscript_exe=Rscript</p>
+
+            <h3 style="margin-bottom: 20px;" id="gridss"><b>Gridss</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5741059/" >GRIDSS: sensitive and specific genomic rearrangement detection using positional de Bruijn graph assembly</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/PapenfussLab/gridss/releases" >Gridss</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>git clone --recurse-submodules http://github.com/PapenfussLab/gridss/ <br>
+                cd gridss/src/main/c/gridsstools/htslib/ <br>
+                autoreconf -i && ./configure && make <br>
+                cd .. <br>
+                autoreconf -i && ./configure && make all</p>
+
+            <h3 style="margin-bottom: 20px;" id="svtools"><b>Svtools</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/35/22/4782/5520944?login=false" >svtools: population-scale analysis of structural variation</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>pip install svtools</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>usage: svtools [-h] [--version] [--support] subcommand ...
+
+Comprehensive utilities to explore structural variation in genomes
+
+optional arguments:
+    -h, --help     show this help message and exit
+    --version      show program's version number and exit
+    --support      information on obtaining support
+
+    subcommand     description
+    lsort        sort N LUMPY VCF files into a single file
+    lmerge       merge LUMPY calls inside a single file from svtools lsort
+    vcfpaste     paste VCFs from multiple samples
+    copynumber   add copynumber information using cnvnator-multi
+    genotype     compute genotype of structural variants based on breakpoint depth
+    afreq        add allele frequency information to a VCF file
+    bedpetobed12 convert a BEDPE file to BED12 format for viewing in IGV or the
+                    UCSC browser
+    bedpetovcf   convert a BEDPE file to VCF
+    vcftobedpe   convert a VCF file to a BEDPE file
+    vcfsort      sort a VCF file
+    bedpesort    sort a BEDPE file
+    prune        cluster and prune a BEDPE file by position based on allele
+                    frequency
+    varlookup    look for variants common between two BEDPE files
+    classify     reclassify DEL and DUP based on read depth information</pre>
+
+            <h3 style="margin-bottom: 20px;" id="RDDpred"><b>RDDpred</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/26817607/" >RDDpred: a condition-specific RNA-editing prediction model from RNA-seq data</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>git clone https://github.com/vibbits/RDDpred.git <br>
+                docker build -t rddpred-github:1.1.4 . <br>
+                docker run rddpred-github:1.1.4 python RDDpred.py</p>
+
+            <h3 style="margin-bottom: 20px;" id="iseq"><b>Iseq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://link.springer.com/protocol/10.1007/978-1-4939-7717-8_10" >iSeq: Web-Based RNA-seq Data Analysis and Visualization</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p># Download the source code and gunzip <br>
+                ./install.R</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre># fastq2vcf mode
+panel -c config.cfg \
+            -s A01A \
+            -m fastq2vcf \
+            -1 A01A_1.fq.gz \
+            -2 A01A_2.fq.gz \
+            --bamprocess 00101111 \
+            -o outdir
+
+# fastq2bam
+panel -c config.cfg \
+            -s A01A \
+            -m fastq2bam \
+            -1 A01A_1.fq.gz \
+            -2 A01A_2.fq.gz \
+            --bamprocess 00101111 \
+            -o outdir
+
+# bam2vcf
+panel -c config.cfg \
+            -s A01A \
+            -m bam2vcf \
+            --in_bam A01A.bam \
+            --bamprocess 00000000 \
+            -o outdir
+
+# genomeindex mode
+panel -c config.cfg -m genomeindex</pre>
+
+            <h3 style="margin-bottom: 20px;" id="deepvariant"><b>Deepvariant</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/s41592-018-0209-6" >Variants from the deep</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>BIN_VERSION="1.5.0" <br>
+                sudo apt -y update <br>
+                sudo docker pull google/deepvariant:"${BIN_VERSION}"</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>BIN_VERSION="1.6.0"
+docker run \
+    -v "YOUR_INPUT_DIR":"/input" \
+    -v "YOUR_OUTPUT_DIR:/output" \
+    google/deepvariant:"${BIN_VERSION}" \
+    /opt/deepvariant/bin/run_deepvariant \
+    --model_type=WGS \ **Replace this string with exactly one of the following [WGS,WES,PACBIO,ONT_R104,HYBRID_PACBIO_ILLUMINA]**
+    --ref=/input/YOUR_REF \
+    --reads=/input/YOUR_BAM \
+    --output_vcf=/output/YOUR_OUTPUT_VCF \
+    --output_gvcf=/output/YOUR_OUTPUT_GVCF \
+    --num_shards=$(nproc) \ **This will use all your cores to run make_examples. Feel free to change.**
+    --logging_dir=/output/logs \ **Optional. This saves the log output for each stage separately.
+    --haploid_contigs="chrX,chrY" \ **Optional. Heterozygous variants in these contigs will be re-genotyped as the most likely of reference or homozygous alternates. For a sample with karyotype XY, it should be set to "chrX,chrY" for GRCh38 and "X,Y" for GRCh37. For a sample with karyotype XX, this should not be used.
+    --par_regions_bed="/input/GRCh3X_par.bed" \ **Optional. If --haploid_contigs is set, then this can be used to provide PAR regions to be excluded from genotype adjustment. Download links to this files are available in this page.
+    --dry_run=false **Default is false. If set to true, commands will be printed out but not executed.</pre>
+
+            <h3 style="margin-bottom: 20px;" id="JAFFA"><b>JAFFA</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-015-0167-x" >JAFFA: High sensitivity transcriptome-focused fusion gene detection</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p></p>
+
+            <h3 style="margin-bottom: 20px;" id="Picky"><b>Picky</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/s41592-018-0002-6" >Picky comprehensively detects high-resolution structural variants in nanopore long reads</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://addons.mozilla.org/firefox/downloads/file/3575211/picky-0.0.1.xpi" >Picky</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>python -m pip install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew <br>
+                python -m pip install kivy.deps.gstreamer <br>
+                python -m pip install kivy <br>
+                python -m pip install kivy_examples</p>
+
+            <h3 style="margin-bottom: 20px;" id="Control_FREEC"><b>Control-FREEC</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/28/3/423/189142" >Control-FREEC: a tool for assessing copy number and allelic content using next-generation sequencing data</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/BoevaLab/FREEC/releases" >archive (Linux 64bit)</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="https://boevalab.inf.ethz.ch/FREEC/tutorial.html#install">https://boevalab.inf.ethz.ch/FREEC/tutorial.html#install</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="BreaKmer"><b>BreaKmer</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/25428359/" >BreaKmer: detection of structural variation in targeted massively parallel sequencing data using kmers</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>cd ~/biosoft/BRAKER/scripts <br>
+                chmod a+x *.pl *.py <br>
+                vim ~/.bashrc <br>
+                export PATH="$PATH:/home/nieyimeng/biosoft/BRAKER/scripts"
+                </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>conda activate BRAKER <br>
+                nohup braker.pl --genome=X.fasta --prot_seq=proteins_Lomigra.fasta --workingdir=~/data/X-SEX/BRAKER &
+                </p>
+
+            <h3 style="margin-bottom: 20px;" id="DeTiN"><b>DeTiN</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.nature.com/articles/s41592-018-0036-9" >DeTiN: overcoming tumor-in-normal contamination</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>deTiN requires Numpy, Pandas==1.0.0, matplotlib==3.1.3, Scipy, random2 and Python 3.7.
+                pip install deTiN
+                or
+                git clone https://github.com/broadinstitute/deTiN.git
+                cd deTiN/
+                python setup install or Run from deTiN directory</pre>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>--TiN_prior (default = 0.5) 0.5 is a null prior. If users wish to require more evidence for TiN > 0 this can be lowered.
+                --mutation_prior (default = 0.15) The ratio of sites expected to be mutated somatically to rare germline events (0.15 corresponds to ~2 mutations per megabase)
+                --ascna_probe_number_filter (default = 200) We require 200 probes based on empirical results using GATK4CNV that segments smaller than this tend to be enriched for artifacts. For WGS this parameter can be set to 0.
+                --ascna_SNP_number_filter (default = 20) We require 20 SNPs based on empirical results using GATK4CNV that segments smaller than this tend to be enriched for artifacts.
+                --coverage_threshold (default = 15) Number of reads required to use a variant for estimation of TiN. We require 15x coverage since low coverage sites tend to be enriched for artifacts. (NOTE: all sites are considered for somatic recovery)
+                --SSNV_af_threshold (default = 0.15) Fraction of alternate allele required for site to be used in SSNV based estimation of TiN. We require 15% since low af sites tend to be enriched for artifacts. If users are using more deeply sequenced data this should be set to a lower value. (NOTE: all sites are considered for somatic recovery)
+                --aSCNA_threshold (default = 0.1) Fraction of allele shift required to use a segment for TiN estimation. Lower this value for extremely well covered samples (e.g. 500x).
+                --aSCNA_variance_threshold (default = 0.025) Variance tolerated in allele shift of a segment before removal. This filter helps to remove regions enriched for artifact sites such as centromeres/telomeres and low mapping regions.
+                --cancer_hot_spots Optional BED file of cancer hot spot mutations which the user has a stronger prior on being somatic e.g. BRAF v600E mutations.</pre>
+
+            <h3 style="margin-bottom: 20px;" id="CN-Learn"><b>CN-Learn</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/girirajanlab/CN_Learn" >CN-Learn is a framework to integrate Copy Number Variant (CNV) predictions made by multiple algorithms using exome sequencing datasets.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone --recursive https://github.com/girirajanlab/CN_Learn.git</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>bash canoes_extract.sh <br>
+                bash clamms_preprocess.sh <br>
+                bash clamms_extract.sh <br>
+                bash clamms_postprocess.sh <br>
+                bash codex_extract.sh
+            </p>
+
+            <h3 style="margin-bottom: 20px;" id="SoftSV"><b>SoftSV</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/25998133/" >Robust and exact structural variation detection with paired-end and soft-clipped alignments: SoftSV compared with eight algorithms</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/softsv/files/latest/download" >SoftSV</a>
+
+            <h3 style="margin-bottom: 20px;" id="Wham"><b>Wham</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004572" >Wham: Identifying Structural Variants of Biological Consequence</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://membrane.urmc.rochester.edu/sites/default/files/wham/wham-release-2.0.11.tgz " >Wham</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone --recursive  https://github.com/zeeev/wham.git; cd wham; make </p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>export EXCLUDE=GL000207.1,GL000226.1,GL000229.1,GL000231.1,GL000210.1,GL000239.1,GL000235.1,GL000201.1,GL000247.1,GL000245.1,GL000197.1,GL000203.1,GL000246.1,GL000249.1,GL000196.1,GL000248.1,GL000244.1,GL000238.1,GL000202.1,GL000234.1,GL000232.1,GL000206.1,GL000240.1,GL000236.1,GL000241.1,GL000243.1,GL000242.1,GL000230.1,GL000237.1,GL000233.1,GL000204.1,GL000198.1,GL000208.1,GL000191.1,GL000227.1,GL000228.1,GL000214.1,GL000221.1,GL000209.1,GL000218.1,GL000220.1,GL000213.1,GL000211.1,GL000199.1,GL000217.1,GL000216.1,GL000215.1,GL000205.1,GL000219.1,GL000224.1,GL000223.1,GL000195.1,GL000212.1,GL000222.1,GL000200.1,GL000193.1,GL000194.1,GL000225.1,GL000192.1,NC_007605
+                whamg -e $EXCLUDE -a Homo_sapiens_assembly19.fasta -f CHM1_1.bam | perl utils/filtWhamG.pl > chm1.vcf  2> chm1.err</p>
+
+            <h3 style="margin-bottom: 20px;" id="SnpEff"><b>SnpEff</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pcingola.github.io/SnpEff/citing/" >Genetic variant annotation, and functional effect prediction toolbox. </a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://pcingola.github.io/SnpEff/download/" >SnpEff</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>cd work_dir/ <br>
+                wget http://sourceforge.net/projects/snpeff/files/snpEff_latest_core.zip <br>
+                unzip snpEff_latest_core.zip <br>
+                git clone https://github.com/pcingola/SnpSift.gi</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>
+java -jar snpEff/snpEff.jar -v ecoli Ecoli.vcf.gz > Ecoli.anno.vcf.gz
+#ecoli
+├── EcoliK12.anno.vcf.gz
+├── snpEff_genes.txt
+├── snpEff_summary.html</pre>
+
+            <h3 style="margin-bottom: 20px;" id="VEP"><b>VEP</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="http://asia.ensembl.org/info/docs/tools/vep/index.html" >VEP determines the effect of your variants (SNPs, insertions, deletions, CNVs or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions.</a>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>conda create -n vep <br>
+                conda activate vep <br>
+                To install this package with conda run one of the following: <br>
+                conda install -c bioconda ensembl-vep==101.0 <br>
+                conda install -c bioconda/label/cf201901 ensembl-vep==101.0</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>#####cache <br>
+                ftp://ftp.ensembl.org/pub/release-101/variation/indexed_vep_cache/homo_sapiens_vep_101_GRCh37.tar.gz <br>
+                <br>
+                tar xzf homo_sapiens_vep_101_GRCh37.tar.gz <br>
+                <br>
+                wget -c ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.dna.primary_assembly.fa.gz
+                 </p>
+
+            <h3 style="margin-bottom: 20px;" id="GEMINI"><b>GEMINI</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/arq5x/gemini" >GEMINI - integrative exploration of genetic variation and genome annotations.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://gemini.readthedocs.org/en/latest/" >GEMINI</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="http://gemini.readthedocs.org/en/latest/content/installation.html">http://gemini.readthedocs.org/en/latest/content/installation.html</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="vcfanno"><b>Vcfanno</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0973-5" >Vcfanno: fast, flexible annotation of genetic variants</a>
+
+            <h3 style="margin-bottom: 20px;" id="PCGR"><b>PCGR</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/34/10/1778/4764004?login=false" >Personal Cancer Genome Reporter: variant interpretation report for precision oncology</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="https://sigven.github.io/pcgr/articles/installation.html">https://sigven.github.io/pcgr/articles/installation.html</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="anor"><b>Anor</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://github.com/clindet/anor" >The anor package provides R functions as well as database resources which offer an integrated framework to annotate genetic variants from genome and transcriptome data.</a>
+
+            <h3 style="margin-bottom: 20px;" id="Bystro"><b>Bystro</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1387-3" >Bystro: rapid online variant annotation and natural-language filtering at whole-genome scale</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>Bystro: rapid online variant annotation and natural-language filtering at whole-genome scale</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>bin/bystro-utils.pl --config <path/to/this/config> </p>
+
+            <h3 style="margin-bottom: 20px;" id="PathoPredictor"><b>PathoPredictor</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/31235655/" >Genetic variant pathogenicity prediction trained using disease-specific clinical sequencing data sets</a>
+
+            <h3 style="margin-bottom: 20px;" id="LARVA"><b>LARVA</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="http://larva.gersteinlab.org/">http://larva.gersteinlab.org/</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="MATS"><b>MATS</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://rnaseq-mats.sourceforge.io/rmats3.2.5/" >MATS is a computational tool to detect differential alternative splicing events from RNA-Seq data.</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://sourceforge.net/projects/rnaseq-mats/files/MATS/rMATS.3.2.5.tgz/download" >MATS</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://rnaseq-mats.sourceforge.io/rmats3.2.5/user_guide.htm">User Guide</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="tappAS"><b>TappAS</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02028-w" >tappAS: a comprehensive computational framework for the analysis of the functional impact of differential splicing</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://github.com/ConesaLab/tappAS/releases/" >tappAS v1.0.8</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="https://app.tappas.org/resources/downloads/install.pdf">https://app.tappas.org/resources/downloads/install.pdf</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="dSreg"><b>DSreg</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://doi.org/10.1101/595751" >dSreg is a library to perform joint inference of differential splicing and regulatory mechanisms using RNA-seq data.</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>pip install dSreg <br>
+                python setup.py install <br>
+                dSreg -h</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>dSreg -I test/inclusion.csv -T test/total.csv -S test/binding_sites.csv -d test/design.csv -o test/output <br>
+                dSreg -I test/inclusion.csv -T test/total.csv -S test/binding_sites.csv -d test/design.csv -o test/output -K 200</p>
+
+            <h3 style="margin-bottom: 20px;" id="IsoformSwitchAnalyzeR"><b>IsoformSwitchAnalyzeR</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://doi.org/doi:10.18129/B9.bioc.IsoformSwitchAnalyzeR" >Identify, Annotate and Visualize Isoform Switches with Functional Consequences from both short- and long-read RNA-seq data</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://bioconductor.org/packages/release/bioc/src/contrib/IsoformSwitchAnalyzeR_2.2.0.tar.gz" >IsoformSwitchAnalyzeR_2.2.0.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>if (!require("BiocManager", quietly = TRUE)) <br>
+                install.packages("BiocManager") <br>
+                <br>
+            BiocManager::install("IsoformSwitchAnalyzeR")</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p></p>
+
+            <h3 style="margin-bottom: 20px;" id="Yanagi"><b>Yanagi</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2947-6" >Yanagi: Fast and interpretable segment-based alternative splicing and gene expression analysis</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>git clone https://github.com/HCBravoLab/yanagi.git <br>
+                cd yanagi</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://github.com/HCBravoLab/yanagi?tab=readme-ov-file">https://github.com/HCBravoLab/yanagi?tab=readme-ov-file</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="Astrap"><b>Astrap</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/30535139/" >AStrap: identification of alternative splicing from transcript sequences without a reference genome</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="http://cran.r-project.org/src/base-prerelease" >R version 4.3.3 (Angel Food Cake) prerelease versions</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>install.packages("devtools") <br>
+                library(devtools) <br>
+                install_github("BMILAB/AStrap") <br>
+                library(AStrap)</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://github.com/BMILAB/AStrap/tree/master/doc"> User Guide</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="DSC"><b>DSC</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://www.mdpi.com/2073-4425/10/8/587" >Deep Splicing Code: Classifying Alternative Splicing Events Using Deep Learning</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://home.jbnu.ac.kr/NSCL/dsc.htm">https://home.jbnu.ac.kr/NSCL/dsc.htm</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="CATANA"><b>CATANA</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/30202999/" >CATANA: a tool for generating comprehensive annotations of alternative transcript events</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="https://www.sciencedirect.com/journal/catena">https://www.sciencedirect.com/journal/catena</a></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>
+                perl CATANA.pl [-i] <Input GTF/GFF3 file name>
+                               [-o] <Folder name for output, optional>
+                               [-f] <format of gene annotation, optional>
+                               [-l] <Log file name, optional>
+                               [-d] <Debug message, optional></pre>
+
+            <h3 style="margin-bottom: 20px;" id="BenchmarkingDiffExprAndSpl"><b>BenchmarkingDiffExprAndSpl</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bib/article/20/2/471/4524048?login=false" >A benchmarking of workflows for detecting differential splicing and differential expression at isoform level in human RNA-seq studies</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://github.com/gamerino/benchmarkingDiffExprAndSpl?tab=readme-ov-file">https://github.com/gamerino/benchmarkingDiffExprAndSpl?tab=readme-ov-file</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="Matt"><b>Matt</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/35/1/130/5053311" >Matt: Unix tools for alternative splicing analysis</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="https://gitlab.com/aghr/matt.git">Matt</a></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://gitlab.com/aghr/matt#installation">https://gitlab.com/aghr/matt#installation</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="htseq"><b>Htseq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/38/10/2943/6551247?login=false" >Analysing high-throughput sequencing data in Python with HTSeq 2.0</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>pip install HTSeq <br>
+                pip install 'HTSeq==2.0.0' <br>
+                pip install matplotlib <br>
+                pip install Cython <br>
+                pip install pysam <br>
+                pip install HTSeq</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p>./test.sh</p>
+
+            <h3 style="margin-bottom: 20px;" id="edgeR"><b>EdgeR</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://doi.org/doi:10.18129/B9.bioc.edgeR" >Empirical Analysis of Digital Gene Expression Data in R</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>if (!require("BiocManager", quietly = TRUE))
+                install.packages("BiocManager")
+            BiocManager::install("edgeR")</pre>
+
+            <h3 style="margin-bottom: 20px;" id="DESeq2"><b>DESeq2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://doi.org/doi:10.18129/B9.bioc.DESeq2" >Differential gene expression analysis based on the negative binomial distribution</a>
+            <b style="margin-left: 10px">Installation: </b>
+            <pre>if (!require("BiocManager", quietly = TRUE))
+                install.packages("BiocManager")
+            BiocManager::install("DESeq2")</pre>
+
+            <h3 style="margin-bottom: 20px;" id="Cufflinks"><b>Cufflinks</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/26519415/" >Analysis of RNA-Seq Data Using TopHat and Cufflinks</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p><a href="http://cole-trapnell-lab.github.io/cufflinks/install/">http://cole-trapnell-lab.github.io/cufflinks/install/</a></p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="http://cole-trapnell-lab.github.io/cufflinks/getting_started/">Cufflinks</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="PRADA"><b>PRADA</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/24695405/" >PRADA: pipeline for RNA sequencing data analysis</a>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://sourceforge.net/projects/prada/">PRADA</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="Ballgown"><b>Ballgown</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106" >Differential expression analysis for sequence count data</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>if (!requireNamespace("BiocManager", quietly=TaRUE)) <br>
+                install.packages("BiocManager") <br>
+            BiocManager::install("ballgown")</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+<pre>e_data.ctab: exon-level expression measurements. One row per exon. Columns are e_id (numeric exon id), chr, strand, start, end (genomic location of the exon), and the following expression measurements for each sample:
+rcount: reads overlapping the exon
+ucount: uniquely mapped reads overlapping the exon
+mrcount: multi-map-corrected number of reads overlapping the exon
+cov average per-base read coverage
+cov_sd: standard deviation of per-base read coverage
+mcov: multi-map-corrected average per-base read coverage
+mcov_sd: standard deviation of multi-map-corrected per-base coverage
+i_data.ctab: intron- (i.e., junction-) level expression measurements. One row per intron. Columns are i_id (numeric intron id), chr, strand, start, end (genomic location of the intron), and the following expression measurements for each sample:
+rcount: number of reads supporting the intron
+ucount: number of uniquely mapped reads supporting the intron
+mrcount: multi-map-corrected number of reads supporting the intron
+t_data.ctab: transcript-level expression measurements. One row per transcript. Columns are:
+t_id: numeric transcript id
+chr, strand, start, end: genomic location of the transcript
+t_name: Cufflinks-generated transcript id
+num_exons: number of exons comprising the transcript
+length: transcript length, including both exons and introns
+gene_id: gene the transcript belongs to
+gene_name: HUGO gene name for the transcript, if known
+cov: per-base coverage for the transcript (available for each sample)
+FPKM: Cufflinks-estimated FPKM for the transcript (available for each sample)
+e2t.ctab: table with two columns, e_id and t_id, denoting which exons belong to which transcripts. These ids match the ids in the e_data and t_data tables.
+i2t.ctab: table with two columns, i_id and t_id, denoting which introns belong to which transcripts. These ids match the ids in the i_data and t_data tables.
+</pre>
+
+            <h3 style="margin-bottom: 20px;" id="Manual"><b>Manual</b></h3>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://pachterlab.github.io/kallisto/manual">https://pachterlab.github.io/kallisto/manual</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="Salmon"><b>Salmon</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://salmon.readthedocs.io/en/latest/salmon.html" >Salmon</a>
+            <br>
+            <b style="margin-left: 10px">Installation: </b>
+            <p>> cd salmon <br>
+                > mkdir build <br>
+                > cd build</p>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://combine-lab.github.io/salmon/">https://combine-lab.github.io/salmon/</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="VirusFinder_2"><b>VirusFinder 2</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/23717618/" >VirusFinder: software for efficient and accurate detection of viruses and their integration sites in host genomes through next generation sequencing data</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://bioinfo.uth.edu/VirusFinder/VirusFinder-2.0.tgz?csrt=10818036490859644070" >VirusFinder-2.0.tgz</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <p><a href="https://bioinfo.uth.edu/VirusFinder/">https://bioinfo.uth.edu/VirusFinder/</a></p>
+
+            <h3 style="margin-bottom: 20px;" id="VirusSeq"><b>VirusSeq</b></h3>
+            <b style="margin-left: 10px">Reference: </b>
+            <a href="https://academic.oup.com/bioinformatics/article/29/2/266/202055?login=false" >VirusSeq: software to identify viruses and their integration sites using next-generation sequencing of human cancer tissue</a>
+            <br>
+            <b style="margin-left: 10px">Download: </b>
+            <a href="https://odin.mdacc.tmc.edu/~xsu1/VirusSeq.tar.gz" >VirusSeq.tar.gz</a>
+            <br>
+            <b style="margin-left: 10px">Use Flow: </b>
+            <pre>VirusSeq takes FASTQ files (paired-end reads) as input. Please read User Guide for VirusSeq carefully before running VirusSeq. The detailed User Guide, related tools, reference genomes, annotation files, and shell scripts can be downloaded here. The PE FASTQ RNA-Seq files from a test sample to run VirusSeq for detection of viruses and their integration site can also be downloaded here.
+            </pre>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block switch %}
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png)"><b>Software usage commands</b><i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-3 bg-light">
+            <div class="sticky-top">
+                <ol class="flex-column">
+                    <li><a href="#Blast">Blast</a></li>
+                    <li><a href="#Diamond">Diamond</a></li>
+                    <li><a href="#MCScanX">MCScanX</a></li>
+                    <li><a href="#Colinearscan">Colinearscan</a></li>
+                    <li><a href="#WGDI">WGDI</a></li>
+                    <li><a href="#Paraat">Paraat</a></li>
+                    <li><a href="#Kaks calculator">kaks calculator</a></li>
+                    <li><a href="#Dupgen finder">Dupgen finder</a></li>
+                    <li><a href="#Hmmer">Hmmer</a></li>
+                    <li><a href="#pfam">Pfam</a></li>
+                    <li><a href="#meme">MEME</a></li>
+                    <li><a href="#cpgfinder">CpgFinder</a></li>
+                    <li><a href="#codonw">Codonw</a></li>
+                    <li><a href="#gsds">GSDS</a></li>
+                    <li><a href="#Docker">Docker</a></li>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="col-md-9">
+            <h4 style="margin-bottom: 20px;" id="Blast"><b>Blast</b></h4>
+            <pre>
+# Blast uses the following commands.
+
+# Makeblastdb:
+    makeblastdb -in db.fasta -dbtype prot -parse_seqids -out dbname(format database)
+# Parameter description:
+    -in: the sequence file to be formatted
+    -dbtype: database type, prot or nucl
+    -out: database name
+    -parse_seqids: parse sequence identifier (recommended to add)
+# Blastp:
+    blastp -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (protein sequence comparison protein database)
+# Blastn:
+    blastn -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (nucleic acid sequence comparison nucleic acid database)
+# Blatsx:
+    blastx -query seq.fasta -out seq.blast -db dbname -outfmt 6 -evalue 1e-5 -num_descriptions 10 -num_threads 8 (nucleic acid sequence comparison protein database)
+# Parameter Description:
+    -query: input file path and file name
+    -out: output file path and file name
+    -db: formatted database path and database name
+    -outfmt: output file format, there are 12 formats in total, 6 are tabular format corresponding to BLAST's m8 format
+    -evalue: set the e-value value of the output result
+    -num_descriptions: the number of output results in tabular format
+    -num_threads: number of threads
+    -max_target_seqs 5: output the result of up to 5 comparisons, if it is 1, it is the best match
+## Above is the comparison result of blast, there are 12 columns, which represent.
+    1, Query id: query sequence ID identification (blast comparison sequence)
+    2、Subject id: the ID of the target sequence on the comparison (library building sequence)
+    3、identity: the consistency percentage of sequence matching
+    4、alignment length: the length of the alignment area that matches the comparison
+    5、mismatches: the number of mismatches in the alignment area
+    6、gap openings: the number of gaps in the matching region
+    7, start: the starting position of the matching region on the query sequence (Query id)
+    8, end: the end point of the comparison region on the query id
+    9, start: the start of the comparison region in the target sequence (Subject id)
+    10, end: the end point of the comparison region in the target sequence (Subject id)
+    11, e-value: the expected value of the comparison result
+    12、bit score: the bit score value of the comparison result
+    In general, we look at columns 3, 11 and 12, the smaller the e-value, the more reliable.
+        </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Diamond"><b>Diamond</b></h4>
+            <pre>
+## Windows Command:
+# Build a database
+    diamond.exe makedb --in nr --db nr
+# Sequence alignment
+# Nucleic acid
+    diamond.exe blastx --db nr -q reads.fna -o dna_matches_fmt6.txt
+# Protein
+    diamond.exe blastp --db nr -q reads.faa -o protein_matches_fmt6.txt
+
+## linux command:
+# Build a database
+    diamond makedb --in nr --db nr
+## Sequence alignment
+# Nucleic acid
+    diamond blastx --db nr -q reads.fna -o dna_matches_fmt6.txt
+# Protein
+    diamond blastp --db nr -q reads.faa -o protein_matches_fmt6.txt
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="MCScanX"><b>MCScanX</b></h4>
+            <pre>
+## Before running MCScanX, we need to put the gff file, blast file into the same folder and the gff file is the gff of two species gff files merged. the other two files need to have the same name.
+    MCScanX se_so
+# Plotting covariance points
+    java dot_plotter -g se_so.gff -s se_so.collinearity -c dot.ctl -o dot.PNG
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Colinearscan"><b>Colinearscan</b></h4>
+            <pre>
+# Extracting gene pairs from BLAST results
+    cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs
+# Masking of highly repetitive loci
+    cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged
+# Estimate maximum gap length
+    max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged
+# Detect covariate fragments
+    block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged
+## For efficiency, the above process can also be written as a shell script with the following code.
+
+    #!/bin/sh
+    do_error()
+    {
+     echo "Error occured when running $1"
+     exit 1
+    }
+    ​
+    echo "Start to run the working example..."
+    echo
+    ​
+    echo "* STEP1 Extract pairs from BLAST results"
+    echo "  We should parse BLAST results and extract pairs of anchors (genes in this example) satisfying our rule (score >= 100)."
+    echo
+    echo "  > cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs"
+    echo
+    cat ath_chr2_indica_chr5.blast | get_pairs.pl --score 100 > ath_chr2_indica_chr5.pairs || do_error get_pairs.pl
+    echo
+    ​
+    echo "* STEP2 Mask highly repeated anchor"
+    echo "  Highly repeated anchors which are mostly generated by continuous single gene duplication events make those colinear segements vague to be detected. We mask them off using a very simple algorithm."
+    echo
+    echo "  > cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged"
+    echo
+    cat ath_chr2_indica_chr5.pairs | repeat_mask.pl -n 5 > ath_chr2_indica_chr5.purged || do_error repeat_mask.pl
+    echo
+    ​
+    echo "* STEP3 Estimate maximum gap length"
+    echo "  Use pair files with repeats masked to estimate mg values which will be used to detected colinear blocks."
+    echo
+    echo "  > max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged"
+    echo
+    max_gap.pl --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged || do_error max_gap.pl
+    echo
+    ​
+    echo "* SETP4 Detect blocks from pair file(s)"
+    echo "  Everything's ready do scan at last."
+    echo
+    echo "  > block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged"
+    echo
+    block_scan.pl --mg 321000 --mg 507000 --lenfile ath_chrs.lens --lenfile indica_chrs.lens --suffix purged || do_error block_scan.pl
+    echo
+    ​
+    echo "Now ath_chr2_indica_chr5.blocks contains predicted colinear blocks."
+            </pre>
+
+
+            <h4 style="margin-bottom: 20px;" id="WGDI"><b>WGDI</b></h4>
+            <pre>
+## More details on the steps or process of using WGDI can be found. <a href="https://wgdi.readthedocs.io/en/latest/Introduction.html">https://wgdi.readthedocs.io/en/latest/Introduction.html</a>
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Paraat"><b>Paraat</b></h4>
+            <pre>
+1. Download and Installation
+    # ParaAT2.0 download address is: <a href="https://ngdc.cncb.ac.cn/tools/paraat">https://ngdc.cncb.ac.cn/tools/paraat</a>
+    # "ParaAT.pl" is the running script, you can use it directly after downloading and unpacking. You can add the unpacked path to the environment variable or use the absolute path where the script is located to run it.
+# Dependency Tools Download
+    # 1. Protein comparison tools: such as clustalw2, mafft, muscle, etc.
+    # 2. Kaks_Calculator (<a href="https://ngdc.cncb.ac.cn/tools/kaks">https://ngdc.cncb.ac.cn/tools/kaks</a>)
+2. Run ParaAT
+    ParaAT.pl -h test.homologs -n test.cds -a test.pep -p proc -m muscle -f axt -g -k -o result_dir
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Kaks calculator"><b>Kaks calculator</b></h4>
+            <pre>
+## Installing KaKs_Calculator3
+# KaKs_Calculator3 only download address: <a href="https://ngdc.cncb.ac.cn/biocode/tools/BT000001">https://ngdc.cncb.ac.cn/biocode/tools/BT000001</a>
+    unzip KaKs_Calculator3.0.zip
+# Compile KaKs
+    cd KaKs_Calculator3.0 && make
+# Main programs: KaKs, KnKs, AXTConvertor
+# Unzip and add environment variables
+Install ParaAT, the installation method can be seen in <a href="#Paraat"><b>Hear</b>.</a>
+# Prepare input files
+    test.cds # DNA sequence of each gene
+    test.pep #Protein sequences for each gene
+    The proc file contains a number indicating the number of CPU calls
+
+# Start analysis
+    ParaAT.pl -h test.homolog -n test.cds -a test.pep -p proc -m mafft -f axt -g -k -o result_dir
+# ParaAT.pl parameters explained.
+     -h, homologous gene name file
+     -n, file of specified nucleic acid sequences
+     -a, specified protein sequence file
+     -p, specifies the multithreaded file numbers
+     -m, specifies the comparison tool (clustalw2 | t_coffee | mafft | muscle), multiple choice
+     -g, remove codons with gaps
+     -k, use KaKs_Calculator to calculate kaks values
+     -o, output the directory of the result
+     -f, the format of the output comparison file
+     *** The -f parameter can also be used to get the format needed by other software to analyze ka/ks
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Dupgen finder"><b>Dupgen finder</b></h4>
+            <pre>
+# geneDuplication analysis
+# The geneDuplication analysis, using DupGen-finder, can classify all genes into 5 categories according to their replication types
+    <b>WGD:</b> whole genome duplication
+    <b>TD:</b> Tandem duplication (two duplicated genes next to each other)
+    <b>PD:</b> proximal duplication (duplicated genes within 10 genes apart)
+    <b>TRD:</b> Transpositional duplication (duplicated genes consisting of an ancestor and a new locus)
+    <b>DSD:</b> scattered duplication (duplicated genes that are not adjacent nor coterminous)
+    SL: single copy
+# require input file
+
+# analysis of mode 1 (comparison with itself) and mode 2 (comparison with other species)
+# analyze mode 1
+    cat Spd.bed |sed 's/^/Spd-/g'|awk '{print $1"\t"$4"\t"$2"\t"$3}' >Spd.gff
+    cat Ath.bed |sed 's/^/Ath-Chr/g'|awk '{print $1"\t"$4"\t"$2"\t"$3}' >Ath.gff
+    sed -i 's/Chr0/Chr/g' Spd.gff
+
+    cat Spd.gff Ath.gff >Spd_Ath.gff
+
+    makeblastdb -in Spd.pep -dbtype prot -title Spd -parse_seqids -out Spd
+    blastp -query Spd.pep -db Spd -evalue 1e-10 -max_target_seqs 5 -outfmt 6 -out Spd.blast
+# Create a reference database
+    makeblastdb -in Ath.pep -dbtype prot -title Ath -parse_seqids -out Ath
+# Align protein query sequences against the reference database
+    blastp -query Ath.pep -db Ath -evalue 1e-10 -max_target_seqs 5 -outfmt 6 -out Ath.blast
+    mkdir Spd_Ath
+    cat Spd.blast Ath.blast >Spd_Ath.blast
+
+# -t is the experimental group -c is the exogenous control group
+# General mode
+    DupGen_finder.pl -i $PWD -t Spd -c Ath -o ${PWD}/Spd_Ath/results1
+# Strict mode
+    DupGen_finder-unique.pl -i $PWD -t Spd -c Ath -o ${PWD}/Spd_Ath/results2
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Hmmer"><b>Hmmer</b></h4>
+            <pre>
+## HMMER is a very powerful software package for biological sequence analysis work based on Hidden Markov Model, its general use is to identify homologous protein or nucleotide sequences and perform sequence comparison. Compared to sequence alignment and database search tools such as BLAST and FASTA, HMMER is more accurate.
+
+1. Usage
+HMMER can be accessed online or as a command line tool for local download and installation.
+    Online address. <a href="http://www.ebi.ac.uk/Tools/hmmer/"><b>http://www.ebi.ac.uk/Tools/hmmer/</b></a>
+    Local download address. <a href="http://hmmer.org/"><b>http://hmmer.org/</b></a>
+
+# hmmbuild [-options]
+
+# The input file msafile is the file after multiple sequence alignment and supports many biological data formats such as: CLUSTALW, SELEX, GCG MSF.
+# hmmbuild can automatically determine the type of input sequences (nucleic acid or protein), and the user can specify the type of input sequences as follows
+    --amino: protein comparison sequence
+    --dna: DNA alignment sequence
+    --rna: RNA alignment sequence
+# The output file hmmfile_out is generally named with .hmm suffix, the result of the HMM database, the user does not get much readable information.
+
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="pfam"><b>Pfam</b></h4>
+            <pre>
+I: <b>Download and install</b>
+<a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz"><b> Pfam-A.hmm.gz </b></a>
+<a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz"><b> Pfam-A.hmm.dat.gz </b></a>
+<a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.seed.gz"><b> Pfam-A.seed.gz </b></a>
+<a href="https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.full.gz"><b> Pfam-A.full.gz </b></a>
+
+II: <b>Formatting the Pfam database via hmmerspress</b>
+    hmmpress Pfam-A.hmm
+
+III: <b>Run the program</b>
+    nohup pfam_scan.pl -fasta /your_path/masp.protein.fasta -dir /your_path/PfamScan/Pfam_data -outfile masp_pfam -cpu 16 &
+
+# The results of the analysis of the structural domain part of the pfamscan protein are described below:
+    (1) seq_id: transcript ID+[0,1,2], transcripts that do not exist in the list are noncoding
+    (2) hmm start: the starting position of the domain compared to the structure
+    (3) hmm end: compare to the end position of the structural domain
+    (4) hmm acc: ID of the pfam domain
+    (5) hmm name: the name of the pfam structured domain
+    (6) hmm length: the length of the pfam structured domain
+    (7) bit score: the score of the pair
+    (8) E-value: the E-value of the comparison, the pfam structure domain filtering condition is: Evalue < 0.001
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="meme"><b>MEME</b></h4>
+            <pre>
+I: <b>MEME Installation</b>
+# The latest version of MEME relies on perl version 5.10.1 and above, so perl needs to be installed. Download perl and install it.
+
+# <b>Install follow:</b>
+    tar zxvf perl.tar.gz
+    cd /yourpath/perl
+    . /Configure -des -Dprefix= /yourpath/perl_Dusethreads
+    make ##take a lot of time
+    make test
+    make install
+    vi .bash_profile #Write your installation path
+
+II: <b>Download and install</b>
+    tar zxf meme.tar.gz
+    cd meme_4.11.3
+    ./configure --prefix=/yourpath/meme --with-url=http://meme-suite.org --enable-build-libxml2 --enable-build-libxslt
+    make
+    make test
+    make install
+
+III: <b>MEME Official download page.</b>
+    <a href="https://meme-suite.org/meme/doc/download.html">Download Releases - MEME Suite (meme-suite.org)</a>
+
+IV: <b>MEME use</b>
+    The following is referenced in the MEME Manual (<a href="http://meme-suite.org/doc/overview.html?man_type=web">http://meme-suite.org/doc/overview.html?man_type=web</a>)
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="cpgfinder"><b>CpgFinder</b></h4>
+            <pre>
+The program is intended to search for CpG islands in sequences.
+
+Program options:
+Min length of island to find - searching CpG islands with a length (bp) not less than specified in the field.
+Min percent G and C - searching CpG islands with a composition not less than specified in the field.
+Min CpG number - the minimal number of CpG dinucleotides in the island.
+Min gc_ratio=P(CpG)/(expected)P(CpG) - the minimal ratio of the observed to expected frequency of CpG dinucleotide in the island.
+Extend island if its lengths less then required - extending the CpG island, if its length is shorter than required.
+            </pre>
+
+            <p>Output example:</p>
+            <pre>
+Search parameters:  len: 200   %GC: 50.0   CpG number: 0   P(CpG)/exp: 0.600   extend island: no   A: 21   B: -2
+Locus name:  9003..16734 note="CpG_island (%GC=65.4, o/e=0.70, #CpGs=577)"
+Locus reference:   expected P(CpG): 0.086   length: 25020
+    20.1%(a)  29.9%(c)  28.6%(g)  21.4%(t)   0.0%(other)
+
+				FOUND 4 ISLANDS
+  #     start      end   chain   CpG    %CG    CG/GC    P(CpG)/exp     P(CpG)    len
+  1      9192    10496     +     161   73.0    0.847   0.927( 1.44)    0.123    1305
+  2     11147    11939     +      87   69.2    0.821   0.917( 1.28)    0.110     793
+  3     15957    16374     +      57   79.4    0.781   0.871( 1.60)    0.137     418
+  4     14689    15091     +      49   74.2    0.817   0.887( 1.42)    0.122     403
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="codonw"><b>Codonw</b></h4>
+            <pre>
+# Download and Installation
+# Linux version.
+# Install directly with conda, just type the command.
+    conda install codonw
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="gsds"><b>GSDS</b></h4>
+            <pre>
+I. <b>Download the docker image of GSDS</b>
+> docker search omicsclass   #Search Mirror
+    NAME                           DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+    omicsclass/gene-family         gene-family analysis docker image               4
+    omicsclass/rnaseq              RNA-seq analysis docker image build by omics…   3
+    omicsclass/reseq               whole genome resequence analysis                1
+    omicsclass/blast-plus          blast+ v2.9.0                                   0
+    omicsclass/biocontainer-base   Biocontainers base Image centos7                0
+    omicsclass/isoseq3             isoseq3 v3.3.0 build by omicsclass              0
+    omicsclass/bwa                 BWA v0.7.17 build by omicsclass                 0
+    omicsclass/samtools            samtools v1.10 build by omicsclass              0
+    omicsclass/blastall            legacy blastall v2.2.26                         0
+    omicsclass/sratoolkit          SRAtoolkit v2.10.3 and aspera v3.9.9.177872     0
+    omicsclass/ampliseq-q2         Amplicon sequencing qiime2 v2020.2 image        0
+    omicsclass/bsaseq              NGS Bulk Segregant Analysis image               0
+    omicsclass/ampliseq-q1         Amplicon sequencing qiime1 v1.9.1 image         0
+    omicsclass/gwas                gwas analysis images                            0
+    omicsclass/gsds-v2             GSDS 2.0 – Gene Structure Display Server        0
+> docker pull omicsclass/gsds-v2  # Download Mirror
+
+II: <b>Download the GSDS website source code download: <a href="https://www.omicsclass.com/attach/download/attachments-2020-07-Za0lQ8c55f1e50086dc5a.zip"><b>gsds_v2.zip</b></a> , then unzip the file to a directory:.</b>
+
+III: <b>Start the docker image.</b>
+> docker images    # View Backend Mirror
+    REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+    omicsclass/gsds-v2       latest              d77e054c3744        8 hours ago         2.54GB
+    mattrayner/lamp          latest              05750cfa54d5        5 days ago          915MB
+    omicsclass/bsaseq        latest              d5ed7a70bfc8        13 days ago         9.77GB
+    omicsclass/reseq         v1.1                da154448a90f        4 weeks ago         8.83GB
+    omicsclass/gene-family   v1.0                2d1d640726dd        3 months ago        4.53GB
+> docker run -d -p 80:80 -v D:\gsds_v2\:/app omicsclass/gsds-v2:latest    # start the docker web server in the background, note the directory mapping -v parameter, unzip the directory D:\gsds_v2
+
+IV: <b>open the site using the local GSDS site:</b>
+    Website local address: 127.0.0.1 , if the site does not open, you can wait a little, the background services take time to start.
+            </pre>
+
+            <h4 style="margin-bottom: 20px;" id="Docker"><b>Docker</b></h4>
+            <pre>
+<b>Develop faster. Run anywhere.</b>
+The most-loved Tool in Stack Overflow’s 2022 Developer Survey.
+
+<a href="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module"><b>Download Docker Desktop</b></a>
+<a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module"><b>Download Docker Mac - IntelChip</b></a>
+<a href="https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module"><b>Download Docker Mac - AppleChip</b></a>
+<a href="https://desktop.docker.com/linux/main/amd64/docker-desktop-4.16.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64"><b>Download Docker Linux - Ubuntu</b></a>
+<a href="https://desktop.docker.com/linux/main/amd64/docker-desktop-4.16.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64"><b>Download Docker Linux - Debian</b></a>
+<a href="https://desktop.docker.com/linux/main/amd64/docker-desktop-4.16.0-x86_64.rpm?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64"><b>Download Docker Linux - Fedora</b></a>
+
+<b># Docker makes development efficient and predictable</b>
+# Docker takes away repetitive, mundane configuration tasks and is used throughout the development lifecycle for fast, easy and portable application development – desktop and cloud. Docker’s comprehensive end to end platform includes UIs, CLIs, APIs and security that are engineered to work together across the entire application delivery lifecycle.
+
+<b>Build</b>
+1. Get a head start on your coding by leveraging Docker images to efficiently develop your own unique applications on Windows and Mac.  Create your multi-container application using Docker Compose.
+2. Integrate with your favorite tools throughout your development pipeline – Docker works with all development tools you use including VS Code, CircleCI and GitHub.
+3. Package applications as portable container images to run in any environment consistently from on-premises Kubernetes to AWS ECS, Azure ACI, Google GKE and more.
+
+<b>Share</b>
+1. Leverage Docker Trusted Content, including Docker Official Images and images from Docker Verified Publishers from the Docker Hub repository.
+2. Innovate by collaborating with team members and other developers and by easily publishing images to Docker Hub.
+3. Personalize developer access to images with roles based access control and get insights into activity history with Docker Hub Audit Logs.
+
+<b>Run</b>
+1. Deliver multiple applications hassle free and have them run the same way on all your environments including design, testing, staging and production – desktop or cloud-native.
+2. Deploy your applications in separate containers independently and in different languages. Reduce the risk of conflict between languages, libraries or frameworks.
+3. Speed development with the simplicity of Docker Compose CLI and with one command, launch your applications locally and on the cloud with AWS ECS and Azure ACI.
+            </pre>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block switch %}
+{% endblock %}

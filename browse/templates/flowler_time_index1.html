@@ -1,0 +1,177 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Flowler time genes</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;We selected <em>Arabidopsis thaliana</em> as the model organism and identified its Flowler time genes. By best matching, we identified the Flowler time genes of 25 other Fabaceae. They were identified using pfam and stored in the platform.
+            <br>&emsp;&emsp; Flowering in higher plants can be divided into two stages: the transition from stem tip meristem to floral meristem and the formation of floral organs. The former is mainly controlled by flowering genes, while the latter stage is mainly caused by the regulation of plant homologous (Heterotypic) cassette genes. We obtained the flowering genes of Arabidopsis from the <a href="http://www.phytosystems.ulg.ac.be/florid/">Flowering Interactive Database</a>, and our database counted <b>7,749</b> flowering genes from 25 legume earlings. flowering genes for easy browsing and downloading by researchers.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Abrus precatorius</i></p>
+                <a href="{% url "flowler_time" "Apr" %}"><img src="../../static/image/Apr.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 262 </p>
+                <a href="{% url "flowler_time" "Apr" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Apr.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Apr.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Aeschynomene evenia</i></p>
+                <a href="{% url "flowler_time" "Aev" %}"><img src="../../static/image/Aev.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 248 </p>
+                <a href="{% url "flowler_time" "Aev" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aev.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aev.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Amphicarpaea edgeworthii</i></p>
+                <a href="{% url "flowler_time" "Aed" %}"><img src="../../static/image/Aed.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 231 </p>
+                <a href="{% url "flowler_time" "Aed" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aed.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aed.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis duranensis</i></p>
+                <a href="{% url "flowler_time" "Adu" %}"><img src="../../static/image/Adu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 248 </p>
+                <a href="{% url "flowler_time" "Adu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Adu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Adu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis hypogaea</i></p>
+                <a href="{% url "flowler_time" "Ahy" %}"><img src="../../static/image/Ahy.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 444 </p>
+                <a href="{% url "flowler_time" "Ahy" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Ahy.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Ahy.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis ipaensis</i></p>
+                <a href="{% url "flowler_time" "Aip" %}"><img src="../../static/image/Aip.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 254 </p>
+                <a href="{% url "flowler_time" "Aip" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aip.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Aip.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis monticola</i></p>
+                <a href="{% url "flowler_time" "Amo" %}"><img src="../../static/image/Amo.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 328 </p>
+                <a href="{% url "flowler_time" "Amo" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Amo.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Amo.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Bauhinia variegata</i></p>
+                <a href="{% url "flowler_time" "Bva" %}"><img src="../../static/image/Bva.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 331 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Bva.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Bva.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Cajanus cajan</i></p>
+                <a href="{% url "flowler_time" "Cca" %}"><img src="../../static/image/Cca.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 271 </p>
+                <a href="{% url "flowler_time" "Cca" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Cca.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/floweringtimegenes_Cca.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "flowler_time_index_url1" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "flowler_time_index_url2" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "flowler_time_index_url3" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "flowler_time_index_url2" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

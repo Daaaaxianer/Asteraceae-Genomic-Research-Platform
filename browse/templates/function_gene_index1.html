@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Introduce<i></i>
+
+    </h3>
+
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Abrus precatorius</i></p>
+                <a href="{% url "Anthocyaningenes_Adu_url" %}"><img src="../../static/image/Apr.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="{% url "Anthocyaningenes_Adu_url"  %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Aeschynomene evenia</i></p>
+                <a href="{% url "Aev_url" %}"><img src="../../static/image/Aev.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Amphicarpaea edgeworthii</i></p>
+                <a href="{% url "Aed_url" %}"><img src="../../static/image/Aed.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis duranensis</i></p>
+                <a href="{% url "Adu_url" %}"><img src="../../static/image/Adu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis hypogaea</i></p>
+                <a href="{% url "Ahy_url" %}"><img src="../../static/image/Ahy.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis ipaensis</i></p>
+                <a href="{% url "Aip_url" %}"><img src="../../static/image/Aip.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Arachis monticola</i></p>
+                <a href="{% url "Amo_url" %}"><img src="../../static/image/Amo.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Bauhinia variegata</i></p>
+                <a href="{% url "Bva_url" %}"><img src="../../static/image/Bva.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Cajanus cajan</i></p>
+                <a href="{% url "Cca_url" %}"><img src="../../static/image/Cca.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 25 </p>
+                <a href="#" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" style="color:#b7ab25; font-size: 20px"><b>&nbsp Pro</b></a>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "function_gene_index_url1" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "function_gene_index_url2" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "function_gene_index_url3" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "function_gene_index_url2" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

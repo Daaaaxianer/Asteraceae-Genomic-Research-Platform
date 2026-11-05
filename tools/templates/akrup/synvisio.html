@@ -1,0 +1,184 @@
+{% extends 'tools_index.html' %}
+
+
+
+{% block body_index %}
+    <div class="row">
+        <div class="col-lg-4">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Karyotype<i></i>
+            </h3>
+
+            <ul class="list-group mb-3">
+                <a href="{% url 'f_blast_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Blast</h6>
+                            <small>Sequence alignment between arbitrary species</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'colinearscan_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">ColinearScan</h6>
+                            <small>Syntenic matching tool</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'zu_blast_dotplot_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Blastp dotplot</h6>
+                            <small>Plotting blastp dotplot diagrams</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'zu_block_dotplot_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Block dotplot</h6>
+                            <small>Drawing block dotplot function</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'zu_correspondence_mc_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Correspondence_mc</h6>
+                            <small>Inter- and intra-genomic comparisons</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'karyotype_url' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Fabaceae karyotype</h6>
+                            <small>Ancestral genome of Fabaceae</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'sequenceserver_url' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Blast visualization</h6>
+                            <small>Matching visualization</small>
+                        </div>
+                    </li>
+                </a>
+
+                <a href="{% url 'synvisio_url_html' %}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div class="text-success">
+                                <h6 class="my-0">Syntenic visualization</h6>
+                            <small>Syntenic matching tool</small>
+                        </div>
+                    </li>
+                </a>
+            </ul>
+        </div>
+
+
+        <form action="synvisio_run" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="state" class="form-label">species database</label>
+                    <select class="form-control" id="state" name="sp_data_1" required>
+                        <option value="Aev">Aeschynomene evenia</option>
+                        <option value="Adu">Arachis duranensis</option>
+                        <option value="Ahy">Arachis hypogaea</option>
+                        <option value="Aip">Arachis ipaensis</option>
+                        <option value="Amo">Arachis monticola</option>
+                        <option value="Aed">Amphicarpaea edgeworthii</option>
+                        <option value="Apr">Abrus precatorius</option>
+                        <option value="Bva">Bauhinia variegata</option>
+                        <option value="Car">Cicer arietinum</option>
+                        <option value="Cca">Cajanus cajan</option>
+                        <option value="Dod">Dalbergia odorifera</option>
+                        <option value="Gma">Glycine max</option>
+                        <option value="Gso">Glycine soja</option>
+                        <option value="Lal">Lupinus albus</option>
+                        <option value="Lan">Lupinus angustifolius</option>
+                        <option value="Lja">Lotus japonicus</option>
+                        <option value="Mal">Melilotus albus</option>
+                        <option value="Mtr">Medicago truncatula</option>
+                        <option value="Psa">Pisum sativum</option>
+                        <option value="Pvu">Phaseolus vulgaris</option>
+                        <option value="Ssu">Spatholobus suberectus</option>
+                        <option value="Sto">Senna tora</option>
+                        <option value="Tsu">Trifolium subterranum</option>
+                        <option value="Tpr">Trifolium pratense</option>
+                        <option value="Vra">Vigna radiata</option>
+                        <option value="Vvi">Vitis vinifera</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="state" class="form-label">species database</label>
+                    <select class="form-control" id="state" name="sp_data_2" required>
+                        <option value="Aev">Aeschynomene evenia</option>
+                        <option value="Adu">Arachis duranensis</option>
+                        <option value="Ahy">Arachis hypogaea</option>
+                        <option value="Aip">Arachis ipaensis</option>
+                        <option value="Amo">Arachis monticola</option>
+                        <option value="Aed">Amphicarpaea edgeworthii</option>
+                        <option value="Apr">Abrus precatorius</option>
+                        <option value="Bva">Bauhinia variegata</option>
+                        <option value="Car">Cicer arietinum</option>
+                        <option value="Cca">Cajanus cajan</option>
+                        <option value="Dod">Dalbergia odorifera</option>
+                        <option value="Gma">Glycine max</option>
+                        <option value="Gso">Glycine soja</option>
+                        <option value="Lal">Lupinus albus</option>
+                        <option value="Lan">Lupinus angustifolius</option>
+                        <option value="Lja">Lotus japonicus</option>
+                        <option value="Mal">Melilotus albus</option>
+                        <option value="Mtr">Medicago truncatula</option>
+                        <option value="Psa">Pisum sativum</option>
+                        <option value="Pvu">Phaseolus vulgaris</option>
+                        <option value="Ssu">Spatholobus suberectus</option>
+                        <option value="Sto">Senna tora</option>
+                        <option value="Tsu">Trifolium subterranum</option>
+                        <option value="Tpr">Trifolium pratense</option>
+                        <option value="Vra">Vigna radiata</option>
+                        <option value="Vvi">Vitis vinifera</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+                    <input class="w-100 btn btn-primary btn-lg" type="submit" value="submit" onclick="go()">
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+            </div>
+        </form>
+
+
+    </div>
+
+
+{#    <iframe src="http://47.92.161.27:8523/#/dashboard/bn" style="height: 1400px;width: 100%"></iframe>#}
+
+{% endblock %}

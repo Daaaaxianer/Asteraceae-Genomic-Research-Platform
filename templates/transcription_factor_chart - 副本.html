@@ -1,0 +1,305 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Transcription factor gene family</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 1400px">
+
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+        var option;
+        option = {
+          title: {
+            text: ''
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          legend: {},
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+          },
+          yAxis: {
+            type: 'category',
+            data: ["AP2","ARF","ARR-B","B3","BBR-BPC","BES1","bHLH","bZIP","C2H2","C3H","CAMTA","CO-like","CPP","DBB","Dof","E2F/DP","EIL","ERF","FAR1","G2-like","GATA","GeBP","GRAS","GRF","HB-other","HB-PHD","HD-ZIP","HRT-like","HSF","LBD","LFY","LSD","MIKC_MADS","M-type_MADS","MYB","MYB_related","NAC","NF-X1","NF-YA","NF-YB","NF-YC","Nin-like","NZZ/SPL","RAV","S1Fa-like","SAP","SBP","SRS","STAT","TALE","TCP","Trihelix","VOZ","Whirly","WOX","WRKY","YABBY","ZF-HD"]
+          },
+          series: [
+            {
+              name: '',
+              type: 'bar',
+              label: {
+              show: true,
+              color: 'white'
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [648,744,385,1240,136,202,4439,2036,3006,1180,203,317,194,225,1023,205,189,3712,3142,1302,798,176,1420,251,257,68,1306,26,633,1353,44,118,1046,1080,3965,2038,2292,64,246,506,355,351,20,80,59,25,579,268,23,729,710,1014,69,82,436,2330,233,478]
+            }
+          ]
+        };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+        window.addEventListener('resize', myChart.resize);
+
+
+        option && myChart.setOption(option);
+        myChart.on('click', function (params) {
+            var name = params.name;
+            // document.write(name);
+            // window.location.href="../../static/data/dotplot/tree_and_mcscan.png";
+            // window.location.href="../../static/data/hhh.fasta";
+            if (name === "AP2") {
+                window.location.href="{% url "TF_genes" "AP2" %}";
+            }
+            if (name === "ARF") {
+                window.location.href="{% url "TF_genes" "ARF" %}";
+            }
+            if (name === "ARR-B") {
+                window.location.href="{% url "TF_genes" "ARR-B" %}";
+            }
+            if (name === "B3") {
+                window.location.href="{% url "TF_genes" "B3" %}";
+            }
+            if (name === "BBR-BPC") {
+                window.location.href="{% url "TF_genes" "BBR-BPC" %}";
+            }
+            if (name === "BES1") {
+                window.location.href="{% url "TF_genes" "BES1" %}";
+            }
+            if (name === "bHLH") {
+                window.location.href="{% url "TF_genes" "bHLH" %}";
+            }
+            if (name === "bZIP") {
+                window.location.href="{% url "TF_genes" "bZIP" %}";
+            }
+            if (name === "C2H2") {
+                window.location.href="{% url "TF_genes" "C2H2" %}";
+            }
+            if (name === "C3H") {
+                window.location.href="{% url "TF_genes" "C3H" %}";
+            }
+            if (name === "CAMTA") {
+                window.location.href="{% url "TF_genes" "CAMTA" %}";
+            }
+            if (name === "BES1") {
+                window.location.href="{% url "TF_genes" "BES1" %}";
+            }
+            if (name === "bHLH") {
+                window.location.href="{% url "TF_genes" "bHLH" %}";
+            }
+            if (name === "bZIP") {
+                window.location.href="{% url "TF_genes" "bZIP" %}";
+            }
+            if (name === "C2H2") {
+                window.location.href="{% url "TF_genes" "C2H2" %}";
+            }
+            if (name === "C3H") {
+                window.location.href="{% url "TF_genes" "C3H" %}";
+            }
+            if (name === "CAMTA") {
+                window.location.href="{% url "TF_genes" "CAMTA" %}";
+            }
+            if (name === "CO-like") {
+                window.location.href="{% url "TF_genes" "CO-like" %}";
+            }
+            if (name === "CPP") {
+                window.location.href="{% url "TF_genes" "CPP" %}";
+            }
+            if (name === "DBB") {
+                window.location.href="{% url "TF_genes" "DBB" %}";
+            }
+            if (name === "Dof") {
+                window.location.href="{% url "TF_genes" "Dof" %}";
+            }
+            if (name === "E2F/DP") {
+                window.location.href="{% url "TF_genes" "E2F_DP" %}";
+            }
+            if (name === "EIL") {
+                window.location.href="{% url "TF_genes" "EIL" %}";
+            }
+            if (name === "ERF") {
+                window.location.href="{% url "TF_genes" "ERF" %}";
+            }
+            if (name === "FAR1") {
+                window.location.href="{% url "TF_genes" "FAR1" %}";
+            }
+            if (name === "G2-like") {
+                window.location.href="{% url "TF_genes" "G2-like" %}";
+            }
+            if (name === "GATA") {
+                window.location.href="{% url "TF_genes" "GATA" %}";
+            }
+            if (name === "GeBP") {
+                window.location.href="{% url "TF_genes" "GeBP" %}";
+            }
+            if (name === "GRAS") {
+                window.location.href="{% url "TF_genes" "GRAS" %}";
+            }
+            if (name === "BES1") {
+                window.location.href="{% url "TF_genes" "BES1" %}";
+            }
+            if (name === "bHLH") {
+                window.location.href="{% url "TF_genes" "bHLH" %}";
+            }
+            if (name === "bZIP") {
+                window.location.href="{% url "TF_genes" "bZIP" %}";
+            }
+            if (name === "C2H2") {
+                window.location.href="{% url "TF_genes" "C2H2" %}";
+            }
+            if (name === "C3H") {
+                window.location.href="{% url "TF_genes" "C3H" %}";
+            }
+            if (name === "CAMTA") {
+                window.location.href="{% url "TF_genes" "CAMTA" %}";
+            }
+            if (name === "BES1") {
+                window.location.href="{% url "TF_genes" "BES1" %}";
+            }
+            if (name === "bHLH") {
+                window.location.href="{% url "TF_genes" "bHLH" %}";
+            }
+            if (name === "bZIP") {
+                window.location.href="{% url "TF_genes" "bZIP" %}";
+            }
+            if (name === "C2H2") {
+                window.location.href="{% url "TF_genes" "C2H2" %}";
+            }
+            if (name === "C3H") {
+                window.location.href="{% url "TF_genes" "C3H" %}";
+            }
+            if (name === "CAMTA") {
+                window.location.href="{% url "TF_genes" "CAMTA" %}";
+            }
+            if (name === "GRF") {
+                window.location.href="{% url "TF_genes" "GRF" %}";
+            }
+            if (name === "HB-other") {
+                window.location.href="{% url "TF_genes" "HB-other" %}";
+            }
+            if (name === "HB-PHD") {
+                window.location.href="{% url "TF_genes" "HB-PHD" %}";
+            }
+            if (name === "HD-ZIP") {
+                window.location.href="{% url "TF_genes" "HD-ZIP" %}";
+            }
+            if (name === "HRT-like") {
+                window.location.href="{% url "TF_genes" "HRT-like" %}";
+            }
+            if (name === "HSF") {
+                window.location.href="{% url "TF_genes" "HSF" %}";
+            }
+            if (name === "LBD") {
+                window.location.href="{% url "TF_genes" "LBD" %}";
+            }
+            if (name === "LFY") {
+                window.location.href="{% url "TF_genes" "LFY" %}";
+            }
+            if (name === "LSD") {
+                window.location.href="{% url "TF_genes" "LSD" %}";
+            }
+            if (name === "MIKC_MADS") {
+                window.location.href="{% url "TF_genes" "MIKC_MADS" %}";
+            }
+            if (name === "M-type_MADS") {
+                window.location.href="{% url "TF_genes" "M-type_MADS" %}";
+            }
+            if (name === "MYB") {
+                window.location.href="{% url "TF_genes" "MYB" %}";
+            }
+            if (name === "MYB_related") {
+                window.location.href="{% url "TF_genes" "MYB_related" %}";
+            }
+            if (name === "NAC") {
+                window.location.href="{% url "TF_genes" "NAC" %}";
+            }
+            if (name === "NF-X1") {
+                window.location.href="{% url "TF_genes" "NF-X1" %}";
+            }
+            if (name === "NF-YA") {
+                window.location.href="{% url "TF_genes" "NF-YA" %}";
+            }
+            if (name === "NF-YB") {
+                window.location.href="{% url "TF_genes" "NF-YB" %}";
+            }
+            if (name === "NF-YC") {
+                window.location.href="{% url "TF_genes" "NF-YC" %}";
+            }
+            if (name === "Nin-like") {
+                window.location.href="{% url "TF_genes" "Nin-like" %}";
+            }
+            if (name === "NZZ/SPL") {
+                window.location.href="{% url "TF_genes" "NZZ_SPL" %}";
+            }
+            if (name === "RAV") {
+                window.location.href="{% url "TF_genes" "RAV" %}";
+            }
+            if (name === "S1Fa-like") {
+                window.location.href="{% url "TF_genes" "S1Fa-like" %}";
+            }
+            if (name === "SAP") {
+                window.location.href="{% url "TF_genes" "SAP" %}";
+            }
+            if (name === "SBP") {
+                window.location.href="{% url "TF_genes" "SBP" %}";
+            }
+            if (name === "SRS") {
+                window.location.href="{% url "TF_genes" "SRS" %}";
+            }
+            if (name === "STAT") {
+                window.location.href="{% url "TF_genes" "STAT" %}";
+            }
+            if (name === "TALE") {
+                window.location.href="{% url "TF_genes" "TALE" %}";
+            }
+            if (name === "TCP") {
+                window.location.href="{% url "TF_genes" "TCP" %}";
+            }
+            if (name === "Trihelix") {
+                window.location.href="{% url "TF_genes" "Trihelix" %}";
+            }
+            if (name === "VOZ") {
+                window.location.href="{% url "TF_genes" "VOZ" %}";
+            }
+            if (name === "Whirly") {
+                window.location.href="{% url "TF_genes" "Whirly" %}";
+            }
+            if (name === "WOX") {
+                window.location.href="{% url "TF_genes" "WOX" %}";
+            }
+            if (name === "WRKY") {
+                window.location.href="{% url "TF_genes" "WRKY" %}";
+            }
+            if (name === "YABBY") {
+                window.location.href="{% url "TF_genes" "YABBY" %}";
+            }
+            if (name === "ZF-HD") {
+                window.location.href="{% url "TF_genes" "ZF-HD" %}";
+            }
+        });
+    </script>
+
+{% endblock %}

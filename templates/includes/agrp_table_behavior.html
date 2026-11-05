@@ -1,0 +1,623 @@
+<script>
+window.AGRPTable = window.AGRPTable || (function () {
+    var refreshCallbacks = {};
+
+    function hasJquery() {
+        return typeof window.jQuery !== 'undefined';
+    }
+
+    function hasDataTable() {
+        return hasJquery() && jQuery.fn && jQuery.fn.dataTable;
+    }
+
+    function getTable(tableId) {
+        return document.getElementById(tableId);
+    }
+
+    function getDataTable(table) {
+        if (!hasDataTable() || !table || !table.id || !jQuery.fn.dataTable.isDataTable('#' + table.id)) {
+            return null;
+        }
+        return jQuery('#' + table.id).DataTable();
+    }
+
+    function exportAllFilteredRows(table, exportUrl, excludedRows) {
+        var url = new URL(exportUrl, window.location.href);
+        var dt = getDataTable(table);
+        url.searchParams.set('export', 'tsv');
+
+        if (dt) {
+            var searchValue = dt.search();
+            var order = dt.order();
+            if (searchValue) {
+                url.searchParams.set('search[value]', searchValue);
+            }
+            if (order && order.length) {
+                url.searchParams.set('order[0][column]', order[0][0]);
+                url.searchParams.set('order[0][dir]', order[0][1]);
+            }
+        }
+
+        Object.keys(excludedRows || {}).forEach(function (rowId) {
+            url.searchParams.append('exclude_row_id', rowId);
+        });
+
+        window.location.href = window.AGRPDownloads ? window.AGRPDownloads.url(url.toString(), true) : url.toString();
+    }
+
+    function tableRows(table, modifier) {
+        var dt = getDataTable(table);
+        if (dt) {
+            return jQuery(dt.rows(modifier).nodes());
+        }
+        return jQuery(table).find('tbody tr');
+    }
+
+    function allFilteredCheckboxes(table) {
+        return tableRows(table, { search: 'applied' }).find('.row-checkbox');
+    }
+
+    function currentPageCheckboxes(table) {
+        var dt = getDataTable(table);
+        if (dt) {
+            return jQuery(dt.rows({ page: 'current' }).nodes()).find('.row-checkbox');
+        }
+        return jQuery(table).find('tbody .row-checkbox');
+    }
+
+    function headerCheckboxes(table) {
+        if (!table || !table.id || !hasJquery()) {
+            return jQuery();
+        }
+        return jQuery('#' + table.id + '_wrapper .js-select-current-page, #' + table.id + ' .js-select-current-page');
+    }
+
+    function replaceButton(id) {
+        var button = document.getElementById(id);
+        if (!button || !button.parentNode) {
+            return null;
+        }
+        var clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+        return clone;
+    }
+
+    function rowIdFromCheckbox(checkbox) {
+        if (!checkbox) {
+            return '';
+        }
+        if (checkbox.dataset && checkbox.dataset.rowId) {
+            return checkbox.dataset.rowId;
+        }
+
+        var row = checkbox.closest('tr');
+        if (!row) {
+            return '';
+        }
+        if (row.dataset && row.dataset.rowId) {
+            return row.dataset.rowId;
+        }
+
+        return Array.prototype.slice.call(row.cells, 1).map(function (cell) {
+            return cell.textContent.trim().replace(/\s+/g, ' ');
+        }).join('|');
+    }
+
+    function tableHeaders(table) {
+        var headers = [];
+        jQuery(table).find('thead th').each(function (index) {
+            var cell = jQuery(this);
+            var text = cell.text().trim();
+            if (index === 0 || cell.find('.js-select-current-page').length || /^select$/i.test(text) || /^image$/i.test(text)) {
+                return;
+            }
+            headers.push(text);
+        });
+        return headers;
+    }
+
+    function rowDataFromCheckbox(table, checkbox) {
+        var row = checkbox ? checkbox.closest('tr') : null;
+        var data = [];
+
+        if (!row) {
+            return data;
+        }
+
+        jQuery(row).find('td').each(function (index) {
+            var cell = jQuery(this);
+            var headerText = jQuery(table).find('thead th').eq(index).text().trim();
+            if (index === 0 || /^select$/i.test(headerText) || /^image$/i.test(headerText) || cell.find('img').length) {
+                return;
+            }
+            data.push(cell.text().trim().replace(/\s+/g, ' '));
+        });
+
+        return data;
+    }
+
+    function selectedRowsStateKey(selectAllStateKey) {
+        if (!selectAllStateKey) {
+            return null;
+        }
+        return selectAllStateKey.replace('agrp-select-all:', 'agrp-selected-rows:');
+    }
+
+    function excludedRowsStateKey(selectAllStateKey) {
+        if (!selectAllStateKey) {
+            return null;
+        }
+        return selectAllStateKey.replace('agrp-select-all:', 'agrp-excluded-rows:');
+    }
+
+    function readPersistedSelectedRows(stateKey) {
+        if (!stateKey || !window.sessionStorage) {
+            return {};
+        }
+
+        try {
+            var parsed = JSON.parse(window.sessionStorage.getItem(stateKey) || '{}');
+            return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+        } catch (error) {
+            return {};
+        }
+    }
+
+    function writePersistedSelectedRows(stateKey, selectedRows) {
+        if (!stateKey || !window.sessionStorage) {
+            return;
+        }
+
+        try {
+            if (!selectedRows || !Object.keys(selectedRows).length) {
+                window.sessionStorage.removeItem(stateKey);
+                return;
+            }
+            window.sessionStorage.setItem(stateKey, JSON.stringify(selectedRows));
+        } catch (error) {
+            if (window.console && console.warn) {
+                console.warn('Unable to persist selected rows.', error);
+            }
+        }
+    }
+
+    function prepareTableLayout(table, selectAllBtn, downloadBtn, config) {
+        if (!table || !table.id || !hasJquery() || !config || (!config.compactLayout && !config.actionsAboveControls)) {
+            return;
+        }
+
+        var wrapper = jQuery('#' + table.id + '_wrapper');
+        if (!wrapper.length) {
+            return;
+        }
+
+        if (config.compactLayout) {
+            wrapper.addClass('agrp-compact-table');
+            var paginateColumn = wrapper.find('.dataTables_paginate').closest('[class*="col-"]');
+            var bottomRow = wrapper.children('.row').last();
+            paginateColumn.addClass('agrp-pagination-column');
+            bottomRow.children('[class*="col-"]').not(paginateColumn).filter(function () {
+                var column = jQuery(this);
+                return column.find('.dataTables_info').length || (!column.text().trim() && !column.find('input, select, button, a, .dataTables_paginate').length);
+            }).addClass('agrp-empty-info-column');
+        }
+
+        if (!config.actionsAboveControls || wrapper.children('.agrp-table-actions-top').length) {
+            return;
+        }
+
+        var buttons = jQuery();
+        if (selectAllBtn) {
+            buttons = buttons.add(selectAllBtn);
+        }
+        if (downloadBtn) {
+            buttons = buttons.add(downloadBtn);
+        }
+        if (!buttons.length) {
+            return;
+        }
+
+        var sourceToolbar = buttons.first().closest('.manual-pagination-toolbar');
+        var actionBar = jQuery('<div class="agrp-table-actions-top"></div>');
+        buttons.appendTo(actionBar);
+        wrapper.prepend(actionBar);
+
+        if (sourceToolbar.length) {
+            sourceToolbar.addClass('is-actions-relocated');
+        }
+    }
+
+    function downloadRows(table, downloadBtn, dataRows) {
+        var rows = [];
+        var headers = tableHeaders(table);
+
+        if (headers.length) {
+            rows.push(headers.join('\t'));
+        }
+
+        dataRows.forEach(function (data) {
+            rows.push(data.join('\t'));
+        });
+
+        if (rows.length <= (headers.length ? 1 : 0)) {
+            alert('Please select at least one row.');
+            return;
+        }
+
+        var blob = new Blob([rows.join('\n')], { type: 'text/plain' });
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = (downloadBtn && downloadBtn.dataset.filename) || 'selected_rows.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
+    function downloadSelectedRows(table, downloadBtn, selectedRows) {
+        var dataRows = [];
+
+        if (selectedRows && Object.keys(selectedRows).length) {
+            Object.keys(selectedRows).forEach(function (rowId) {
+                if (Array.isArray(selectedRows[rowId])) {
+                    dataRows.push(selectedRows[rowId]);
+                }
+            });
+            downloadRows(table, downloadBtn, dataRows);
+            return;
+        }
+
+        tableRows(table, { search: 'applied' }).each(function () {
+            var checkbox = this.querySelector('.row-checkbox');
+            if (checkbox && checkbox.checked) {
+                dataRows.push(rowDataFromCheckbox(table, checkbox));
+            }
+        });
+
+        downloadRows(table, downloadBtn, dataRows);
+    }
+
+    function selectionStateKey(table, config) {
+        if (!table || !config || !config.persistAcrossPages) {
+            return null;
+        }
+
+        try {
+            var url = new URL(window.location.href);
+            url.searchParams.delete('page');
+            return 'agrp-select-all:' + table.id + ':' + url.pathname + '?' + url.searchParams.toString();
+        } catch (error) {
+            return 'agrp-select-all:' + table.id + ':' + window.location.pathname;
+        }
+    }
+
+    function readPersistedSelectAll(stateKey) {
+        if (!stateKey || !window.sessionStorage) {
+            return false;
+        }
+        return window.sessionStorage.getItem(stateKey) === '1';
+    }
+
+    function writePersistedSelectAll(stateKey, enabled) {
+        if (!stateKey || !window.sessionStorage) {
+            return;
+        }
+
+        if (enabled) {
+            window.sessionStorage.setItem(stateKey, '1');
+            return;
+        }
+
+        window.sessionStorage.removeItem(stateKey);
+    }
+
+    function installPageJump(table) {
+        var dt = getDataTable(table);
+        if (!dt || table.dataset.disablePageJump === '1' || table.dataset.pageJumpInstalled === '1') {
+            return;
+        }
+
+        table.dataset.pageJumpInstalled = '1';
+
+        function renderPageJump() {
+            var info = dt.page.info();
+            var wrapper = jQuery('#' + table.id + '_wrapper');
+            var paginate = wrapper.find('.dataTables_paginate');
+            paginate.find('.page-jump-control').remove();
+
+            if (!info || info.pages <= 1 || !paginate.length) {
+                return;
+            }
+
+            var inputId = table.id + '_page_jump';
+            var control = jQuery('<div class="page-jump-control" aria-label="Jump to page"></div>');
+            var input = jQuery('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                id: inputId,
+                min: 1,
+                max: info.pages,
+                value: info.page + 1,
+                'aria-label': 'Page number'
+            });
+            var total = jQuery('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+            var button = jQuery('<button type="button" class="page-jump-btn">Go</button>');
+
+            function jumpToPage() {
+                var requestedPage = parseInt(input.val(), 10);
+                if (isNaN(requestedPage)) {
+                    input.val(info.page + 1).focus();
+                    return;
+                }
+                requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                dt.page(requestedPage - 1).draw('page');
+            }
+
+            input.on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    jumpToPage();
+                }
+            });
+            button.on('click', jumpToPage);
+
+            control
+                .append(jQuery('<label></label>').attr('for', inputId).text('Page'))
+                .append(input)
+                .append(total)
+                .append(button);
+            paginate.append(control);
+        }
+
+        dt.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    function bindDataTableHooks(table, updateControls, applySelection, layoutControls) {
+        var attempts = 0;
+
+        function attach() {
+            var dt = getDataTable(table);
+            if (!dt) {
+                if (attempts < 20) {
+                    attempts += 1;
+                    window.setTimeout(attach, 50);
+                }
+                return;
+            }
+
+            if (typeof layoutControls === 'function') {
+                layoutControls();
+            }
+
+            if (table.dataset.agrpDtBound !== '1') {
+                table.dataset.agrpDtBound = '1';
+                installPageJump(table);
+                dt.on('draw length.dt search.dt order.dt page.dt', function () {
+                    installPageJump(table);
+                    if (typeof applySelection === 'function') {
+                        applySelection();
+                    }
+                    updateControls();
+                });
+            }
+
+            if (typeof applySelection === 'function') {
+                applySelection();
+            }
+            updateControls();
+        }
+
+        if (hasJquery()) {
+            jQuery(attach);
+        } else {
+            attach();
+        }
+    }
+
+    function bind(config) {
+        function init() {
+            var table = getTable(config.tableId);
+            if (!table || table.dataset.agrpBound === '1') {
+                return;
+            }
+
+            table.dataset.agrpBound = '1';
+            if (config.disablePageJump) {
+                table.dataset.disablePageJump = '1';
+            }
+
+            var selectAllBtn = config.selectAllButtonId ? replaceButton(config.selectAllButtonId) : null;
+            var downloadBtn = config.downloadButtonId ? replaceButton(config.downloadButtonId) : null;
+
+            if (downloadBtn && config.filename && !downloadBtn.dataset.filename) {
+                downloadBtn.dataset.filename = config.filename;
+            }
+
+            var persistedStateKey = selectionStateKey(table, config);
+            var persistedRowsKey = selectedRowsStateKey(persistedStateKey);
+            var persistedExcludedRowsKey = excludedRowsStateKey(persistedStateKey);
+            var persistedSelectedRows = readPersistedSelectedRows(persistedRowsKey);
+            var persistedExcludedRows = readPersistedSelectedRows(persistedExcludedRowsKey);
+
+            function persistCheckboxSelection(checkbox, selected) {
+                var rowId = rowIdFromCheckbox(checkbox);
+                if (!rowId) {
+                    return;
+                }
+
+                if (selected) {
+                    persistedSelectedRows[rowId] = rowDataFromCheckbox(table, checkbox);
+                } else {
+                    delete persistedSelectedRows[rowId];
+                }
+                writePersistedSelectedRows(persistedRowsKey, persistedSelectedRows);
+            }
+
+            function persistCheckboxExclusion(checkbox, excluded) {
+                var rowId = rowIdFromCheckbox(checkbox);
+                if (!rowId) {
+                    return;
+                }
+
+                if (excluded) {
+                    persistedExcludedRows[rowId] = true;
+                } else {
+                    delete persistedExcludedRows[rowId];
+                }
+                writePersistedSelectedRows(persistedExcludedRowsKey, persistedExcludedRows);
+            }
+
+            function clearPersistedSelectedRows() {
+                persistedSelectedRows = {};
+                writePersistedSelectedRows(persistedRowsKey, persistedSelectedRows);
+            }
+
+            function clearPersistedExcludedRows() {
+                persistedExcludedRows = {};
+                writePersistedSelectedRows(persistedExcludedRowsKey, persistedExcludedRows);
+            }
+
+            function applyPersistedSelection() {
+                if (!config.persistAcrossPages) {
+                    return;
+                }
+
+                var persistAll = readPersistedSelectAll(persistedStateKey);
+                allFilteredCheckboxes(table).each(function () {
+                    var rowId = rowIdFromCheckbox(this);
+                    this.checked = persistAll
+                        ? !Boolean(rowId && persistedExcludedRows[rowId])
+                        : Boolean(rowId && persistedSelectedRows[rowId]);
+                });
+            }
+
+            function updateControls() {
+                var allBoxes = allFilteredCheckboxes(table);
+                var checkedAllCount = allBoxes.filter(':checked').length;
+                var allSelected = config.persistAcrossPages
+                    ? readPersistedSelectAll(persistedStateKey)
+                    : allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+
+                if (selectAllBtn) {
+                    selectAllBtn.innerHTML = allSelected
+                        ? '<i class="fas fa-square"></i> Clear Selection'
+                        : '<i class="fas fa-check-square"></i> Select All';
+                }
+
+                var pageBoxes = currentPageCheckboxes(table);
+                var checkedPageCount = pageBoxes.filter(':checked').length;
+                headerCheckboxes(table).each(function () {
+                    this.checked = pageBoxes.length > 0 && checkedPageCount === pageBoxes.length;
+                    this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+                });
+            }
+
+            if (selectAllBtn) {
+                selectAllBtn.addEventListener('click', function () {
+                    var allBoxes = allFilteredCheckboxes(table);
+                    var shouldSelect;
+
+                    if (config.persistAcrossPages) {
+                        shouldSelect = allBoxes.length > 0 && !readPersistedSelectAll(persistedStateKey);
+                        clearPersistedSelectedRows();
+                        clearPersistedExcludedRows();
+                        writePersistedSelectAll(persistedStateKey, shouldSelect);
+                        allBoxes.prop('checked', shouldSelect);
+                        updateControls();
+                        return;
+                    }
+
+                    shouldSelect = allBoxes.length > 0 && allBoxes.filter(':checked').length !== allBoxes.length;
+                    allBoxes.prop('checked', shouldSelect);
+                    updateControls();
+                });
+            }
+
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function () {
+                    if (readPersistedSelectAll(persistedStateKey) && config.exportUrl) {
+                        exportAllFilteredRows(table, config.exportUrl, persistedExcludedRows);
+                        return;
+                    }
+                    downloadSelectedRows(table, downloadBtn, config.persistAcrossPages ? persistedSelectedRows : null);
+                });
+            }
+
+            if (hasJquery()) {
+                jQuery(document)
+                    .off('.agrp-' + table.id)
+                    .on('click.agrp-' + table.id, '#' + table.id + '_wrapper .js-select-current-page, #' + table.id + ' .js-select-current-page', function (event) {
+                        event.stopPropagation();
+                    })
+                    .on('change.agrp-' + table.id, '#' + table.id + '_wrapper .js-select-current-page, #' + table.id + ' .js-select-current-page', function (event) {
+                        event.stopPropagation();
+                        var checked = this.checked;
+                        var persistAll = config.persistAcrossPages && readPersistedSelectAll(persistedStateKey);
+                        currentPageCheckboxes(table).each(function () {
+                            this.checked = checked;
+                            if (persistAll) {
+                                persistCheckboxExclusion(this, !checked);
+                            } else if (config.persistAcrossPages) {
+                                persistCheckboxSelection(this, checked);
+                            }
+                        });
+                        updateControls();
+                    })
+                    .on('change.agrp-' + table.id, '#' + table.id + ' .row-checkbox', function () {
+                        if (config.persistAcrossPages) {
+                            if (readPersistedSelectAll(persistedStateKey)) {
+                                persistCheckboxExclusion(this, !this.checked);
+                            } else {
+                                persistCheckboxSelection(this, this.checked);
+                            }
+                        }
+                        updateControls();
+                    });
+            } else {
+                table.addEventListener('change', function (event) {
+                    if (event.target.classList.contains('row-checkbox')) {
+                        if (config.persistAcrossPages) {
+                            if (readPersistedSelectAll(persistedStateKey)) {
+                                persistCheckboxExclusion(event.target, !event.target.checked);
+                            } else {
+                                persistCheckboxSelection(event.target, event.target.checked);
+                            }
+                        }
+                        updateControls();
+                    }
+                });
+            }
+
+            function layoutControls() {
+                prepareTableLayout(table, selectAllBtn, downloadBtn, config);
+            }
+
+            refreshCallbacks[table.id] = function () {
+                applyPersistedSelection();
+                updateControls();
+            };
+
+            bindDataTableHooks(table, updateControls, applyPersistedSelection, layoutControls);
+            layoutControls();
+            applyPersistedSelection();
+            updateControls();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init, { once: true });
+            return;
+        }
+
+        init();
+    }
+
+    return {
+        bind: bind,
+        refresh: function (tableId) {
+            if (refreshCallbacks[tableId]) {
+                refreshCallbacks[tableId]();
+            }
+        }
+    };
+})();
+</script>

@@ -1,0 +1,1337 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <meta name="description" content="Asteraceae Genomics Bioinformatics Research Platform for Asteraceae research discovry">
+    <meta name="keywords" content="Asteraceae,Compositae,Arctium lappa,Helianthus annuus,Lactuca sativa,Taraxacum mongolicum,Artemisia annua,Senecio scandens">
+
+    <link rel="stylesheet" href="{% static 'vendor/css/jquery.dataTables.min.css' %}">
+    <!-- 引入Bootstrap图标 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <style>
+    /* ===================== 标题区 ===================== */
+        .page-title {
+            color: #d35400;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .title-line {
+            width: 90px;
+            height: 4px;
+            background: linear-gradient(to right, #f39c12, #e67e22);
+            margin: 15px auto 30px;
+            border-radius: 3px;
+        }
+        .modal {
+            z-index: 99999 !important; /* 设置足够高的层级 */
+        }
+
+        .modal-backdrop {
+            z-index: 99998 !important; /* 背景层也要提高 */
+        }
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 主内容容器 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 左侧导航栏样式 */
+        .disease-nav-sticky {
+            position: sticky;
+            top: 100px;
+            z-index: 10;
+        }
+
+        .nav-pills .nav-link {
+            color: #555;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            text-align: left;
+            border-left: 4px solid transparent;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-pills .nav-link:hover {
+            background-color: #fff5eb;
+            color: #e67e22;
+            transform: translateX(5px);
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #e67e22;
+            color: #fff;
+            border-left-color: #d35400;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+        }
+
+        /* 导航项按钮组 */
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            background-color: white;
+            color: #e67e22;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.image-btn:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .nav-btn.video-btn:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .nav-btn i {
+            font-size: 18px;
+        }
+
+        /* 5. 右侧固定图片区域 */
+        .fixed-image-container {
+            position: sticky;
+            top: 100px;
+            text-align: center;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 2px solid #eaeaea;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            padding: 20px;
+        }
+
+        .fixed-image {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .image-title {
+            font-family: "Georgia", serif;
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin: 15px 0 10px 0;
+        }
+
+        .image-description {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* 6. 模态框样式 */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            border: none;
+        }
+
+        .modal-body {
+            padding: 0;
+            text-align: center;
+            background-color: #000;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .modal-video {
+            width: 100%;
+            height: 500px;
+        }
+
+        .close-btn {
+            color: white;
+            opacity: 0.9;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+            color: white;
+        }
+
+        /* 7. 响应式调整 */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .nav-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .fixed-image-container {
+                margin-top: 20px;
+                position: static;
+            }
+
+            .modal-video {
+                height: 300px;
+            }
+        }
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <h2 class="page-title">Aster-Ancgenome</h2>
+        <div class="title-line"></div>
+<div class="desc-card">
+        To visually illustrate the trajectory of ancient chromosomal rearrangements in Asteraceae and reveal chromosomal rearrangements associated with the origin of key traits, we visualized the karyotype evolutionary trajectories of the ancestral node and representative genera within Asteraceae. We provide <strong>67</strong> static images and <strong>58</strong> dynamic images of <strong>29</strong> ancestral nodes and <strong>28</strong> genera, vividly illustrating the 130 million years evolutionary history of AAGs.
+    </div>
+
+        <div class="row">
+            <!-- 左侧导航栏 -->
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="disease-nav-sticky">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link active" href="#AAK-I">
+                                        AAK-I
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('AAK-I.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('AAK-I.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#AAK-II">
+                                        AAK-II
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('AAK-II.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('AAK-II.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+				<div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#AAK-III">
+                                        AAK-II
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('AAK-III.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('AAK-III.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ACAK">
+                                        ACAK
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ACAK.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ACAK.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-I">
+                                        ASAK-I
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-I.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-I.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-II">
+                                        ASAK-II
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-II.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-II.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-III">
+                                        ASAK-III
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-III.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-III.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-IV">
+                                        ASAK-IV
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-IV.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-IV.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-IX">
+                                        ASAK-IX
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-IX.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-IX.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-V">
+                                        ASAK-V
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-V.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-V.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-VI">
+                                        ASAK-VI
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-VI.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-VI.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-VII">
+                                        ASAK-VII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-VII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-VII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-VIII">
+                                        ASAK-VIII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-VIII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-VIII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-X">
+                                        ASAK-X
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-X.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-X.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XI">
+                                        ASAK-XI
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XI.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XI.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XII">
+                                        ASAK-XII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XIII">
+                                        ASAK-XIII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XIII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XIII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XIV">
+                                        ASAK-XIV
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XIV.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XIV.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XIX">
+                                        ASAK-XIX
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XIX.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XIX.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XV">
+                                        ASAK-XV
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XV.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XV.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XVI">
+                                        ASAK-XVI
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XVI.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XVI.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XVII">
+                                        ASAK-XVII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XVII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XVII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#ASAK-XVIII">
+                                        ASAK-XVIII
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('ASAK-XVIII.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('ASAK-XVIII.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Ambrosia_trifida">
+                                        Ambrosia_trifida
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Ambrosia_trifida.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Ambrosia_trifida.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Arctium_lappa">
+                                        Arctium_lappa
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Arctium_lappa.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Arctium_lappa.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Bidens_alba">
+                                        Bidens_alba
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Bidens_alba.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Bidens_alba.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CAAK-I">
+                                        CAAK-I
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CAAK-I.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CAAK-I.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CAAK-II">
+                                        CAAK-II
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CAAK-II.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CAAK-II.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CAAK-III">
+                                        CAAK-III
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CAAK-III.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CAAK-III.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CAAK-IV">
+                                        CAAK-IV
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CAAK-IV.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CAAK-IV.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CIAK-I">
+                                        CIAK-I
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CIAK-I.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CIAK-I.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#CIAK-II">
+                                        CIAK-II
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('CIAK-II.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('CIAK-II.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Carthamus_tinctorius">
+                                        Carthamus_tinctorius
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Carthamus_tinctorius.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Carthamus_tinctorius.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Centaurea_solstitialis">
+                                        Centaurea_solstitialis
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Centaurea_solstitialis.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Centaurea_solstitialis.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Chrysanthemum_lavandulifolium">
+                                        Chrysanthemum_lavandulifolium
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Chrysanthemum_lavandulifolium.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Chrysanthemum_lavandulifolium.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Cichorium_intybus">
+                                        Cichorium_intybus
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Cichorium_intybus.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Cichorium_intybus.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Cosmos_bipinnatus">
+                                        Cosmos_bipinnatus
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Cosmos_bipinnatus.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Cosmos_bipinnatus.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Cynara_cardunculus">
+                                        Cynara_cardunculus
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Cynara_cardunculus.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Cynara_cardunculus.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Dahlia_pinnata">
+                                        Dahlia_pinnata
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Dahlia_pinnata.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Dahlia_pinnata.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Deinandra_increscens">
+                                        Deinandra_increscens
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Deinandra_increscens.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Deinandra_increscens.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Erigeron_canadensis">
+                                        Erigeron_canadensis
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Erigeron_canadensis.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Erigeron_canadensis.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Flaveria_linearis">
+                                        Flaveria_linearis
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Flaveria_linearis.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Flaveria_linearis.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Glebionis_coronaria">
+                                        Glebionis_coronaria
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Glebionis_coronaria.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Glebionis_coronaria.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Helianthus_annuus">
+                                        Helianthus_annuus
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Helianthus_annuus.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Helianthus_annuus.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Lactuca_sativa">
+                                        Lactuca_sativa
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Lactuca_sativa.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Lactuca_sativa.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Logfia_minima">
+                                        Logfia_minima
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Logfia_minima.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Logfia_minima.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Mikania_micrantha">
+                                        Mikania_micrantha
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Mikania_micrantha.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Mikania_micrantha.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Pseudognaphalium_luteoalbum">
+                                        Pseudognaphalium_luteoalbum
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Pseudognaphalium_luteoalbum.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Pseudognaphalium_luteoalbum.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Pulicaria_dysenterica">
+                                        Pulicaria_dysenterica
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Pulicaria_dysenterica.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Pulicaria_dysenterica.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Saussurea_involucrata">
+                                        Saussurea_involucrata
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Saussurea_involucrata.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Saussurea_involucrata.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Senecio_squalidus">
+                                        Senecio_squalidus
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Senecio_squalidus.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Senecio_squalidus.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Smallanthus_sonchifolius">
+                                        Smallanthus_sonchifolius
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Smallanthus_sonchifolius.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Smallanthus_sonchifolius.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Solidago_caesia">
+                                        Solidago_caesia
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Solidago_caesia.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Solidago_caesia.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Solidago_canadensis">
+                                        Solidago_canadensis
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Solidago_canadensis.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Solidago_canadensis.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Stevia_rebaudiana">
+                                        Stevia_rebaudiana
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Stevia_rebaudiana.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Stevia_rebaudiana.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Tagetes_erecta">
+                                        Tagetes_erecta
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Tagetes_erecta.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Tagetes_erecta.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="nav-item-wrapper">
+                                    <a class="nav-link" href="#Taraxacum_mongolicum">
+                                        Taraxacum_mongolicum
+                                        <div class="nav-buttons">
+                                            <button class="nav-btn image-btn" onclick="showMedia('Taraxacum_mongolicum.png', 'image')">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                            <button class="nav-btn video-btn" onclick="showMedia('Taraxacum_mongolicum.mp4', 'video')">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 右侧内容区域 -->
+            <div class="col-lg-8">
+                <img src="../../static/image/Asteraceae_karyotype.webp" alt="" style="width: 100%; margin-bottom: 10px">
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mediaModalLabel"></h5>
+                        <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="mediaContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 全局变量存储媒体文件信息
+const mediaFiles = {
+    'AAK-I.png': { title: 'AAK-I', type: 'image' },
+    'AAK-I.mp4': { title: 'AAK-I Video', type: 'video' },
+    'AAK-II.png': { title: 'AAK-II', type: 'image' },
+    'AAK-II.mp4': { title: 'AAK-II Video', type: 'video' },
+    'ACAK.png': { title: 'ACAK', type: 'image' },
+    'ACAK.mp4': { title: 'ACAK Video', type: 'video' },
+    'ASAK-I.png': { title: 'ASAK-I', type: 'image' },
+    'ASAK-I.mp4': { title: 'ASAK-I Video', type: 'video' },
+    'ASAK-II.png': { title: 'ASAK-II', type: 'image' },
+    'ASAK-II.mp4': { title: 'ASAK-II Video', type: 'video' },
+    'ASAK-III.png': { title: 'ASAK-III', type: 'image' },
+    'ASAK-III.mp4': { title: 'ASAK-III Video', type: 'video' },
+    'ASAK-IV.png': { title: 'ASAK-IV', type: 'image' },
+    'ASAK-IV.mp4': { title: 'ASAK-IV Video', type: 'video' },
+    'ASAK-IX.png': { title: 'ASAK-IX', type: 'image' },
+    'ASAK-IX.mp4': { title: 'ASAK-IX Video', type: 'video' },
+    'ASAK-V.png': { title: 'ASAK-V', type: 'image' },
+    'ASAK-V.mp4': { title: 'ASAK-V Video', type: 'video' },
+    'ASAK-VI.png': { title: 'ASAK-VI', type: 'image' },
+    'ASAK-VI.mp4': { title: 'ASAK-VI Video', type: 'video' },
+    'ASAK-VII.png': { title: 'ASAK-VII', type: 'image' },
+    'ASAK-VII.mp4': { title: 'ASAK-VII Video', type: 'video' },
+    'ASAK-VIII.png': { title: 'ASAK-VIII', type: 'image' },
+    'ASAK-VIII.mp4': { title: 'ASAK-VIII Video', type: 'video' },
+    'ASAK-X.png': { title: 'ASAK-X', type: 'image' },
+    'ASAK-X.mp4': { title: 'ASAK-X Video', type: 'video' },
+    'ASAK-XI.png': { title: 'ASAK-XI', type: 'image' },
+    'ASAK-XI.mp4': { title: 'ASAK-XI Video', type: 'video' },
+    'ASAK-XII.png': { title: 'ASAK-XII', type: 'image' },
+    'ASAK-XII.mp4': { title: 'ASAK-XII Video', type: 'video' },
+    'ASAK-XIII.png': { title: 'ASAK-XIII', type: 'image' },
+    'ASAK-XIII.mp4': { title: 'ASAK-XIII Video', type: 'video' },
+    'ASAK-XIV.png': { title: 'ASAK-XIV', type: 'image' },
+    'ASAK-XIV.mp4': { title: 'ASAK-XIV Video', type: 'video' },
+    'ASAK-XIX.png': { title: 'ASAK-XIX', type: 'image' },
+    'ASAK-XIX.mp4': { title: 'ASAK-XIX Video', type: 'video' },
+    'ASAK-XV.png': { title: 'ASAK-XV', type: 'image' },
+    'ASAK-XV.mp4': { title: 'ASAK-XV Video', type: 'video' },
+    'ASAK-XVI.png': { title: 'ASAK-XVI', type: 'image' },
+    'ASAK-XVI.mp4': { title: 'ASAK-XVI Video', type: 'video' },
+    'ASAK-XVII.png': { title: 'ASAK-XVII', type: 'image' },
+    'ASAK-XVII.mp4': { title: 'ASAK-XVII Video', type: 'video' },
+    'ASAK-XVIII.png': { title: 'ASAK-XVIII', type: 'image' },
+    'ASAK-XVIII.mp4': { title: 'ASAK-XVIII Video', type: 'video' },
+    'Ambrosia_trifida.png': { title: 'Ambrosia_trifida', type: 'image' },
+    'Ambrosia_trifida.mp4': { title: 'Ambrosia_trifida Video', type: 'video' },
+    'Arctium_lappa.png': { title: 'Arctium_lappa', type: 'image' },
+    'Arctium_lappa.mp4': { title: 'Arctium_lappa Video', type: 'video' },
+    'Bidens_alba.png': { title: 'Bidens_alba', type: 'image' },
+    'Bidens_alba.mp4': { title: 'Bidens_alba Video', type: 'video' },
+    'CAAK-I.png': { title: 'CAAK-I', type: 'image' },
+    'CAAK-I.mp4': { title: 'CAAK-I Video', type: 'video' },
+    'CAAK-II.png': { title: 'CAAK-II', type: 'image' },
+    'CAAK-II.mp4': { title: 'CAAK-II Video', type: 'video' },
+    'CAAK-III.png': { title: 'CAAK-III', type: 'image' },
+    'CAAK-III.mp4': { title: 'CAAK-III Video', type: 'video' },
+    'CAAK-IV.png': { title: 'CAAK-IV', type: 'image' },
+    'CAAK-IV.mp4': { title: 'CAAK-IV Video', type: 'video' },
+    'CIAK-I.png': { title: 'CIAK-I', type: 'image' },
+    'CIAK-I.mp4': { title: 'CIAK-I Video', type: 'video' },
+    'CIAK-II.png': { title: 'CIAK-II', type: 'image' },
+    'CIAK-II.mp4': { title: 'CIAK-II Video', type: 'video' },
+    'Carthamus_tinctorius.png': { title: 'Carthamus_tinctorius', type: 'image' },
+    'Carthamus_tinctorius.mp4': { title: 'Carthamus_tinctorius Video', type: 'video' },
+    'Centaurea_solstitialis.png': { title: 'Centaurea_solstitialis', type: 'image' },
+    'Centaurea_solstitialis.mp4': { title: 'Centaurea_solstitialis Video', type: 'video' },
+    'Chrysanthemum_lavandulifolium.png': { title: 'Chrysanthemum_lavandulifolium', type: 'image' },
+    'Chrysanthemum_lavandulifolium.mp4': { title: 'Chrysanthemum_lavandulifolium Video', type: 'video' },
+    'Cichorium_intybus.png': { title: 'Cichorium_intybus', type: 'image' },
+    'Cichorium_intybus.mp4': { title: 'Cichorium_intybus Video', type: 'video' },
+    'Cosmos_bipinnatus.png': { title: 'Cosmos_bipinnatus', type: 'image' },
+    'Cosmos_bipinnatus.mp4': { title: 'Cosmos_bipinnatus Video', type: 'video' },
+    'Cynara_cardunculus.png': { title: 'Cynara_cardunculus', type: 'image' },
+    'Cynara_cardunculus.mp4': { title: 'Cynara_cardunculus Video', type: 'video' },
+    'Dahlia_pinnata.png': { title: 'Dahlia_pinnata', type: 'image' },
+    'Dahlia_pinnata.mp4': { title: 'Dahlia_pinnata Video', type: 'video' },
+    'Deinandra_increscens.png': { title: 'Deinandra_increscens', type: 'image' },
+    'Deinandra_increscens.mp4': { title: 'Deinandra_increscens Video', type: 'video' },
+    'Erigeron_canadensis.png': { title: 'Erigeron_canadensis', type: 'image' },
+    'Erigeron_canadensis.mp4': { title: 'Erigeron_canadensis Video', type: 'video' },
+    'Flaveria_linearis.png': { title: 'Flaveria_linearis', type: 'image' },
+    'Flaveria_linearis.mp4': { title: 'Flaveria_linearis Video', type: 'video' },
+    'Glebionis_coronaria.png': { title: 'Glebionis_coronaria', type: 'image' },
+    'Glebionis_coronaria.mp4': { title: 'Glebionis_coronaria Video', type: 'video' },
+    'Helianthus_annuus.png': { title: 'Helianthus_annuus', type: 'image' },
+    'Helianthus_annuus.mp4': { title: 'Helianthus_annuus Video', type: 'video' },
+    'Lactuca_sativa.png': { title: 'Lactuca_sativa', type: 'image' },
+    'Lactuca_sativa.mp4': { title: 'Lactuca_sativa Video', type: 'video' },
+    'Logfia_minima.png': { title: 'Logfia_minima', type: 'image' },
+    'Logfia_minima.mp4': { title: 'Logfia_minima Video', type: 'video' },
+    'Mikania_micrantha.png': { title: 'Mikania_micrantha', type: 'image' },
+    'Mikania_micrantha.mp4': { title: 'Mikania_micrantha Video', type: 'video' },
+    'Pseudognaphalium_luteoalbum.png': { title: 'Pseudognaphalium_luteoalbum', type: 'image' },
+    'Pseudognaphalium_luteoalbum.mp4': { title: 'Pseudognaphalium_luteoalbum Video', type: 'video' },
+    'Pulicaria_dysenterica.png': { title: 'Pulicaria_dysenterica', type: 'image' },
+    'Pulicaria_dysenterica.mp4': { title: 'Pulicaria_dysenterica Video', type: 'video' },
+    'Saussurea_involucrata.png': { title: 'Saussurea_involucrata', type: 'image' },
+    'Saussurea_involucrata.mp4': { title: 'Saussurea_involucrata Video', type: 'video' },
+    'Senecio_squalidus.png': { title: 'Senecio_squalidus', type: 'image' },
+    'Senecio_squalidus.mp4': { title: 'Senecio_squalidus Video', type: 'video' },
+    'Smallanthus_sonchifolius.png': { title: 'Smallanthus_sonchifolius', type: 'image' },
+    'Smallanthus_sonchifolius.mp4': { title: 'Smallanthus_sonchifolius Video', type: 'video' },
+    'Solidago_caesia.png': { title: 'Solidago_caesia', type: 'image' },
+    'Solidago_caesia.mp4': { title: 'Solidago_caesia Video', type: 'video' },
+    'Solidago_canadensis.png': { title: 'Solidago_canadensis', type: 'image' },
+    'Solidago_canadensis.mp4': { title: 'Solidago_canadensis Video', type: 'video' },
+    'Stevia_rebaudiana.png': { title: 'Stevia_rebaudiana', type: 'image' },
+    'Stevia_rebaudiana.mp4': { title: 'Stevia_rebaudiana Video', type: 'video' },
+    'Tagetes_erecta.png': { title: 'Tagetes_erecta', type: 'image' },
+    'Tagetes_erecta.mp4': { title: 'Tagetes_erecta Video', type: 'video' },
+    'Taraxacum_mongolicum.png': { title: 'Taraxacum_mongolicum', type: 'image' },
+    'Taraxacum_mongolicum.mp4': { title: 'Taraxacum_mongolicum Video', type: 'video' },
+};
+
+// 显示媒体内容（图片或视频）
+function showMedia(filename, type) {
+    const mediaInfo = mediaFiles[filename];
+    if (!mediaInfo) {
+        alert('No found！');
+        return;
+    }
+
+    // 设置模态框标题
+    document.getElementById('mediaModalLabel').textContent = mediaInfo.title;
+
+    // 清空并设置媒体内容
+    const mediaContent = document.getElementById('mediaContent');
+    mediaContent.innerHTML = '';
+
+    if (type === 'image') {
+        // 显示图片
+        const img = document.createElement('img');
+        img.src = `/static/image/karyoty/${filename}`;
+        img.alt = mediaInfo.title;
+        img.className = 'modal-img';
+        mediaContent.appendChild(img);
+    } else if (type === 'video') {
+        // 显示视频
+        const video = document.createElement('video');
+        video.src = `/static/videos/${filename}`;
+        video.controls = true;
+        video.autoplay = true;
+        video.className = 'modal-video';
+        mediaContent.appendChild(video);
+    }
+
+    // 显示模态框
+    const modal = new bootstrap.Modal(document.getElementById('mediaModal'));
+    modal.show();
+}
+
+// 滚动监听 (ScrollSpy)
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. 点击导航平滑滚动
+    document.querySelectorAll('.nav-pills .nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                // 计算偏移量
+                const headerOffset = 100;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+
+    // 2. 滚动时更新激活状态
+    const sections = document.querySelectorAll('.disease-section');
+    const navLinks = document.querySelectorAll('.nav-pills .nav-link');
+
+    function onScroll() {
+        let current = "";
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.clientHeight;
+
+            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        // 如果滚动到底部，高亮最后一个
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+            current = sections[sections.length - 1].getAttribute('id');
+        }
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', onScroll);
+});
+</script>
+{% endblock %}

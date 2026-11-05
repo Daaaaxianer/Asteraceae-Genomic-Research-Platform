@@ -1,0 +1,690 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+
+    {% load static %}
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/css/modern-business.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{% static 'vendor/css/home.css' %}" type="text/css">
+    <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link href="{% static 'vendor/css/style.css' %}" rel="stylesheet">
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url({% static 'image/shuye.png' %}); font-family:'Arial',sans-serif;color:black;"><b>Regulatory proteins (RPs)</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5">
+            &emsp;&emsp;In this study, we systemically compared TF/TR classification rules used in different databases, and derived a set of consensus rules based on the available literature for accurate plant TF/TR identification and classification.  For plant PKs, we directly used the HMM profiles developed by
+            <a href="https://royalsocietypublishing.org/doi/10.1098/rstb.2012.0003">Lehti-Shiu and Shiu (2012)</a> to provide a comprehensive classification system.  These consensus rules for TF/TR classification and HMM profiles for PK classification were implemented in
+            <a href="http://bioinfo.bti.cornell.edu/tool/itak"><b>iTAK</b></a>, a computational program that provides consistency and uniformity on the identification and classification of plant TFs, TRs, and PKs.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the legume blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Legume blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="{% static 'image/TF_gene_famliy.png' %}" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="h3_1 h3_6" style="background-image:url({% static 'image/shuye.png' %}); font-family:'Arial',sans-serif;color:black;">Regulatory proteins (RPs)<i></i></h3>
+
+{#                <link rel="icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon"/>#}
+                <form action="TF_gene_v2" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-sm-2">
+                            <a href="{% url "TF_genes_index_url" %}">
+                                <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 20px" value="Switch">
+                            </a>
+                        </div>
+                        <!-- Transcription factors (TFs) -->
+                        <div class="col-sm-10" style="padding-top: 20px">
+                            <h4 class="col-md-12 justify-content-center h3_1 h3_6" style="background-image:url({% static 'image/shuye.png' %}); font-family:'Arial',sans-serif;color:black;">Transcription factors (TFs)<i></i></h4>
+                            <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                                <table id="myTable2">
+                                    <thead>
+                                        <tr>
+                                            <th>Column 1</th>
+                                            <th>Column 2</th>
+                                            <th>Column 3</th>
+                                            <th>Column 4</th>
+                                            <th>Column 5</th>
+                                            <th>Column 6</th>
+                                            <th>Column 7</th>
+                                            <th>Column 8</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'AP2 or ERF-AP2' %}">AP2 or ERF-AP2</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'AP2 or ERF-ERF' %}">AP2 or ERF-ERF</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'AP2 or ERF-RAV' %}">AP2 or ERF-RAV</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Alfin-like' %}">Alfin-like</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'B3' %}">B3</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'B3-ARF' %}">B3-ARF</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'BBR-BPC' %}">BBR-BPC</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'BES1' %}">BES1</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'BSD' %}">BSD</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2C2-CO-like' %}">C2C2-CO-like</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2C2-Dof' %}">C2C2-Dof</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2C2-GATA' %}">C2C2-GATA</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2C2-LSD' python%}">C2C2-LSD</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2C2-YABBY' %}">C2C2-YABBY</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C2H2' %}">C2H2</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'C3H' %}">C3H</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CAMTA' %}">CAMTA</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CPP' %}">CPP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CSD' %}">CSD</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'DBB' %}">DBB</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'DBP' %}">DBP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'E2F-DP' %}">E2F-DP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'EIL' %}">EIL</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'FAR1' %}">FAR1</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GARP-ARR-B' %}">GARP-ARR-B</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GARP-G2-like' %}">GARP-G2-like</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GRAS' %}">GRAS</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GRF' %}">GRF</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GeBP' %}">GeBP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-BELL' %}">HB-BELL</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-HD-ZIP' %}">HB-HD-ZIP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-KNOX' %}">HB-KNOX</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-PHD' %}">HB-PHD</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-WOX' %}">HB-WOX</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HB-other' %}">HB-other</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HRT' %}">HRT</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HSF' %}">HSF</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'LFY' %}">LFY</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'LIM' %}">LIM</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'LOB' %}">LOB</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MADS-M-type' %}">MADS-M-type</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MADS-MIKC' %}">MADS-MIKC</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MYB' %}">MYB</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MYB-related' %}">MYB-related</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NAC' %}">NAC</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NF-X1' %}">NF-X1</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NF-YA' %}">NF-YA</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NF-YB' %}">NF-YB</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NF-YC' %}">NF-YC</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'NOZZLE' %}">NOZZLE</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'OFP' %}">OFP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'PLATZ' %}">PLATZ</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RWP-RK' %}">RWP-RK</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'S1Fa-like' %}">S1Fa-like</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SAP' %}">SAP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SBP' %}">SBP</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SRS' %}">SRS</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'STAT' %}">STAT</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TCP' %}">TCP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TUB' %}">TUB</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Tify' %}">Tify</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Trihelix' %}">Trihelix</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'ULT' %}">ULT</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'VOZ' %}">VOZ</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'WRKY' %}">WRKY</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Whirly' %}">Whirly</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'bHLH' %}">bHLH</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'bZIP' %}">bZIP</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'zf-HD' %}">zf-HD</a></td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2"></div>
+                        <!-- Transcription regulators (TRs) -->
+                        <div class="col-sm-10" style="padding-top: 20px">
+                            <h4 class="col-md-12 justify-content-center h3_1 h3_6" style="background-image:url({% static 'image/shuye.png' %}); font-family:'Arial',sans-serif;color:black;">Transcription regulators (TRs)<i></i></h4>
+                            <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                                <table id="myTable2">
+                                    <thead>
+                                        <tr>
+                                            <th>Column 1</th>
+                                            <th>Column 2</th>
+                                            <th>Column 3</th>
+                                            <th>Column 4</th>
+                                            <th>Column 5</th>
+                                            <th>Column 6</th>
+                                            <th>Column 7</th>
+                                            <th>Column 8</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'ARID' %}">ARID</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'AUX or IAA' %}">AUX or IAA</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Coactivator p15' %}">Coactivator p15</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'DDT' %}">DDT</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'GNAT' %}">GNAT</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'HMG' %}">HMG</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'IWS1' %}">IWS1</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Jumonji' %}">Jumonji</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'LUG' %}">LUG</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MBF1' %}">MBF1</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MED6' %}">MED6</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'MED7' %}">MED7</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Others' %}">Others</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'PHD' %}">PHD</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Pseudo ARR-B' %}">Pseudo ARR-B</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RB' %}">RB</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Rcd1-like' %}">Rcd1-like</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SET' %}">SET</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SNF2' %}">SNF2</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SOH1' %}">SOH1</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SWI or SNF-BAF60b' %}">SWI or SNF-BAF60b</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'SWI or SNF-SWI3' %}">SWI or SNF-SWI3</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TAZ' %}">TAZ</a></td>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TRAF' %}">TRAF</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'mTERF' %}">mTERF</a></td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                            <td>---</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2"></div>
+                        <!-- Protein  kinases (PKs) -->
+                        <div class="col-sm-10" style="padding-top: 20px">
+                            <h4 class="col-md-12 justify-content-center h3_1 h3_6" style="background-image:url({% static 'image/shuye.png' %}); font-family:'Arial',sans-serif;color:black;">Protein  kinases (PKs)<i></i></h4>
+                            <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                                <table id="myTable2">
+                                    <thead>
+                                        <tr>
+                                            <th>Column 1</th>
+                                            <th>Column 2</th>
+                                            <th>Column 3</th>
+                                            <th>Column 4</th>
+                                            <th>Column 5</th>
+                                            <th>Column 6</th>
+                                            <th>Column 7</th>
+                                            <th>Column 8</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'AGC-Pl' %}">AGC-Pl</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AGC_MAST' %}">AGC_MAST</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AGC_NDR' %}">AGC_NDR</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AGC_PDK1' %}">AGC_PDK1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AGC_PKA-PKG' %}">AGC_PKA-PKG</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AGC_RSK-2' %}">AGC_RSK-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'Aur' %}">Aur</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'AurL-Cr-1' %}">AurL-Cr-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'BUB' %}">BUB</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_AMPK' %}">CAMK_AMPK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_CAMK1-DCAMKL' %}">CAMK_CAMK1-DCAMKL</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_CAMK1-Tthe' %}">CAMK_CAMK1-Tthe</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_CAMKL-CHK1' %}">CAMK_CAMKL-CHK1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_CAMKL-LKB' %}">CAMK_CAMKL-LKB</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_CDPK' %}">CAMK_CDPK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_Cr-1' %}">CAMK_Cr-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CAMK_OST1L' %}">CAMK_OST1L</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CK1_CK1' %}">CK1_CK1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CK1_CK1-Pl' %}">CK1_CK1-Pl</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-CCRK' %}">CMGC_CDK-CCRK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-CDK7' %}">CMGC_CDK-CDK7</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-CDK8' %}">CMGC_CDK-CDK8</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-CRK7-CDK9' %}">CMGC_CDK-CRK7-CDK9</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-PITSLRE' %}">CMGC_CDK-PITSLRE</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDK-Pl' %}">CMGC_CDK-Pl</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDKL-Cr' %}">CMGC_CDKL-Cr</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CDKL-Os' %}">CMGC_CDKL-Os</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CK2' %}">CMGC_CK2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_CLK' %}">CMGC_CLK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_DYRK-PRP4' %}">CMGC_DYRK-PRP4</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_DYRK-YAK' %}">CMGC_DYRK-YAK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_GSK' %}">CMGC_GSK</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_GSKL' %}">CMGC_GSKL</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_MAPK' %}">CMGC_MAPK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_Pl-Tthe' %}">CMGC_Pl-Tthe</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_RCK' %}">CMGC_RCK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'CMGC_SRPK' %}">CMGC_SRPK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'Group-Cr-1' %}">Group-Cr-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'Group-Pl-2' %}">Group-Pl-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'Group-Pl-3' %}">Group-Pl-3</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'Group-Pl-4' %}">Group-Pl-4</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'Group-other' %}">Group-other</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'IRE1' %}">IRE1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'NAK' %}">NAK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'NEK' %}">NEK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'PEK_GCN2' %}">PEK_GCN2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'PEK_PEK' %}">PEK_PEK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_C-LEC' %}">RLK-Pelle_C-LEC</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_CR4L' %}">RLK-Pelle_CR4L</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_CrRLK1L-1' %}">RLK-Pelle_CrRLK1L-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_DLSV' %}">RLK-Pelle_DLSV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_DSLV' %}">RLK-Pelle_DSLV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_Extensin' %}">RLK-Pelle_Extensin</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_L-LEC' %}">RLK-Pelle_L-LEC</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRK10L-2' %}">RLK-Pelle_LRK10L-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-I-1' %}">RLK-Pelle_LRR-I-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-I-2' %}">RLK-Pelle_LRR-I-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-II' %}">RLK-Pelle_LRR-II</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-III' %}">RLK-Pelle_LRR-III</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-IV' %}">RLK-Pelle_LRR-IV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-IX' %}">RLK-Pelle_LRR-IX</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-V' %}">RLK-Pelle_LRR-V</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VI-1' %}">RLK-Pelle_LRR-VI-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VI-2' %}">RLK-Pelle_LRR-VI-2</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VII-1' %}">RLK-Pelle_LRR-VII-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VII-2' %}">RLK-Pelle_LRR-VII-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VII-3' %}">RLK-Pelle_LRR-VII-3</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-VIII-1' %}">RLK-Pelle_LRR-VIII-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XI-1' %}">RLK-Pelle_LRR-XI-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XI-2' %}">RLK-Pelle_LRR-XI-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XII-1' %}">RLK-Pelle_LRR-XII-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XIIIa' %}">RLK-Pelle_LRR-XIIIa</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XIIIb' %}">RLK-Pelle_LRR-XIIIb</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XIV' %}">RLK-Pelle_LRR-XIV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-XV' %}">RLK-Pelle_LRR-XV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-Xa' %}">RLK-Pelle_LRR-Xa</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-Xb-1' %}">RLK-Pelle_LRR-Xb-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LRR-Xb-2' %}">RLK-Pelle_LRR-Xb-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_LysM' %}">RLK-Pelle_LysM</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_PERK-1' %}">RLK-Pelle_PERK-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_PERK-2' %}">RLK-Pelle_PERK-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RKF3' %}">RLK-Pelle_RKF3</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-II' %}">RLK-Pelle_RLCK-II</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-IV' %}">RLK-Pelle_RLCK-IV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-IXa' %}">RLK-Pelle_RLCK-IXa</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-IXb' %}">RLK-Pelle_RLCK-IXb</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-Os' %}">RLK-Pelle_RLCK-Os</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-V' %}">RLK-Pelle_RLCK-V</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-VI' %}">RLK-Pelle_RLCK-VI</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-VIII' %}">RLK-Pelle_RLCK-VIII</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-VIIa-1' %}">RLK-Pelle_RLCK-VIIa-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-VIIa-2' %}">RLK-Pelle_RLCK-VIIa-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-VIIb' %}">RLK-Pelle_RLCK-VIIb</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-X' %}">RLK-Pelle_RLCK-X</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XI' %}">RLK-Pelle_RLCK-XI</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XII-1' %}">RLK-Pelle_RLCK-XII-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XII-2' %}">RLK-Pelle_RLCK-XII-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XIII' %}">RLK-Pelle_RLCK-XIII</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XV' %}">RLK-Pelle_RLCK-XV</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_RLCK-XVI' %}">RLK-Pelle_RLCK-XVI</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_SD-2b' %}">RLK-Pelle_SD-2b</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_Singleton' %}">RLK-Pelle_Singleton</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_URK-1' %}">RLK-Pelle_URK-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_URK-2' %}">RLK-Pelle_URK-2</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_URK-3' %}">RLK-Pelle_URK-3</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_URK-Pp-1' %}">RLK-Pelle_URK-Pp-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_WAK' %}">RLK-Pelle_WAK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'RLK-Pelle_WAK_LRK10L-1' %}">RLK-Pelle_WAK_LRK10L-1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'SCY1_SCYL1' %}">SCY1_SCYL1</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'SCY1_SCYL2' %}">SCY1_SCYL2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE-Pl' %}">STE_STE-Pl</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE11' %}">STE_STE11</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE20-Fray' %}">STE_STE20-Fray</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE20-Pl' %}">STE_STE20-Pl</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE20-YSK' %}">STE_STE20-YSK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'STE_STE7' %}">STE_STE7</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Cr-3' %}">TKL-Cr-3</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Cr-4' %}">TKL-Cr-4</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Cr-Single' %}">TKL-Cr-Single</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-1' %}">TKL-Pl-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-2' %}">TKL-Pl-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-3' %}">TKL-Pl-3</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-4' %}">TKL-Pl-4</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-5' %}">TKL-Pl-5</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-6' %}">TKL-Pl-6</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-7' %}">TKL-Pl-7</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL-Pl-8' %}">TKL-Pl-8</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL_CTR1-DRK-1' %}">TKL_CTR1-DRK-1</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'TF_gene_v2_select_function' 'TKL_CTR1-DRK-2' %}">TKL_CTR1-DRK-2</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TKL_Gdt' %}">TKL_Gdt</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TLK' %}">TLK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'TTK' %}">TTK</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'ULK_Fused' %}">ULK_Fused</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'ULK_ULK4' %}">ULK_ULK4</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'WEE' %}">WEE</a></td>
+                                        <td><a href="{% url 'TF_gene_v2_select_function' 'WNK_NRBP' %}">WNK_NRBP</a></td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <center>
+                            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                        </center>
+                        <script>
+                            function go() {
+                                var hh1 = document.getElementById("wait1");
+                                var hh2 = document.getElementById("wait2");
+                                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                    hh1.style.display = "inline-block";
+                                    hh2.style.display = "inline-block"
+                                }
+                                document.getElementById('go').submit()
+                            }
+                        </script>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="{% static 'image/shuye.png' %}" style="position: absolute; top: 0; left: 0; transform: translate(-300%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>
+                    <button type="button" id="deselectAllBtn" class="btn btn-secondary">Deselect All</button>
+                    <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button>
+                </div>
+
+                <div class="col-md-12" style="">
+                    <table id="myTable">
+                        <thead><tr><th>Select</th><th>Species</th><th>Type</th><th>Family</th><th>Gene ID</th><th>HMM accession</th><th>HMM name</th><th>E-value</th><th>Clan</th></tr></thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr><td><input type="checkbox" class="row-checkbox"></td><td>{{ pair.0 }}</td><td>{{ pair.1 }}</td><td>{{ pair.2 }}</td><td><a href="{% url 'gene_detail' geneid=pair.3 %}">{{ pair.3 }}</a></td><td>{{ pair.4 }}</td><td>{{ pair.5 }}</td><td>{{ pair.6 }}</td><td>{{ pair.7 }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+{#                <div class="col-md-2"></div>#}
+
+                <script>
+                    var printDataBtn = document.getElementById("printDataBtn");
+                    printDataBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                var mainDataCells = row.querySelectorAll("td:nth-child(2)"); // 获取第一组数据
+                                mainDataCells.forEach(function(cell) {
+                                    rowData.push(cell.textContent.trim());
+                                });
+                                selectedRows.push(rowData);
+                            }
+                        });
+                        {#console.log(selectedRows);#}
+
+                        // 获取CSRF令牌
+                        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+                        // 发送数据到Django后端
+                        var xhr = new XMLHttpRequest();
+                        var url = "{% url 'draw_ks_circos' %}"; // 使用Django模板标签获取URL
+                        xhr.open("POST", url, true);
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken); // 将CSRF令牌添加到请求头中
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    console.log("Data sent successfully.");
+                                    var newWindow = window.open("/browse/ks_circos_img", "_blank");
+                                    if (newWindow) {
+                                        newWindow.focus();
+                                    } else {
+                                        console.error("Failed to open new window.");
+                                    }
+                                } else {
+                                    console.error("Error sending data:", xhr.statusText);
+                                }
+                            }
+                        };
+                        var data = JSON.stringify({ selectedRows: selectedRows });
+                        xhr.send(data);
+                    });
+                </script>
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    var deselectAllBtn = document.getElementById("deselectAllBtn");
+
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    deselectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = false;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "RPs_gene_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+
+            {% if not_found_geneids %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Not found genes<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-550%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in not_found_geneids %}
+                                <tr>
+                                    <td>{{ pair }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-sm-2"></div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable2').DataTable();
+            });
+        </script>
+
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+{% endblock %}
+
+{% block switch %}
+{% endblock %}
+
+{% block list_js %}
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
+

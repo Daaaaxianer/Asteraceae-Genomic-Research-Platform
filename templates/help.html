@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon" xmlns=""/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/slick-theme.css" />
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../static/css/style.css" rel="stylesheet" />
+    <link href="../static/css/responsive.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../static/vendor/js/api.js"></script>
+{% endblock %}
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png)"><b>Help</b><i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-3 bg-light">
+            <ol class="flex-column">
+                <li><a href="#JBrowse">JBrowse</a></li>
+
+                <li><a href="#event_genes">Six event-related genes</a></li>
+                <li><a href="#event_genes">Structural domain statistics of related legumes</a></li>
+                <li><a href="#event_genes">Structural domain statistics of related legumes</a></li>
+            </ol>
+        </div>
+
+        <div class="col-9">
+            <div class="container contentTitle" id="expression">
+                <h4 style="margin-bottom: 20px;"><b>JBrowse</b></h4>
+                <p style="margin-left: 10px">How to add a new genome view?</p>
+                <img src="../static/image/JBrowse1.png" alt="" style="width: 800px">
+            </div>
+
+            <div class="container contentTitle" id="expression">
+                <p style="margin-left: 10px">How to select a sequence?</p>
+                <img src="../static/image/JBrowse2.png" alt="" style="width: 800px">
+            </div>
+
+
+            <div class="container contentTitle" id="genomeInfo">
+                <h4 style="margin-bottom: 20px;"><b>2022/09/24</b></h4>
+                <p style="margin-left: 10px">Online tool of Phylogenetics is added.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

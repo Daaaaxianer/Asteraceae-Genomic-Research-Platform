@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#orthofinder').DataTable({
+                "ajax": "../../static/orthofinder_json/Orthogroups.GeneCount.json",
+                "deferRender": true,
+                "scrollX": true
+            });
+        });
+    </script>
+    <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Orthologous </b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Using the model plant Arabidopsis thaliana as a reference, <strong>1,097,511</strong> genes from <strong>180</strong> trait-associated gene families across <strong>53</strong> Asteraceae species and <strong>6</strong> outgroups have been identified. Users can determine the gene family to which a sequence belongs by performing a BLAST match. Alternatively, by selecting a gene family of interest—such as MADS-box or HSF—the webpage will display all members of that gene family across all Asteraceae plants. We developed the <strong>Fami-Tree</strong> and <strong>Fami-Circos</strong> tools for studying the phylogeny and gene duplication-driven expansion of families.
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 90%" src="../../static/image/orthofinder.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div>
+        <table id="orthofinder" class="display container">
+            <thead>
+                <tr>
+                    <th>Orthogroup</th>
+                    <th>Total</th>
+                    <th>Tree</th>
+                    <th>A.duranensis</th>
+                    <th>A.edgeworthii</th>
+                    <th>A.evenia</th>
+                    <th>A.hypogaea</th>
+                    <th>A.ipaensis</th>
+                    <th>A.monticola</th>
+                    <th>A.precatorius</th>
+                    <th>B.variegata</th>
+                    <th>C.arietinum</th>
+                    <th>C.cajan</th>
+                    <th>D.odorifera</th>
+                    <th>G.max</th>
+                    <th>G.soja</th>
+                    <th>L.albus</th>
+                    <th>L.angustifolius</th>
+                    <th>L.japonicus</th>
+                    <th>M.albus</th>
+                    <th>M.truncatula</th>
+                    <th>P.sativum</th>
+                    <th>P.vulgaris</th>
+                    <th>S.suberectus</th>
+                    <th>S.tora</th>
+                    <th>T.pratense</th>
+                    <th>T.subterranum</th>
+                    <th>V.faba</th>
+                    <th>V.radiata</th>
+                    <th>V.vinifera</th>
+                </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+        <div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

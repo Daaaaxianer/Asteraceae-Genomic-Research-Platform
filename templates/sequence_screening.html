@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SS-extractor - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .form-control-lg {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control-lg:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-right: none;
+        }
+
+        .btn-submit-custom {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit-custom:hover {
+            background-color: #219150;
+            border-color: #219150;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(33, 145, 80, 0.3);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .loading-area {
+            margin-top: 25px;
+            min-height: 30px;
+            display: none;
+            text-align: center;
+        }
+
+        .text-loading {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-left: 12px;
+            font-size: 0.95rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">SS-extractor</h2>
+            <p class="section-subtitle">Sequence Screening: Extract Records by ID</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="tool-header">
+                    Input Files
+                </h3>
+
+                <div class="alert alert-light border mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill text-success"></i>
+                    Upload an <strong>ID list</strong> and at least one data file (Protein, CDS, or GFF). The tool will filter the data files and return a ZIP archive containing the matched records.
+                </div>
+
+                <form id="ssForm" action="{% url 'sequence_screening_url' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="id_file" class="form-label text-danger mb-0">
+                                <i class="bi bi-list-check"></i> ID List File (Required)
+                            </label>
+                            <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/sequence_screening/blast_result_sequence.txt' %}" download="blast_result_sequence.txt" class="btn-example-tag">
+                                <i class="bi bi-download me-1"></i> Example
+                            </a>
+                        </div>
+                        <input type="file" class="form-control form-control-lg" id="id_file" name="id_file" required>
+                        <div class="form-text text-muted">A text file with one ID per line (or IDs in the first column).</div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="protein_file" class="form-label mb-0">
+                                    <i class="bi bi-capsule"></i> Protein Sequence File (.fasta)
+                                </label>
+                                <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/sequence_screening/pep.fasta' %}" download="pep.fasta" class="btn-example-tag">
+                                    <i class="bi bi-download me-1"></i> Example
+                                </a>
+                            </div>
+                            <input type="file" class="form-control form-control-lg" id="protein_file" name="protein_file">
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="cds_file" class="form-label mb-0">
+                                    <i class="bi bi-dna"></i> Gene/CDS Sequence File (.fasta)
+                                </label>
+                                <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/sequence_screening/cds.fasta' %}" download="cds.fasta" class="btn-example-tag">
+                                    <i class="bi bi-download me-1"></i> Example
+                                </a>
+                            </div>
+                            <input type="file" class="form-control form-control-lg" id="cds_file" name="cds_file">
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="gff_file" class="form-label mb-0">
+                                    <i class="bi bi-table"></i> GFF / Table File
+                                </label>
+                                <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/sequence_screening/gff.gff' %}" download="gff.gff" class="btn-example-tag">
+                                    <i class="bi bi-download me-1"></i> Example
+                                </a>
+                            </div>
+                            <input type="file" class="form-control form-control-lg" id="gff_file" name="gff_file">
+                            <div class="form-text text-muted">Extracts lines where the <strong>2nd column</strong> matches the ID (based on provided logic).</div>
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <div class="text-center">
+                        <button class="btn btn-submit-custom" type="button" onclick="go()">
+                            <i class="bi bi-file-earmark-zip"></i> Filter & Download ZIP
+                        </button>
+
+                        <div class="loading-area" id="loadingArea">
+                            <div class="spinner-border text-success" role="status" style="width: 1.5rem; height: 1.5rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="text-loading">Processing files... This may take a moment.</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        let ssDownloadCheckTimer = null;
+
+        function hideLoadingArea() {
+            var loading = document.getElementById("loadingArea");
+
+            if (loading) {
+                loading.style.display = "none";
+            }
+        }
+
+        function clearDownloadCookie() {
+            document.cookie = "ss_extractor_download=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        }
+
+        function startDownloadPolling() {
+            if (ssDownloadCheckTimer) {
+                window.clearInterval(ssDownloadCheckTimer);
+            }
+
+            ssDownloadCheckTimer = window.setInterval(function () {
+                if (document.cookie.indexOf("ss_extractor_download=done") !== -1) {
+                    window.clearInterval(ssDownloadCheckTimer);
+                    ssDownloadCheckTimer = null;
+                    clearDownloadCookie();
+                    hideLoadingArea();
+                }
+            }, 1000);
+        }
+
+        function go() {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('ssForm');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            var pFile = document.getElementById('protein_file').files.length;
+            var cFile = document.getElementById('cds_file').files.length;
+            var gFile = document.getElementById('gff_file').files.length;
+
+            if (pFile === 0 && cFile === 0 && gFile === 0) {
+                alert("Please upload at least one data file (Protein, CDS, or GFF) to filter.");
+                return;
+            }
+
+            clearDownloadCookie();
+            loading.style.display = "block";
+            startDownloadPolling();
+            form.submit();
+        }
+    </script>
+{% endblock %}

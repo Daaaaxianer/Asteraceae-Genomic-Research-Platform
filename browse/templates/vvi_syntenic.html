@@ -1,0 +1,558 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteraceae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/shuye.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+    <style>
+        .custom-btn {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            background-color: transparent;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+zJ3e4+78W5OwU6/A8gtt2Cxg4zg5hq6GwRbW4M" crossorigin="anonymous">
+    <style>
+        .form-check-label {
+            padding-left: 10px;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #visualization-container {
+            border: 1px solid black;
+            overflow: hidden;
+            cursor: move;
+        }
+
+        .circle {
+            fill: black;
+        }
+
+        .empty-circle {
+            fill: none;
+            stroke: black;
+            stroke-width: 1;
+        }
+
+        .gene-id {
+            pointer-events: auto; /* 设置基因 ID 可以被点击 */
+            cursor: pointer; /* 设置鼠标样式为手型 */
+            text-decoration: underline; /* 添加下划线效果 */
+        }
+
+        .gene-id-background {
+            fill: white;
+            stroke: none;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/syn_data/Vvi.json",
+                "deferRender": true,
+                "scrollX": true
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Hierarchical alignments of <em>V. vinifera</em><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Inter-genomic and intra-genomic comparisons can help reveal the structural complexity of Fabaceae genomes. We used <em>V. vinifera</em> and <em>P. vulgaris</em> as references, respectively, and by comparing homologous gene locus maps and <em>Ks</em> values between <em>V. vinifera</em> and Fabaceae, <em>P. vulgaris</em> and other Fabaceae, we could separate orthologous and paralogous genes produced by different polyploidization in the species genomes. We created two hierarchical lists of homologous genes using <em>V. vinifera</em> and <em>P. vulgaris</em> as references, respectively. The way to establish a hierarchical list of homologous genes can be found in some previously published articles.
+            <br>
+            &emsp;&emsp;Homologous alignments of Papilionoideae, Caesalpinioideae and Cercidoideae genomes with V. vinifera as a reference. The <em>V. vinifera</em> chromosomes form the innermost circle, and their paralogous genes in collinearity are linked by curving lines and corresponds colored according to the 7 core-eudicot-common ancestral chromosomes inferred previously <a href="https://onlinelibrary.wiley.com/doi/10.1111/pbi.13017" target="_blank">(Jaillon, et al. 2007)</a>.The <em>V. vinifera</em> chromosome region had 1, 2 and 2 orthologous regions in Papilionoideae, Caesalpinioideae and Cercidoideae genomes, respectively, and displayed in 65 circles, each circle represents one subgenome. Short line between two circles show colinear genes, which corresponds colors of Ch# encoded. The color scheme is shown at the bottom.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Leguminosae blast and match</b></a>
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/Vvi_circos.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="hierarchical_alignments" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="csrfmiddlewaretoken" value="ETMvg0ADLxPBNKuprWo21K1JkYQGJA7BBi7yMCA76LElpKTNYrXgPIWMFUqDgXL3">
+    
+
+        <div class="row">
+            <div class="col-sm-3" style="padding-top: 40px">
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Query Sequence</label>
+                     <button type="button" class="" id="query_sequence">Example</button>
+                    <div class="input-group">
+                        <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" required style="height: 200px"></textarea>
+                    </div>
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Or, Gene ID</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="" id="gene_id">Example</button>
+                    <div class="input-group">
+                         <input class="form-control" id="lastName" name="geneid" type="text" required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Line number</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="" id="lastName_line_number">Example</button>
+                    <div class="input-group">
+                         <input class="form-control" id="lastName_line" name="line_number" type="text" required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Valid line number is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="state" class="form-label">Species</label>
+                    <select class="form-control" id="state" name="sp_data_1" required>
+                        <option value="Adu">Arachis duranensis</option>
+                        <option value="Acco">Acacia confusa</option>
+                        <option value="Accr">Acacia crassicarpa</option>
+                        <option value="Aed">Amphicarpaea edgeworthii</option>
+                        <option value="Aev">Aeschynomene evenia</option>
+                        <option value="Ahy">Arachis hypogaea</option>
+                        <option value="Aip">Arachis ipaensis</option>
+                        <option value="Alju">Albizia julibrissin</option>
+                        <option value="Amo">Arachis monticola</option>
+                        <option value="Apr">Abrus precatorius</option>
+                        <option value="Arst">Arachis stenosperma</option>
+                        <option value="Bach">Bauhinia championii</option>
+                        <option value="Bisa">Biancaea sappan</option>
+                        <option value="Bva">Bauhinia variegata</option>
+                        <option value="Car">Cicer arietinum</option>
+                        <option value="Cca">Cajanus cajan</option>
+                        <option value="Dere">Delonix regia</option>
+                        <option value="Dod">Dalbergia odorifera</option>
+                        <option value="Enph">Entada phaseoloides</option>
+                        <option value="Glsi">Gleditsia sinensis</option>
+                        <option value="Gma">Glycine max</option>
+                        <option value="Gso">Glycine soja</option>
+                        <option value="Lal">Lupinus albus</option>
+                        <option value="Lan">Lupinus angustifolius</option>
+                        <option value="Lapu">Lablab purpureus</option>
+                        <option value="Lasa">Lathyrus sativus</option>
+                        <option value="Lele">Leucaena leucocephala</option>
+                        <option value="Lja">Lotus japonicus</option>
+                        <option value="Mal">Melilotus albus</option>
+                        <option value="Mepo">Medicago polymorpha</option>
+                        <option value="Mesa">Medicago sativa</option>
+                        <option value="Mibi">Mimosa bimucronata</option>
+                        <option value="Mtr">Medicago truncatula</option>
+                        <option value="Phac">Phaseolus acutifolius</option>
+                        <option value="Phco">Phaseolus coccineus</option>
+                        <option value="Prci">Prosopis cineraria</option>
+                        <option value="Psa">Pisum sativum</option>
+                        <option value="Pste">Psophocarpus tetragonolobus</option>
+                        <option value="Pte">Polygala tenuifolia</option>
+                        <option value="Pumo">Pueraria montana</option>
+                        <option value="Pvu">Phaseolus vulgaris</option>
+                        <option value="Rops">Robinia pseudoacacia</option>
+                        <option value="Seca">Sesbania cannabina</option>
+                        <option value="Spst">Sphenostylis stenocarpa</option>
+                        <option value="Ssu">Spatholobus suberectus</option>
+                        <option value="Sto">Senna tora</option>
+                        <option value="Tpr">Trifolium pratense</option>
+                        <option value="Trre">Trifolium repens</option>
+                        <option value="Tsu">Trifolium subterranum</option>
+                        <option value="Vian">Vigna angularis</option>
+                        <option value="Vifa">Vicia faba</option>
+                        <option value="Vimu">Vigna mungo</option>
+                        <option value="Viun">Vigna unguiculata</option>
+                        <option value="Vivi">Vicia villosa</option>
+                        <option value="Vra">Vigna radiata</option>
+                    </select>
+                </div>
+
+                <input class="w-100 btn btn-primary btn-lg col-md-12" type="submit" value="Search" id="submit_button">
+
+                <script>
+                    document.getElementById('submit_button').addEventListener('click', function(event) {
+                        var lineNumberInput = document.getElementById('lastName_line');
+                        var lineNumberValue = lineNumberInput.value.trim();
+
+                        if (lineNumberValue === '') {
+                            // 如果输入框为空，显示错误提示
+                            var invalidFeedback = lineNumberInput.parentElement.nextElementSibling;
+                            invalidFeedback.style.display = 'block';
+
+                            // 阻止表单提交
+                            event.preventDefault();
+                        }
+                    });
+                </script>
+            </div>
+
+            
+
+            <div class="col-sm-12">
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-12">
+                    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black; margin: 0; padding-bottom: 8px"><b>DecoBrowse</b><i></i>
+                    </h3>
+                </div>
+                <div style="padding-top: 10px; padding-bottom: 10px">
+                    <button type="button" class="btn btn-primary" onclick="toggleGeneIDs()">Toggle Gene IDs</button>
+                    <button type="button" class="btn btn-secondary" onclick="zoomIn()">Zoom In</button>
+                    <button type="button" class="btn btn-secondary" onclick="zoomOut()">Zoom Out</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetZoom()">Reset Zoom</button>
+                    <button type="button" class="btn btn-success" onclick="saveAsSVG()">Save as SVG</button>
+                </div>
+
+                <div id="visualization-container">
+                </div>
+                <script>
+                    const data = [
+                        
+                    ];
+
+                    const circleRadius = 15;
+                    const canvasWidth = 1130;
+                    const canvasHeight = 540;
+                    const rowSpacing = 30; // 行圆之间的间距
+                    const colSpacing = 50; // 列圆之间的间距
+                    let scale = 1;
+                    let offsetX = 0;
+                    let offsetY = 0;
+                    let initialScale = scale;
+                    let initialOffsetX = offsetX;
+                    let initialOffsetY = offsetY;
+
+                    const svg = d3.select("#visualization-container").append("svg")
+                        .attr("width", canvasWidth)
+                        .attr("height", canvasHeight)
+                        .attr("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`);
+
+                    const container = svg.append("g");
+
+                    const numRows = data.length;
+                    const numCols = data[0].length;
+
+                    // Draw vertical lines
+                    for (let colIndex = 1; colIndex <= numCols; colIndex++) {
+                        const x1 = colIndex * (circleRadius * 2 + colSpacing) - circleRadius;
+                        const y1 = 0;
+                        const x2 = x1;
+                        const y2 = numRows * (circleRadius * 2.5 + rowSpacing) - rowSpacing;
+                        container.append("line")
+                            .attr("x1", x1)
+                            .attr("y1", y1)
+                            .attr("x2", x2)
+                            .attr("y2", y2)
+                            .style("stroke", "black")
+                            .style("stroke-width", 1);
+                    }
+
+                    // Draw horizontal lines
+                    for (let rowIndex = 1; rowIndex <= numRows; rowIndex++) {
+                        const x1 = 0;
+                        const y1 = rowIndex * (circleRadius * 2 + rowSpacing) - circleRadius;
+                        const x2 = numCols * (circleRadius * 2.5 + colSpacing) - colSpacing;
+                        const y2 = y1;
+                        container.append("line")
+                            .attr("x1", x1)
+                            .attr("y1", y1)
+                            .attr("x2", x2)
+                            .attr("y2", y2)
+                            .style("stroke", "black")
+                            .style("stroke-width", 1);
+                    }
+
+                    function drawGeneID(x, y, geneID) {
+                        const text = container.append("text")
+                            .attr("class", "gene-id")
+                            .attr("x", x)
+                            .attr("y", y - circleRadius - 5)
+                            .attr("text-anchor", "middle")
+                            .attr("font-size", "12px")
+                            .text(geneID);
+                        const url = `/browse/gene_${geneID}/`;
+                        text.on("click", () => {
+                            window.location.href = url;
+                        });
+                    }
+
+                    // Draw circles and gene IDs
+                    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+                        // 生成随机颜色
+                        const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+
+                        for (let colIndex = 0; colIndex < numCols; colIndex++) {
+                            const x = colIndex * (circleRadius * 2 + colSpacing) + circleRadius + colSpacing;
+                            const y = rowIndex * (circleRadius * 2 + rowSpacing) + circleRadius + rowSpacing;
+                            const isFilled = data[rowIndex][colIndex] !== '.';
+                            const geneID = data[rowIndex][colIndex];
+
+                            if (isFilled) {
+                                // 解析基因ID获取正负链信息
+                                const geneInfo = geneID.split('_');
+                                const geneName = geneInfo[0];
+                                const strand = geneInfo[1];
+
+                                // 绘制长方形
+                                container.append("rect")
+                                    .attr("x", x - circleRadius / 2)
+                                    .attr("y", y - circleRadius / 4)
+                                    .attr("width", circleRadius)
+                                    .attr("height", circleRadius / 2)
+                                    .style("fill", randomColor)
+                                    .attr("class", "arrow");
+
+                                if (strand === '+') {
+                                    // 绘制向右的箭头
+                                    container.append("path")
+                                        .attr("d", `M${x - circleRadius},${y} L${x},${y - circleRadius / 2} L${x},${y + circleRadius / 2} Z`)
+                                        .attr("transform", `rotate(180, ${x}, ${y})`) // 将箭头旋转180度
+                                        .style("fill", randomColor)
+                                        .attr("class", "arrow");
+                                } else if (strand === '-') {
+                                    // 绘制向左的箭头
+                                    container.append("path")
+                                        .attr("d", `M${x - circleRadius},${y} L${x},${y - circleRadius / 2} L${x},${y + circleRadius / 2} Z`)
+                                        .style("fill", randomColor)
+                                        .attr("class", "arrow");
+                                }
+
+                                const text = container.append("text")
+                                    .attr("class", "gene-id")
+                                    .attr("x", x)
+                                    .attr("y", y - circleRadius - 5)
+                                    .attr("text-anchor", "middle") // 设置文本居中对齐
+                                    .attr("font-size", "12px") // 设置文本字体大小为12像素
+                                    .text(geneName);
+
+                                const textWidth = text.node().getBBox().width;
+                                const textHeight = text.node().getBBox().height;
+
+                                container.insert("rect", "text")
+                                    .attr("x", x - textWidth / 2 - 2)
+                                    .attr("y", y - circleRadius - textHeight - 8)
+                                    .attr("width", textWidth + 4)
+                                    .attr("height", textHeight + 4)
+                                    .style("fill", "white"); // 修改文字背景颜色为白色
+                                drawGeneID(x, y, geneName);
+                            } else {
+                                container.append("circle")
+                                    .attr("cx", x)
+                                    .attr("cy", y)
+                                    .attr("r", circleRadius / 3) // 设置空心圆的半径为实心圆的1/3
+                                    .style("stroke", "black") // 设置边框颜色为黑色
+                                    .style("stroke-width", "1px") // 设置边框宽度为1像素
+                                    .style("fill", "white") // 设置填充颜色为白色
+                                    .attr("class", "empty-circle");
+                            }
+                        }
+                    }
+
+
+                    function toggleGeneIDs() {
+                        const geneIDs = document.querySelectorAll(".gene-id, .gene-id-background");
+                        geneIDs.forEach(element => {
+                            const visibility = element.style.visibility;
+                            element.style.visibility = (visibility === "hidden") ? "visible" : "hidden";
+                        });
+                    }
+
+                    function zoomIn() {
+                        scale += 0.1;
+                        container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                    }
+
+                    function zoomOut() {
+                        scale -= 0.1;
+                        container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                    }
+
+                    function resetZoom() {
+                        scale = initialScale;
+                        offsetX = initialOffsetX;
+                        offsetY = initialOffsetY;
+                        container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                    }
+
+                    function saveAsSVG() {
+                        const svgString = new XMLSerializer().serializeToString(svg.node());
+                        const blob = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = url;
+                        link.download = "visualization.svg";
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }
+
+                    svg.call(d3.drag()
+                        .on("start", () => {
+                            container.attr("cursor", "grabbing");
+                        })
+                        .on("drag", (event) => {
+                            offsetX += event.dx;
+                            offsetY += event.dy;
+                            container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                        })
+                        .on("end", () => {
+                            container.attr("cursor", "grab");
+                        })
+                    );
+
+                </script>
+            </div>
+        </div>
+
+
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-rqzmzSGD9TXiUDwkGv1I4fWzG1+76FJf1awodmxMk1rEdqwy6cvBCsfzpfEfmi8p" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('checkAll').addEventListener('change', function () {
+        var checkboxes = document.querySelectorAll('.checkItem');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = document.getElementById('checkAll').checked;
+        });
+    });
+</script>
+
+
+
+        
+
+        
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable2').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable3').DataTable({
+                "language": {
+                    
+                    "info": "", // 取消 "Showing 1 to 10 of 100 entries"
+                    "infoEmpty": "", // 如果希望完全隐藏 "Showing 0 to 0 of 0 entries"，可以将这个选项设置为空字符串
+                    "infoFiltered": "" // 这个可以保留或删除，根据需要
+                },
+                
+            });
+        });
+    </script>
+
+
+<script>
+    document.getElementById('gene_id').addEventListener('click', function() {
+        var exampleText = `Adu10g02813`;
+        document.getElementById('lastName').value = exampleText;
+    });
+</script>
+
+<script>
+    document.getElementById('lastName_line_number').addEventListener('click', function() {
+        var exampleText = `9`;
+        document.getElementById('lastName_line').value = exampleText;
+    });
+</script>
+
+<script>
+    document.getElementById('query_sequence').addEventListener('click', function() {
+        var exampleText = `>ZPYcontig75_002250.1
+MQSLIKNATVETNLLYAMGEFNSGGSSGERYGLVQCSRDLTSDQCRQCLNAMLDQVPKCCATKVGWQVLAPSCLIKYDDFMFYKITTSQAPSPLLNSGNNKGTSKTKTVIIIIVSVLVALVLLSCGIYFLWRKNQSNHDALLSETTPISIHYNPYQGQGDDSLNADLPTIPLFWIRQNTNNFSDSCKLGEGGFGPVYKGSLQDGTEVAIKRLSKTSGQGLDEFKNEVIFIAKLQHRNLVRLLGCCVEENEKLLIYEYMSNSSLALHLFDVEKRKQLSWKVRMNIIKGIARGLLYLHEDSRLKIIHRDMKASNVLLDQDMNPKISDFGLARTFEKGQNEENTRRVMGTYGYMAPEYAMEGLYSVKSDVFSFGVLLLEIIAGKRNSGFYLSDHGQSLLVYSWKLWCEGECLELVDPILENTYIRSEVIRCIHIGLLCVQEDAIDRPIMSTVVVMLASETMTLPNPNHPAFSVGRKFGKEDESTKQSVVAEMEQYDLQRQRKDMKNKGRNVVWSIAMDKCLIEALAVQAKRGNKIDKCFNENAYTSACVAVNAQFNMNLNNQKVINRLKTIKKRYKVIKDMLSHDGFWWNPNTKMIECDSDELWKKYIAARPDARGFHGKQIEMYDELKIVCGNYQAPSRWARIKDGSQLMDMKNGVDESPSFVSPSSEDMSETDGTESYSTLPPEYCPMPDGFQEPPVAQPQRQQQKRPRTSEDALQDALMTVAASIRRLADAMERNKCSVDATELLEAVMEIDGLEEGKQMYAFEYLNADPVKARAFMTYNSRMRKIYLFKLFWWWR
+`;
+        document.getElementById('lastName_query_sequence').value = exampleText;
+    });
+</script>
+
+    <center>
+        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+    </center>
+    <script>
+        function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                hh1.style.display = "inline-block";
+                hh2.style.display = "inline-block"
+            }
+            document.getElementById('go').submit()
+        }
+    </script>
+    </form>
+</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -1,0 +1,1062 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene Expression Search - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+
+    <style>
+        /* 1. 强制页心宽度与主页绝对对齐 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 同步主页的白色内容卡片样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 同步主页标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 表单元素美化 */
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-label-fancy {
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-label-fancy::before {
+            content: "★";
+            color: #e67e22;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        /* 5. 渐变搜索按钮 */
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        /* 表格微调 */
+        .table-responsive { border-radius: 8px; overflow: hidden; }
+        th { background-color: #fff8f0 !important; color: #d35400 !important; border-bottom: 2px solid #ffe8d6 !important; }
+
+
+        /* ===================== 表格样式：同步 ancestral_chromosome_run.html ===================== */
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        .table-container {
+            background: #fff;
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            padding: 20px 20px 16px;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin-bottom: 22px;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-select {
+            color: #fff;
+            background: var(--dark-orange);
+            border: 1px solid var(--dark-orange);
+        }
+
+        .btn-select:hover {
+            color: #fff;
+            background: #b94a00;
+            border-color: #b94a00;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            color: var(--dark-orange);
+            background: #fff;
+            border: 1px solid #efc89a;
+        }
+
+        .btn-download:hover {
+            color: #b94a00;
+            background: #fff8ef;
+            border-color: #e8b66f;
+        }
+
+        .table-container .table-responsive {
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        .result-table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        .result-table td {
+            padding: 10px 15px !important;
+            vertical-align: middle;
+            white-space: nowrap;
+            border-bottom: 1px solid #edf0f2;
+        }
+
+        .result-table tbody tr:nth-child(even) {
+            background-color: #fffdf9;
+        }
+
+        .result-table tbody tr:hover {
+            background-color: #fff6eb;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+            width: 76px !important;
+            min-width: 76px;
+            padding-right: 15px !important;
+        }
+
+        table.dataTable thead th.checkbox-cell::before,
+        table.dataTable thead th.checkbox-cell::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        #myTable th:nth-child(2),
+        #myTable td:nth-child(2) {
+            min-width: 150px;
+        }
+
+        #myTable th:nth-child(3),
+        #myTable td:nth-child(3) {
+            min-width: 100px;
+        }
+
+        #myTable th:nth-child(4),
+        #myTable td:nth-child(4),
+        #myTable th:nth-child(5),
+        #myTable td:nth-child(5),
+        #myTable th:nth-child(6),
+        #myTable td:nth-child(6) {
+            min-width: 100px;
+        }
+
+        .current-page-select {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .current-page-select input {
+            margin: 0;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center;
+            row-gap: 12px;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #f0e4d8;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px;
+            border: 1px solid #d9e0e6;
+            border-radius: 7px;
+            background-color: #fff;
+            color: #2c3e50;
+            box-shadow: none;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px;
+            margin: 0;
+            padding: 4px 28px 4px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px;
+            margin: 0;
+            padding: 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+            outline: 0;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .dataTables_wrapper .pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4;
+            background: #fff;
+            color: #44515c;
+            box-sizing: border-box;
+            box-shadow: none;
+            font-weight: 700;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link {
+            color: #fff;
+            background: var(--dark-orange);
+            border-color: var(--dark-orange);
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+            color: var(--dark-orange);
+            background: #fff8ef;
+            border-color: #efc89a;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link {
+            color: #b6c0c9;
+            background: #f8fafb;
+            border-color: #e8edf1;
+        }
+
+        .page-jump-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5f6b76;
+            font-size: 0.92rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .page-jump-input {
+            width: 58px;
+            height: 36px;
+            padding: 0 8px;
+            border: 1px solid #d8dee4;
+            border-radius: 7px;
+            color: #2c3e50;
+            text-align: center;
+            font-weight: 700;
+            outline: 0;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+        }
+
+        .page-jump-total {
+            color: #8a96a3;
+        }
+
+        .page-jump-btn {
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #efc89a;
+            border-radius: 7px;
+            background: #fff8ef;
+            color: var(--dark-orange);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df;
+            border-color: #e8b66f;
+        }
+
+        @media (max-width: 576px) {
+            .content-box-wrapper {
+                padding: 28px 18px;
+            }
+
+            .action-row {
+                align-items: stretch;
+            }
+
+            .action-group,
+            .btn-custom {
+                width: 100%;
+            }
+
+            .btn-custom {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                text-align: center;
+            }
+
+            .dataTables_wrapper .pagination {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_paginate {
+                justify-content: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">Gene Expression Search</h2>
+            <p class="section-subtitle">Integrated processing of Asteraceae multi-omics expression data</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-11">
+                <p style="text-align: justify; color: #5d4037; line-height: 1.8; font-size: 1.05rem; font-weight: 500;">
+&emsp;&emsp;Transcriptome broadly refers to the collection of all transcription products in a cell under a certain physiological condition, including messenger RNA, ribosomal RNA, transfer RNA and non-coding RNA; narrowly refers to the collection of all mRNAs. We collected <strong>6,734</strong> transcriptome sequencing sample entries from <strong>72</strong> tissues and stress conditions of <strong>57</strong> species, covering <strong>42</strong> sequenced Asteraceae genomes.<br>
+                    &emsp;&emsp;Our research institute utilizes transcriptomic data sourced from the SRA database. Through our processing pipeline, we analyze the raw data to derive gene expression data. Users have the ability to input their own sequences and obtain expression data for the gene ID most closely matching the species in our platform, achieved through optimal blast alignment. Additionally, we offer visual representation of the data through heatmaps, facilitating users in comprehending the data more conveniently and efficiently. We quantified the genome-wide gene expression of <strong>23</strong> tissues from diverse tissues of <strong>20</strong> important crops, including <strong>17</strong> new transcriptomes from <strong>6</strong> tissues (flower, leaf, root, rhizome, stem and fruit) of S. canadensis sequenced by us.
+                </p>
+            </div>
+        </div>
+
+        {% if error %}<p role="alert" class="alert alert-warning">{{ error }}</p>{% endif %}
+        <div class="row justify-content-center">
+            {% if not result %}
+            <div class="col-lg-5">
+                <div class="custom-form-card">
+                    <form action="{% url 'geneExpression_url' %}" method="post" enctype="multipart/form-data" id="searchForm">
+                        {% csrf_token %}
+
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label class="form-label-fancy">Query Sequence (FASTA)</label>
+                                    <button type="button" class="btn btn-example-tag" id="query_sequence_example">Example</button>
+                                </div>
+                                <textarea class="form-control mt-1" id="lastName_query_sequence" name="query_sequence" style="height: 140px; border-radius: 10px;" placeholder="Paste FASTA formatted sequences here..."></textarea>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label class="form-label-fancy">Or, Gene ID(s)</label>
+                                    <button type="button" class="btn btn-example-tag" id="gene_id_example">Example</button>
+                                </div>
+                                <textarea class="form-control mt-1" id="lastName_gene_id" name="geneid" style="height: 100px; border-radius: 10px;" placeholder="Input gene IDs (one per line)..."></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-fancy">Query Genome</label>
+                                <select class="form-select" name="sp_data_1" required style="border-radius: 8px; height: 45px;">
+{% for code, label in expression_species %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
+</select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-fancy">Expression Index</label>
+                                <select class="form-select" name="expression_index" required style="border-radius: 8px; height: 45px;">
+                                    <option value="FPKM" selected>FPKM</option>
+                                    <option value="TPM">TPM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-search-gradient" type="submit" onclick="go()">
+                                <i class="bi bi-search me-2"></i> Start Analysis
+                            </button>
+
+                            <div class="mt-3">
+                                <span id="wait1" class="spinner-border spinner-border-sm text-warning" style="display:none"></span>
+                                <span id="wait2" style="display:none; color: #d35400; font-weight: 700; font-size: 0.9rem;">&nbsp;&nbsp;ANALYZING DATA, PLEASE WAIT...</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-sm-7" style="padding-top: 10px">
+                <form action="transcriptome_run" method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="state" class="form-label">Species</label>
+                            <select class="form-control" id="initials" name="sp_data_1" style="font-style: italic" onchange="Change_second_selectwords();">
+                                <option value="Agad">Ageratina adenophora</option>
+                                <option value="Amar">Ambrosia artemisiifolia</option>
+                                <option value="Amtr">Ambrosia trifida</option>
+                                <option value="Aran">Artemisia annua</option>
+                                <option value="Arar">Artemisia argyi</option>
+                                <option value="Arla">Arctium lappa</option>
+                                <option value="Armi">Arctium minus</option>
+                                <option value="Artr">Artemisia tridentata subsp. tridentata</option>
+                                <option value="Caof">Calendula officinalis</option>
+                                <option value="Capy">Carduus pycnocephalus</option>
+                                <option value="Cati">Carthamus tinctorius</option>
+                                <option value="Cepa">Centrapalus pauciflorus</option>
+                                <option value="Ceso">Centaurea solstitialis</option>
+                                <option value="Chin">Chrysanthemum indicum</option>
+                                <option value="Chla">Chrysanthemum lavandulifolium</option>
+                                <option value="Chse">Chrysanthemum seticuspe</option>
+                                <option value="Chx">Chrysanthemum x morifolium</option>
+                                <option value="Cien">Cichorium endivia</option>
+                                <option value="Ciin">Cichorium intybus</option>
+                                <option value="Cobi">Cosmos bipinnatus</option>
+                                <option value="Cyca">Cynara cardunculus</option>
+                                <option value="Dapi">Dahlia pinnata</option>
+                                <option value="Erbr">Erigeron breviscapus</option>
+                                <option value="Erca">Erigeron canadensis</option>
+                                <option value="Flbi">Flaveria bidentis</option>
+                                <option value="Flbr">Flaveria brownii</option>
+                                <option value="Flli">Flaveria linearis</option>
+                                <option value="Flra">Flaveria ramosissima</option>
+                                <option value="Flro">Flaveria robusta</option>
+                                <option value="Flso">Flaveria sonorensis</option>
+                                <option value="Fltr">Flaveria trinervia</option>
+                                <option value="Hean">Helianthus annuus</option>
+                                <option value="Hetu">Helianthus tuberosus</option>
+                                <option value="Lasa">Lactuca sativa</option>
+                                <option value="Lase">Lactuca serriola</option>
+                                <option value="Mach">Matricaria chamomilla var. recutita</option>
+                                <option value="Mimi">Mikania micrantha</option>
+                                <option value="Plin">Pluchea indica</option>
+                                <option value="Pudy">Pulicaria dysenterica</option>
+                                <option value="Ruhi">Rudbeckia hirta</option>
+                                <option value="Sain">Saussurea involucrata</option>
+                                <option value="Sesq">Senecio squalidus</option>
+                                <option value="Sima">Silybum marianum</option>
+                                <option value="Smso">Smallanthus sonchifolius</option>
+                                <option value="Soca">Solidago canadensis</option>
+                                <option value="Stre">Stevia rebaudiana</option>
+                                <option value="Taco">Tanacetum coccineum</option>
+                                <option value="Taer">Tagetes erecta</option>
+                                <option value="Tako">Taraxacum kok-saghyz</option>
+                                <option value="Tamo">Taraxacum mongolicum</option>
+                                <option value="Tapa">Tanacetum parthenium</option>
+                                <option value="Tavu">Tanacetum vulgare</option>
+                                <option value="Trpr">Tragopogon pratensis</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="state" class="form-label">Tissues</label>
+                            <select class="form-control" id="top_domains" name="sp_data_2" required>
+                                <option value="leaf">leaf</option>
+                                <option value="root">root</option>
+                                <option value="stem">stem</option>
+                                <option value="flower">flower</option>
+{#                                <option value="stem">stem</option>#}
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <script>
+                            var first_keywords = {};
+                            //定义每个字母对应的第二个下拉框
+                            first_keywords['Agad'] = ["flower","leaf","petiole","root","stem"];
+                            first_keywords['Amar'] = ["flower","leaf","missing"];
+                            first_keywords['Amtr'] = ["flower","leaf","pollen","root","stem"];
+                            first_keywords['Aran'] = ["bud","epidermis","flower","leaf","not collected","petiole","root","seed","stem","trichome"];
+                            first_keywords['Arar'] = ["leaf","rhizome","root","stem","trichome"];
+                            first_keywords['Arla'] = ["leaf","root"];
+                            first_keywords['Armi'] = ["missing"];
+                            first_keywords['Artr'] = ["leaf","root"];
+                            first_keywords['Caof'] = ["missing"];
+                            first_keywords['Capy'] = ["leaf"];
+                            first_keywords['Cati'] = ["cotyledon","florets","flower","leaf","petal","root","seed","stem"];
+                            first_keywords['Cepa'] = ["leaf"];
+                            first_keywords['Ceso'] = ["leaf","missing","seed"];
+                            first_keywords['Chin'] = ["bud","flower","leaf","missing","root","stem"];
+                            first_keywords['Chla'] = ["bud","leaf"];
+                            first_keywords['Chse'] = ["leaf","root","stem"];
+                            first_keywords['Chx'] = ["anther","apex","bud","disk floret","disk florets","djd","djr","flower","leaf","non-petals","petals","petals-","ray floret","ray florets","root","stem","stigmas-","tjd","tjr"];
+                            first_keywords['Cien'] = ["leaf"];
+                            first_keywords['Ciin'] = ["anther","bud","cortex","flower","hypodermis","latex","laticifer","leaf","ligules from individual plant","ovules from individual plant","petals from individual plant","phloem","root","seed","stem","vascular cylinder"];
+                            first_keywords['Cobi'] = ["leaf"];
+                            first_keywords['Cyca'] = ["calus","leaf","mixed tissues","reproductive tissue","vegetative tissue"];
+                            first_keywords['Dapi'] = ["floret petals","leaf","root","stem","white petal","white petal tissue","yellow petal","yellow petal tissue"];
+                            first_keywords['Erbr'] = ["flower","leaf","peduncle","root","stem"];
+                            first_keywords['Erca'] = ["aboveground biomass","leaf"];
+                            first_keywords['Flbi'] = ["leaf"];
+                            first_keywords['Flbr'] = ["leaf"];
+                            first_keywords['Flli'] = ["leaf"];
+                            first_keywords['Flra'] = ["leaf","whole plant"];
+                            first_keywords['Flro'] = ["leaf","whole plant"];
+                            first_keywords['Flso'] = ["leaf","whole plant"];
+                            first_keywords['Fltr'] = ["leaf","whole plant"];
+                            first_keywords['Hean'] = ["after h","axil","cotyledon","embryo","endosperm","flower","hypocotyl","leaf","ligule","nectaries","nectary tissue","peg h","petiole","pistil","pistils","pollen","ray florets","root","seed","stamen","stem","whole plant"];
+                            first_keywords['Hetu'] = ["blade","bud","flower","leaf","mixed samples","peel","root","sprout","stem","stolon","tuber"];
+                            first_keywords['Lasa'] = ["aerial tissue","callus","flower","latex","leaf","midrib","replicate=biological repetition","root","seed","stem","tissue"];
+                            first_keywords['Lase'] = ["leaf","root"];
+                            first_keywords['Mach'] = ["flower"];
+                            first_keywords['Mimi'] = ["bud","flower","internode","leaf","missing","post-internode","pre-internode","r--","root","seed","stem"];
+                            first_keywords['Plin'] = ["leaf"];
+                            first_keywords['Pudy'] = ["missing"];
+                            first_keywords['Ruhi'] = ["petal base","petal tip"];
+                            first_keywords['Sain'] = ["seed"];
+                            first_keywords['Sesq'] = ["leaf"];
+                            first_keywords['Sima'] = ["leaf","missing"];
+                            first_keywords['Smso'] = ["leaf"];
+                            first_keywords['Soca'] = ["flower","leaf","root"];
+                            first_keywords['Stre'] = ["cutting","leaf","root","stem"];
+                            first_keywords['Taco'] = ["flower","leaf"];
+                            first_keywords['Taer'] = ["flower","leaf","tagetes erecta"];
+                            first_keywords['Tako'] = ["flower","latex","leaf","root","seed"];
+                            first_keywords['Tamo'] = ["flower","leaf","root","whole plant"];
+                            first_keywords['Tapa'] = ["flower"];
+                            first_keywords['Tavu'] = ["leaf"];
+                            first_keywords['Trpr'] = ["flower"];
+
+
+                            function Change_second_selectwords() {
+                                //根据id找到两个下拉框对象
+                                var target1 = document.getElementById("initials");
+                                var target2 = document.getElementById("top_domains");
+                                //得到第一个下拉框的内容
+                                var selected_initial = target1.options[target1.selectedIndex].value;
+
+                                //清空第二个下拉框
+                                while (target2.options.length) {
+                                    target2.remove(0);
+                                }
+                                //根据第一个下拉框的内容找到对应的列表
+                                var initial_list = first_keywords[selected_initial];
+                                var value;
+                                if (initial_list) {
+                                    for (var i = 0; i < initial_list.length; i++) {
+                                        var item = new Option(initial_list[i], value=initial_list[i]);
+                                        //将列表中的内容加入到第二个下拉框
+                                        target2.options.add(item);
+                                    }
+                                }
+                            }
+                        </script>
+
+                        <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="submit">
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if plot_html or result %}
+        <div class="row mt-5 pt-4">
+            {% if plot_html %}
+            <div class="col-12 text-center mb-5">
+                <h4 style="color: #d35400; font-weight: 800; border-left: 4px solid #e67e22; padding-left: 15px; display: inline-block;">Heatmap Visualization</h4>
+                <div id="plot" class="mt-4 p-4 border rounded bg-white shadow-sm">
+                    {{ plot_html|safe }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if result %}
+            <div class="col-12 mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <h4 style="color: #d35400; font-weight: 800; border-left: 4px solid #e67e22; padding-left: 15px;">Search Results</h4>
+                </div>
+                <div class="table-container">
+                    <div class="action-row">
+                        <div class="action-group">
+                            <button type="button" id="selectAllBtn" class="btn-custom btn-select">
+                                <i class="fas fa-check-square"></i> Select All
+                            </button>
+                            <button type="button" id="download-btn" class="btn-custom btn-download">
+                                <i class="fas fa-download"></i> Download Selected
+                            </button>
+                        </div>
+                        <div class="text-muted fw-semibold">{{ result|length }} matching entries</div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover result-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-cell">
+                                        <label class="current-page-select">
+                                            <input type="checkbox" class="js-select-current-page">
+                                            <span>Select</span>
+                                        </label>
+                                    </th>
+                                    {% for column in expression_columns %}<th>{{ column }}</th>{% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pair in result %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+{% for value in pair %}<td>{% if forloop.first %}<a href="{% url 'gene_detail' geneid=value %}">{{ value }}</a>{% else %}{{ value|default_if_none:"" }}{% endif %}</td>{% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 1. Example Button Logic ---
+            const exampleSeqData = ">ZPYcontig75_002250.1\nMGDYSNDPLMRNQNAAVQARTKAQNRANVLQLKLIGQSHPTGLTANLLKLFEPRPPLEYKPPPEKRKCPPLTGMAQFVSKFAEPADPEYAPPKPVVETPVQRRERIHKLRLEKGAAKAAEELEKYDPHNDPNVSGDPYKTLFVARLSYETTESRIKREFESYGAIKRVRLVTDTVTNKPRGYAFIEYLHTRDMKGSYWLYAIDMSLLLILYFIDTVNYTAAYKQADGRKIEGRRVLVDVERGRTVPNWRPRRLGGGLGTTRMGVEVNQHDSGRDQLQSGPSRSEEPRVREDRHGDRDREKSRERGKDRDREQERSREHSSDRGRDRDYRDDRHNKDRDRHRDRDRERDRDRGRDRDRGRDRDRGRDRDRDRDRDRDRGREHDRHRDRDRDYEVGETDRGQSHDKETDYDHELKHDVDRHGERDRDYEPEDDRGWSNQSAHGHRHADPDHNPDSYDHYEHHQRRGHYDDGDDRGNHYSRYPDHDRMEDDYPTERATSEPRERERNRDMDREYHRSVRSHSREYDY";
+            const exampleGeneIdData = "Aann1g00037\nAann1g00038\nAann1g00039\nAann1g00040\nAann1g00041";
+
+            const btnSeq = document.getElementById('query_sequence_example');
+            const txtSeq = document.getElementById('lastName_query_sequence');
+            if (btnSeq && txtSeq) {
+                btnSeq.addEventListener('click', function() {
+                    txtSeq.value = exampleSeqData;
+                });
+            }
+
+            const btnGene = document.getElementById('gene_id_example');
+            const txtGene = document.getElementById('lastName_gene_id');
+            if (btnGene && txtGene) {
+                btnGene.addEventListener('click', function() {
+                    txtGene.value = exampleGeneIdData;
+                });
+            }
+
+            // --- 2. DataTables & Checkbox Logic: same style/behavior as ancestral_chromosome_run.html ---
+            if (typeof $ !== 'undefined') {
+                var expressionTable = null;
+                var selectAllBtn = document.getElementById("selectAllBtn");
+                var downloadBtn = document.getElementById("download-btn");
+
+                function installPageJump(table, tableSelector) {
+                    var tableId = $(tableSelector).attr('id');
+                    var wrapper = $('#' + tableId + '_wrapper');
+
+                    function renderPageJump() {
+                        var info = table.page.info();
+                        var paginate = wrapper.find('.dataTables_paginate');
+                        paginate.find('.page-jump-control').remove();
+
+                        if (!info || info.pages <= 1) {
+                            return;
+                        }
+
+                        var inputId = tableId + '_page_jump';
+                        var control = $('<div class="page-jump-control" aria-label="Jump to page"></div>');
+                        var input = $('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                            id: inputId,
+                            min: 1,
+                            max: info.pages,
+                            value: info.page + 1,
+                            'aria-label': 'Page number'
+                        });
+                        var total = $('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+                        var button = $('<button type="button" class="page-jump-btn">Go</button>');
+
+                        function jumpToPage() {
+                            var requestedPage = parseInt(input.val(), 10);
+                            if (isNaN(requestedPage)) {
+                                input.val(info.page + 1).focus();
+                                return;
+                            }
+
+                            requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                            table.page(requestedPage - 1).draw('page');
+                        }
+
+                        input.on('keydown', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                jumpToPage();
+                            }
+                        });
+                        button.on('click', jumpToPage);
+
+                        control
+                            .append($('<label></label>').attr('for', inputId).text('Page'))
+                            .append(input)
+                            .append(total)
+                            .append(button);
+                        paginate.append(control);
+                    }
+
+                    table.on('draw', renderPageJump);
+                    renderPageJump();
+                }
+
+                if ($('#myTable').length) {
+                    expressionTable = $('#myTable').DataTable({
+                        paging: true,
+                        info: true,
+                        searching: true,
+                        lengthChange: true,
+                        pageLength: 10,
+                        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                        pagingType: 'simple_numbers',
+                        scrollX: true,
+                        autoWidth: false,
+                        columnDefs: [
+                            { orderable: false, targets: 0 }
+                        ]
+                    });
+
+                    expressionTable.on('draw', updateSelectionControls);
+                    installPageJump(expressionTable, '#myTable');
+                }
+
+                function tableRows(selector) {
+                    if (!expressionTable) {
+                        return $();
+                    }
+                    return $(expressionTable.rows(selector).nodes());
+                }
+
+                function allFilteredCheckboxes() {
+                    return tableRows({ search: 'applied' }).find('.row-checkbox');
+                }
+
+                function currentPageCheckboxes() {
+                    return tableRows({ page: 'current' }).find('.row-checkbox');
+                }
+
+                function updateSelectionControls() {
+                    var allBoxes = allFilteredCheckboxes();
+                    var checkedAllCount = allBoxes.filter(':checked').length;
+                    var allSelected = allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+
+                    if (selectAllBtn) {
+                        selectAllBtn.innerHTML = allSelected
+                            ? '<i class="fas fa-square"></i> Clear Selection'
+                            : '<i class="fas fa-check-square"></i> Select All';
+                    }
+
+                    var currentPageSelectors = $('.js-select-current-page');
+                    if (currentPageSelectors.length) {
+                        var pageBoxes = currentPageCheckboxes();
+                        var checkedPageCount = pageBoxes.filter(':checked').length;
+                        currentPageSelectors.prop('checked', pageBoxes.length > 0 && checkedPageCount === pageBoxes.length);
+                        currentPageSelectors.each(function () {
+                            this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+                        });
+                    }
+                }
+
+                if (selectAllBtn) {
+                    selectAllBtn.addEventListener("click", function () {
+                        var allBoxes = allFilteredCheckboxes();
+                        var shouldSelect = allBoxes.filter(':checked').length !== allBoxes.length;
+                        allBoxes.prop('checked', shouldSelect);
+                        updateSelectionControls();
+                    });
+                }
+
+                $(document).on('change', '.js-select-current-page', function () {
+                    currentPageCheckboxes().prop('checked', this.checked);
+                    updateSelectionControls();
+                });
+
+                $(document).on('change', '#myTable .row-checkbox', function () {
+                    updateSelectionControls();
+                });
+
+                if (expressionTable) {
+                    $('#myTable').on('length.dt search.dt order.dt page.dt', function () {
+                        setTimeout(updateSelectionControls, 0);
+                    });
+                }
+
+                if (downloadBtn) {
+                    downloadBtn.addEventListener("click", function () {
+                        var rows = [];
+                        tableRows({ search: 'applied' }).each(function () {
+                            var row = this;
+                            var checkbox = row.querySelector('.row-checkbox');
+                            if (!checkbox || !checkbox.checked) {
+                                return;
+                            }
+
+                            var data = [];
+                            row.querySelectorAll("td").forEach(function (cell, index) {
+                                if (index > 0) {
+                                    data.push(cell.textContent.trim());
+                                }
+                            });
+                            rows.push(data.join("\t"));
+                        });
+
+                        if (rows.length === 0) {
+                            alert("Please select at least one row to download.");
+                            return;
+                        }
+
+                        var header = Array.from(document.querySelectorAll("#myTable thead th")).slice(1).map(th => th.textContent.trim()).join("\t");
+                        var blob = new Blob([[header].concat(rows).join("\n")], {type: "text/plain"});
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "AGRP_Expression_Data.txt";
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
+                    });
+                }
+
+                updateSelectionControls();
+            }
+        });
+
+        /* Global function called by submit button */
+        function go() {
+            var w1 = document.getElementById("wait1");
+            var w2 = document.getElementById("wait2");
+            if(w1) w1.style.display = "inline-block";
+            if(w2) w2.style.display = "inline-block";
+        }
+    </script>
+{% endblock %}

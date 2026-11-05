@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Pathway<i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;KEGG PATHWAY is a collection of manually drawn pathway maps representing our knowledge of the molecular interaction, reaction and relation networks for:
+1. <a href="https://www.genome.jp/kegg/pathway.html#metabolism">Metabolism</a>
+2. <a href="https://www.genome.jp/kegg/pathway.html#genetic">Genetic Information Processing</a>
+3. <a href="https://www.genome.jp/kegg/pathway.html#environmental">Environmental Information Processing</a>
+4. <a href="https://www.genome.jp/kegg/pathway.html#cellular">Cellular Processes</a>
+5. <a href="https://www.genome.jp/kegg/pathway.html#organismal">Organismal Systems</a>
+6. <a href="https://www.genome.jp/kegg/pathway.html#disease">Human Diseases</a>
+7. <a href="https://www.genome.jp/kegg/pathway.html#drug">Drug Development</a>.
+            <br>&emsp;&emsp; Pathway annotation of 25 Fabaceae genomes were performed using <a href="https://www.kegg.jp/ghostkoala/"><b>GhostKoala</b></a>, respectively, it is being a tool provided by the Kyoto Encyclopedia of Genes and Genomes (<a
+                href="http://www.genome.jp/kegg/"><b>http://www.genome.jp/kegg</b></a>).
+            <br>&emsp;&emsp;Select a legume and click Submit to see the results of the gene annotation for the changed species. The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 90%" src="../../static/image/map03040.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+
+        <form action="kegg_index_run" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="state" class="form-label">species database</label>
+                    <select class="form-control" id="state" name="sp_data_1" required>
+                        <option value="Adu">Arachis duranensis</option>
+                        <option value="Aev">Aeschynomene evenia</option>
+                        <option value="Ahy">Arachis hypogaea</option>
+                        <option value="Aip">Arachis ipaensis</option>
+                        <option value="Amo">Arachis monticola</option>
+                        <option value="Aed">Amphicarpaea edgeworthii</option>
+                        <option value="Apr">Abrus precatorius</option>
+                        <option value="Bva">Bauhinia variegata</option>
+                        <option value="Car">Cicer arietinum</option>
+                        <option value="Cca">Cajanus cajan</option>
+                        <option value="Dod">Dalbergia odorifera</option>
+                        <option value="Gma">Glycine max</option>
+                        <option value="Gso">Glycine soja</option>
+                        <option value="Lal">Lupinus albus</option>
+                        <option value="Lan">Lupinus angustifolius</option>
+                        <option value="Lja">Lotus japonicus</option>
+                        <option value="Mal">Melilotus albus</option>
+                        <option value="Mtr">Medicago truncatula</option>
+                        <option value="Psa">Pisum sativum</option>
+                        <option value="Pvu">Phaseolus vulgaris</option>
+                        <option value="Ssu">Spatholobus suberectus</option>
+                        <option value="Sto">Senna tora</option>
+                        <option value="Tsu">Trifolium subterranum</option>
+                        <option value="Tpr">Trifolium pratense</option>
+                        <option value="Vra">Vigna radiata</option>
+                        <option value="Vfa">Vicia faba</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+
+                <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">
+            </div>
+        </form>
+    </div>
+
+
+{#    <iframe src="http://47.92.161.27:8523/#/dashboard/bn" style="height: 1400px;width: 100%"></iframe>#}
+
+{% endblock %}

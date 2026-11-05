@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Glycine max</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Glycine; Glycine subgen. Soja</p>
+                    <p><b>Abbr: </b> Gma</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=40</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Gma.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> The soybean, soy bean, or soya bean (Glycine max) is a species of legume native to East Asia, widely grown for its edible bean, which has numerous uses.
+Traditional unfermented food uses of soybeans include soy milk, from which tofu and tofu skin are made. Fermented soy foods include soy sauce, fermented bean paste, nattō, and tempeh. Fat-free (defatted) soybean meal is a significant and cheap source of protein for animal feeds and many packaged meals. For example, soybean products, such as textured vegetable protein (TVP), are ingredients in many meat and dairy substitutes.
+Soybeans contain significant amounts of phytic acid, dietary minerals and B vitamins. Soy vegetable oil, used in food and industrial applications, is another product of processing the soybean crop. Soybean is the most important protein source for feed farm animals (that in turn yields animal protein for human consumption).
+                    </p>
+                    <p><b>Distribution: </b> Amur, China North-Central, China South-Central, China Southeast, Hainan, Inner Mongolia, Japan, Khabarovsk, Korea, Laos, Manchuria, Nansei-shoto, Primorye, Qinghai, Taiwan, Thailand, Tibet, Vietnam, Xinjiang</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://academic.oup.com/g3journal/article/11/10/jkab272/6332009">Genome assembly of the popular Korean soybean cultivar Hwangkeum</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> All whole-genome sequencing data are available at NCBI (Bioproject PRJNA628825) except a previously reported set of paired-end short reads downloaded from NCBI with accession number: SRX6472178 (Kim et al. 2021). The genome assembly and annotation data of Hwangkeum v.1.0 is deposited at GenBank under the accession JAGRRG000000000. Supplementary material is available at figshare: <a href="https://doi.org/10.25387/g3.14445140">https://doi.org/10.25387/g3.14445140.</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

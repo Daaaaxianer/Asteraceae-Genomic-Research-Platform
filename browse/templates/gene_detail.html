@@ -1,0 +1,927 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene detail{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-orange: #e67e22;
+        --dark-orange: #d35400;
+        --light-bg: #fffbf7;
+        --soft-border: #eee;
+        --muted-text: #6c757d;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .page-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin: 40px auto;
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        min-height: 600px;
+    }
+
+    .main-title {
+        color: var(--dark-orange);
+        font-weight: 800;
+        margin-bottom: 34px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .page-wrapper.gene-error-page {
+        min-height: auto;
+        padding-bottom: 56px;
+    }
+
+    .gene-empty-state {
+        max-width: 760px;
+        margin: 8px auto 28px;
+        padding: 38px 24px 34px;
+        text-align: center;
+        border-top: 1px solid #f2d4ad;
+        border-bottom: 1px solid #f2d4ad;
+        background: linear-gradient(180deg, #fffdf9 0%, #fff8ef 100%);
+    }
+
+    .gene-empty-icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark-orange);
+        background: #fff3df;
+        border: 1px solid #f4cf9f;
+        border-radius: 50%;
+        font-size: 1.25rem;
+    }
+
+    .gene-empty-title {
+        margin: 0 0 10px;
+        color: #2c3e50;
+        font-size: 1.35rem;
+        font-weight: 700;
+    }
+
+    .gene-empty-message {
+        max-width: 620px;
+        margin: 0 auto 18px;
+        color: #7a4b18;
+        font-size: 0.98rem;
+        line-height: 1.7;
+    }
+
+    .gene-empty-submitted {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        color: #6c757d;
+        font-size: 0.92rem;
+    }
+
+    .gene-empty-submitted code {
+        padding: 5px 10px;
+        color: var(--dark-orange);
+        background: #fff;
+        border: 1px solid #efd8ba;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+
+    .gene-empty-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .gene-empty-btn {
+        min-width: 132px;
+        padding: 9px 16px;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .gene-empty-btn-primary {
+        color: #fff;
+        background: var(--dark-orange);
+        border: 1px solid var(--dark-orange);
+    }
+
+    .gene-empty-btn-primary:hover {
+        color: #fff;
+        background: #b94a00;
+        border-color: #b94a00;
+        transform: translateY(-1px);
+    }
+
+    .gene-empty-btn-secondary {
+        color: var(--dark-orange);
+        background: #fff;
+        border: 1px solid #efc89a;
+    }
+
+    .gene-empty-btn-secondary:hover {
+        color: #b94a00;
+        background: #fff8ef;
+        border-color: #e8b66f;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 34px 0 20px;
+        position: relative;
+    }
+
+    .section-header::before,
+    .section-header::after {
+        content: "";
+        flex: 1;
+        border-bottom: 2px dotted var(--primary-orange);
+        margin: 0 20px;
+        opacity: 0.5;
+    }
+
+    .section-title-box {
+        background: #fff;
+        padding: 0 15px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .section-title-text {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.35rem;
+        margin: 0;
+    }
+
+    .leaf-icon {
+        width: 24px;
+        height: auto;
+        margin: 0 auto 5px;
+        display: block;
+    }
+
+    .table-container {
+        background: #fff;
+        border: 1px solid #eadfd3;
+        border-radius: 8px;
+        padding: 20px 20px 16px;
+        box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+        margin-bottom: 22px;
+    }
+
+    .table-responsive {
+        margin: 0;
+    }
+
+    table.dataTable {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0;
+        margin: 0 !important;
+    }
+
+    table.dataTable thead th,
+    .result-table thead th {
+        background-color: var(--light-bg) !important;
+        color: var(--dark-orange) !important;
+        font-weight: 600;
+        border-bottom: 2px solid var(--primary-orange) !important;
+        padding: 12px 34px 12px 15px !important;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc,
+    table.dataTable thead .sorting_asc_disabled,
+    table.dataTable thead .sorting_desc_disabled {
+        background-position: right 10px center !important;
+        background-repeat: no-repeat !important;
+    }
+
+    table.dataTable thead > tr > th.sorting::before,
+    table.dataTable thead > tr > th.sorting::after,
+    table.dataTable thead > tr > th.sorting_asc::before,
+    table.dataTable thead > tr > th.sorting_asc::after,
+    table.dataTable thead > tr > th.sorting_desc::before,
+    table.dataTable thead > tr > th.sorting_desc::after,
+    table.dataTable thead > tr > th.sorting_asc_disabled::before,
+    table.dataTable thead > tr > th.sorting_asc_disabled::after,
+    table.dataTable thead > tr > th.sorting_desc_disabled::before,
+    table.dataTable thead > tr > th.sorting_desc_disabled::after {
+        right: 10px !important;
+    }
+
+    .result-table td {
+        padding: 10px 15px !important;
+        vertical-align: middle;
+        white-space: nowrap;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+    .result-table tbody tr:nth-child(even) {
+        background-color: #fffdf9;
+    }
+
+    .result-table tbody tr:hover {
+        background-color: #fff6eb;
+    }
+
+    .checkbox-cell {
+        text-align: center;
+        width: 76px !important;
+        min-width: 76px;
+        padding-right: 15px !important;
+    }
+
+    .select-current-page-checkbox {
+        margin: 0 7px 0 0;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .checkbox-cell span {
+        vertical-align: middle;
+    }
+
+    table.dataTable thead th.checkbox-cell::before,
+    table.dataTable thead th.checkbox-cell::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    #table_sequence th:nth-child(2),
+    #table_sequence td:nth-child(2),
+    #table_annotation th:nth-child(2),
+    #table_annotation td:nth-child(2),
+    #table_gene_family th:nth-child(2),
+    #table_gene_family td:nth-child(2),
+    #table_tf th:nth-child(2),
+    #table_tf td:nth-child(2),
+    #table_expression th:nth-child(2),
+    #table_expression td:nth-child(2) {
+        min-width: 150px;
+    }
+
+    #table_sequence th:nth-child(3),
+    #table_sequence td:nth-child(3),
+    #table_sequence th:nth-child(6),
+    #table_sequence td:nth-child(6),
+    #table_annotation th:nth-child(5),
+    #table_annotation td:nth-child(5),
+    #table_annotation th:nth-child(9),
+    #table_annotation td:nth-child(9),
+    #table_kegg th:nth-child(4),
+    #table_kegg td:nth-child(4),
+    #table_gene_family th:nth-child(6),
+    #table_gene_family td:nth-child(6) {
+        min-width: 220px;
+    }
+
+    .dataTables_wrapper {
+        color: #2c3e50;
+    }
+
+    .dataTables_wrapper > .row {
+        align-items: center;
+        row-gap: 12px;
+    }
+
+    .dataTables_wrapper > .row:first-child {
+        margin-bottom: 12px;
+    }
+
+    .dataTables_wrapper > .row:last-child {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #f0e4d8;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        margin: 0;
+    }
+
+    .dataTables_wrapper .dataTables_length label,
+    .dataTables_wrapper .dataTables_filter label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        color: #495057;
+        font-weight: 600;
+    }
+
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input {
+        height: 36px;
+        border: 1px solid #d9e0e6;
+        border-radius: 7px;
+        background-color: #fff;
+        color: #2c3e50;
+        box-shadow: none;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        min-width: 76px;
+        margin: 0;
+        padding: 4px 28px 4px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        min-width: 220px;
+        margin: 0;
+        padding: 6px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_length select:focus,
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+        outline: 0;
+    }
+
+    .dataTables_wrapper .dataTables_scroll {
+        border: 1px solid #eadfd3;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dataTables_wrapper .dataTables_scrollBody {
+        border-bottom: 0 !important;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        padding: 0 !important;
+        color: #5f6b76;
+        font-weight: 600;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button,
+    .dataTables_wrapper .dataTables_paginate .page-item {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .dataTables_wrapper .pagination {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 0;
+    }
+
+    .dataTables_wrapper .pagination .page-link {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px !important;
+        border: 1px solid #d8dee4;
+        background: #fff;
+        color: #44515c;
+        box-sizing: border-box;
+        box-shadow: none;
+        font-weight: 700;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dataTables_wrapper .pagination .page-item.active .page-link {
+        color: #fff;
+        background: var(--dark-orange);
+        border-color: var(--dark-orange);
+        box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+    }
+
+    .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        color: var(--dark-orange);
+        background: #fff8ef;
+        border-color: #efc89a;
+    }
+
+    .dataTables_wrapper .pagination .page-item.disabled .page-link {
+        color: #b6c0c9;
+        background: #f8fafb;
+        border-color: #e8edf1;
+    }
+
+    .page-jump-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #5f6b76;
+        font-size: 0.92rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .page-jump-input {
+        width: 58px;
+        height: 36px;
+        padding: 0 8px;
+        border: 1px solid #d8dee4;
+        border-radius: 7px;
+        color: #2c3e50;
+        text-align: center;
+        font-weight: 700;
+        outline: 0;
+    }
+
+    .page-jump-input:focus {
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+    }
+
+    .page-jump-total {
+        color: #8a96a3;
+    }
+
+    .page-jump-btn {
+        height: 36px;
+        padding: 0 12px;
+        border: 1px solid #efc89a;
+        border-radius: 7px;
+        background: #fff8ef;
+        color: var(--dark-orange);
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .page-jump-btn:hover {
+        background: #fff3df;
+        border-color: #e8b66f;
+    }
+
+    .action-btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid #f0e4d8;
+    }
+
+    .btn-custom {
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+    }
+
+    .btn-select {
+        color: #fff;
+        background: var(--dark-orange);
+        border-color: var(--dark-orange);
+    }
+
+    .btn-select:hover {
+        color: #fff;
+        background: #b94a00;
+        border-color: #b94a00;
+        transform: translateY(-1px);
+    }
+
+    .btn-download {
+        color: var(--dark-orange);
+        background: #fff;
+        border-color: #efc89a;
+    }
+
+    .btn-download:hover {
+        color: #b94a00;
+        background: #fff8ef;
+        border-color: #e8b66f;
+    }
+
+    @media (max-width: 576px) {
+        .page-wrapper {
+            padding: 28px 18px;
+        }
+
+        .section-header::before,
+        .section-header::after {
+            margin: 0 10px;
+        }
+
+        .gene-empty-state {
+            padding: 30px 16px;
+        }
+
+        .gene-empty-btn,
+        .btn-custom {
+            width: 100%;
+        }
+
+        .btn-custom {
+            justify-content: center;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 0;
+            width: 100%;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            text-align: center;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: center;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            justify-content: center;
+        }
+    }
+
+    .switch-query { margin: 1.25rem 0; color: #333; }
+    .switch-query span { margin-left: 1rem; }
+    .switch-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem 1.5rem; padding: 1.25rem 0 1.75rem; border-bottom: 1px solid #e7ddd4; }
+    .switch-index a { color: #944000; text-underline-offset: .2em; overflow-wrap: anywhere; }
+    .switch-index a span { display: block; color: #555; font-size: .85em; }
+    .switch-section { margin-top: 2.5rem; scroll-margin-top: 7rem; }
+    .switch-note, .switch-empty { color: #4b4b4b; line-height: 1.6; max-width: 75ch; }
+    .switch-empty { padding: 1rem 0; }
+    .switch-results .result-table td { max-width: 38rem; overflow-wrap: anywhere; }
+    .switch-sequence { max-width: 34rem; max-height: 12rem; overflow: auto; white-space: normal; overflow-wrap: anywhere; font-family: ui-monospace, Consolas, monospace; }
+    .switch-resource-links { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.5rem; margin-top: 1rem; }
+    .switch-resource-links a { color: #944000; text-underline-offset: .2em; }
+    .switch-resource-links form { margin: 0; }
+    .switch-index a:focus-visible, .switch-resource-links a:focus-visible, .switch-resource-links button:focus-visible { outline: 3px solid #944000; outline-offset: 3px; }
+    .switch-plot { margin: 1rem 0; max-width: 52rem; }
+    .switch-plot svg { display: block; width: 100%; height: auto; background: #fff; }
+    @media (max-width: 760px) { .switch-index { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; } }
+    @media (max-width: 440px) { .switch-index { grid-template-columns: minmax(0, 1fr); } .switch-query span { display: block; margin: .5rem 0 0; } }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper{% if error %} gene-error-page{% endif %}">
+        <div class="text-center">
+            <h2 class="main-title">Gene details</h2>
+        </div>
+
+        {% if error %}
+            <div class="gene-empty-state" role="status" aria-live="polite">
+                <div class="gene-empty-icon" aria-hidden="true">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="gene-empty-title">No matching gene record</h3>
+                <p class="gene-empty-message">{{ error }}</p>
+                {% if submitted_geneid %}
+                    <div class="gene-empty-submitted">
+                        <span>Submitted gene ID</span>
+                        <code>{{ submitted_geneid }}</code>
+                    </div>
+                {% endif %}
+                <div class="gene-empty-actions">
+                    <a href="#" class="gene-empty-btn gene-empty-btn-primary js-open-gene-search">
+                        <i class="fas fa-redo-alt"></i>
+                        Search again
+                    </a>
+                    <a href="{% url 'index_url' %}" class="gene-empty-btn gene-empty-btn-secondary">
+                        <i class="fas fa-home"></i>
+                        Back home
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if switch_sections %}{% include 'agrp_switch_results.html' %}{% endif %}
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var tableIds = $('.switch-table').map(function() { return '#' + this.id; }).get();
+
+        var dataTables = {};
+
+        document.querySelectorAll('.switch-plot').forEach(function(figure) {
+            var source = document.getElementById(figure.dataset.plotSource);
+            if (!source) return;
+            var plot = JSON.parse(source.textContent);
+            var svg = figure.querySelector('svg');
+            var ns = 'http://www.w3.org/2000/svg';
+            function add(tag, attrs, text) {
+                var node = document.createElementNS(ns, tag);
+                Object.keys(attrs).forEach(function(key) { node.setAttribute(key, attrs[key]); });
+                if (text) node.textContent = text;
+                svg.appendChild(node); return node;
+            }
+            var xs = plot.points.map(function(p) { return p.x; });
+            var ys = plot.points.map(function(p) { return p.y; });
+            var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+            var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+            function x(v) { return 70 + (v - minX) / (maxX - minX || 1) * 660; }
+            function y(v) { return 270 - (v - minY) / (maxY - minY || 1) * 240; }
+            add('path', {d: 'M70 20 V270 H735', fill: 'none', stroke: '#555'});
+            add('text', {x: 370, y: 322, 'text-anchor': 'middle'}, plot.x_label);
+            add('text', {x: 70, y: 16}, plot.y_label);
+            add('text', {x: 70, y: 290, 'text-anchor': 'middle'}, String(minX));
+            add('text', {x: 730, y: 290, 'text-anchor': 'middle'}, String(maxX));
+            add('text', {x: 60, y: 270, 'text-anchor': 'end'}, String(minY));
+            add('text', {x: 60, y: 35, 'text-anchor': 'end'}, String(maxY));
+            plot.points.filter(function(p) { return !p.selected; }).concat(plot.points.filter(function(p) { return p.selected; })).forEach(function(p) {
+                var circle = add('circle', {cx: x(p.x), cy: y(p.y), r: p.selected ? 6 : 3, fill: p.selected ? '#c04b00' : '#41666e'});
+                var title = document.createElementNS(ns, 'title'); title.textContent = p.label; circle.appendChild(title);
+            });
+        });
+
+
+        function installPageJump(table, tableSelector) {
+            var tableId = $(tableSelector).attr('id');
+            var wrapper = $('#' + tableId + '_wrapper');
+
+            function renderPageJump() {
+                var info = table.page.info();
+                var paginate = wrapper.find('.dataTables_paginate');
+                paginate.find('.page-jump-control').remove();
+
+                if (!info || info.pages <= 1) {
+                    return;
+                }
+
+                var inputId = tableId + '_page_jump';
+                var control = $('<div class="page-jump-control" aria-label="Jump to page"></div>');
+                var input = $('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                    id: inputId,
+                    min: 1,
+                    max: info.pages,
+                    value: info.page + 1,
+                    'aria-label': 'Page number'
+                });
+                var total = $('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+                var button = $('<button type="button" class="page-jump-btn">Go</button>');
+
+                function jumpToPage() {
+                    var requestedPage = parseInt(input.val(), 10);
+                    if (isNaN(requestedPage)) {
+                        input.val(info.page + 1).focus();
+                        return;
+                    }
+
+                    requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                    table.page(requestedPage - 1).draw('page');
+                }
+
+                input.on('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        jumpToPage();
+                    }
+                });
+                button.on('click', jumpToPage);
+
+                control
+                    .append($('<label></label>').attr('for', inputId).text('Page'))
+                    .append(input)
+                    .append(total)
+                    .append(button);
+                paginate.append(control);
+            }
+
+            table.on('draw', renderPageJump);
+            renderPageJump();
+        }
+
+        tableIds.forEach(function(selector) {
+            if (!$(selector).length) {
+                return;
+            }
+
+            var tableId = selector.replace('#', '');
+            var hasCheckboxColumn = $(selector + ' thead th:first-child').hasClass('checkbox-cell');
+            var options = {
+                paging: true,
+                info: true,
+                searching: true,
+                lengthChange: true,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pagingType: 'simple_numbers',
+                scrollX: true,
+                autoWidth: false
+            };
+
+            if (hasCheckboxColumn) {
+                options.columnDefs = [
+                    { orderable: false, targets: 0 }
+                ];
+            }
+
+            dataTables[tableId] = $(selector).DataTable(options);
+            installPageJump(dataTables[tableId], selector);
+        });
+
+        function getRows(targetId) {
+            if (dataTables[targetId]) {
+                return $(dataTables[targetId].rows({ search: 'applied' }).nodes());
+            }
+            return $('#' + targetId).find('tbody tr');
+        }
+
+        function getCurrentPageRows(targetId) {
+            if (dataTables[targetId]) {
+                return $(dataTables[targetId].rows({ page: 'current', search: 'applied' }).nodes());
+            }
+            return $('#' + targetId).find('tbody tr');
+        }
+
+        function updateCurrentPageCheckbox(targetId) {
+            var headerCheckboxes = $('.select-current-page-checkbox[data-target="' + targetId + '"]');
+            if (!headerCheckboxes.length) {
+                return;
+            }
+
+            var currentPageCheckboxes = getCurrentPageRows(targetId).find('input.row-checkbox');
+            var checkedCount = currentPageCheckboxes.filter(':checked').length;
+            var allChecked = currentPageCheckboxes.length > 0 && checkedCount === currentPageCheckboxes.length;
+            var partiallyChecked = checkedCount > 0 && checkedCount < currentPageCheckboxes.length;
+
+            headerCheckboxes.prop('checked', allChecked);
+            headerCheckboxes.prop('indeterminate', partiallyChecked);
+        }
+
+        function updateSelectButton(targetId) {
+            var button = $('.js-select-all[data-target="' + targetId + '"]');
+            if (!button.length) {
+                return;
+            }
+
+            var checkboxes = getRows(targetId).find('input[type="checkbox"]');
+            var allSelected = checkboxes.length > 0 && checkboxes.filter(':checked').length === checkboxes.length;
+            button.html(allSelected
+                ? '<i class="fas fa-square"></i> Clear Selection'
+                : '<i class="fas fa-check-square"></i> Select All'
+            );
+            updateCurrentPageCheckbox(targetId);
+        }
+
+        // 打开顶部 Gene Search 面板
+        $(document).on('click', '.js-open-gene-search', function(event) {
+            event.preventDefault();
+            var switchBtn = document.getElementById('btn-agrp-switch');
+            var mainContent = document.getElementById('base-main-wrapper');
+            var searchPanel = document.getElementById('agrp-search-panel');
+
+            if (mainContent && searchPanel) {
+                mainContent.classList.add('d-none');
+                searchPanel.classList.remove('d-none');
+                if (switchBtn) {
+                    switchBtn.innerHTML = '<span>Back to Main</span>';
+                }
+                searchPanel.scrollIntoView({ behavior: 'smooth' });
+
+                var geneInput = document.getElementById('agrp-lastName');
+                if (geneInput) {
+                    setTimeout(function() {
+                        geneInput.focus();
+                    }, 350);
+                }
+            }
+        });
+
+        // 表头复选框：只全选 / 取消当前分页中的行
+        $(document).on('click', '.select-current-page-checkbox', function(event) {
+            event.stopPropagation();
+        });
+
+        $(document).on('change', '.select-current-page-checkbox', function(event) {
+            event.stopPropagation();
+            var targetId = $(this).data('target');
+            if (!targetId) {
+                return;
+            }
+            getCurrentPageRows(targetId).find('input.row-checkbox').prop('checked', $(this).is(':checked'));
+            updateSelectButton(targetId);
+        });
+
+        // 底部 Select All / Clear Selection：作用于当前搜索过滤后的所有行，而不只是当前页
+        $(document).on('click', '.js-select-all', function() {
+            var targetId = $(this).data('target');
+            var checkboxes = getRows(targetId).find('input[type="checkbox"]');
+            var shouldSelect = checkboxes.filter(':checked').length !== checkboxes.length;
+            checkboxes.prop('checked', shouldSelect);
+            updateSelectButton(targetId);
+        });
+
+        $(document).on('change', '.row-checkbox', function() {
+            var targetId = $(this).closest('table').attr('id');
+            if (targetId) {
+                updateSelectButton(targetId);
+            }
+        });
+
+        Object.keys(dataTables).forEach(function(targetId) {
+            $('#' + targetId).on('length.dt search.dt order.dt page.dt draw.dt', function() {
+                setTimeout(function() {
+                    updateSelectButton(targetId);
+                }, 0);
+            });
+            updateSelectButton(targetId);
+        });
+
+        // 通用下载：导出当前搜索过滤范围内被选中的行
+        $(document).on('click', '.js-download', function() {
+            var targetId = $(this).data('target');
+            var fileName = $(this).data('filename') || 'download.txt';
+            var selectedRows = [];
+
+            getRows(targetId).each(function() {
+                var $row = $(this);
+                if (!$row.find('input[type="checkbox"]').is(':checked')) {
+                    return;
+                }
+
+                var rowData = [];
+                $row.find('td').each(function(index) {
+                    if (index > 0) {
+                        var link = $(this).find('a');
+                        rowData.push(link.length ? link.text().trim() : $(this).text().trim());
+                    }
+                });
+                selectedRows.push(rowData.join('\t'));
+            });
+
+            if (selectedRows.length === 0) {
+                alert('Please select at least one row to download.');
+                return;
+            }
+
+            var data = selectedRows.join('\n');
+            var blob = new Blob([data], { type: 'text/plain' });
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        });
+    });
+</script>
+{% endblock %}

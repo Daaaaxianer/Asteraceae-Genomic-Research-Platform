@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Regulatory Proteins - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 白色卡片容器样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 页面主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图表标题装饰 */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22; /* 橙色左边框 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .chart-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-image: url("{% static 'image/shuye.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">Regulatory Proteins</h2>
+            <p class="section-subtitle">Distribution and statistics of TFs, TRs, and PKs</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h3 class="chart-header">
+                    Pie Chart
+                </h3>
+                <div id="container_pie" style="height: 500px; width: 100%;"></div>
+            </div>
+            <div class="col-lg-6">
+                <h3 class="chart-header">
+                    Bar Chart
+                </h3>
+                <div id="container_bar" style="height: 500px; width: 100%;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // =========================================================
+            // 数据源: Regulatory Proteins.xlsx - Sheet1.csv
+            // =========================================================
+            // TFs: 132562 (50.6%)
+            // TRs: 30393 (11.6%)
+            // PKs: 99153 (37.8%)
+            
+            var chartData = [
+                { value: 132562, name: 'TFs (Transcription Factors)', percentage: 50.6 },
+                { value: 30393, name: 'TRs (Transcriptional Regulators)', percentage: 11.6 },
+                { value: 99153, name: 'PKs (Protein Kinases)', percentage: 37.8 }
+            ];
+
+            // =========================================================
+            // Chart 1: Pie Chart
+            // =========================================================
+            var domPie = document.getElementById('container_pie');
+            if (domPie) {
+                var myChartPie = echarts.init(domPie, null, {renderer: 'canvas'});
+                
+                var optionPie = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        top: '5%',
+                        left: 'center'
+                    },
+                    series: [
+                        {
+                            name: 'Regulatory Proteins',
+                            type: 'pie',
+                            radius: ['40%', '70%'], // 环形图
+                            avoidLabelOverlap: false,
+                            itemStyle: {
+                                borderRadius: 10,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: 20,
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: chartData,
+                            // 自定义颜色：TFs(蓝), TRs(绿), PKs(橙)
+                            color: ['#5470c6', '#91cc75', '#fac858']
+                        }
+                    ]
+                };
+                myChartPie.setOption(optionPie);
+            }
+
+            // =========================================================
+            // Chart 2: Bar Chart
+            // =========================================================
+            var domBar = document.getElementById('container_bar');
+            if (domBar) {
+                var myChartBar = echarts.init(domBar, null, {renderer: 'canvas'});
+                
+                var optionBar = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'shadow' }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['TFs', 'TRs', 'PKs'],
+                        axisLabel: { fontWeight: 'bold' }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: 'Count'
+                    },
+                    series: [
+                        {
+                            name: 'Count',
+                            type: 'bar',
+                            data: [132562, 30393, 99153],
+                            itemStyle: {
+                                color: function(params) {
+                                    // 让柱状图颜色与饼图对应
+                                    var colorList = ['#5470c6', '#91cc75', '#fac858'];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            label: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
+                    ]
+                };
+                myChartBar.setOption(optionBar);
+            }
+
+            // =========================================================
+            // 窗口缩放监听
+            // =========================================================
+            window.addEventListener('resize', function() {
+                if (domPie) myChartPie.resize();
+                if (domBar) myChartBar.resize();
+            });
+        });
+    </script>
+{% endblock %}

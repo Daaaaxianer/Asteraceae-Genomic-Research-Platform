@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene Structure Stats - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+         
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+
+         
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+        
+        .form-control-lg {
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+
+        .btn-submit-custom {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit-custom:hover {
+            background-color: #219150;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+        
+         
+        .result-table-container {
+            margin-top: 40px;
+            overflow-x: auto;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .stats-table thead th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 700;
+            padding: 15px;
+            border-bottom: 2px solid #27ae60;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .stats-table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eaeff2;
+            text-align: center;
+            color: #555;
+        }
+
+        .stats-table tbody tr:hover {
+            background-color: #fdfdfd;
+        }
+
+        .stats-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+         
+        .loading-area {
+            margin-top: 25px;
+            display: none;
+            text-align: center;
+        }
+        .text-loading { margin-left: 12px; color: #7f8c8d; font-style: italic; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">Gene_cds_exon_counter</h2>
+            <p class="section-subtitle">Calculation Tool: Genome Annotation Statistics</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="tool-header">
+                    Input Parameters
+                </h3>
+                
+                <div class="alert alert-light border mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill text-success"></i> 
+                    Upload one or more <strong>GFF3</strong> files. The tool will calculate statistics for Genes, mRNAs, Exons, Introns, CDS, and UTRs (Count & Average Length).
+                </div>
+
+                <form id="statsForm" action="{% url 'gene_stats_url' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="input_files" class="form-label mb-0">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Upload GFF3 Files
+                            </label>
+                            <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/gene_cds_exon.gff' %}" download="gene_cds_exon.gff" class="btn-example-tag">
+                                <i class="bi bi-download"></i> Example
+                            </a>
+                        </div>
+                        <input type="file" class="form-control form-control-lg" id="input_files" name="input_files" multiple required>
+                        <div class="form-text text-muted">Supports multiple file selection. Ensure files are in standard GFF3 format.</div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-submit-custom" type="button" onclick="go()">
+                            <i class="bi bi-calculator"></i> Calculate Statistics
+                        </button>
+                        
+                        <div class="loading-area" id="loadingArea">
+                            <div class="spinner-border text-success" role="status" style="width: 1.5rem; height: 1.5rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="text-loading">Parsing GFF3 files... Please wait.</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if results %}
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <hr class="my-5">
+                <h3 class="tool-header">
+                    Statistics Results
+                </h3>
+                
+                <div class="result-table-container">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: middle;">File Name</th>
+                                <th colspan="2">Gene</th>
+                                <th colspan="2">mRNA</th>
+                                <th colspan="2">CDS</th>
+                                <th colspan="2">Exon</th>
+                                <th colspan="2">Intron</th>
+                                <th colspan="2">UTR</th>
+                            </tr>
+                            <tr>
+                                <th>Num</th><th>Avg Len</th>
+                                <th>Num</th><th>Avg Len</th>
+                                <th>Num</th><th>Avg Len</th>
+                                <th>Num</th><th>Avg Len</th>
+                                <th>Num</th><th>Avg Len</th>
+                                <th>Num</th><th>Avg Len</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in results %}
+                            <tr>
+                                <td style="text-align: left; font-weight: 600;">{{ row.filename }}</td>
+                                <td>{{ row.gene_num }}</td><td>{{ row.gene_len }}</td>
+                                <td>{{ row.mRNA_num }}</td><td>{{ row.mRNA_len }}</td>
+                                <td>{{ row.cds_num }}</td><td>{{ row.cds_len }}</td>
+                                <td>{{ row.exon_num }}</td><td>{{ row.exon_len }}</td>
+                                <td>{{ row.intron_num }}</td><td>{{ row.intron_len }}</td>
+                                <td>{{ row.utr_num }}</td><td>{{ row.utr_len }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <small class="text-muted">Len = Average Length (bp)</small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function go() {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('statsForm');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            loading.style.display = "block";
+            form.submit();
+        }
+    </script>
+{% endblock %}

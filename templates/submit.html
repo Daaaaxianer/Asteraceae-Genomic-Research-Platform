@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Genome Information - AGRP{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables CSS -->
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: 2px solid #e67e22;
+    }
+
+    .species-name {
+        font-weight: 700;
+        font-style: italic;
+        color: #2c3e50;
+    }
+
+    .btn-action {
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        margin-right: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-view {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border: 1px solid #bbdefb;
+    }
+
+    .btn-down {
+        background-color: #fbe9e7;
+        color: #d84315;
+        border: 1px solid #ffccbc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+    <!-- 标题区域 -->
+
+        <div class="text-center">
+                    <h2 class="section-title">Submit</h2>
+                </div>
+
+
+    <!-- 主体内容区域 -->
+    <div class="main-container my-5">
+        <div class="row g-4">
+            <!-- 左侧导航栏 -->
+            <div class="col-lg-3">
+                <div class="sticky-sidebar">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Quick Navigation</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <a href="#Welcome" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-cloud-upload me-2"></i>Data Submission
+                                </a>
+                                <a href="#submitted" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-database me-2"></i>Submitted Data
+                                </a>
+                                <a href="#Policy" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-shield-check me-2"></i>Data Policy
+                                </a>
+                                <a href="#Publication" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-journal-text me-2"></i>Publication Policy
+                                </a>
+                                <a href="#Safety" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-lock me-2"></i>Data Safety
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 联系信息卡片 -->
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Contact Us</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="small mb-2">
+                                <i class="bi bi-envelope me-2"></i>
+                                <a href="mailto:wangjinpeng@ncst.edu.cn">wangjinpeng@ncst.edu.cn</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧主要内容 -->
+            <div class="col-lg-9">
+                <div class="content-wrapper shadow-sm">
+
+                    <!-- Welcome 部分 -->
+                    <section id="Welcome" class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-primary rounded-circle p-2 me-3">
+                                <i class="bi bi-cloud-upload text-white fs-4"></i>
+                            </div>
+                            <h2 class="mb-0">Welcome to submit plant data to the AGRP</h2>
+                        </div>
+                        <p class="lead">If you have a new set of genomic data in a plant and would like to submit them to AGRP, please follow the instructions below.</p>
+                        <p>Please email your genomic data to <a href="mailto:wangjinpeng@ncst.edu.cn" class="fw-bold">wangjinpeng@ncst.edu.cn</a> and include the following information.</p>
+                    </section>
+
+                    <!-- Submitted Data 部分 -->
+                    <section id="submitted" class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-success rounded-circle p-2 me-3">
+                                <i class="bi bi-database text-white fs-4"></i>
+                            </div>
+                            <h2 class="mb-0">Data already submitted</h2>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="example" class="display table table-hover" style="width:100%">
+                                <thead class="table-light">
+                                    <tr style="text-align: center">
+                                        <th>Species_name</th>
+                                        <th>Abbr</th>
+                                        <th>chr_number</th>
+                                        <th>Genes_number</th>
+                                        <th>CDS</th>
+                                        <th>PEP</th>
+                                        <th>GFF3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="text-align: center">
+                                        <td>Solidago canadensis</td>
+                                        <td>Soca</td>
+                                        <td>9</td>
+                                        <td>69,609</td>
+                                        <td><a href="../static/Tin_genome/Tin.filter.gff3" class="btn btn-sm btn-outline-primary">Download</a></td>
+                                        <td><a href="../static/Tin_genome/Tin.filter.cds.fa" class="btn btn-sm btn-outline-primary">Download</a></td>
+                                        <td><a href="../static/Tin_genome/Tin.filter.protein.fa" class="btn btn-sm btn-outline-primary">Download</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Usage Restrictions:</strong> There are restrictions on the use of this form. Please be sure to read and follow the usage policies outlined in the website on this page.
+                        </div>
+
+                        <p>For more Asteraceae related genomic data please see <a href="{% url "species_data_url" %}" class="btn btn-link p-0 fw-bold">Genome Database</a>.</p>
+                    </section>
+
+                    <!-- AGRP Data Policy 部分 -->
+                    <section id="Policy" class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-warning rounded-circle p-2 me-3">
+                                <i class="bi bi-shield-check text-white fs-4"></i>
+                            </div>
+                            <h2 class="mb-0">AGRP Data Policy</h2>
+                        </div>
+
+                        <div class="card border-0 bg-light mb-3">
+                            <div class="card-body">
+                                <p class="card-text">The data produced and published by AGRP is governed by the following data policy. Our mission is to support open data and information sharing. We also recognize the need for limited and time-sensitive protection of certain types of data to support the use of such data by those who generate it.</p>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">Embargo Period</h5>
+                                <p class="card-text">For sequencing projects: Data are subject to a one-year embargo. For each data or analytical product (raw or processed), the embargo begins upon completion of the standard deliverables as described in the catalog. At the end of the embargo period, the data will be publicly available on the relevant AGRP portal and will not be subject to use restrictions.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AGRP Publication Policy 部分 -->
+                    <section id="Publication" class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-info rounded-circle p-2 me-3">
+                                <i class="bi bi-journal-text text-white fs-4"></i>
+                            </div>
+                            <h2 class="mb-0">AGRP Publication Policy</h2>
+                        </div>
+
+                        <p>AGRP is keen to see the data generated by the facility lead to scientific publications. AGRP users and collaborators have the right to produce publication manuscripts and the responsibility to lead this effort, and AGRP would like to receive confirmation (see sponsorship statement below) of the sequence data generated as well as any other contributions such as assembly, analysis, annotation, validation, creation of genome browsers, etc.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="bi bi-people me-2"></i>Collaboration
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Users, collaborators, and AGRP are jointly committed to publishing the first analysis of data generated by this facility, provided it is done in a timely manner.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <i class="bi bi-award me-2"></i>Authorship
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Publications resulting from these efforts should specify the collaborative nature of the project, and it is expected that authorship should include all those who have contributed significantly to the work.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4 mb-3">Required Submission Information</h5>
+                        <div class="list-group mb-4">
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Current scientific name</span>
+                                    <span class="badge bg-primary">Required</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Genome size</span>
+                                    <span class="badge bg-primary">Required</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Contig N50</span>
+                                    <span class="badge bg-primary">Required</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Genes</span>
+                                    <span class="badge bg-primary">Required</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Genomic sequence (FASTA)</span>
+                                    <span class="badge bg-primary">Required</span>
+                                </div>
+                            </div>
+                            <!-- 可选信息示例 -->
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span><i class="bi bi-circle text-secondary me-2"></i>Annotated features (GTF)</span>
+                                    <span class="badge bg-secondary">Optional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AGRP Data Safety 部分 -->
+                    <section id="Safety" class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-danger rounded-circle p-2 me-3">
+                                <i class="bi bi-lock text-white fs-4"></i>
+                            </div>
+                            <h2 class="mb-0">AGRP Data Safety</h2>
+                        </div>
+
+                        <p>To ensure the security and reliability of user data submission and storage processes, the following measures can be taken:</p>
+
+                        <div class="accordion" id="safetyAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                        <i class="bi bi-key me-2"></i>1. Data Encryption
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#safetyAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Use the HTTPS protocol during data transmission to ensure that data is not intercepted or tampered with during transit.</li>
+                                            <li><i class="bi bi-check-circle text-success me-2"></i>Encrypt data stored on the server to prevent unauthorized access.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                        <i class="bi bi-sd-card me-2"></i>2. Data Backup and Recovery
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Perform regular data backups to ensure quick recovery in case of data loss or damage.</li>
+                                            <li><i class="bi bi-check-circle text-success me-2"></i>Test data recovery processes to ensure the integrity and availability of backup data.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                        <i class="bi bi-eye me-2"></i>3. Logging and Monitoring
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Implement detailed logging to record all data access and operation activities.</li>
+                                            <li><i class="bi bi-check-circle text-success me-2"></i>Monitor for abnormal activities and promptly respond to potential security threats.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                        <i class="bi bi-shield-check me-2"></i>4. Regular Security Audits and Testing
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Conduct regular security audits and vulnerability scans to identify and fix potential security weaknesses.</li>
+                                            <li><i class="bi bi-check-circle text-success me-2"></i>Perform penetration testing to simulate attacker behavior and detect system vulnerabilities.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> 
+</div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 高亮当前查看的部分
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const navLink = document.querySelector(`a[href="#${id}"]`);
+                if(entry.isIntersecting) {
+                    navLink.classList.add('active');
+                } else {
+                    navLink.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有章节
+        document.querySelectorAll('section[id]').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+{% endblock %}

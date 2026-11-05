@@ -1,0 +1,557 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>LGRPv2</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/highcharts.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"> -->
+
+    <style>
+        table {
+        white-space: nowrap;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+
+        th {
+        background-color: #f2f2f2;
+        }
+    </style>
+
+    <style>
+        .species-table { display: none; margin-top: 10px; }
+        .letter { cursor: pointer; margin-top: 5px; font-weight: bold; }
+    </style>
+    <script>
+        // 展开和折叠的 JavaScript
+        function toggleTable(letter) {
+            const table = document.getElementById("table-" + letter);
+            table.style.display = table.style.display === "none" ? "block" : "none";
+
+{##}
+        // 点击物种名字时，发送请求到视图
+        {#function submitSpecies(speciesName) {#}
+        {#    fetch("{% url 'search_fabaceae' %}", {#}
+        {#        method: "POST",#}
+        {#        headers: { "X-CSRFToken": "{{ csrf_token }}" },#}
+        {#        body: JSON.stringify({ species_name: speciesName })#}
+        {#    })#}
+        {#    .then(response => response.json())#}
+        {#    .then(data => {#}
+        {#        alert("查询结果: " + data.result);#}
+        {#    });#}
+        }
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Introduction of species<i></i>
+    </h3>
+
+    <div class="container" style="padding-top: 10px; padding-bottom: 10px">
+        <form class="col-lg-12" method="post" action="{% url 'search_fabaceae_taxa_url' %}">
+            <div class="row">
+                {% csrf_token %}
+                {% load custom_filters %}
+
+                <div class="col-lg-4" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <label style="margin: 0; font-size: 19px;">Enter the Latin name of the species: </label>
+                </div>
+
+                <div class="col-lg-4" style="margin: 0; font-size: 20px; display: flex; justify-content: center; align-items: center;">
+                    <input class="form-control" name="species_name" id="species_name" value="Glycine max">
+                </div>
+
+{#                <div class="col-lg-4" style="margin: 0; font-size: 20px; display: flex; justify-content: center; align-items: center;">#}
+                <div class="col-lg-4" style="margin: 0; font-size: 20px;">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if not species %}
+        <div class="container" style="padding-top: 10px; padding-bottom: 10px">
+            <div>
+                <h5>Select Subfamily: </h5>
+                <select id="subfamilySelect" onchange="loadTribe(this.value)">
+                    <option value="">Select Subfamily</option>
+                    {% for subfamily, count in subfamily_dict.items %}
+                        <option value="{{ subfamily }}">{{ subfamily }} ({{ count }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="tribeContainer" style="display: none;">
+                <h5>Select Tribe: </h5>
+    {#            <select id="tribeSelect" onchange="loadGenus(this.value)">#}
+                <select id="tribeSelect" onchange="loadGenus(this.value)">
+                    <option value="">Select Tribe</option>
+                    <!-- 在这里动态填充 Tribe -->
+                </select>
+            </div>
+
+            <div id="genusContainer" style="display: none;">
+                <h5>Select Genus: </h5>
+                <select id="genusSelect" onchange="loadGenera()">
+                    <option value="">Select Genus</option>
+                    <!-- 在这里动态填充 Genus -->
+                </select>
+            </div>
+
+{#            <div id="speciesContainer">#}
+{#                <h5>Species information: </h5>#}
+{#                <div id="speciesTable"></div>#}
+{#            </div>#}
+            <div id="speciesTable" style="margin-top: 20px;">
+                <!-- 此处显示返回的物种表格 -->
+            </div>
+        </div>
+    {% endif %}
+
+    {% if species %}
+        <div class="col-lg-12" style="padding-top: 10px; padding-bottom: 10px">
+            <div style="overflow-x: auto; width: 100%;">
+                <table id="myTable" class="table table-bordered" style="min-width: 800px;">  <!-- 设置最小宽度以保证表格内容不被压缩 -->
+                    <thead>
+                        <tr>
+                            <th>Select</th>  <!-- 新增一列用于复选框 -->
+                            <th>Taxon ID</th>
+                            <th>Order</th>
+                            <th>Family</th>
+                            <th>Subfamily</th>
+                            <th>Tribe</th>
+                            <th>Genus</th>
+                            <th>Scientific Name</th>
+                            <th>Specific Epithet</th>
+                            <th>Infraspecific Epithet</th>
+                            <th>Taxon Rank</th>
+                            <th>Taxonomic Status</th>
+                            <th>F10</th>
+                            <th>Parent Name Usage ID</th>
+                            <th>Original Name Usage ID</th>
+                            <th>Nomenclatural Status</th>
+                            <th>Taxon Remarks</th>
+                            <th>Scientific Name ID</th>
+                            <th>POWO ID</th>
+                            <th>Life Form</th>
+                            <th>Climate</th>
+                            <th>Homotypic Synonym</th>
+                            <th>Hybrid Formula</th>
+                            <th>Reviewed</th>
+                            <th>References</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for spec in species %}
+                            <tr>
+                                <td><input type="checkbox" class="row-checkbox"></td> <!-- 新增一个复选框 -->
+                                <td>{{ spec.0 }}</td>
+                                <td>{{ spec.1 }}</td>
+                                <td>{{ spec.2 }}</td>
+                                <td>{{ spec.3 }}</td>
+                                <td>{{ spec.4 }}</td>
+                                <td>{{ spec.5 }}</td>
+                                <td><a href="{{ spec.23 | safe }}" target="_blank">{{ spec.8 }}</a></td>
+                                <td>{{ spec.6 }}</td>
+                                <td>{{ spec.7 }}</td>
+                                <td>{{ spec.9 }}</td>
+                                <td>{{ spec.10 }}</td>
+                                <td>{{ spec.11 }}</td>
+                                <td>{{ spec.12 }}</td>
+                                <td>{{ spec.13 }}</td>
+                                <td>{{ spec.14 }}</td>
+                                <td>{{ spec.15 }}</td>
+                                <td>{{ spec.16 }}</td>
+                                <td>{{ spec.17 }}</td>
+                                <td>{{ spec.18 }}</td>
+                                <td>{{ spec.19 }}</td>
+                                <td>{{ spec.20 }}</td>
+                                <td>{{ spec.21 }}</td>
+                                <td>{{ spec.22 }}</td>
+                                <td style="word-wrap: break-word; overflow-wrap: break-word; max-width: 200px; white-space: normal;">
+                                    <a href="{{ spec.23 | safe }}" target="_blank">{{ spec.23 }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+            </div>
+        </div>
+    {% endif %}
+
+
+            <script>
+                var selectAllBtn = document.getElementById("selectAllBtn");
+                selectAllBtn.addEventListener("click", function() {
+                    var checkboxes = document.querySelectorAll(".row-checkbox");
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.checked = true;
+                    });
+                });
+
+                // 获取下载按钮
+                var downloadBtn = document.getElementById("download-btn");
+                downloadBtn.addEventListener("click", function() {
+                    var selectedRows = [];
+                    var checkboxes = document.querySelectorAll(".row-checkbox");
+                    checkboxes.forEach(function(checkbox, index) {
+                        if (checkbox.checked) {
+                            var row = checkbox.closest("tr");
+                            var rowData = [];
+                            row.querySelectorAll("td").forEach(function(cell) {
+                                rowData.push(cell.textContent);
+                            });
+                            selectedRows.push(rowData.join("\t"));
+                        }
+                    });
+                    downloadSelectedRows(selectedRows);
+                });
+
+                function downloadSelectedRows(rows) {
+                    var data = rows.join("\n");
+                    var blob = new Blob([data], { type: "text/plain" });
+                    var url = window.URL.createObjectURL(blob);
+                    var link = document.createElement("a");
+                    link.href = url;
+                    link.download = "species_introduction_selected_rows.txt"; // 设置下载文件名
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('#myTable').DataTable();
+                });
+            </script>
+
+{#    {% if result_list %}#}
+{#        <div id="speciesTable" style="margin-top: 20px;">#}
+{#            <!-- 此处显示返回的物种表格 -->#}
+{#        </div>#}
+{#        <div id="speciesTable" style="overflow-x: auto; width: 100%;">#}
+{#            <table id="myTable" class="table table-bordered" style="min-width: 800px;">#}
+{#                <thead>#}
+{#                    <tr>#}
+{#                        <th>Select</th>  <!-- 新增一列用于复选框 -->#}
+{#                        <th>Taxon ID</th>#}
+{#                        <th>Order</th>#}
+{#                        <th>Family</th>#}
+{#                        <th>Subfamily</th>#}
+{#                        <th>Tribe</th>#}
+{#                        <th>Genus</th>#}
+{#                        <th>Scientific Name</th>#}
+{#                        <th>Specific Epithet</th>#}
+{#                        <th>Infraspecific Epithet</th>#}
+{#                        <th>Taxon Rank</th>#}
+{#                        <th>Taxonomic Status</th>#}
+{#                        <th>F10</th>#}
+{#                        <th>Parent Name Usage ID</th>#}
+{#                        <th>Original Name Usage ID</th>#}
+{#                        <th>Nomenclatural Status</th>#}
+{#                        <th>Taxon Remarks</th>#}
+{#                        <th>Scientific Name ID</th>#}
+{#                        <th>POWO ID</th>#}
+{#                        <th>Life Form</th>#}
+{#                        <th>Climate</th>#}
+{#                        <th>Homotypic Synonym</th>#}
+{#                        <th>Hybrid Formula</th>#}
+{#                        <th>Reviewed</th>#}
+{#                        <th>References</th>#}
+{#                    </tr>#}
+{#                </thead>#}
+{#                <tbody>#}
+{#                    {% for spec in result_list %}#}
+{#                        <td>{{ spec }}</td>#}
+{#                        <tr>#}
+{#                            <td><input type="checkbox" class="row-checkbox"></td>#}
+{#                            <td>{{ spec.0 }}</td>  <!-- 这里假设你是用索引访问元组 -->#}
+{#                            <td>{{ spec.1 }}</td>#}
+{#                            <td>{{ spec.Subfamily }}</td>#}
+{#                            <td>{{ spec.Tribe }}</td>#}
+{#                            <td>{{ spec.Genus }}</td>#}
+{#                            <td><a href="{{ spec.ScientificNameURL | safe }}" target="_blank">{{ spec.ScientificName }}</a></td>#}
+{#                            <td>{{ spec.SpecificEpithet }}</td>#}
+{#                            <td>{{ spec.InfraspecificEpithet }}</td>#}
+{#                            <td>{{ spec.TaxonRank }}</td>#}
+{#                            <td>{{ spec.TaxonomicStatus }}</td>#}
+{#                            <td>{{ spec.F10 }}</td>#}
+{#                            <td>{{ spec.ParentNameUsageID }}</td>#}
+{#                            <td>{{ spec.OriginalNameUsageID }}</td>#}
+{#                            <td>{{ spec.NomenclaturalStatus }}</td>#}
+{#                            <td>{{ spec.TaxonRemarks }}</td>#}
+{#                            <td>{{ spec.ScientificNameID }}</td>#}
+{#                            <td>{{ spec.POWOID }}</td>#}
+{#                            <td>{{ spec.LifeForm }}</td>#}
+{#                            <td>{{ spec.Climate }}</td>#}
+{#                            <td>{{ spec.HomotypicSynonym }}</td>#}
+{#                            <td>{{ spec.HybridFormula }}</td>#}
+{#                            <td>{{ spec.Reviewed }}</td>#}
+{#                            <td>{{ spec.References }}</td>#}
+{#                        </tr>#}
+{#                    {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#        <div id="speciesTable" style="margin-top: 20px;">#}
+{#            <!-- 此处显示返回的物种表格 -->#}
+{#        </div>#}
+{#            &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->#}
+{#            <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->#}
+{#        </div>#}
+{#    {% endif %}#}
+
+<div id="speciesTable" style="overflow-x: auto; width: 100%;">
+    <table id="myTable" class="table table-bordered" style="min-width: 800px;">
+        <thead>
+            <tr>
+                <th>Select</th>  <!-- 新增一列用于复选框 -->
+                <th>Taxon ID</th>
+                <th>Order</th>
+                <th>Family</th>
+                <th>Subfamily</th>
+                <th>Tribe</th>
+                <th>Genus</th>
+                <th>Scientific Name</th>
+                <th>Specific Epithet</th>
+                <th>Infraspecific Epithet</th>
+                <th>Taxon Rank</th>
+                <th>Taxonomic Status</th>
+                <th>F10</th>
+                <th>Parent Name Usage ID</th>
+                <th>Original Name Usage ID</th>
+                <th>Nomenclatural Status</th>
+                <th>Taxon Remarks</th>
+                <th>Scientific Name ID</th>
+                <th>POWO ID</th>
+                <th>Life Form</th>
+                <th>Climate</th>
+                <th>Homotypic Synonym</th>
+                <th>Hybrid Formula</th>
+                <th>Reviewed</th>
+                <th>References</th>
+            </tr>
+        </thead>
+        <tbody>
+{#            {% for spec in results %}#}
+{#                <tr>#}
+{#                    <td><input type="checkbox" class="row-checkbox"></td>#}
+{#                    <td>{{ spec.TaxonID }}</td>#}
+{#                    <td>{{ spec.Order }}</td>#}
+{#                    <td>{{ spec.Family }}</td>#}
+{#                    <td>{{ spec.Subfamily }}</td>#}
+{#                    <td>{{ spec.Tribe }}</td>#}
+{#                    <td>{{ spec.Genus }}</td>#}
+{#                    <td><a href="{{ spec.ScientificNameURL | safe }}" target="_blank">{{ spec.ScientificName }}</a></td>#}
+{#                    <td>{{ spec.SpecificEpithet }}</td>#}
+{#                    <td>{{ spec.InfraspecificEpithet }}</td>#}
+{#                    <td>{{ spec.TaxonRank }}</td>#}
+{#                    <td>{{ spec.TaxonomicStatus }}</td>#}
+{#                    <td>{{ spec.F10 }}</td>#}
+{#                    <td>{{ spec.ParentNameUsageID }}</td>#}
+{#                    <td>{{ spec.OriginalNameUsageID }}</td>#}
+{#                    <td>{{ spec.NomenclaturalStatus }}</td>#}
+{#                    <td>{{ spec.TaxonRemarks }}</td>#}
+{#                    <td>{{ spec.ScientificNameID }}</td>#}
+{#                    <td>{{ spec.POWOID }}</td>#}
+{#                    <td>{{ spec.LifeForm }}</td>#}
+{#                    <td>{{ spec.Climate }}</td>#}
+{#                    <td>{{ spec.HomotypicSynonym }}</td>#}
+{#                    <td>{{ spec.HybridFormula }}</td>#}
+{#                    <td>{{ spec.Reviewed }}</td>#}
+{#                    <td>{{ spec.References }}</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px;">
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button>
+    </div>
+</div>
+
+    <script>
+        function loadTribe(subfamily) {
+            fetch(`/get_tribes/?subfamily=${subfamily}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tribeSelect = document.getElementById("tribeSelect");
+                    tribeSelect.innerHTML = `<option value="">Select Tribe</option>`;
+                    for (const [tribe, count] of Object.entries(data.tribes)) {
+                        tribeSelect.innerHTML += `<option value="${tribe}">${tribe} (${count})</option>`;
+                    }
+                    document.getElementById("tribeContainer").style.display = "block";
+                });
+        }
+        function loadGenus(tribe) {
+            const subfamily = document.getElementById("subfamilySelect").value;
+            fetch("{% url 'get_genera_url' %}?subfamily=" + subfamily + "&tribe=" + tribe)
+                .then(response => response.json())
+                .then(data => {
+                    const genusSelect = document.getElementById("genusSelect");
+                    genusSelect.innerHTML = `<option value="">Select Genus</option>`;
+                    for (const [genus, count] of Object.entries(data.genera)) {
+                        genusSelect.innerHTML += `<option value="${genus}">${genus} (${count})</option>`;
+                    }
+                    document.getElementById("genusContainer").style.display = "block";
+
+                    // 清空物种表格
+                    document.getElementById("speciesTable").innerHTML = "";
+                });
+        }
+        function loadGenera() {
+            const selectedGenus = document.getElementById("genusSelect").value;
+
+            // 发送请求以获取与选中属相关的物种信息
+            fetch(`/load_genera?genus=${selectedGenus}`)
+                .then(response => response.json())
+                .then(data => {
+                    const speciesTableBody = document.querySelector("#speciesTable tbody");
+                    speciesTableBody.innerHTML = ""; // 清空之前的内容
+
+                    if (data.results.length > 0) {
+                        data.results.forEach(spec => {
+                            const row = document.createElement("tr");
+
+                            row.innerHTML = `
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>${spec[0]}</td>  <!-- Taxon ID -->
+                                <td>${spec[1]}</td>  <!-- Order -->
+                                <td>${spec[2]}</td>  <!-- Family -->
+                                <td>${spec[3]}</td>  <!-- Subfamily -->
+                                <td>${spec[4]}</td>  <!-- Tribe -->
+                                <td>${spec[5]}</td>  <!-- Genus -->
+                                <td><a href="${spec[23]}" target="_blank">${spec[8]}</a></td> <!-- Scientific Name -->
+                                <td>${spec[6]}</td>  <!-- Specific Epithet -->
+                                <td>${spec[7]}</td>  <!-- Infraspecific Epithet -->
+                                <td>${spec[8]}</td>  <!-- TaxonRank -->
+                                <td>${spec[9]}</td>  <!-- TaxonomicStatus -->
+                                <td>${spec[10]}</td>  <!-- F10 -->
+                                <td>${spec[11]}</td>  <!-- ParentNameUsageID -->
+                                <td>${spec[12]}</td>  <!-- OriginalNameUsageID -->
+                                <td>${spec[13]}</td>  <!-- NomenclaturalStatus -->
+                                <td>${spec[14]}</td>  <!-- TaxonRemarks -->
+                                <td>${spec[15]}</td>  <!-- ScientificNameID -->
+                                <td>${spec[16]}</td>  <!-- POWOID -->
+                                <td>${spec[17]}</td>  <!-- LifeForm -->
+                                <td>${spec[18]}</td>  <!-- Climate -->
+                                <td>${spec[19]}</td>  <!-- HomotypicSynonym -->
+                                <td>${spec[20]}</td>  <!-- HybridFormula -->
+                                <td>${spec[21]}</td>  <!-- Reviewed -->
+                                <td>${spec[22]}</td>  <!-- References -->
+                            `;
+                            speciesTableBody.appendChild(row);
+                        });
+                    } else {
+                        speciesTableBody.innerHTML = "<tr><td colspan='25'>No matching species found.</td></tr>";
+                    }
+                })
+                .catch(error => console.error('Error fetching genera:', error));
+        }
+
+
+    </script>
+
+    <style>
+        .letter {
+            cursor: pointer;  /* 鼠标悬停时显示指针 */
+            width: 100%;  /* 设置宽度为100% */
+            margin-bottom: 5px;  /* 设置字母之间的间距 */
+            white-space: nowrap;  /* 不允许字母换行 */
+            overflow: hidden;  /* 隐藏溢出部分 */
+            text-overflow: ellipsis;  /* 溢出时显示省略号 */
+        }
+
+        .species-table {
+            display: none;  /* 默认隐藏物种表格 */
+        }
+
+        .species-table table {
+            width: 100%;  /* 设置表格宽度为100% */
+            table-layout: fixed;  /* 固定表格布局 */
+        }
+
+        .species-table td {
+            width: 25%;  /* 设置每个单元格宽度为25%以显示4列 */
+            word-wrap: break-word;  /* 自动换行 */
+            padding: 5px;  /* 添加内边距 */
+            cursor: pointer;  /* 鼠标悬停时显示指针 */
+        }
+    </style>
+
+    <script>
+        function loadSpecies(letter) {
+            // 检查是否已经加载过数据
+            const table = document.getElementById("table-" + letter);
+            if (table.innerHTML.trim() !== "") {
+                table.style.display = table.style.display === "none" ? "block" : "none";
+                return;
+            }
+
+            fetch(`/load_species_by_letter/?letter=${letter}`)
+                .then(response => response.json())
+                .then(data => {
+                    let tableContent = "<table border='1'>";
+                    data.species_list.forEach(species => {
+                        tableContent += `<tr><td onclick="submitSpecies('${species}')">${species}</td></tr>`;
+                    });
+                    tableContent += "</table>";
+                    table.innerHTML = tableContent;
+                    table.style.display = "block";
+                });
+        }
+    </script>
+
+{% endblock %}
+
+
+{% block index_js_table %}
+{% endblock %}
+
+
+
+{% block switch %}
+
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

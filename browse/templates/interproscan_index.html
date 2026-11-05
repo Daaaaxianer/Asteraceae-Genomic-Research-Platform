@@ -1,0 +1,1364 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}InterProScan Annotations - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+.status-card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.all-species-note,
+.all-species-job {
+    background: #fff8ef !important;
+    border: 1px solid #efc89a !important;
+    color: #8a4a06 !important;
+}
+
+.all-species-job strong {
+    color: #b94a00;
+}
+
+.all-species-job .progress {
+    background: #f7e3ca;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.all-species-job .progress-bar {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+}
+
+.all-species-job.alert-success {
+    background: #edf8f1 !important;
+    border-color: #9dd6b4 !important;
+    color: #146c43 !important;
+}
+
+.all-species-job.alert-success .progress-bar {
+    background: #198754;
+}
+
+.all-species-job.alert-danger {
+    background: #fff1f1 !important;
+    border-color: #f0aaa8 !important;
+    color: #9f1d20 !important;
+}
+
+.all-species-job .btn-success {
+    background: #d35400;
+    border-color: #d35400;
+    color: #fff;
+}
+
+.all-species-job .btn-success:hover {
+    background: #b94a00;
+    border-color: #b94a00;
+}
+
+.all-species-job .btn-outline-secondary {
+    background: #fff;
+    border-color: #efc89a;
+    color: #8a4a06;
+}
+
+.all-species-job .btn-outline-secondary:hover {
+    background: #fff3df;
+    border-color: #e8b66f;
+    color: #b94a00;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+#myTable th,
+#myTable td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+        /* ===================== Unified AGRP DataTable style ===================== */
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        .table-container {
+            background: #fff !important;
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            padding: 20px 20px 16px !important;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06) !important;
+            margin-bottom: 22px !important;
+            overflow: visible !important;
+        }
+
+        .table-responsive.table-container {
+            overflow-x: auto !important;
+        }
+
+        .action-bar,
+        .action-row,
+        .table-action-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .action-group,
+        .table-action-group {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+
+        .btn-custom,
+        .action-bar .btn,
+        .table-action-row .btn {
+            border-radius: 7px !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            padding: 8px 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
+            line-height: 1.2 !important;
+        }
+
+        .btn-select,
+        .action-bar .btn-primary,
+        .table-action-row .btn-primary,
+        .action-bar .btn-outline-primary {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border: 1px solid var(--dark-orange) !important;
+        }
+
+        .btn-select:hover,
+        .action-bar .btn-primary:hover,
+        .table-action-row .btn-primary:hover,
+        .action-bar .btn-outline-primary:hover {
+            color: #fff !important;
+            background: #b94a00 !important;
+            border-color: #b94a00 !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-download,
+        .action-bar .btn-success,
+        .table-action-row .btn-success {
+            color: var(--dark-orange) !important;
+            background: #fff !important;
+            border: 1px solid #efc89a !important;
+        }
+
+        .btn-download:hover,
+        .action-bar .btn-success:hover,
+        .table-action-row .btn-success:hover {
+            color: #b94a00 !important;
+            background: #fff8ef !important;
+            border-color: #e8b66f !important;
+        }
+
+        table.dataTable,
+        table.result-table,
+        table.genome-table {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        table.result-table thead th,
+        table.genome-table thead th,
+        .table-container table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        table.result-table td,
+        table.genome-table td,
+        .table-container table td {
+            padding: 10px 15px !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+            border-bottom: 1px solid #edf0f2 !important;
+        }
+
+        table.result-table tbody tr:nth-child(even),
+        table.genome-table tbody tr:nth-child(even),
+        .table-container table tbody tr:nth-child(even) {
+            background-color: #fffdf9 !important;
+        }
+
+        table.result-table tbody tr:hover,
+        table.genome-table tbody tr:hover,
+        .table-container table tbody tr:hover {
+            background-color: #fff6eb !important;
+        }
+
+        .checkbox-cell {
+            text-align: center !important;
+            width: 76px !important;
+            min-width: 76px !important;
+            padding-right: 15px !important;
+        }
+
+        table.dataTable thead th.checkbox-cell::before,
+        table.dataTable thead th.checkbox-cell::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .current-page-select {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            cursor: pointer !important;
+            user-select: none !important;
+        }
+
+        .current-page-select input {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50 !important;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center !important;
+            row-gap: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px !important;
+            padding-top: 12px !important;
+            border-top: 1px solid #f0e4d8 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            color: #495057 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px !important;
+            border: 1px solid #d9e0e6 !important;
+            border-radius: 7px !important;
+            background-color: #fff !important;
+            color: #2c3e50 !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px !important;
+            margin: 0 !important;
+            padding: 4px 28px 4px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px !important;
+            margin: 0 !important;
+            padding: 6px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+            outline: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .pagination .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            min-width: 36px !important;
+            height: 36px !important;
+            padding: 0 10px !important;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4 !important;
+            background: #fff !important;
+            color: #44515c !important;
+            box-sizing: border-box !important;
+            box-shadow: none !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border-color: var(--dark-orange) !important;
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22) !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:not(.current):not(.disabled):hover {
+            color: var(--dark-orange) !important;
+            background: #fff8ef !important;
+            border-color: #efc89a !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: #b6c0c9 !important;
+            background: #f8fafb !important;
+            border-color: #e8edf1 !important;
+        }
+
+        .page-jump-control {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            color: #5f6b76 !important;
+            font-size: 0.92rem !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+        }
+
+        .page-jump-input {
+            width: 58px !important;
+            height: 36px !important;
+            padding: 0 8px !important;
+            border: 1px solid #d8dee4 !important;
+            border-radius: 7px !important;
+            color: #2c3e50 !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            outline: 0 !important;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+        }
+
+        .page-jump-total {
+            color: #8a96a3 !important;
+        }
+
+        .page-jump-btn {
+            height: 36px !important;
+            padding: 0 12px !important;
+            border: 1px solid #efc89a !important;
+            border-radius: 7px !important;
+            background: #fff8ef !important;
+            color: var(--dark-orange) !important;
+            font-weight: 800 !important;
+            line-height: 1 !important;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df !important;
+            border-color: #e8b66f !important;
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                padding: 12px !important;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0 !important;
+                width: 100% !important;
+            }
+
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate,
+            .dataTables_wrapper .pagination {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+        }
+
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">InterProScan Annotations</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        We annotated genes from <strong>53</strong> Asteraceae species and 6 outgroup species using Interproscan. By aligning protein sequences against <strong>16</strong> public databases, we obtained <strong>23,959,751</strong> functional annotation entries for 2,813,735 genes. Researchers can conveniently access annotation data including gene IDs, sequence lengths, analyzed databases, gene annotation information, start and stop positions, IPR numbers, and GO numbers.
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger status-card" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if not_found_geneids %}
+    <div class="alert alert-warning status-card" role="alert">
+        No matching annotations were found for: {{ not_found_geneids|join:", " }}
+    </div>
+    {% endif %}
+
+    {% if result_limit_reached %}
+    <div class="alert status-card all-species-note" role="alert">
+        Showing the first {{ result_limit }} annotations only. Please narrow the search terms or selected databases to see more specific all-species results.
+    </div>
+    {% endif %}
+
+    {% if all_species_blast_target_limit %}
+    <div class="alert status-card all-species-note" role="alert">
+        All-species sequence search is enabled and uses the top {{ all_species_blast_target_limit }} BLAST targets before annotation lookup.
+    </div>
+    {% endif %}
+
+    <div id="form-error" class="alert alert-danger status-card d-none" role="alert"></div>
+
+    {% if interproscan_job_id %}
+    <div
+        id="interproscan-job-panel"
+        class="alert alert-info status-card all-species-job"
+        role="status"
+        data-status-url="{% url 'interproscan_job_status_url' interproscan_job_id %}">
+        <div><strong>All-species InterProScan job submitted.</strong></div>
+        <div>Job ID: {{ interproscan_job_id }}</div>
+        <div id="interproscan-job-message">Waiting to start...</div>
+        <div id="interproscan-job-counts"></div>
+        <div class="progress mt-3" style="height: 10px;">
+            <div id="interproscan-job-progress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+            <a id="interproscan-job-result" class="btn btn-success btn-sm d-none" href="#">View results</a>
+            <a id="interproscan-job-download" class="btn btn-success btn-sm d-none" href="#">Download annotations TSV</a>
+            <a id="interproscan-job-blast-download" class="btn btn-outline-secondary btn-sm d-none" href="#">Download BLAST hits TSV</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'interproscan_index_url' %}" method="post" class="col-12" id="interproscan-form" data-selected-species="{{ selected_species|default:'' }}" data-selected-databases="{{ selected_databases|join:',' }}" novalidate>
+    {% csrf_token %}
+
+    <div class="form-card">
+
+        <!-- Query Sequence -->
+        <div class="mb-4">
+            <label class="form-label">
+                Query Sequence
+                <button type="button" class="example-btn" id="query_sequence">Example</button>
+            </label>
+            <textarea
+                class="form-control"
+                id="lastName_query_sequence"
+                name="query_sequence"
+                rows="4"
+                placeholder="Paste FASTA sequence here...">{{ submitted_query_sequence|default:'' }}</textarea>
+        </div>
+
+        <!-- Search Word -->
+        <div class="mb-4">
+            <label class="form-label">
+                Or, Search Word
+                <button type="button" class="example-btn" id="gene_id">Gene ID</button>
+{#                <button type="button" class="example-btn" id="gene_function">Gene Function</button>#}
+            </label>
+            <textarea
+                class="form-control"
+                id="lastName"
+                name="geneid"
+                rows="4"
+                placeholder="Enter gene ID(s) or functional keywords...">{{ submitted_geneid|default:'' }}</textarea>
+        </div>
+
+        <!-- Species -->
+        <div class="mb-4">
+            <label class="form-label">Species</label>
+            <select class="form-control" name="sp_data_1" id="species-select">
+                <option value="ALL_SPECIES">All species</option>
+                <option value="Aann" selected>Artemisia annua</option>
+                <option value="Aary">Artemisia argyi</option>
+                <option value="Amar">Ambrosia artemisiifolia</option>
+                <option value="Amtr">Ambrosia trifida</option>
+                <option value="Arla">Arctium lappa</option>
+                <option value="Armi">Arctium minus</option>
+                <option value="Artr">Artemisia tridentata</option>
+                <option value="Bial">Bidens alba</option>
+                <option value="Busi">Buxus sinica</option>
+                <option value="Ccar">Cynara cardunculus</option>
+                <option value="Ceso">Centaurea solstitialis</option>
+                <option value="Chla">Chrysanthemum lavandulifolium</option>
+                <option value="Chma">Chrysanthemum makinoi</option>
+                <option value="Chmo">Chrysanthemum morifolium</option>
+                <option value="Chna">Chrysanthemum nankingense</option>
+                <option value="Cich">Cichorium intybus</option>
+                <option value="Cien">Cichorium endivia</option>
+                <option value="Cind">Chrysanthemum indicum</option>
+                <option value="Cobi">Cosmos bipinnatus</option>
+                <option value="Cpa">Centrapalus pauciflorus</option>
+                <option value="Cati">Carthamus tinctorius</option>
+                <option value="Dapi">Dahlia pinnata</option>
+                <option value="Desu">Deinandra increscens</option>
+                <option value="Ecan">Erigeron canadensis</option>
+                <option value="Enbr">Erigeron breviscapus</option>
+                <option value="Eupl">Euptelea pleiosperma</option>
+                <option value="Fbi">Flaveria bidentis</option>
+                <option value="Fbr">Flaveria brownii</option>
+                <option value="Ffl">Flaveria floridana</option>
+                <option value="Fli">Flaveria linearis</option>
+                <option value="Fra">Flaveria ramosissima</option>
+                <option value="Fro">Flaveria robusta</option>
+                <option value="Fso">Flaveria sonorensis</option>
+                <option value="Ftr">Flaveria trinervia</option>
+                <option value="Gehy">Gerbera hybrida</option>
+                <option value="Glco">Glebionis coronaria</option>
+                <option value="Hean">Helianthus annuus</option>
+                <option value="Hetu">Helianthus tuberosus</option>
+                <option value="Heub">Helichrysum umbraculigerum</option>
+                <option value="Laca">Lactuca saligna</option>
+                <option value="Lomi">Logfia minima</option>
+                <option value="Lssa">Lactuca sativa</option>
+                <option value="Mimi">Mikania micrantha</option>
+                <option value="Nenu">Nelumbo nucifera</option>
+                <option value="Nin">Nymphoides indica</option>
+                <option value="Pin">Pluchea indica</option>
+                <option value="Pdy">Pulicaria dysenterica</option>
+                <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                <option value="Sain">Saussurea involucrata</option>
+                <option value="Scae">Solidago caesia</option>
+                <option value="Sesq">Senecio squalidus</option>
+                <option value="Smso">Smallanthus sonchifolius</option>
+                <option value="Soca">Solidago canadensis</option>
+                <option value="Stre">Stevia rebaudiana</option>
+                <option value="Taer">Tagetes erecta</option>
+                <option value="Tako">Taraxacum kok-saghyz</option>
+                <option value="Tamo">Taraxacum mongolicum</option>
+                <option value="Tesi">Tetracentron sinense</option>
+                <option value="Vivi">Vitis vinifera</option>
+            </select>
+        </div>
+
+        <!-- Analysis -->
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label mb-0">Analysis</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkAll">
+                    <label class="form-check-label" for="checkAll">Select All</label>
+                </div>
+            </div>
+            <hr class="mt-2 mb-3">
+
+            <div class="row">
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="ProSitePatterns" name="ProSitePatterns"> <label class="form-check-label" for="ProSitePatterns">ProSitePatterns</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="PANTHER" name="PANTHER"> <label class="form-check-label" for="PANTHER">PANTHER</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="Coils" name="Coils"> <label class="form-check-label" for="Coils">Coils</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="Pfam" name="Pfam"> <label class="form-check-label" for="Pfam">Pfam</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="Gene3D" name="Gene3D"> <label class="form-check-label" for="Gene3D">Gene3D</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="PRINTS" name="PRINTS"> <label class="form-check-label" for="PRINTS">PRINTS</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="SUPERFAMILY" name="SUPERFAMILY"> <label class="form-check-label" for="SUPERFAMILY">SUPERFAMILY</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="ProSiteProfiles" name="ProSiteProfiles"> <label class="form-check-label" for="ProSiteProfiles">ProSiteProfiles</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="PIRSF" name="PIRSF"> <label class="form-check-label" for="PIRSF">PIRSF</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="CDD" name="CDD"> <label class="form-check-label" for="CDD">CDD</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="TIGRFAM" name="TIGRFAM"> <label class="form-check-label" for="TIGRFAM">TIGRFAM</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="Hamap" name="Hamap"> <label class="form-check-label" for="Hamap">Hamap</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="MobiDBLite" name="MobiDBLite"> <label class="form-check-label" for="MobiDBLite">MobiDBLite</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="SMART" name="SMART"> <label class="form-check-label" for="SMART">SMART</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="SFLD" name="SFLD"> <label class="form-check-label" for="SFLD">SFLD</label> </div> </div>
+                <div class="col-md-3"> <div class="form-check"> <input class="form-check-input checkItem" type="checkbox" id="AntiFam" name="AntiFam"> <label class="form-check-label" for="AntiFam">AntiFam</label> </div> </div>
+            </div>
+        </div>
+
+        <!-- Search Button -->
+        <div class="text-center">
+            <button type="submit" class="btn search-btn w-100 py-2">
+                Search
+            </button>
+        </div>
+
+    </div>
+
+<!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-rqzmzSGD9TXiUDwkGv1I4fWzG1+76FJf1awodmxMk1rEdqwy6cvBCsfzpfEfmi8p" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function () {
+            var checkboxes = document.querySelectorAll('.checkItem');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = document.getElementById('checkAll').checked;
+            });
+        });
+    </script>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h2 type="" style="font-size: 1.5rem; padding-top: 20px">
+                            <img src="../../static/image/logo.png" alt="Logo" style="height: 30px; margin-right: 10px; vertical-align: middle;">
+                            Results
+                        </h2>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="scrollable-table table-container" style="; margin-bottom: 20px">
+                        <div class="action-bar">
+                            <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+                            <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="Annotation_selected_rows.txt"><i class="fas fa-download"></i> Download Selected</button>
+                        </div>
+
+                        <table id="myTable" class="table table-bordered table-striped result-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                                    <th>Species</th>
+                                    <th>Seq ID</th>
+                                    <th>Length</th>
+                                    <th>Analysis</th>
+                                    <th>Description</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>IPR</th>
+                                    <th>GO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pair in result %}
+                                    <tr>
+                                        <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td>
+                                        <td>{{ pair.0 }}</td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                                        <td>{{ pair.2 }}</td>
+                                        <td>{{ pair.3 }}</td>
+                                        <td>{{ pair.4 }}</td>
+                                        <td>{{ pair.5 }}</td>
+                                        <td>{{ pair.6 }}</td>
+                                        <td>{{ pair.7 }}</td>
+                                        <td>{{ pair.8 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Annotation_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+    </form>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                if ($('#myTable').length) {
+                    $('#myTable').DataTable({
+            paging: true,
+            info: true,
+            searching: true,
+            lengthChange: true,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            pagingType: 'simple_numbers',
+            scrollX: true,
+            autoWidth: false,
+            columnDefs: [
+                { orderable: false, targets: 0 }
+            ]
+        });
+                }
+            });
+        </script>
+
+    <script>
+        document.getElementById('gene_id').addEventListener('click', function() {
+            var exampleText = `Aann9g00954
+Aann5g02199
+Aann5g04853
+`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MGSLPLPLNQYSYPNARRDNSVVDDFHGITIPDPYRWLENPDAQEVKDFVHSQLQLTDSVLESCAARPNLRHKLTNLFDHPRYTVPFRRSHNTYFYFHNSGLQPHNVLYMQNGFHAGAQPHLLLDPNALSPDGSVSLTAVSVSQHADFLAYGLSSSGTDWVTINIMRIQDKHLLPHTLSWVKFSSISWTHDTKGFFYSRYPAPKEGQLVDAGTETNTNLYHELYYHFLGTDQSQDILCWRDPQNPEYRFRASVSDDGRYIIMYIEQGCDPVNKLYYCDMSELTNGLQGFGNKQEEEDPHAHATMLPFVKLVDTFDAQFQYVANDDTVFTFLTNKNAPKYKLVRVDLKEPINSWFDVIHESERDVLESACAVNGNQVIVSYLSDVKYVVQVRDLETGCLQHLLPIDIGTVNGISARRQDSIFFFGFSSFLSPGIVYQCDLGTQAPVIKIFREIVVPGFDRSQFHANQVFVASKDGTKIPMFIVARKDISLDGSHPCLLYGYGGFNASVTPCFSVSRIVLARHLGCVLSIANIRGGGEYGEEWHKAGSLAKKQNCFDDFISAAEYLVSVGYTQPAKLCIEGGSNGGLLVAACINQRPDLFGCALAHVGVMDMLRFHKFTIGHAWTSEFGCSEKEEEFHWLIKYSPLHNVRRPWEEFGGGSIQYPSTMLLTADHDDRVVPLHSLKLLATMQYVLSTSMKQSPQTNPIIARIECKAGHGAGRSMQKIIEEAADRYGFMAKVLEAHWIE
+>ZPYcontig73_002250.1
+MAVKRGVASAVVLCVLASVSVSLGEDPYRFFDWNVTYGDIYPLGVRQQGILINGQFPGPDIHSVTNDNLIINVFNSLDQPFLLSWNGVQQRRNSYEDGVFGTTCPIPPGKNFTYILQVKDQIGSFYYFPSLAFHKAAGGFGGIRILSRPRIPVPFPDPAGDYTVLIGDWYKANHTDLQRQLDSGRKLALPDGILINGRGENGASFNVEQGKSYRLRISNVGLENSLNFRIQNHKMTLVEVEGTHTLQTTYSSLDVHVGQSYSVLVTADQPPRDYYIVVSTRFTTTVLTTTGILRYSNSAGPVQGPPPGGPTTQIDWSLNQARSIRTNLTASGPRPNPQGSYHYGLINLTRTIVVSSSAGQVNGKQRYAINSVSYVAPDTPLKVADFFKIPGVFRVGSISDRPSGSAIYLDTSVMQTDYRTFVEIVFQNDEDIIQTYHLDGYSFFVVGMDGGTWTAGSRNEYNLRDAVSRCTTQVYPKSWTAIYVALDNVGMWNLRSEFWARQYLGQQFYMRVYTTSTSLRDEYPIPKNALLCGKASGRHTRPL
+`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            const interproscanForm = document.getElementById('interproscan-form');
+            const formError = document.getElementById('form-error');
+            const speciesSelect = document.getElementById('species-select');
+            const selectedSpecies = interproscanForm ? interproscanForm.dataset.selectedSpecies : '';
+            const selectedDatabases = interproscanForm && interproscanForm.dataset.selectedDatabases
+                ? interproscanForm.dataset.selectedDatabases.split(',').filter(Boolean)
+                : [];
+
+            if (speciesSelect && selectedSpecies) {
+                speciesSelect.value = selectedSpecies;
+            }
+
+            selectedDatabases.forEach(function(name) {
+                const checkbox = document.getElementById(name);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+
+            const allAnalysisCheckboxes = document.querySelectorAll('.checkItem');
+            const checkAll = document.getElementById('checkAll');
+            if (checkAll && allAnalysisCheckboxes.length && selectedDatabases.length === allAnalysisCheckboxes.length) {
+                checkAll.checked = true;
+            }
+
+            if (interproscanForm) {
+                interproscanForm.addEventListener('submit', function(event) {
+                    const geneInput = document.getElementById('lastName').value.trim();
+                    const sequenceInput = document.getElementById('lastName_query_sequence').value.trim();
+                    const checkedAnalyses = document.querySelectorAll('.checkItem:checked').length;
+
+                    if (!geneInput && !sequenceInput) {
+                        event.preventDefault();
+                        formError.textContent = 'Please enter at least one gene ID, keyword, or protein sequence.';
+                        formError.classList.remove('d-none');
+                        return;
+                    }
+
+                    if (!checkedAnalyses) {
+                        event.preventDefault();
+                        formError.textContent = 'Please select at least one analysis database.';
+                        formError.classList.remove('d-none');
+                        return;
+                    }
+
+                    formError.classList.add('d-none');
+                    var hh1 = document.getElementById("wait1");
+                    var hh2 = document.getElementById("wait2");
+                    if (hh1.style.display === "none" && hh2.style.display === "none") {
+                        hh1.style.display = "inline-block";
+                        hh2.style.display = "inline-block";
+                    }
+                });
+            }
+
+            document.getElementById('gene_id').addEventListener('click', function() {
+                formError.classList.add('d-none');
+            });
+
+            document.getElementById('query_sequence').addEventListener('click', function() {
+                formError.classList.add('d-none');
+            });
+
+            const jobPanel = document.getElementById('interproscan-job-panel');
+            if (jobPanel) {
+                const messageEl = document.getElementById('interproscan-job-message');
+                const countsEl = document.getElementById('interproscan-job-counts');
+                const progressEl = document.getElementById('interproscan-job-progress');
+                const resultEl = document.getElementById('interproscan-job-result');
+                const downloadEl = document.getElementById('interproscan-job-download');
+                const blastDownloadEl = document.getElementById('interproscan-job-blast-download');
+
+                function updateJobPanel(data) {
+                    const status = data.status || 'running';
+                    const progress = Math.max(0, Math.min(100, parseInt(data.progress || 0, 10)));
+                    messageEl.textContent = data.message || status;
+                    progressEl.style.width = progress + '%';
+                    progressEl.setAttribute('aria-valuenow', progress);
+
+                    const counts = [];
+                    if (data.blast_hit_count !== undefined) {
+                        counts.push('BLAST hits: ' + data.blast_hit_count);
+                    }
+                    if (data.recognized_gene_count !== undefined) {
+                        counts.push('Matched genes: ' + data.recognized_gene_count);
+                    }
+                    if (data.result_count !== undefined) {
+                        counts.push('Annotations: ' + data.result_count);
+                    }
+                    if (data.failed_species && data.failed_species.length) {
+                        counts.push('Failed species: ' + data.failed_species.join(', '));
+                    } else if (data.failed_species_count !== undefined && data.failed_species_count > 0) {
+                        counts.push('Failed species: ' + data.failed_species_count);
+                    }
+                    countsEl.textContent = counts.join(' | ');
+
+                    jobPanel.classList.remove('alert-info', 'alert-success', 'alert-danger');
+                    if (status === 'done') {
+                        jobPanel.classList.add('alert-success');
+                        if (data.result_url) {
+                            resultEl.href = data.result_url;
+                            resultEl.classList.remove('d-none');
+                        }
+                        if (data.download_url) {
+                            downloadEl.href = data.download_url;
+                            downloadEl.classList.remove('d-none');
+                        }
+                        if (data.blast_download_url) {
+                            blastDownloadEl.href = data.blast_download_url;
+                            blastDownloadEl.classList.remove('d-none');
+                        }
+                        return true;
+                    }
+                    if (status === 'error') {
+                        jobPanel.classList.add('alert-danger');
+                        return true;
+                    }
+                    jobPanel.classList.add('alert-info');
+                    return false;
+                }
+
+                function pollJobStatus() {
+                    fetch(jobPanel.dataset.statusUrl, { credentials: 'same-origin' })
+                        .then(function(response) { return response.json(); })
+                        .then(function(data) {
+                            if (!updateJobPanel(data)) {
+                                window.setTimeout(pollJobStatus, 4000);
+                            }
+                        })
+                        .catch(function() {
+                            messageEl.textContent = 'Could not read job status. Retrying...';
+                            window.setTimeout(pollJobStatus, 6000);
+                        });
+                }
+
+                pollJobStatus();
+            }
+        </script>
+    </div>
+
+
+<script>
+/* Unified AGRP table behavior */
+(function () {
+    function hasJqueryDataTables() {
+        return typeof window.jQuery !== 'undefined' && jQuery.fn && jQuery.fn.DataTable;
+    }
+
+    function getDataTable(table) {
+        if (!hasJqueryDataTables() || !table || !table.id) {
+            return null;
+        }
+        var selector = '#' + table.id;
+        if (!jQuery.fn.dataTable.isDataTable(selector)) {
+            return null;
+        }
+        return jQuery(selector).DataTable();
+    }
+
+    function installPageJump(table) {
+        var dt = getDataTable(table);
+        if (!dt || table.dataset.pageJumpInstalled === '1') {
+            return;
+        }
+        table.dataset.pageJumpInstalled = '1';
+
+        function renderPageJump() {
+            var info = dt.page.info();
+            var wrapper = jQuery('#' + table.id + '_wrapper');
+            var paginate = wrapper.find('.dataTables_paginate');
+            paginate.find('.page-jump-control').remove();
+
+            if (!info || info.pages <= 1 || !paginate.length) {
+                return;
+            }
+
+            var inputId = table.id + '_page_jump';
+            var control = jQuery('<div class="page-jump-control" aria-label="Jump to page"></div>');
+            var input = jQuery('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                id: inputId,
+                min: 1,
+                max: info.pages,
+                value: info.page + 1,
+                'aria-label': 'Page number'
+            });
+            var total = jQuery('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+            var button = jQuery('<button type="button" class="page-jump-btn">Go</button>');
+
+            function jumpToPage() {
+                var requestedPage = parseInt(input.val(), 10);
+                if (isNaN(requestedPage)) {
+                    input.val(info.page + 1).focus();
+                    return;
+                }
+                requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                dt.page(requestedPage - 1).draw('page');
+            }
+
+            input.on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    jumpToPage();
+                }
+            });
+            button.on('click', jumpToPage);
+
+            control
+                .append(jQuery('<label></label>').attr('for', inputId).text('Page'))
+                .append(input)
+                .append(total)
+                .append(button);
+            paginate.append(control);
+        }
+
+        dt.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    function tableRows(table, selector) {
+        var dt = getDataTable(table);
+        if (dt) {
+            return jQuery(dt.rows(selector).nodes());
+        }
+        return jQuery(table).find('tbody tr');
+    }
+
+    function selectionTable() {
+        var box = document.querySelector('.row-checkbox');
+        return box ? box.closest('table') : null;
+    }
+
+    function allFilteredCheckboxes(table) {
+        return tableRows(table, {search: 'applied'}).find('.row-checkbox');
+    }
+
+    function currentPageCheckboxes(table) {
+        return tableRows(table, {page: 'current'}).find('.row-checkbox');
+    }
+
+    function updateSelectionControls() {
+        var table = selectionTable();
+        if (!table) {
+            return;
+        }
+
+        var allBoxes = allFilteredCheckboxes(table);
+        var checkedAllCount = allBoxes.filter(':checked').length;
+        var allSelected = allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+        var selectAllBtn = document.getElementById('selectAllBtn');
+        if (selectAllBtn) {
+            selectAllBtn.innerHTML = allSelected
+                ? '<i class="fas fa-square"></i> Clear Selection'
+                : '<i class="fas fa-check-square"></i> Select All';
+        }
+
+        var pageBoxes = currentPageCheckboxes(table);
+        var checkedPageCount = pageBoxes.filter(':checked').length;
+        jQuery('.js-select-current-page').each(function () {
+            this.checked = pageBoxes.length > 0 && checkedPageCount === pageBoxes.length;
+            this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+        });
+    }
+
+    function replaceButton(id) {
+        var button = document.getElementById(id);
+        if (!button) {
+            return null;
+        }
+        var clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+        return clone;
+    }
+
+    function downloadSelectedRows(table, downloadBtn) {
+        var rows = [];
+        var headers = [];
+        jQuery(table).find('thead th').each(function (index) {
+            var text = jQuery(this).text().trim();
+            if (index === 0 && jQuery(this).find('.js-select-current-page').length) {
+                return;
+            }
+            if (/^select$/i.test(text) || /^image$/i.test(text)) {
+                return;
+            }
+            headers.push(text);
+        });
+        if (headers.length) {
+            rows.push(headers.join('\t'));
+        }
+
+        tableRows(table, {search: 'applied'}).each(function () {
+            var row = this;
+            var checkbox = row.querySelector('.row-checkbox');
+            if (!checkbox || !checkbox.checked) {
+                return;
+            }
+            var data = [];
+            jQuery(row).find('td').each(function (index) {
+                var cell = jQuery(this);
+                var headerText = jQuery(table).find('thead th').eq(index).text().trim();
+                if (index === 0 || /^select$/i.test(headerText) || /^image$/i.test(headerText) || cell.find('img').length) {
+                    return;
+                }
+                data.push(cell.text().trim().replace(/\s+/g, ' '));
+            });
+            rows.push(data.join('\t'));
+        });
+
+        if (rows.length <= (headers.length ? 1 : 0)) {
+            alert('Please select at least one row.');
+            return;
+        }
+
+        var blob = new Blob([rows.join('\n')], {type: 'text/plain'});
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = (downloadBtn && downloadBtn.dataset.filename) || 'selected_rows.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (hasJqueryDataTables()) {
+            jQuery('table.dataTable, table[id]').each(function () {
+                installPageJump(this);
+                var dt = getDataTable(this);
+                if (dt) {
+                    dt.on('draw length.dt search.dt order.dt page.dt', updateSelectionControls);
+                }
+            });
+        }
+
+        var selectAllBtn = replaceButton('selectAllBtn');
+        var downloadBtn = replaceButton('download-btn');
+        var table = selectionTable();
+
+        if (selectAllBtn && table) {
+            selectAllBtn.addEventListener('click', function () {
+                var allBoxes = allFilteredCheckboxes(table);
+                var shouldSelect = allBoxes.filter(':checked').length !== allBoxes.length;
+                allBoxes.prop('checked', shouldSelect);
+                updateSelectionControls();
+            });
+        }
+
+        if (downloadBtn && table) {
+            downloadBtn.addEventListener('click', function () {
+                downloadSelectedRows(table, downloadBtn);
+            });
+        }
+
+        jQuery(document).on('click', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+        });
+
+        jQuery(document).on('change', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+            var targetTable = selectionTable();
+            if (!targetTable) {
+                return;
+            }
+            currentPageCheckboxes(targetTable).prop('checked', this.checked);
+            updateSelectionControls();
+        });
+
+        jQuery(document).on('change', '.row-checkbox', updateSelectionControls);
+        updateSelectionControls();
+    });
+})();
+</script>
+
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'myTable',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: 'Annotation_selected_rows.txt'
+});
+</script>
+
+{% endblock %}

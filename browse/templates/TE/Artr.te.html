@@ -1,0 +1,265 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Transposable elements - Artemisia_tridentata{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-orange: #e67e22;
+        --dark-orange: #d35400;
+        --light-bg: #fffbf7;
+        --border-color: #eee;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .page-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin: 40px auto;
+        border: 1px solid rgba(0,0,0,0.02);
+        min-height: 600px;
+    }
+
+    .main-title {
+        color: var(--dark-orange);
+        font-weight: 800;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Section Header Style */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0 20px;
+        position: relative;
+    }
+
+    .section-header::before,
+    .section-header::after {
+        content: "";
+        flex: 1;
+        border-bottom: 2px dotted var(--primary-orange);
+        margin: 0 20px;
+        opacity: 0.5;
+    }
+
+    .section-title-box {
+        background: #fff;
+        padding: 0 15px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .section-title-text {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin: 0;
+    }
+
+    /* Table Container Style */
+    .table-container {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        margin-bottom: 30px;
+    }
+
+    /* General Typography & Utilities */
+    .text-justify {
+        text-align: justify;
+        color: #2c3e50;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+    
+    /* Link Styling in Tables */
+    .table a {
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+    .table a:hover {
+        color: var(--dark-orange);
+    }
+    
+    /* Remove default table borders for cleaner look inside container */
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    /* Intro Image Styling */
+    .intro-img {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        
+        <div class="text-center">
+            <h2 class="main-title">
+                <img src="../../../static/image/logo.png" alt="Logo" style="height: 40px; margin-right: 15px;">
+                Transposable elements - Artemisia_tridentata
+            </h2>
+        </div>
+
+        <div class="row align-items-center justify-content-center mb-5">
+            <div class="col-md-8 text-justify">
+                <p>
+                    &emsp;&emsp;Transposable elements (TEs): also known as jumping genes, are DNA sequences that can change their position in a cell. There are two types of transposons: type I transposons (Retrotransposon) and type II transposons (DNA transposons).
+                </p>
+                <p>
+                    &emsp;&emsp;Type I transposons: DNA is used as a template and is transcribed into mRNA, which is then reverse transcribed into cDNA and inserted into a new position in the genome by the action of integrase. Type II transposon: The mechanism of transposition of type II transposon is called "cut-and-paste". The transposase cuts the TE from its original position in the genome and pastes it into other regions of the genome. The gaps formed by the cut are repaired by DNA.
+                </p>
+            </div>
+            
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <h4 class="section-title-text">ClassI</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI" %}">ClassI</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_LTR" %}">LTR</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_LTR_Copia" %}">LTR_Copia</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_LTR_Gypsy" %}">LTR_Gypsy</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_nLTR_LINE_L1" %}">nLTR_LINE_L1</a></td>
+</tr>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_nLTR" %}">nLTR</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_nLTR_PLE" %}">nLTR_PLE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassI_nLTR_SINE_tRNA" %}">nLTR_SINE_tRNA</a></td>
+                            <td style="text-align: center"><span style="color: #999999;">---</span></td>
+                            <td style="text-align: center"><span style="color: #999999;">---</span></td>
+</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <h4 class="section-title-text">ClassII</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII" %}">ClassII</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_CACTA_MITE" %}">DNA_CACTA_MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_CACTA_nMITE" %}">DNA_CACTA_nMITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_Harbinger_MITE" %}">DNA_Harbinger_MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_Harbinger_nMITE" %}">DNA_Harbinger_nMITE</a></td>
+</tr>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_hAT_MITE" %}">DNA_hAT_MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_hAT_nMITE" %}">DNA_hAT_nMITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_hAT_unknown" %}">DNA_hAT_unknown</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_Mutator_MITE" %}">DNA_Mutator_MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_Mutator_nMITE" %}">DNA_Mutator_nMITE</a></td>
+</tr>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_TcMar_MITE" %}">DNA_TcMar_MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_DNA_TcMar_nMITE" %}">DNA_TcMar_nMITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_MITE" %}">MITE</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassII_nMITE" %}">nMITE</a></td>
+                            <td style="text-align: center"><span style="color: #999999;">---</span></td>
+</tr>
+                        <tr>
+                            <td style="text-align: center"><span style="color: #999999;">---</span></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <h4 class="section-title-text">ClassIII</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "ClassIII_Helitron" %}">Helitron</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <h4 class="section-title-text">Other</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "Low_complexity" %}">Low_complexity</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "Simple_repeat" %}">Simple_repeat</a></td>
+                            <td style="text-align: center"><a target="_blank" href="{% url "TE_type" "Artemisia_tridentata" "unknown" %}">unknown</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                            <td style="text-align: center"><a target="_blank" href="#">---</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+{% endblock %}

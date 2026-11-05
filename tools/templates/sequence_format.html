@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SAF-converter - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+        
+        .form-select-lg,
+        .form-control-lg {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-select-lg:focus,
+        .form-control-lg:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-submit-custom {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit-custom:hover {
+            background-color: #219150;
+            border-color: #219150;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(33, 145, 80, 0.3);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .loading-area {
+            margin-top: 25px;
+            min-height: 30px;
+            display: none;
+            text-align: center;
+        }
+        
+        .text-loading {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-left: 12px;
+            font-size: 0.95rem;
+        }
+        
+        .exchange-icon {
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            margin-top: 35px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">SAF-converter</h2>
+            <p class="section-subtitle">Calculation Tool: Sequence Alignment/Format Converter</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="tool-header">
+                    Input Parameters
+                </h3>
+
+                <div class="alert alert-light border mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill text-success"></i> 
+                    Convert biological sequence files between different formats (e.g., FASTA to GenBank). Powered by <strong>Biopython</strong>.
+                </div>
+
+                <form id="safForm" action="{% url 'saf_converter_url' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="input_file" class="form-label mb-0">
+                                <i class="bi bi-file-earmark-code"></i> Upload Sequence File
+                            </label>
+                            <a href="{% static 'example_file/Other_auxiliary_tools/formatTofasta.fasta' %}" download="formatTofasta.fasta" class="btn-example-tag">
+                                <i class="bi bi-download me-1"></i> Example Download
+                            </a>
+                        </div>
+                        <input type="file" class="form-control form-control-lg" id="input_file" name="input_file" required>
+                    </div>
+
+                    <div class="row g-4 text-center">
+                        <div class="col-md-5">
+                            <label for="input_format" class="form-label">Input Format</label>
+                            <select class="form-select form-select-lg" id="input_format" name="input_format" required>
+                                <option value="fasta" selected>FASTA</option>
+                                <option value="genbank">GenBank</option>
+                                <option value="embl">EMBL</option>
+                                <option value="phylip">Phylip</option>
+                                <option value="nexus">Nexus</option>
+                                <option value="clustal">Clustal</option>
+                                <option value="tab">Tabular (Tab)</option>
+                                <option value="fastq">FastQ</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="exchange-icon">
+                                <i class="bi bi-arrow-right-circle-fill"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label for="output_format" class="form-label">Output Format</label>
+                            <select class="form-select form-select-lg" id="output_format" name="output_format" required>
+                                <option value="fasta">FASTA</option>
+                                <option value="genbank" selected>GenBank</option>
+                                <option value="embl">EMBL</option>
+                                <option value="phylip">Phylip</option>
+                                <option value="nexus">Nexus</option>
+                                <option value="clustal">Clustal</option>
+                                <option value="tab">Tabular (Tab)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <div class="text-center">
+                        <button class="btn btn-submit-custom" type="button" onclick="go()">
+                            <i class="bi bi-arrow-repeat"></i> Convert & Download
+                        </button>
+                        
+                        <div class="loading-area" id="loadingArea">
+                            <div class="spinner-border text-success" role="status" style="width: 1.5rem; height: 1.5rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="text-loading">Converting format... Please wait.</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        let safDownloadCheckTimer = null;
+
+        function hideLoadingArea() {
+            var loading = document.getElementById("loadingArea");
+
+            if (loading) {
+                loading.style.display = "none";
+            }
+        }
+
+        function clearDownloadCookie() {
+            document.cookie = "saf_converter_download=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        }
+
+        function startDownloadPolling() {
+            if (safDownloadCheckTimer) {
+                window.clearInterval(safDownloadCheckTimer);
+            }
+
+            safDownloadCheckTimer = window.setInterval(function () {
+                if (document.cookie.indexOf("saf_converter_download=done") !== -1) {
+                    window.clearInterval(safDownloadCheckTimer);
+                    safDownloadCheckTimer = null;
+                    clearDownloadCookie();
+                    hideLoadingArea();
+                }
+            }, 1000);
+        }
+
+        function go() {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('safForm');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            var inFmt = document.getElementById('input_format').value;
+            var outFmt = document.getElementById('output_format').value;
+
+            if (inFmt === outFmt) {
+                if (!confirm("Input and Output formats are the same (" + inFmt + "). Continue?")) {
+                    return;
+                }
+            }
+
+            clearDownloadCookie();
+            loading.style.display = "block";
+            startDownloadPolling();
+            form.submit();
+        }
+    </script>
+{% endblock %}

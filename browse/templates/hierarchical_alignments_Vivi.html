@@ -1,0 +1,1187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hierarchical alignments with the <em>Vitis vinifera</em> genome as reference{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+#myTable2 th,
+#myTable2 td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+#myTable th:first-child,
+#myTable td:first-child,
+#myTable2 th:first-child,
+#myTable2 td:first-child,
+#myTable3 th:first-child,
+#myTable3 td:first-child {
+    width: 76px;
+    min-width: 76px;
+    text-align: center;
+}
+
+#myTable th:first-child::before,
+#myTable th:first-child::after,
+#myTable2 th:first-child::before,
+#myTable2 th:first-child::after,
+#myTable3 th:first-child::before,
+#myTable3 th:first-child::after {
+    content: none !important;
+    display: none !important;
+}
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">Hierarchical alignments with the <em>Vitis vinifera</em> genome as reference</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        &emsp;&emsp;Inter-genomic and intra-genomic comparisons can help reveal the structural complexity of Asteraceae genomes. We used <strong><em>Vitis vinifera</em></strong> as a reference, and by comparing homologous gene locus maps and Ks values between <strong><em>Vitis vinifera</em></strong> and other Asteraceae, we could separate orthologous and paralogous genes produced by different polyploidization in the species genomes. We constructed a <strong>219×23,647</strong> macro-matrices.
+    </div>
+
+    <div class="container mt-4">
+    <div class="row">
+        <!-- 左侧 -->
+        <div class="col-lg-4 col-md-5">
+                <form action="hierarchical_alignments_Vivi" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    {% load static %}
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="query_sequence" class="form-label mb-0">
+                                    Query Sequence
+                                </label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="query_sequence">
+                                    Example
+                                </button>
+                            </div>
+                            <textarea class="form-control"
+                                      id="lastName_query_sequence"
+                                      name="query_sequence"
+                                      rows="12"
+                                      placeholder="Paste FASTA sequence here..."></textarea>
+                        </div>
+
+                        <!-- OR Gene ID -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="geneid" class="form-label mb-0">
+                                    Or, Gene ID
+                                </label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="gene_id">
+                                    Example
+                                </button>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   id="geneid"
+                                   name="geneid"
+                                   placeholder="e.g. Aann5g04697">
+                        </div>
+
+                        <!-- Species -->
+                        <div class="mb-3">
+                            <label for="state" class="form-label">Species</label>
+                            <select class="form-control" id="state" name="sp_data_1" required style="font-style: italic">
+                                <option value="Aann">Artemisia annua</option>
+                                <option value="Cien">Cichorium endivia</option>
+                                <option value="Bial">Bidens alba</option>
+                                <option value="Aarg">Artemisia argyi</option>
+                                <option value="Amar">Ambrosia artemisiifolia</option>
+                                <option value="Amtr">Ambrosia trifida</option>
+                                <option value="Arla">Arctium lappa</option>
+                                <option value="Armi">Arctium minus</option>
+                                <option value="Artr">Artemisia tridentata</option>
+                                <option value="Busi">Buxus sinica</option>
+                                <option value="Cati">Carthamus tinctorius</option>
+                                <option value="Ccar">Cynara cardunculus</option>
+                                <option value="Ceso">Centaurea solstitialis</option>
+                                <option value="Chla">Chrysanthemum lavandulifolium</option>
+                                <option value="Chma">Chrysanthemum makinoi</option>
+                                <option value="Chmo">Chrysanthemum morifolium</option>
+                                <option value="Chna">Chrysanthemum nankingense</option>
+                                <option value="Cich">Cichorium intybus</option>
+                                <option value="Cind">Chrysanthemum indicum</option>
+                                <option value="Cobi">Cosmos bipinnata</option>
+                                <option value="Cpa">Centrapalus pauciflorus</option>
+                                <option value="Dapi">Dahlia pinnata.nucleus</option>
+                                <option value="Desu">Deinandra increscens subsp. villosa</option>
+                                <option value="Ecan">Erigeron canadensis</option>
+                                <option value="Enbr">Erigeron breviscapus</option>
+                                <option value="Eupl">Euptelea pleiosperma</option>
+                                <option value="Fbi">Flaveria bidentis</option>
+                                <option value="Fbr">Flaveria brownii</option>
+                                <option value="Ffl">Flaveria floridana</option>
+                                <option value="Fli">Flaveria linearis</option>
+                                <option value="Fra">Flaveria ramosissima</option>
+                                <option value="Fro">Flaveria robusta</option>
+                                <option value="Fso">Flaveria sonorensis</option>
+                                <option value="Ftr">Flaveria trinervia</option>
+                                <option value="Glco">Glebionis coronaria</option>
+                                <option value="Hean">Helianthus annuus</option>
+                                <option value="Hetu">Helianthus tuberosus</option>
+                                <option value="Heub">Helichrysum umbraculigerum</option>
+                                <option value="Laca">Lactuca saligna</option>
+                                <option value="Lomi">Logfia minima</option>
+                                <option value="Lssa">Lactuca sativa</option>
+                                <option value="Mimi">Mikania micrantha</option>
+                                <option value="Nenu">Nelumbo nucifera</option>
+                                <option value="Nin">Nymphoides indica</option>
+                                <option value="Pdy">Pulicaria dysenterica</option>
+                                <option value="Pin">Pluchea indica</option>
+                                <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                                <option value="Sain">Saussurea involucrata</option>
+                                <option value="Scae">Solidago caesia</option>
+                                <option value="Sesq">Senecio squalidus</option>
+                                <option value="Smso">Smallanthus sonchifolius</option>
+                                <option value="Soca">Solidago canadensis</option>
+                                <option value="Stre">Stevia rebaudiana</option>
+                                <option value="Taer">Tagetes erecta</option>
+                                <option value="Tako">Taraxacum koksaghyz</option>
+                                <option value="Tamo">Taraxacum mongolicum</option>
+                                <option value="Tesi">Tetracentron sinense</option>
+                                <option value="Vivi">Vitis vinifera</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid">
+                            <input type="submit" class="btn btn-primary btn-lg" value="Search">
+                        </div>
+
+                    </form>
+                </div>
+
+                {% if alignment_data %}
+                <div class="col-lg-8 col-md-7">
+                    <div class="table-responsive table-container">
+                        <table id="myTable3" class="table table-bordered table-striped text-center align-middle nowrap-table result-table"{% if hhh_page %} data-source-url="{% url 'hierarchical_alignments_table_data' reference='Vivi' %}" data-export-url="{% url 'hierarchical_alignments_table_data' reference='Vivi' %}"{% endif %}>
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                                    <th>Vivi_1</th>
+                                    <th>Arla_1</th>
+                                    <th>Armi_1</th>
+                                    <th>Sain_1</th>
+                                    <th>Ceso_1</th>
+                                    <th>Cati_1</th>
+                                    <th>Ccar_1</th>
+                                    <th>Cien_1</th>
+                                    <th>Cich_1</th>
+                                    <th>Lssa_1</th>
+                                    <th>Laca_1</th>
+                                    <th>Tako_1</th>
+                                    <th>Tamo_1</th>
+                                    <th>Pslu_1</th>
+                                    <th>Lomi_1</th>
+                                    <th>Lomi_2</th>
+                                    <th>Enbr_1</th>
+                                    <th>Ecan_1</th>
+                                    <th>Soca_1</th>
+                                    <th>Glco_1</th>
+                                    <th>Artr_1</th>
+                                    <th>Aary_1</th>
+                                    <th>Aary_2</th>
+                                    <th>Aann_1</th>
+                                    <th>Chma_1</th>
+                                    <th>Chmo_1</th>
+                                    <th>Chmo_2</th>
+                                    <th>Chmo_3</th>
+                                    <th>Chla_1</th>
+                                    <th>Chna_1</th>
+                                    <th>Cind_1</th>
+                                    <th>Pdy_1</th>
+                                    <th>Cobi_1</th>
+                                    <th>Hean_1</th>
+                                    <th>Bial_1</th>
+                                    <th>Bial_2</th>
+                                    <th>Dapi_1</th>
+                                    <th>Dapi_2</th>
+                                    <th>Hetu_1</th>
+                                    <th>Hetu_2</th>
+                                    <th>Hetu_3</th>
+                                    <th>Amtr_1</th>
+                                    <th>Smso_1</th>
+                                    <th>Smso_2</th>
+                                    <th>Taer_1</th>
+                                    <th>Fro_1</th>
+                                    <th>Fso_1</th>
+                                    <th>Ftr_1</th>
+                                    <th>Fra_1</th>
+                                    <th>Fli_1</th>
+                                    <th>Stre_1</th>
+                                    <th>Mimi_1</th>
+                                    <th>Cobi_2</th>
+                                    <th>Hean_2</th>
+                                    <th>Bial_3</th>
+                                    <th>Bial_4</th>
+                                    <th>Dapi_3</th>
+                                    <th>Dapi_4</th>
+                                    <th>Hetu_4</th>
+                                    <th>Hetu_5</th>
+                                    <th>Hetu_6</th>
+                                    <th>Amtr_2</th>
+                                    <th>Smso_3</th>
+                                    <th>Smso_4</th>
+                                    <th>Taer_2</th>
+                                    <th>Fro_2</th>
+                                    <th>Fso_2</th>
+                                    <th>Ftr_2</th>
+                                    <th>Fra_2</th>
+                                    <th>Fli_2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pair in alignment_data %}
+                                    <tr>
+                                        <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td> <!-- 新增一个复选框 -->
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Vivi_1 %}">{{pair.Vivi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Arla_1 %}">{{pair.Arla_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Armi_1 %}">{{pair.Armi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Sain_1 %}">{{pair.Sain_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Ceso_1 %}">{{pair.Ceso_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cati_1 %}">{{pair.Cati_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Ccar_1 %}">{{pair.Ccar_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cien_1 %}">{{pair.Cien_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cich_1 %}">{{pair.Cich_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Lssa_1 %}">{{pair.Lssa_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Laca_1 %}">{{pair.Laca_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Tako_1 %}">{{pair.Tako_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Tamo_1 %}">{{pair.Tamo_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Pslu_1 %}">{{pair.Pslu_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Lomi_1 %}">{{pair.Lomi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Lomi_2 %}">{{pair.Lomi_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Enbr_1 %}">{{pair.Enbr_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Ecan_1 %}">{{pair.Ecan_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Soca_1 %}">{{pair.Soca_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Glco_1 %}">{{pair.Glco_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Artr_1 %}">{{pair.Artr_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Aary_1 %}">{{pair.Aary_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Aary_2 %}">{{pair.Aary_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Aann_1 %}">{{pair.Aann_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chma_1 %}">{{pair.Chma_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chmo_1 %}">{{pair.Chmo_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chmo_2 %}">{{pair.Chmo_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chmo_3 %}">{{pair.Chmo_3 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chla_1 %}">{{pair.Chla_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Chna_1 %}">{{pair.Chna_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cind_1 %}">{{pair.Cind_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Pdy_1 %}">{{pair.Pdy_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cobi_1 %}">{{pair.Cobi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hean_1 %}">{{pair.Hean_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Bial_1 %}">{{pair.Bial_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Bial_2 %}">{{pair.Bial_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Dapi_1 %}">{{pair.Dapi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Dapi_2 %}">{{pair.Dapi_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_1 %}">{{pair.Hetu_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_2 %}">{{pair.Hetu_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_3 %}">{{pair.Hetu_3 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Amtr_1 %}">{{pair.Amtr_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Smso_1 %}">{{pair.Smso_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Smso_2 %}">{{pair.Smso_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Taer_1 %}">{{pair.Taer_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fro_1 %}">{{pair.Fro_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fso_1 %}">{{pair.Fso_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Ftr_1 %}">{{pair.Ftr_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fra_1 %}">{{pair.Fra_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fli_1 %}">{{pair.Fli_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Stre_1 %}">{{pair.Stre_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Mimi_1 %}">{{pair.Mimi_1 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Cobi_2 %}">{{pair.Cobi_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hean_2 %}">{{pair.Hean_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Bial_3 %}">{{pair.Bial_3 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Bial_4 %}">{{pair.Bial_4 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Dapi_3 %}">{{pair.Dapi_3 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Dapi_4 %}">{{pair.Dapi_4 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_4 %}">{{pair.Hetu_4 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_5 %}">{{pair.Hetu_5 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Hetu_6 %}">{{pair.Hetu_6 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Amtr_2 %}">{{pair.Amtr_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Smso_3 %}">{{pair.Smso_3 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Smso_4 %}">{{pair.Smso_4 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Taer_2 %}">{{pair.Taer_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fro_2 %}">{{pair.Fro_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fso_2 %}">{{pair.Fso_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Ftr_2 %}">{{pair.Ftr_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fra_2 %}">{{pair.Fra_2 }}</a></td>
+                                        <td><a href="{% url 'gene_detail' geneid=pair.Fli_2 %}">{{pair.Fli_2 }}</a></td>
+                                    </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="manual-pagination-toolbar">
+                        <div class="manual-pagination-actions">
+                            <button type="button" id="selectAllBtn1" class="btn-custom btn-select">Select All</button>
+                            <button type="button" id="download-btn1" class="btn-custom btn-download">Download Selected Rows</button>
+                        </div>
+
+                        {% if use_manual_pagination %}
+                        <div class="manual-pagination">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1" class="paginate_button first">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    First
+                                </a>
+                                <a href="?page={{ page_obj.previous_page_number }}" class="paginate_button previous">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    Previous
+                                </a>
+                            {% else %}
+                                <span class="paginate_button first disabled">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    First
+                                </span>
+                                <span class="paginate_button previous disabled">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    Previous
+                                </span>
+                            {% endif %}
+
+                            <span class="page-info">
+                                Page {{ page_obj.number }} of {{ total_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="paginate_button next">
+                                    Next
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </a>
+                                <a href="?page={{ total_pages }}" class="paginate_button last">
+                                    Last
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </a>
+                            {% else %}
+                                <span class="paginate_button next disabled">
+                                    Next
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </span>
+                                <span class="paginate_button last disabled">
+                                    Last
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <style>
+                            /* 分页按钮样式 */
+                            .paginate_button {
+                                display: inline-flex;
+                                align-items: center;
+                                padding: 6px 12px;
+                                margin: 0 3px;
+                                border: 1px solid #ddd;
+                                border-radius: 4px;
+                                background: white;
+                                color: #555;
+                                text-decoration: none;
+                                font-size: 14px;
+                                transition: all 0.3s;
+                                cursor: pointer;
+                            }
+
+                            .paginate_button:hover:not(.disabled) {
+                                background: #f5f5f5;
+                                border-color: #ccc;
+                                text-decoration: none;
+                                color: #333;
+                            }
+
+                            .paginate_button.disabled {
+                                color: #aaa;
+                                cursor: not-allowed;
+                                opacity: 0.6;
+                            }
+
+                            .paginate_button svg {
+                                margin: 0 3px;
+                            }
+
+                            .page-info {
+                                font-size: 14px;
+                                font-weight: 500;
+                            }
+
+                            /* 添加一个当前页指示器 */
+                            .page-indicator {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding: 6px 12px;
+                                margin: 0 3px;
+                                border: 1px solid #e67e22;
+                                border-radius: 4px;
+                                background: #fff8f0;
+                                color: #d35400;
+                                font-size: 14px;
+                                font-weight: 600;
+                                min-width: 40px;
+                            }
+
+                            /* 响应式调整 */
+                            @media (max-width: 768px) {
+                                .paginate_button {
+                                    padding: 5px 8px;
+                                    font-size: 13px;
+                                    margin: 0 2px;
+                                }
+
+                                .paginate_button svg {
+                                    margin: 0 2px;
+                                }
+
+                                .page-info {
+                                    display: block;
+                                    text-align: center;
+                                    margin: 10px 0;
+                                }
+
+                                div[style*="padding-left: 100px"] {
+                                    padding-left: 0 !important;
+                                    text-align: center;
+                                    width: 100%;
+                                }
+                            }
+                        </style>
+                        {% endif %}
+                    </div>
+            {% endif %}
+                </div>
+            </div>
+        </div>
+
+                {% if genes_table %}
+                    <hr width="100%" style="border: dotted 2px">
+                    <div class="result-title">
+                        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+                        Gene_GFF
+                    </div>
+                    <div class="table-responsive table-container">
+                        <table id="myTable2" class="table table-bordered table-striped text-center align-middle nowrap-table result-table">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                                <th>Chromosome</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Strand</th>
+                                <th>Old_gene</th>
+                                <th>Gene</th>
+                                <th>Num</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hhhh in genes_table %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td> <!-- 新增一个复选框 -->
+                                    <td>{{ hhhh.0 }}</td>
+                                    <td>{{ hhhh.1 }}</td>
+                                    <td>{{ hhhh.2 }}</td>
+                                    <td>{{ hhhh.3 }}</td>
+                                    <td>{{ hhhh.4 }}</td>
+                                    <td>{{ hhhh.5 }}</td>
+                                    <td>{{ hhhh.6 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn2" class="btn-custom btn-select">Select All</button>&nbsp;&nbsp;&nbsp;
+                    <button type="button" id="download-btn2" class="btn-custom btn-download">Download Selected Rows</button>
+
+                <script>
+                    // 第一个表格的按钮
+                    function bindToggleSelection(buttonId, tableSelector) {
+                        var button = document.getElementById(buttonId);
+                        var table = document.querySelector(tableSelector);
+                        if (!button || !table) {
+                            return;
+                        }
+
+                        function updateButtonState() {
+                            var checkboxes = table.querySelectorAll(".row-checkbox");
+                            var allSelected = checkboxes.length > 0 && Array.from(checkboxes).every(function(checkbox) {
+                                return checkbox.checked;
+                            });
+                            button.textContent = allSelected ? "Clear Selection" : "Select All";
+                        }
+
+                        button.addEventListener("click", function() {
+                            var checkboxes = table.querySelectorAll(".row-checkbox");
+                            var shouldSelect = Array.from(checkboxes).some(function(checkbox) {
+                                return !checkbox.checked;
+                            });
+
+                            checkboxes.forEach(function(checkbox) {
+                                checkbox.checked = shouldSelect;
+                            });
+
+                            updateButtonState();
+                        });
+
+                        table.querySelectorAll(".row-checkbox").forEach(function(checkbox) {
+                            checkbox.addEventListener("change", updateButtonState);
+                        });
+
+                        updateButtonState();
+                    }
+
+                    bindToggleSelection("selectAllBtn1", "#myTable3");
+
+                    var downloadBtn1 = document.getElementById("download-btn1");
+                    downloadBtn1.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll("#myTable3 .row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows, "Orthologous_selected_rows.txt");
+                    });
+
+                    // 第二个表格的按钮
+                    bindToggleSelection("selectAllBtn2", "#myTable2");
+
+                    var downloadBtn2 = document.getElementById("download-btn2");
+                    downloadBtn2.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows, "Gene_GFF_selected_rows.txt");
+                    });
+
+                    // 通用的下载函数
+                    function downloadSelectedRows(rows, filename) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+            <div class="col-sm-12">
+                    <hr width="100%" style="border: dotted 2px">
+                    <div class="result-title">
+                        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+                        DecoBrowse
+                    </div>
+                    <div style="padding-top: 10px; padding-bottom: 10px">
+                        <button type="button" class="btn btn-primary" onclick="toggleGeneIDs()">Toggle Gene IDs</button>
+                        <button type="button" class="btn btn-secondary" onclick="zoomIn()">Zoom In</button>
+                        <button type="button" class="btn btn-secondary" onclick="zoomOut()">Zoom Out</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetZoom()">Reset Zoom</button>
+                        <button type="button" class="btn btn-success" onclick="saveAsSVG()">Save as SVG</button>
+                    </div>
+
+                    <div id="visualization-container">
+                    </div>
+                    <script>
+                        const data = [
+                            {% for row in alignment_data_draw %}
+                                ["{{ row.Vivi_1 }}", "{{ row.Arla_1 }}", "{{ row.Armi_1 }}", "{{ row.Sain_1 }}", "{{ row.Ceso_1 }}", "{{ row.Cati_1 }}", "{{ row.Ccar_1 }}", "{{ row.Cien_1 }}", "{{ row.Cich_1 }}", "{{ row.Lssa_1 }}", "{{ row.Laca_1 }}", "{{ row.Tako_1 }}", "{{ row.Tamo_1 }}", "{{ row.Pslu_1 }}", "{{ row.Lomi_1 }}", "{{ row.Lomi_2 }}", "{{ row.Enbr_1 }}", "{{ row.Ecan_1 }}", "{{ row.Soca_1 }}", "{{ row.Glco_1 }}", "{{ row.Artr_1 }}", "{{ row.Aary_1 }}", "{{ row.Aary_2 }}", "{{ row.Aann_1 }}", "{{ row.Chma_1 }}", "{{ row.Chmo_1 }}", "{{ row.Chmo_2 }}", "{{ row.Chmo_3 }}", "{{ row.Chla_1 }}", "{{ row.Chna_1 }}", "{{ row.Cind_1 }}", "{{ row.Pdy_1 }}", "{{ row.Cobi_1 }}", "{{ row.Hean_1 }}", "{{ row.Bial_1 }}", "{{ row.Bial_2 }}", "{{ row.Dapi_1 }}", "{{ row.Dapi_2 }}", "{{ row.Hetu_1 }}", "{{ row.Hetu_2 }}", "{{ row.Hetu_3 }}", "{{ row.Amtr_1 }}", "{{ row.Smso_1 }}", "{{ row.Smso_2 }}", "{{ row.Taer_1 }}", "{{ row.Fro_1 }}", "{{ row.Fso_1 }}", "{{ row.Ftr_1 }}", "{{ row.Fra_1 }}", "{{ row.Fli_1 }}", "{{ row.Stre_1 }}", "{{ row.Mimi_1 }}", "{{ row.Cobi_2 }}", "{{ row.Hean_2 }}", "{{ row.Bial_3 }}", "{{ row.Bial_4 }}", "{{ row.Dapi_3 }}", "{{ row.Dapi_4 }}", "{{ row.Hetu_4 }}", "{{ row.Hetu_5 }}", "{{ row.Hetu_6 }}", "{{ row.Amtr_2 }}", "{{ row.Smso_3 }}", "{{ row.Smso_4 }}", "{{ row.Taer_2 }}", "{{ row.Fro_2 }}", "{{ row.Fso_2 }}", "{{ row.Ftr_2 }}", "{{ row.Fra_2 }}", "{{ row.Fli_2 }}", "{{ row.Stre_2 }}", "{{ row.Mimi_2 }}", "{{ row.Arla_2 }}", "{{ row.Armi_2 }}", "{{ row.Sain_2 }}", "{{ row.Ceso_2 }}", "{{ row.Cati_2 }}", "{{ row.Ccar_2 }}", "{{ row.Cien_2 }}", "{{ row.Cich_2 }}", "{{ row.Lssa_2 }}", "{{ row.Laca_2 }}", "{{ row.Tako_2 }}", "{{ row.Tamo_2 }}", "{{ row.Pslu_2 }}", "{{ row.Lomi_3 }}", "{{ row.Lomi_4 }}", "{{ row.Enbr_2 }}", "{{ row.Ecan_2 }}", "{{ row.Soca_2 }}", "{{ row.Glco_2 }}", "{{ row.Artr_2 }}", "{{ row.Aary_3 }}", "{{ row.Aary_4 }}", "{{ row.Aann_2 }}", "{{ row.Chma_2 }}", "{{ row.Chmo_4 }}", "{{ row.Chmo_5 }}", "{{ row.Chmo_6 }}", "{{ row.Chla_2 }}", "{{ row.Chna_2 }}", "{{ row.Cind_2 }}", "{{ row.Pdy_2 }}", "{{ row.Cobi_3 }}", "{{ row.Hean_3 }}", "{{ row.Bial_5 }}", "{{ row.Bial_6 }}", "{{ row.Dapi_5 }}", "{{ row.Dapi_6 }}", "{{ row.Hetu_7 }}", "{{ row.Hetu_8 }}", "{{ row.Hetu_9 }}", "{{ row.Amtr_3 }}", "{{ row.Smso_5 }}", "{{ row.Smso_6 }}", "{{ row.Taer_3 }}", "{{ row.Fro_3 }}", "{{ row.Fso_3 }}", "{{ row.Ftr_3 }}", "{{ row.Fra_3 }}", "{{ row.Fli_3 }}", "{{ row.Stre_3 }}", "{{ row.Mimi_3 }}", "{{ row.Cobi_4 }}", "{{ row.Hean_4 }}", "{{ row.Bial_7 }}", "{{ row.Bial_8 }}", "{{ row.Dapi_7 }}", "{{ row.Dapi_8 }}", "{{ row.Hetu_10 }}", "{{ row.Hetu_11 }}", "{{ row.Hetu_12 }}", "{{ row.Amtr_4 }}", "{{ row.Smso_7 }}", "{{ row.Smso_8 }}", "{{ row.Taer_4 }}", "{{ row.Fro_4 }}", "{{ row.Fso_4 }}", "{{ row.Ftr_4 }}", "{{ row.Fra_4 }}", "{{ row.Fli_4 }}"],
+                            {% endfor %}
+                        ];
+
+                        const circleRadius = 15;
+                        const canvasWidth = 1130;
+                        const canvasHeight = 540;
+                        const rowSpacing = 30; // 行圆之间的间距
+                        const colSpacing = 50; // 列圆之间的间距
+                        let scale = 1;
+                        let offsetX = 0;
+                        let offsetY = 0;
+                        let initialScale = scale;
+                        let initialOffsetX = offsetX;
+                        let initialOffsetY = offsetY;
+
+                        const svg = d3.select("#visualization-container").append("svg")
+                            .attr("width", canvasWidth)
+                            .attr("height", canvasHeight)
+                            .attr("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`);
+
+                        const container = svg.append("g");
+
+                        const numRows = data.length;
+                        const numCols = data[0].length;
+
+                        // Draw vertical lines
+                        for (let colIndex = 1; colIndex <= numCols; colIndex++) {
+                            const x1 = colIndex * (circleRadius * 2 + colSpacing) - circleRadius;
+                            const y1 = 0;
+                            const x2 = x1;
+                            const y2 = numRows * (circleRadius * 2.5 + rowSpacing) - rowSpacing;
+                            container.append("line")
+                                .attr("x1", x1)
+                                .attr("y1", y1)
+                                .attr("x2", x2)
+                                .attr("y2", y2)
+                                .style("stroke", "black")
+                                .style("stroke-width", 1);
+                        }
+
+                        // Draw horizontal lines
+                        for (let rowIndex = 1; rowIndex <= numRows; rowIndex++) {
+                            const x1 = 0;
+                            const y1 = rowIndex * (circleRadius * 2 + rowSpacing) - circleRadius;
+                            const x2 = numCols * (circleRadius * 2.5 + colSpacing) - colSpacing;
+                            const y2 = y1;
+                            container.append("line")
+                                .attr("x1", x1)
+                                .attr("y1", y1)
+                                .attr("x2", x2)
+                                .attr("y2", y2)
+                                .style("stroke", "black")
+                                .style("stroke-width", 1);
+                        }
+
+                        function drawGeneID(x, y, geneID) {
+                            const text = container.append("text")
+                                .attr("class", "gene-id")
+                                .attr("x", x)
+                                .attr("y", y - circleRadius - 5)
+                                .attr("text-anchor", "middle")
+                                .attr("font-size", "12px")
+                                .text(geneID);
+                            const url = `/browse/gene_${geneID}/`;
+                            text.on("click", () => {
+                                window.location.href = url;
+                            });
+                        }
+
+                        // 画基因ID与箭头或圆
+                        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+                            // 生成随机颜色
+                            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+                            for (let colIndex = 0; colIndex < numCols; colIndex++) {
+                                const x = colIndex * (circleRadius * 2 + colSpacing) + circleRadius + colSpacing;
+                                const y = rowIndex * (circleRadius * 2 + rowSpacing) + circleRadius + rowSpacing;
+                                const isFilled = data[rowIndex][colIndex] !== '.';
+                                const geneID = data[rowIndex][colIndex];
+
+                                if (isFilled) {
+                                    // 解析基因ID获取正负链信息
+                                    const geneInfo = geneID.split('_');
+                                    console.log(geneInfo);  // 调试输出，检查基因ID解析情况
+                                    const geneName = geneInfo[0];
+                                    const strand = geneInfo[1];  // "+" 或 "-"
+
+                                    // 绘制基因位置的矩形或圆
+                                    container.append("rect")
+                                        .attr("x", x - circleRadius / 2)
+                                        .attr("y", y - circleRadius / 4)
+                                        .attr("width", circleRadius)
+                                        .attr("height", circleRadius / 2)
+                                        .style("fill", randomColor)
+                                        .attr("class", "arrow");
+
+                                    // 根据链方向绘制箭头
+                                    if (strand === '+') {
+                                        console.log(`绘制向右箭头: ${geneID}`);  // 调试输出
+                                        // 向右箭头
+                                        container.append("path")
+                                            .attr("d", `M${x - circleRadius},${y} L${x},${y - circleRadius / 2} L${x},${y + circleRadius / 2} Z`)
+                                            .style("fill", randomColor)
+                                            .attr("class", "arrow");
+                                    } else if (strand === '-') {
+                                        console.log(`绘制向左箭头: ${geneID}`);  // 调试输出
+                                        // 向左箭头
+                                        container.append("path")
+                                            .attr("d", `M${x - circleRadius},${y} L${x},${y - circleRadius / 2} L${x},${y + circleRadius / 2} Z`)
+                                            .style("fill", randomColor)
+                                            .attr("class", "arrow")
+                                            .attr("transform", `rotate(180, ${x}, ${y})`); // 旋转180度，变成向左的箭头
+                                    }
+
+                                    // 在箭头上方显示基因ID
+                                    const text = container.append("text")
+                                        .attr("class", "gene-id")
+                                        .attr("x", x)
+                                        .attr("y", y - circleRadius - 5)
+                                        .attr("text-anchor", "middle") // 设置文本居中对齐
+                                        .attr("font-size", "12px") // 设置文本字体大小为12像素
+                                        .text(geneName);
+
+                                    // 创建文本背景框
+                                    const textWidth = text.node().getBBox().width;
+                                    const textHeight = text.node().getBBox().height;
+
+                                    container.insert("rect", "text")
+                                        .attr("x", x - textWidth / 2 - 2)
+                                        .attr("y", y - circleRadius - textHeight - 8)
+                                        .attr("width", textWidth + 4)
+                                        .attr("height", textHeight + 4)
+                                        .style("fill", "white"); // 背景框的颜色
+
+                                    // 添加基因ID点击事件
+                                    drawGeneID(x, y, geneName);
+                                } else {
+                                    // 如果没有基因，绘制空心圆
+                                    container.append("circle")
+                                        .attr("cx", x)
+                                        .attr("cy", y)
+                                        .attr("r", circleRadius / 3) // 设置空心圆的半径
+                                        .style("stroke", "black") // 设置边框颜色为黑色
+                                        .style("stroke-width", "1px") // 设置边框宽度为1像素
+                                        .style("fill", "white") // 填充颜色为白色
+                                        .attr("class", "empty-circle");
+                                }
+                            }
+                        }
+
+
+
+
+                        function toggleGeneIDs() {
+                            const geneIDs = document.querySelectorAll(".gene-id, .gene-id-background");
+                            geneIDs.forEach(element => {
+                                const visibility = element.style.visibility;
+                                element.style.visibility = (visibility === "hidden") ? "visible" : "hidden";
+                            });
+                        }
+
+                        function zoomIn() {
+                            scale += 0.1;
+                            container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                        }
+
+                        function zoomOut() {
+                            scale -= 0.1;
+                            container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                        }
+
+                        function resetZoom() {
+                            scale = initialScale;
+                            offsetX = initialOffsetX;
+                            offsetY = initialOffsetY;
+                            container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                        }
+
+                        function saveAsSVG() {
+                            const svgString = new XMLSerializer().serializeToString(svg.node());
+                            const blob = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = "visualization.svg";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(url);
+                        }
+
+                        svg.call(d3.drag()
+                            .on("start", () => {
+                                container.attr("cursor", "grabbing");
+                            })
+                            .on("drag", (event) => {
+                                offsetX += event.dx;
+                                offsetY += event.dy;
+                                container.attr("transform", `translate(${offsetX},${offsetY}) scale(${scale})`);
+                            })
+                            .on("end", () => {
+                                container.attr("cursor", "grab");
+                            })
+                        );
+
+                    </script>
+                </div>
+            </div>
+
+            {% if blast_results %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="result-title">
+                    <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+                    Blast results
+                </div>
+                <div class="table-responsive table-container">
+                    <table id="myTable" class="table table-bordered table-striped text-center align-middle nowrap-table result-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Query ID</th>
+                                <th>Subject ID</th>
+                                <th>Identity</th>
+                                <th>Length</th>
+                                <th>Mismatch</th>
+                                <th>Gapopen</th>
+                                <th>Qstart</th>
+                                <th>Qend</th>
+                                <th>Sstart</th>
+                                <th>Send</th>
+                                <th>Bitscore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in blast_results %}
+                                <tr>
+                                    <td>{{ pair.0 }}</td>
+                                    <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.7 }}</td>
+                                    <td>{{ pair.8 }}</td>
+                                    <td>{{ pair.9 }}</td>
+{#                                    <td>{{ pair.10 }}</td>#}
+                                    <td>{{ pair.11 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable({
+                    "language": {
+                        {#"lengthMenu": "",#}
+                        "info": "", // 取消 "Showing 1 to 10 of 100 entries"
+                        "infoEmpty": "", // 如果希望完全隐藏 "Showing 0 to 0 of 0 entries"，可以将这个选项设置为空字符串
+                        "infoFiltered": "" // 这个可以保留或删除，根据需要
+                    },
+                    {#"paging": false // 取消页数显示#}
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable2').DataTable({
+                    paging: false,
+                    info: false,
+                    searching: true,
+                    lengthChange: false,
+                    scrollX: true,
+                    autoWidth: false,
+                    columnDefs: [
+                        { orderable: false, targets: 0 }
+                    ],
+                    "language": {
+                        {#"lengthMenu": "",#}
+                        "info": "", // 取消 "Showing 1 to 10 of 100 entries"
+                        "infoEmpty": "", // 如果希望完全隐藏 "Showing 0 to 0 of 0 entries"，可以将这个选项设置为空字符串
+                        "infoFiltered": "" // 这个可以保留或删除，根据需要
+                    },
+                    {#"paging": false // 取消页数显示#}
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable3').DataTable({
+                    paging: false,
+                    info: false,
+                    searching: true,
+                    lengthChange: false,
+                    scrollX: true,
+                    autoWidth: false,
+                    columnDefs: [
+                        { orderable: false, targets: 0 }
+                    ],
+                    "language": {
+                        {#"lengthMenu": "",#}
+                        "info": "", // 取消 "Showing 1 to 10 of 100 entries"
+                        "infoEmpty": "", // 如果希望完全隐藏 "Showing 0 to 0 of 0 entries"，可以将这个选项设置为空字符串
+                        "infoFiltered": "" // 这个可以保留或删除，根据需要
+                    },
+                    {#"paging": false // 取消页数显示#}
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                var myTable3 = $('#myTable3');
+                var myTable3AjaxUrl = myTable3.data('source-url');
+                var myTable3Options = {
+                    paging: true,
+                    info: false,
+                    searching: true,
+                    lengthChange: true,
+                    pageLength: 10,
+                    lengthMenu: myTable3AjaxUrl ? [[10, 25, 50, 100], [10, 25, 50, 100]] : [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                    pagingType: 'simple_numbers',
+                    scrollX: true,
+                    autoWidth: false,
+                    order: [],
+                    columnDefs: [
+                        { orderable: false, targets: 0 }
+                    ]
+                };
+
+                if (myTable3AjaxUrl) {
+                    myTable3Options.processing = true;
+                    myTable3Options.serverSide = true;
+                    myTable3Options.ajax = {
+                        url: myTable3AjaxUrl,
+                        type: 'GET',
+                        data: function(d) {
+                            var order = d.order && d.order.length ? d.order[0] : {};
+                            return {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                'search[value]': d.search ? d.search.value : '',
+                                'search[regex]': d.search ? d.search.regex : false,
+                                'order[0][column]': order.column,
+                                'order[0][dir]': order.dir
+                            };
+                        }
+                    };
+                    myTable3Options.deferRender = true;
+                    myTable3Options.searchDelay = 350;
+                }
+
+                if ($.fn.dataTable.isDataTable('#myTable3')) {
+                    myTable3.DataTable().destroy();
+                }
+                myTable3.DataTable(myTable3Options);
+            });
+        </script>
+
+
+    <script>
+        document.getElementById('gene_id').addEventListener('click', function () {
+            document.getElementById('geneid').value = 'Aann5g04697';
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MDYSPATRRTTPDLYSTFVVHSDEEDNQNDDESLPPLLKRLPKDFGAAVDSDDDESISGTMIVKRVDPTRRGRDDESDDDENESISGTMIVKTNPRRVDYTRRRDEDEEDDDEDEEGGGFGTFVVRSDEREDESVSGTFVRRSVGGGGMSTMSRAVASMQGVGEGFGKGKGKTSSSQDGDGGHSRKRTSKMSSGSIADSITREDPSTKYELLHELGKGSYGSVYKARDLKTSEMVAIKVISLSEGEEGYEEIRGEIEMLQQCSHPNVVRYLGSYQGEEYLWIVMEYCGGGSVADLMNVTDEPLEEYQIAYICKEALKGLSYLHSIFKVHRDIKGGNILLTEQGEVKLGDFGVAAQLTRTMSKRNTFIGTPHWMAPEVIQESRYDGKVDVWALGVSAIEMAEGLPPRSNVHPMRVLFMISIEPAPMLEDKEKWSLVFHDFIAKCLTKDPRIRPTASELLKHKFIEKCKNGASAMLPKLEKAKINRAAMALEAEHVSETIPGYGTLGPKVNEAFGDTVPSKPQQVPNGVPAVGGTVKAGGLEEAEEGDFGSVIIHGGVDIHKTAAKTPLPAAKDPSHSSARGQSLSMADPGEDSVSPWLTKKVGGSADTFRAVESPSTEHTAQAIGSNGAVISGTTKNEGVNRKALDKLWSIYAAGNTVPIPFLRATDISPIALLSENVLGSQHLDNVGNVAVEALQELFTSDGQSKKSRRQNELPLPPSVYQRLTSSPTLMNLAQALSYHKMCYEEMPLQELQATQEQQTIQNLCDTLRTILRL
+`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+        </form>
+    </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'myTable3',
+    selectAllButtonId: 'selectAllBtn1',
+    downloadButtonId: 'download-btn1',
+    filename: 'Orthologous_selected_rows.txt',
+    exportUrl: document.getElementById('myTable3') ? document.getElementById('myTable3').dataset.exportUrl : '',
+    compactLayout: true,
+    actionsAboveControls: true,
+    persistAcrossPages: true
+});
+
+AGRPTable.bind({
+    tableId: 'myTable2',
+    selectAllButtonId: 'selectAllBtn2',
+    downloadButtonId: 'download-btn2',
+    filename: 'Gene_GFF_selected_rows.txt',
+    disablePageJump: true,
+    actionsAboveControls: true
+});
+</script>
+{% endblock %}

@@ -1,0 +1,216 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">Protein Synthesis and Modificat</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 60px; padding-top: 10px">
+<div class="heatmap-wrapper">
+    <div class="title">
+        <div class="color-scheme-selector">
+            <label for="colorscale">Select color：</label>
+            <select id="colorscale" onchange="updateColorscale()">
+                <option value="Plasma" selected>Plasma</option>
+                <option value="Viridis">Viridis</option>
+                <option value="Inferno">Inferno</option>
+                <option value="Magma">Magma</option>
+                <option value="Cividis">Cividis</option>
+                <option value="Rainbow">Rainbow</option>
+                <option value="Portland">Portland</option>
+                <option value="Jet">Jet</option>
+                <option value="Hot">Hot</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+    </div>
+    <div id="heatmap"></div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    // 数据准备
+    const species = [
+        "Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum koksaghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"
+    ];
+
+    const families = ["Cytoplasmic Ribosomal Protein", "Eukaryotic Initiation Factors", "U2AF65A", "Subtilisin-like Serine", "Phospholipase D (Wang group)", "U-box", "Plant U-box"
+
+];
+
+    const data = [
+        [368, 402, 14, 63, 28, 157, 4],
+[558, 769, 33, 123, 46, 322, 10],
+[447, 421, 11, 40, 35, 137, 2],
+[422, 460, 11, 71, 26, 206, 5],
+[359, 444, 10, 41, 21, 173, 6],
+[333, 393, 11, 43, 20, 158, 6],
+[463, 475, 11, 110, 34, 179, 6],
+[625, 845, 24, 190, 42, 361, 11],
+[253, 329, 9, 88, 8, 131, 5],
+[389, 520, 21, 59, 44, 179, 9],
+[308, 310, 9, 40, 18, 138, 6],
+[248, 285, 11, 47, 21, 117, 4],
+[564, 647, 14, 103, 44, 217, 8],
+[558, 904, 16, 153, 67, 275, 3],
+[1263, 1658, 34, 267, 117, 608, 12],
+[416, 576, 9, 98, 36, 205, 6],
+[284, 390, 13, 53, 26, 180, 5],
+[261, 318, 14, 71, 18, 158, 3],
+[536, 754, 12, 108, 54, 225, 6],
+[370, 428, 13, 71, 26, 202, 6],
+[246, 282, 6, 56, 19, 126, 3],
+[824, 869, 24, 156, 46, 354, 12],
+[395, 425, 12, 63, 30, 199, 4],
+[302, 483, 23, 59, 24, 190, 5],
+[325, 494, 18, 45, 27, 189, 6],
+[284, 374, 7, 62, 16, 149, 5],
+[341, 353, 15, 29, 20, 146, 5],
+[344, 339, 12, 48, 18, 165, 6],
+[428, 412, 14, 87, 18, 216, 7],
+[384, 353, 18, 65, 20, 166, 3],
+[382, 396, 18, 61, 26, 187, 4],
+[423, 412, 17, 55, 24, 197, 5],
+[371, 381, 15, 49, 27, 177, 5],
+[337, 266, 13, 45, 16, 142, 6],
+[448, 469, 10, 94, 31, 198, 3],
+[611, 596, 18, 124, 29, 253, 5],
+[1282, 1551, 45, 349, 104, 673, 12],
+[340, 337, 12, 32, 15, 167, 5],
+[387, 412, 17, 77, 26, 159, 4],
+[459, 552, 17, 65, 30, 218, 8],
+[313, 418, 30, 60, 20, 168, 10],
+[352, 384, 15, 55, 24, 193, 7],
+[341, 337, 11, 95, 17, 183, 4],
+[229, 305, 12, 123, 14, 134, 5],
+[280, 340, 11, 51, 21, 142, 5],
+[290, 338, 9, 50, 16, 142, 4],
+[336, 427, 10, 74, 22, 163, 5],
+[359, 407, 9, 43, 26, 166, 6],
+[315, 449, 9, 91, 26, 158, 4],
+[322, 417, 14, 51, 24, 161, 8],
+[724, 867, 35, 124, 58, 442, 10],
+[452, 708, 19, 105, 34, 205, 9],
+[382, 443, 14, 66, 26, 193, 7],
+[296, 350, 15, 62, 23, 165, 3],
+[287, 512, 17, 76, 26, 209, 7],
+[209, 301, 7, 58, 21, 117, 4],
+[380, 417, 11, 108, 16, 183, 6],
+[240, 290, 8, 84, 11, 96, 3]
+
+    ];
+
+    // 初始化热图
+    function createHeatmap() {
+        const container = document.getElementById('heatmap');
+        const width = container.clientWidth;
+        const height = Math.min(width * 0.7, window.innerHeight * 0.7);
+
+        const heatmapData = {
+            z: data,
+            x: families,
+            y: species,
+            type: 'heatmap',
+            colorscale: document.getElementById('colorscale').value,
+            hoverongaps: false
+        };
+
+        const layout = {
+                margin: {
+                    l: 150,
+                    r: 50,
+                    b: 150,
+                    t: 50,
+                    pad: 4
+                },
+                width: width,
+                height: height,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+        Plotly.newPlot('heatmap', [heatmapData], layout, {displayModeBar: true})
+            .then(function(gd) {
+                gd.on('plotly_click', function(data) {
+                    if(data.points && data.points.length > 0) {
+                        const point = data.points[0];
+                        const url = "{% url 'TF_genes_index_url' %}?species=" +
+                                    encodeURIComponent(point.y) + "&family=" +
+                                    encodeURIComponent(point.x);
+                        window.location.href = url;
+                    }
+                });
+            });
+    }
+
+    // 更新颜色方案
+    function updateColorscale() {
+        Plotly.restyle('heatmap', {
+            colorscale: document.getElementById('colorscale').value
+        });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        createHeatmap();
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            Plotly.relayout('heatmap', {
+                width: document.getElementById('heatmap').clientWidth,
+                height: Math.min(document.getElementById('heatmap').clientWidth * 0.7,
+                          window.innerHeight * 0.7)
+            });
+        });
+    });
+</script>
+
+<style>
+    .heatmap-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    #heatmap {
+        width: 100%;
+        height: 600px;
+        background: transparent;
+    }
+
+    /* 确保Plotly生成的SVG没有边框 */
+    #heatmap svg {
+        border: none;
+        outline: none;
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .color-scheme-selector {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .color-scheme-selector select {
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    /* 针对小屏幕的调整 */
+    @media (max-width: 768px) {
+        #heatmap {
+            height: 400px;
+        }
+
+        .heatmap-wrapper {
+            padding: 10px;
+        }
+    }
+</style>
+    </div>
+{% endblock %}

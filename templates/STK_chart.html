@@ -1,0 +1,214 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">Signal Transduction and Kinase</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 30px; padding-top: 30px">
+<div class="heatmap-wrapper">
+    <div class="title">
+        <div class="color-scheme-selector">
+            <label for="colorscale">Select color：</label>
+            <select id="colorscale" onchange="updateColorscale()">
+                <option value="Plasma" selected>Plasma</option>
+                <option value="Viridis">Viridis</option>
+                <option value="Inferno">Inferno</option>
+                <option value="Magma">Magma</option>
+                <option value="Cividis">Cividis</option>
+                <option value="Rainbow">Rainbow</option>
+                <option value="Portland">Portland</option>
+                <option value="Jet">Jet</option>
+                <option value="Hot">Hot</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+    </div>
+    <div id="heatmap"></div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    // 数据准备
+    const species = [
+        "Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum koksaghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"
+    ];
+
+    const families = ["AGC Kinase", "CBL-interacting serine-threonine protein kinases", "Histidine Kinase", "MAP Kinase", "MAP Kinase Kinase", "MAP Kinase Kinase Kinase", "MAP Kinase Kinase Kinase Kinase", "PP2C-type Phosphatase", "Protein tyrosine phosphatase (PTP)", "RBOH", "LysM Receptor-like Kinase (LYKs)", "LysM Receptor-like Protein (LYPs)", "Receptor kinase-like", "Strubbelig Receptor", "Response Regulator"
+];
+
+    const data = [
+        [47, 49, 13, 30, 12, 146, 12, 104, 36, 3, 0, 2, 1882, 13, 26],
+[95, 100, 29, 56, 22, 269, 19, 170, 78, 2, 4, 4, 4483, 22, 50],
+[45, 51, 19, 50, 8, 157, 16, 114, 44, 3, 0, 3, 1027, 19, 28],
+[67, 76, 19, 36, 12, 208, 14, 124, 49, 3, 1, 2, 6246, 14, 36],
+[59, 61, 20, 35, 10, 155, 10, 111, 45, 2, 0, 3, 875, 15, 30],
+[46, 60, 18, 34, 11, 152, 9, 98, 43, 1, 2, 2, 4074, 13, 29],
+[59, 52, 26, 33, 16, 150, 14, 105, 40, 2, 2, 2, 6322, 15, 31],
+[119, 125, 38, 80, 24, 375, 30, 235, 90, 6, 3, 5, 3884, 25, 91],
+[54, 40, 12, 21, 8, 110, 11, 78, 36, 3, 1, 4, 1450, 9, 32],
+[71, 65, 39, 37, 13, 215, 16, 147, 66, 2, 1, 2, 1452, 16, 41],
+[39, 50, 10, 35, 6, 124, 11, 81, 39, 0, 2, 3, 709, 13, 25],
+[38, 31, 11, 24, 9, 99, 8, 82, 30, 1, 0, 2, 4721, 12, 16],
+[62, 74, 27, 53, 22, 268, 19, 124, 61, 3, 2, 2, 2524, 17, 65],
+[65, 107, 39, 77, 25, 313, 26, 217, 90, 7, 2, 4, 3067, 36, 88],
+[162, 203, 96, 123, 42, 624, 46, 376, 151, 6, 7, 6, 6635, 62, 105],
+[47, 66, 19, 49, 13, 239, 13, 120, 58, 5, 1, 2, 2075, 18, 35],
+[56, 60, 23, 38, 14, 161, 22, 106, 37, 1, 1, 1, 1300, 14, 41],
+[50, 60, 14, 37, 12, 148, 13, 93, 33, 2, 1, 0, 1088, 12, 27],
+[67, 61, 30, 54, 10, 253, 23, 130, 52, 7, 2, 4, 1652, 26, 46],
+[60, 77, 18, 46, 10, 194, 16, 122, 43, 3, 1, 3, 2257, 14, 48],
+[39, 46, 10, 27, 8, 103, 9, 77, 27, 1, 2, 2, 1369, 8, 17],
+[124, 114, 36, 80, 25, 369, 37, 242, 90, 11, 2, 6, 3508, 25, 76],
+[65, 69, 19, 39, 9, 194, 15, 113, 44, 2, 2, 3, 1372, 16, 30],
+[61, 68, 13, 47, 9, 160, 16, 116, 50, 1, 2, 2, 1585, 9, 33],
+[57, 37, 25, 39, 11, 154, 14, 109, 49, 1, 3, 5, 1002, 11, 32],
+[44, 45, 19, 25, 9, 122, 9, 83, 33, 3, 1, 3, 693, 8, 27],
+[51, 57, 10, 36, 10, 140, 12, 91, 37, 1, 0, 2, 696, 7, 27],
+[51, 56, 8, 31, 12, 140, 15, 88, 31, 2, 1, 6, 2799, 3, 32],
+[69, 82, 29, 39, 13, 174, 10, 93, 32, 5, 1, 9, 4365, 9, 36],
+[50, 62, 17, 30, 10, 140, 12, 97, 37, 2, 2, 2, 3519, 7, 27],
+[58, 64, 13, 33, 11, 168, 13, 100, 46, 1, 2, 2, 2085, 8, 36],
+[58, 63, 12, 36, 13, 171, 14, 113, 48, 3, 1, 2, 2152, 10, 32],
+[55, 62, 14, 38, 10, 153, 15, 94, 45, 2, 1, 3, 3304, 10, 30],
+[34, 54, 11, 31, 7, 129, 10, 83, 34, 1, 1, 1, 5413, 9, 28],
+[47, 50, 14, 33, 10, 184, 8, 100, 49, 1, 3, 2, 5716, 9, 32],
+[93, 83, 28, 51, 14, 260, 24, 154, 63, 6, 1, 3, 3027, 20, 41],
+[229, 230, 86, 174, 47, 687, 53, 479, 185, 11, 2, 11, 6707, 50, 120],
+[47, 42, 9, 30, 8, 131, 14, 87, 35, 3, 0, 2, 889, 9, 23],
+[90, 58, 19, 31, 13, 176, 20, 122, 54, 3, 2, 2, 1332, 16, 29],
+[76, 85, 18, 54, 15, 213, 19, 138, 59, 3, 3, 4, 1978, 12, 41],
+[106, 62, 16, 44, 14, 194, 16, 127, 60, 5, 0, 4, 1968, 15, 28],
+[57, 59, 14, 26, 16, 155, 10, 107, 40, 3, 2, 2, 2204, 16, 31],
+[58, 43, 10, 29, 8, 127, 20, 87, 39, 12, 2, 8, 1155, 10, 36],
+[44, 42, 10, 19, 10, 122, 9, 67, 29, 1, 2, 2, 1142, 6, 26],
+[43, 52, 10, 30, 11, 130, 13, 81, 35, 2, 1, 2, 3591, 7, 23],
+[45, 52, 10, 28, 10, 129, 11, 87, 41, 2, 1, 3, 8860, 8, 25],
+[48, 53, 14, 32, 9, 161, 13, 105, 42, 3, 2, 2, 6475, 7, 33],
+[52, 59, 14, 33, 11, 141, 12, 87, 42, 1, 1, 2, 4136, 11, 24],
+[64, 56, 19, 32, 13, 181, 14, 117, 42, 2, 2, 5, 3842, 18, 27],
+[57, 59, 14, 32, 11, 193, 15, 85, 47, 1, 3, 2, 3135, 9, 34],
+[117, 124, 31, 79, 27, 365, 27, 228, 96, 18, 3, 6, 3098, 30, 81],
+[75, 85, 27, 55, 31, 302, 21, 127, 63, 3, 2, 3, 2636, 16, 45],
+[66, 69, 17, 45, 14, 186, 12, 110, 44, 2, 1, 2, 2029, 15, 40],
+[45, 60, 10, 25, 12, 151, 13, 82, 40, 1, 1, 1, 1564, 10, 34],
+[66, 77, 28, 42, 15, 195, 28, 144, 62, 10, 1, 1, 1592, 22, 38],
+[44, 39, 8, 28, 10, 151, 11, 80, 32, 2, 3, 2, 1317, 9, 25],
+[68, 64, 14, 39, 17, 190, 12, 106, 48, 2, 1, 5, 1182, 13, 47],
+[36, 38, 11, 19, 12, 110, 10, 67, 28, 2, 1, 4, 857, 4, 29]
+    ];
+
+    // 初始化热图
+    function createHeatmap() {
+        const container = document.getElementById('heatmap');
+        const width = container.clientWidth;
+        const height = Math.min(width * 0.7, window.innerHeight * 0.7);
+
+        const heatmapData = {
+            z: data,
+            x: families,
+            y: species,
+            type: 'heatmap',
+            colorscale: document.getElementById('colorscale').value,
+            hoverongaps: false
+        };
+
+        const layout = {
+                margin: {
+                    l: 150,
+                    r: 50,
+                    b: 150,
+                    t: 50,
+                    pad: 4
+                },
+                width: width,
+                height: height,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+        Plotly.newPlot('heatmap', [heatmapData], layout, {displayModeBar: true})
+            .then(function(gd) {
+                gd.on('plotly_click', function(data) {
+                    if(data.points && data.points.length > 0) {
+                        const point = data.points[0];
+                        const url = "{% url 'TF_genes_index_url' %}?species=" +
+                                    encodeURIComponent(point.y) + "&family=" +
+                                    encodeURIComponent(point.x);
+                        window.location.href = url;
+                    }
+                });
+            });
+    }
+
+    // 更新颜色方案
+    function updateColorscale() {
+        Plotly.restyle('heatmap', {
+            colorscale: document.getElementById('colorscale').value
+        });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        createHeatmap();
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            Plotly.relayout('heatmap', {
+                width: document.getElementById('heatmap').clientWidth,
+                height: Math.min(document.getElementById('heatmap').clientWidth * 0.7,
+                          window.innerHeight * 0.7)
+            });
+        });
+    });
+</script>
+
+<style>
+    .heatmap-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    #heatmap {
+        width: 100%;
+        height: 600px;
+        background: transparent;
+    }
+
+    /* 确保Plotly生成的SVG没有边框 */
+    #heatmap svg {
+        border: none;
+        outline: none;
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .color-scheme-selector {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .color-scheme-selector select {
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    /* 针对小屏幕的调整 */
+    @media (max-width: 768px) {
+        #heatmap {
+            height: 400px;
+        }
+
+        .heatmap-wrapper {
+            padding: 10px;
+        }
+    }
+</style>
+    </div>
+{% endblock %}

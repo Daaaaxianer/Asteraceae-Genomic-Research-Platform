@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bootstrap 实例</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<body>
+    <button class="btn btn-dark" type="button" onclick="go()">Go! </button>
+    <center>
+        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+        <span id="wait2" style="display:none">&nbsp;&nbsp;正在努力查询中，请稍等！</span>
+    </center>
+
+    <script>
+        function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                hh1.style.display = "inline-block";
+                hh2.style.display = "inline-block"
+            }
+            document.getElementById('go').submit()
+        }
+    </script>
+
+</body>
+</html>

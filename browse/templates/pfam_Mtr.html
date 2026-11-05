@@ -1,0 +1,84 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/pfam_data/Mtr.json",
+                "deferRender": true,
+                "scrollX": true
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Mtr domain<i></i>
+    </h3>
+    <div class="row">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;The HMM model downloaded from the Pfam database was used to identify family members using the <a href="https://www.ebi.ac.uk/Tools/pfa/pfamscan/"><b>PfamScan</b></a> software.
+            <br>&emsp;&emsp;A protein molecule transcribed from a gene can contain several structurally specific and functionally distinct regions, which are called domains. The domain can be considered as the basic unit of protein function, and the function of a protein is determined by the multiple domains it contains. The study of domains allows a better study of protein function, and genes with the same structural domain often form a gene family.
+            <br>&emsp;&emsp;Select a legume and click Submit to see the results of the gene annotation for the changed species. The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/pfam_img.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display container">
+            <thead>
+            <tr>
+                <th>seq id</th>
+                <th>alignment start</th>
+                <th>alignment end</th>
+                <th>envelope start</th>
+                <th>envelope end</th>
+                <th>hmm acc</th>
+                <th>hmm name</th>
+                <th>type</th>
+                <th>hmm start</th>
+                <th>hmm end</th>
+                <th>hmm length</th>
+                <th>bit score</th>
+                <th>bit score</th>
+                <th>significance</th>
+                <th>clan</th>
+            </tr>
+            </thead>
+        </table>
+        <div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

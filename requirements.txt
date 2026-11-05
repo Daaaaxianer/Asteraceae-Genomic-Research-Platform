@@ -1,0 +1,34 @@
+# Project third-party dependencies for CPython 3.11.
+# Versions below match the project's current .venv.
+# Required packages are listed even if already installed.
+# pip installs declared transitive dependencies automatically.
+# SQLite is included in Python; no separate SQLite package is needed.
+
+# Website, API and MySQL access (retain MySQL support for deployment)
+Django==5.2.19
+djangorestframework==3.14.0
+mysqlclient==2.1.1
+PyMySQL==1.0.2
+
+# Data processing, statistics and plotting
+numpy==1.25.0
+pandas==2.0.2
+scipy==1.11.1
+matplotlib==3.7.1
+seaborn==0.12.2
+plotly==5.18.0
+Pillow==9.5.0
+
+# Sequence and tree processing; ETE3 does not declare six in its metadata.
+biopython==1.79
+ete3==3.1.3
+six==1.17.0
+
+# GF-Circos and Python command-line analysis tools
+click==8.1.6
+AKRUP==1.0.2
+wgdi==0.75
+
+# BLAST+, DIAMOND, MCScanX, ParaAT and other system tools need separate setup.
+# Production WSGI servers (uWSGI/Gunicorn) are managed separately.
+# Matching installed versions does not verify all analysis tools or production.

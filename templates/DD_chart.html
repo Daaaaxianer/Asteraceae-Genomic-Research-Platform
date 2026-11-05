@@ -1,0 +1,215 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">Development and Differentiation</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 30px; padding-top: 30px">
+<div class="heatmap-wrapper">
+    <div class="title">
+        <div class="color-scheme-selector">
+            <label for="colorscale">Select color：</label>
+            <select id="colorscale" onchange="updateColorscale()">
+                <option value="Plasma" selected>Plasma</option>
+                <option value="Viridis">Viridis</option>
+                <option value="Inferno">Inferno</option>
+                <option value="Magma">Magma</option>
+                <option value="Cividis">Cividis</option>
+                <option value="Rainbow">Rainbow</option>
+                <option value="Portland">Portland</option>
+                <option value="Jet">Jet</option>
+                <option value="Hot">Hot</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+    </div>
+    <div id="heatmap"></div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    // 数据准备
+    const species = [
+        "Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum koksaghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"
+    ];
+
+    const families = ["WOX", "YABBY-CRC", "LFY/LEAFY", "AGL", "LEC", "WUS", "TFL1", "VRN1", "GID", "SPL", "GL2", "NIN"
+];
+
+    const data = [
+        [7, 1, 1, 0, 1, 2, 4, 3, 5, 1, 1, 6],
+[18, 0, 3, 0, 0, 3, 11, 1, 12, 3, 2, 13],
+[2, 0, 1, 0, 0, 0, 10, 3, 5, 2, 2, 15],
+[13, 1, 1, 0, 2, 2, 11, 4, 6, 1, 1, 13],
+[11, 1, 1, 0, 0, 1, 7, 5, 6, 1, 1, 8],
+[8, 1, 1, 0, 1, 2, 7, 5, 4, 0, 1, 8],
+[8, 0, 1, 0, 1, 2, 5, 2, 9, 2, 0, 8],
+[26, 3, 0, 0, 1, 2, 15, 3, 21, 5, 1, 23],
+[13, 2, 1, 1, 0, 1, 11, 4, 2, 1, 2, 13],
+[11, 1, 1, 0, 1, 2, 13, 6, 4, 0, 3, 9],
+[9, 1, 1, 0, 1, 2, 6, 4, 5, 1, 1, 11],
+[7, 0, 0, 0, 0, 2, 10, 5, 2, 0, 1, 8],
+[9, 2, 2, 0, 1, 3, 5, 5, 8, 2, 1, 17],
+[9, 1, 1, 1, 1, 2, 11, 3, 10, 1, 1, 17],
+[23, 3, 2, 0, 0, 6, 21, 6, 25, 6, 4, 34],
+[8, 1, 1, 0, 0, 1, 8, 1, 10, 2, 1, 9],
+[9, 1, 1, 1, 0, 2, 4, 7, 9, 1, 1, 9],
+[9, 0, 1, 0, 0, 2, 4, 8, 8, 1, 1, 8],
+[8, 0, 1, 1, 1, 2, 10, 2, 12, 1, 1, 13],
+[15, 1, 1, 0, 4, 2, 8, 2, 23, 3, 1, 13],
+[6, 1, 1, 0, 0, 2, 3, 1, 2, 0, 1, 10],
+[34, 2, 2, 1, 0, 4, 16, 7, 9, 1, 2, 22],
+[10, 2, 2, 0, 0, 2, 11, 4, 15, 1, 1, 12],
+[19, 1, 1, 2, 0, 2, 6, 7, 14, 4, 1, 10],
+[11, 1, 1, 0, 0, 2, 12, 4, 14, 3, 1, 11],
+[10, 1, 1, 1, 2, 1, 8, 10, 4, 0, 5, 9],
+[5, 0, 0, 0, 0, 0, 3, 2, 3, 3, 1, 8],
+[4, 0, 2, 0, 0, 0, 2, 2, 2, 3, 0, 9],
+[4, 0, 2, 0, 0, 0, 2, 0, 2, 4, 0, 13],
+[6, 1, 1, 1, 1, 2, 6, 2, 1, 4, 0, 7],
+[8, 2, 1, 1, 1, 2, 9, 4, 3, 4, 2, 10],
+[11, 1, 1, 0, 1, 2, 10, 4, 3, 5, 1, 12],
+[9, 1, 1, 0, 0, 2, 8, 1, 5, 3, 1, 9],
+[9, 1, 0, 1, 0, 2, 9, 2, 5, 2, 0, 5],
+[10, 1, 1, 0, 1, 1, 16, 1, 11, 1, 2, 8],
+[13, 2, 1, 0, 1, 2, 17, 3, 19, 1, 2, 16],
+[37, 5, 2, 1, 6, 4, 44, 13, 49, 11, 3, 51],
+[6, 0, 0, 0, 0, 0, 6, 8, 2, 1, 1, 7],
+[12, 1, 1, 0, 0, 2, 8, 6, 10, 2, 1, 9],
+[19, 1, 2, 0, 0, 3, 11, 5, 6, 2, 1, 12],
+[14, 1, 1, 1, 1, 1, 8, 5, 9, 3, 1, 9],
+[14, 1, 1, 0, 0, 3, 11, 1, 11, 1, 2, 8],
+[13, 1, 1, 1, 2, 1, 18, 8, 10, 2, 2, 9],
+[8, 1, 1, 0, 0, 1, 4, 2, 2, 0, 1, 9],
+[7, 0, 1, 0, 0, 3, 5, 4, 11, 1, 1, 7],
+[10, 1, 1, 0, 0, 2, 8, 2, 2, 2, 1, 4],
+[10, 1, 1, 0, 2, 2, 7, 9, 2, 2, 1, 8],
+[10, 1, 1, 0, 1, 3, 7, 4, 3, 0, 1, 8],
+[11, 1, 1, 1, 0, 2, 10, 4, 10, 1, 3, 7],
+[11, 1, 0, 0, 2, 3, 9, 3, 6, 4, 1, 10],
+[27, 2, 2, 0, 2, 3, 17, 6, 18, 5, 6, 24],
+[22, 1, 2, 0, 0, 2, 17, 14, 9, 1, 2, 8],
+[17, 1, 1, 1, 1, 2, 8, 1, 7, 1, 1, 12],
+[11, 1, 1, 0, 1, 2, 3, 1, 5, 0, 1, 10],
+[12, 0, 1, 0, 1, 3, 8, 1, 6, 1, 1, 18],
+[9, 1, 3, 0, 1, 2, 7, 1, 6, 0, 1, 8],
+[16, 2, 2, 0, 3, 1, 10, 5, 5, 0, 2, 10],
+[10, 1, 1, 1, 0, 1, 4, 3, 1, 1, 1, 11]
+
+    ];
+
+    // 初始化热图
+    function createHeatmap() {
+        const container = document.getElementById('heatmap');
+        const width = container.clientWidth;
+        const height = Math.min(width * 0.7, window.innerHeight * 0.7);
+
+        const heatmapData = {
+            z: data,
+            x: families,
+            y: species,
+            type: 'heatmap',
+            colorscale: document.getElementById('colorscale').value,
+            hoverongaps: false
+        };
+
+        const layout = {
+                margin: {
+                    l: 150,
+                    r: 50,
+                    b: 150,
+                    t: 50,
+                    pad: 4
+                },
+                width: width,
+                height: height,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+        Plotly.newPlot('heatmap', [heatmapData], layout, {displayModeBar: true})
+            .then(function(gd) {
+                gd.on('plotly_click', function(data) {
+                    if(data.points && data.points.length > 0) {
+                        const point = data.points[0];
+                        const url = "{% url 'TF_genes_index_url' %}?species=" +
+                                    encodeURIComponent(point.y) + "&family=" +
+                                    encodeURIComponent(point.x);
+                        window.location.href = url;
+                    }
+                });
+            });
+    }
+
+    // 更新颜色方案
+    function updateColorscale() {
+        Plotly.restyle('heatmap', {
+            colorscale: document.getElementById('colorscale').value
+        });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        createHeatmap();
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            Plotly.relayout('heatmap', {
+                width: document.getElementById('heatmap').clientWidth,
+                height: Math.min(document.getElementById('heatmap').clientWidth * 0.7,
+                          window.innerHeight * 0.7)
+            });
+        });
+    });
+</script>
+
+<style>
+    .heatmap-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    #heatmap {
+        width: 100%;
+        height: 600px;
+        background: transparent;
+    }
+
+    /* 确保Plotly生成的SVG没有边框 */
+    #heatmap svg {
+        border: none;
+        outline: none;
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .color-scheme-selector {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .color-scheme-selector select {
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    /* 针对小屏幕的调整 */
+    @media (max-width: 768px) {
+        #heatmap {
+            height: 400px;
+        }
+
+        .heatmap-wrapper {
+            padding: 10px;
+        }
+    }
+</style>
+    </div>
+{% endblock %}

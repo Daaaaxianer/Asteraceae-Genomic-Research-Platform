@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Glycyrrhiza uralensis</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; Hologalegina; IRL clade; Galegeae; Glycyrrhiza</p>
+                    <p><b>Abbr: </b> Gur</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=16</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Gur.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Glycyrrhiza uralensis, also known as Chinese liquorice, is a flowering plant native to Asia. It is used as a sweetener and in traditional Chinese medicine. Liquorice root, or 'radix glycyrrhizae', is one of the 50 fundamental herbs used in traditional Chinese medicine, where it has the name gancao (kan-tsao; Chinese: 甘草, pinyin: gāncǎo). It is used in Chinese medicine to harmonize other herbs and to reduce the harsh effects of other herbs. It is usually collected in spring and autumn, when it is sliced and sun-dried, then either used unprepared or stir-baked with honey. Liquorice root is most commonly produced in the Shanxi, Gansu and Xinjiang regions of China.
+                    </p>
+                    <p><b>Distribution: </b> Afghanistan, Altay, Buryatiya, China North-Central, Chita, East European Russia, Inner Mongolia, Irkutsk, Kazakhstan, Kirgizstan, Krasnoyarsk, Manchuria, Mongolia, Northwest European R, Pakistan, Qinghai, South European Russi, Tadzhikistan, Tuva, West Siberia, Xinjiang</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://academic.oup.com/dnaresearch/article/29/6/dsac043/6916896">Chromosome-scale genome assembly of Glycyrrhiza uralensis revealed metabolic gene cluster centred specialized metabolites biosynthesis</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> All sequencing datasets generated in this study have been deposited in the DDBJ database (Experiment: DRX386007–DRX386008; Run: DRR400303–DRR400304) under the BioProject id PRJDB14223, submission id DRA014720, BioSample: SAMD00521547. The genome sequence of G. uralensis strain 308-19 has been public under the accession ids BRZY01000001–BRZY01000089. All datasets generated and discussed in this study are available as a supplementary dataset in this manuscript. The pathway database for G. uralensis, used for metabolic gene cluster analysis and biochemical pathway visualization, can be downloaded from our GitHub repository—<a href="https://github.com/amit4mchiba/Glycyrrhiza-uralensis-strain-308-19-genome">https://github.com/amit4mchiba/Glycyrrhiza-uralensis-strain-308-19-genome</a>. All scripts, supplementary datasets, and intermediate files generated from this study have been deposited to our GitHub repository (link mentioned above).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

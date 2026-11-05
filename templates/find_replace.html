@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}BDI-finder - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border-top: 1px solid #e0e0e0;
+            opacity: 1;
+        }
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+        .form-label { font-weight: 600; color: #34495e; }
+        .form-control-lg {
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+        .form-control-lg:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+        }
+        .btn-submit-custom {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+        }
+        .btn-submit-custom:hover {
+            background-color: #219150;
+        }
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+         
+        .loading-area {
+            margin-top: 20px;
+            display: none;  
+            text-align: center;
+        }
+        .spinner-border { vertical-align: middle; }
+        .text-loading { margin-left: 10px; color: #7f8c8d; font-style: italic; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">BDI-finder</h2>
+            <p class="section-subtitle">Calculation Tool: Genome Sequence Find & Replace</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="tool-header">Input Parameters</h3>
+
+                <form id="bdiForm" action="{% url 'bdi_finder_url' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="input_file" class="form-label mb-0">Upload Sequence File</label>
+                            <a href="{% url 'api:public_download' 'static' 'example_file/Other_auxiliary_tools/find_replace.fasta' %}" download="find_replace.fasta" class="btn-example-tag">
+                                        <i class="bi bi-download"></i> Example
+                            </a>
+                        </div>
+                        <input type="file" class="form-control form-control-lg" id="input_file" name="input_file" required>
+                        <div class="form-text text-muted">Supports FASTA, TXT, CSV, etc.</div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="old_name" class="form-label">Find String (Old Name)</label>
+                            <input type="text" class="form-control form-control-lg" id="old_name" name="old_name" placeholder="e.g. scaffold_" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="new_name" class="form-label">Replace With (New Name)</label>
+                            <input type="text" class="form-control form-control-lg" id="new_name" name="new_name" placeholder="e.g. Chr">
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <div class="text-center">
+                        <button class="btn btn-submit-custom" type="submit" onclick="showLoading()">
+                            Run Calculation & Download
+                        </button>
+
+                        <div class="loading-area" id="loadingArea">
+                            <div class="spinner-border text-success" role="status"></div>
+                            <span class="text-loading">Processing... Check your download folder shortly!</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showLoading() {
+
+        var form = document.getElementById('bdiForm');
+        var loading = document.getElementById('loadingArea');
+
+
+        if (form.checkValidity()) {
+            loading.style.display = 'block';
+
+
+            setTimeout(function() {
+                loading.style.display = 'none';
+            }, 5000);
+        }
+    }
+</script>
+{% endblock %}

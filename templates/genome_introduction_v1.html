@@ -1,0 +1,18 @@
+<tbody>
+    <p>{{ results }}</p>  <!-- 输出 results 数据以帮助调试 -->
+    {% for spec in results %}
+        <tr>
+            <td><input type="checkbox" class="row-checkbox"></td>
+            <td>{{ spec.0 }}</td>  <!-- 用索引访问元组 -->
+            <td>{{ spec.1 }}</td>
+            <td>{{ spec.2 }}</td>
+            <td>{{ spec.3 }}</td>
+            <td>{{ spec.4 }}</td>
+            <td>{{ spec.5 }}</td>
+            <td>{{ spec.6 }}</td>
+            <td><a href="{{ spec.23 }}" target="_blank">{{ spec.8 }}</a></td>  <!-- 如果 spec 是一个元组，索引根据实际数据调整 -->
+        </tr>
+    {% empty %}
+        <tr><td colspan="9">No matching species found.</td></tr>
+    {% endfor %}
+</tbody>

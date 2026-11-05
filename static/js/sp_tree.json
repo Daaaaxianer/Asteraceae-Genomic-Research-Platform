@@ -1,0 +1,47 @@
+{
+ "name": "Papilionoideae",
+ "children": [
+  {
+   "name": "Phaseoleae",
+   "children": [
+    {
+     "name": "Glycine",
+     "children": [
+      {"name": "G. max", "value": 40},
+      {"name": "G. Soja", "value": 40}
+     ]
+    },
+    {
+     "name": "Amphilarpaea",
+     "children": [
+      {"name": "A. edgeworthii", "value": 22}
+     ]
+    },
+    {
+     "name": "Vigna",
+     "children": [
+      {"name": "V. radiata", "value": 22}
+     ]
+    },
+    {
+     "name": "Phasedus",
+     "children": [
+      {"name": "P. vulgaris", "value": 22}
+     ]
+    },
+    {
+     "name": "Cajanus",
+     "children": [
+      {"name": "C. cajan", "value": 22}
+     ]
+    },
+    {
+     "name": "Spatholobus",
+     "children": [
+      {"name": "S. suberectus", "value": 18}
+     ]
+    },
+   ]
+  }
+ ]
+}

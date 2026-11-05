@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Sindora glabra</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Detarioideae; Detarieae; Sindora</p>
+                    <p><b>Abbr: </b> Sgl</p>
+                    <p><b>Level: </b> Scaffold</p>
+                    <p><b>chromosome number: </b> 2n=2X=20</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Sgl.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Sindora glabra (Chinese: 油楠; pinyin: Yóunán) is a tree of the family Fabaceae (or Leguminosae) endemic to the People's Republic of China that grows in the provinces of Hainan, Fujian, Guangdong and Yunnan. The species is under second-class national protection in China.
+
+The species is found growing in mixed forests, on mountain slopes and along riverbanks between sea level and 800 m (2,600 ft). It grows to 8 to 20 metres (26 to 66 ft) tall and has a trunk diameter of 8 to 20 centimetres (3.1 to 7.9 in).
+                    </p>
+                    <p><b>Distribution: </b> China South-Central, China Southeast, Hainan</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://www.frontiersin.org/articles/10.3389/fpls.2021.794830/full">The Diesel Tree Sindora glabra Genome Provides Insights Into the Evolution of Oleoresin Biosynthesis</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> The datasets presented in this study can be found in online repositories. The names of the repository/repositories and accession number(s) can be found below: <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA747876">https://www.ncbi.nlm.nih.gov/bioproject/PRJNA747876</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

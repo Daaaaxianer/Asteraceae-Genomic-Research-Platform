@@ -1,0 +1,26 @@
+# Local environments and Python caches
+.venv/
+venv/
+LGRPv2_venv/
+FGBP_venv/
+__pycache__/
+*.py[cod]
+.idea/
+# Keep only the verified empty demonstration database under .private.
+.private/*
+!.private/local.sqlite3
+# Runtime records and local build outputs
+.api_security_logs/*
+!.api_security_logs/.gitkeep
+.api_security_state/*
+!.api_security_state/.gitkeep
+.api_download_owners/*
+!.api_download_owners/.gitkeep
+*.log
+*.pid
+*.tmp
+.env
+.env.*
+dist/
+output/
+output_pep/

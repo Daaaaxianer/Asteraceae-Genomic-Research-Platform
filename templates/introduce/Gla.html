@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Glycine latifolia</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Glycine; Glycine subgen. Glycine</p>
+                    <p><b>Abbr: </b> Gla</p>
+                    <p><b>Level: </b> *</p>
+                    <p><b>chromosome number: </b> 2n=2X=22</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Gla.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Glycine latifolia is a species of flowering plant in the family Fabaceae, native to Queensland and New South Wales in Australia. A perennial, it is a crop wild relative of soybean (Glycine max), and shows resistance to a number of pathogens that afflict soybeans.
+                    </p>
+                    <p><b>Distribution: </b> New South Wales, Queensland</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://onlinelibrary.wiley.com/doi/10.1111/tpj.13931">Assembly and annotation of a draft genome sequence for Glycine latifolia, a perennial wild relative of soybean</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> The G. latifolia and G. tomentella sequences have been deposited in GenBank under the accessions QARZ00000000 and PYAF00000000, respectively. Sequence reads from G. latifolia genome (SRR6234222, SRR6234223, SRR6234224SRR6234225, SRR6234226 and SRR6234227), G. tomentella genome (SRR6823488 and SRR6823487) and G. latifolia transcriptome (SRR6226274) have been deposited in the NCBI Sequence Read Archive.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

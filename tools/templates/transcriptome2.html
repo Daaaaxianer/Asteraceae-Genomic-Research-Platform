@@ -1,0 +1,99 @@
+
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Asteraceae platform</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/shuye.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/highcharts.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../static/syn_data/zhuan.json",
+                "scrollX": true,
+                "deferRender": true,
+            });
+        });
+    </script>
+
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Transcriptom2<i></i>
+    </h3>
+    <div class="row" style="">
+        <h5 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Transcriptome broadly refers to the collection of all transcription products in a cell under a certain physiological condition, including messenger RNA, ribosomal RNA, transfer RNA and non-coding RNA; narrowly refers to the collection of all mRNAs.
+        <br>
+    &emsp;&emsp;The transcriptional process of synthesizing RNA using DNA as a template is the first step in gene expression and a key link in the regulation of gene expression. By gene expression, we mean the whole process of transforming the genetic information carried by genes into a recognizable phenotype. Unlike the genome, the definition of the transcriptome contains temporal and spatial qualifications. The gene expression of the same cell is not identical at different growth periods and growth environments.
+        </h5>
+    <div id="carouselExampleCaptions" class="carousel slide col-4" data-ride="carousel" style="padding-top:20px">
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="height: 350px">
+                <img src="../static/image/yes.png" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block text-secondary" >
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-3">
+            <script type="text/javascript"
+            src="//rf.revolvermaps.com/0/0/8.js?i=561cj3aw7q6&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33"
+            async="async">
+            </script>
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Species</th>
+                    <th>PRJNA</th>
+                    <th>SRR</th>
+                    <th>SampleName</th>
+                    <th>Tissue</th>
+                    <th>Treatment</th>
+                    <th>Treatment group</th>
+                    <th>Treatment time</th>
+                    <th>Description</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

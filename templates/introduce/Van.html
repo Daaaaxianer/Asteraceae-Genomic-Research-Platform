@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Vigna angularis</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Vigna</p>
+                    <p><b>Abbr: </b> Van</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=22</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Van.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Vigna angularis, also known as the adzuki bean (Japanese: 小豆 (アズキ), azuki, Uncommon アヅキ, adzuki), azuki bean, aduki bean, red bean, or red mung bean, is an annual vine widely cultivated throughout East Asia for its small (approximately 5 mm or 1⁄4 in long) bean. The cultivars most familiar in East Asia have a uniform red color, but there are also white, black, gray, and variously mottled varieties.
+
+Cooked adzuki beans are 66% water, 25% carbohydrates, including 7% dietary fiber, 8% protein, and contain negligible fat (table). In a 100-gram reference amount, cooked beans provide 536 kilojoules (128 kilocalories) of food energy, a moderate to high content (10% or more of the Daily Value, DV) of the B vitamin folate (30% DV), and several dietary minerals (11% to 27% DV, table).
+                    </p>
+                    <p><b>Distribution: </b> Assam, China South-Central, China Southeast, East Himalaya, Japan, Myanmar, Nepal, Taiwan, Vietnam</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://www.pnas.org/doi/full/10.1073/pnas.1420949112">Genome sequencing of adzuki bean (Vigna angularis) provides insight into high starch and low fat accumulation and domestication</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> Data deposition: This Whole Genome Shotgun project has been deposited at DNA Data Bank of Japan/European Molecular Biology Laboratory/GenBank under the accession no. JZJH00000000. The version described in this paper is version JZJH01000000. All short-read data have been deposited into the Sequence Read Archive (SRA) under accession no. SRA259080. Raw sequence data of the transcriptomes have been deposited into the SRA under accession no. SRA260020.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

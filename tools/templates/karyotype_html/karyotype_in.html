@@ -1,0 +1,110 @@
+{% extends 'tools_index.html' %}
+
+
+
+{% block body_index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Karyotype<i></i>
+                </h3>
+
+                <ul class="list-group mb-3">
+                    <a href="{% url 'f_blast_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blast</h6>
+                                <small>Sequence alignment between arbitrary species</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'colinearscan_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">ColinearScan</h6>
+                                <small>Syntenic matching tool</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_blast_dotplot_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blastp dotplot</h6>
+                                <small>Plotting blastp dotplot diagrams</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_block_dotplot_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Block dotplot</h6>
+                                <small>Drawing block dotplot function</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_correspondence_mc_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Correspondence_mc</h6>
+                                <small>Inter- and intra-genomic comparisons</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'karyotype_url' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Fabaceae karyotype</h6>
+                                <small>Ancestral genome of Fabaceae</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'sequenceserver_url' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blast visualization</h6>
+                                <small>Matching visualization</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'synvisio_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Syntenic visualization</h6>
+                                <small>Syntenic matching tool</small>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+
+
+            <div class="col-lg-8">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Inferring ancestral karyotypes and evolution<i></i>
+                </h3>
+                <h5>The inference of ancestral genome structure and paleogenome remodelling trajectories is divided into 7 main steps.</h5>
+                <ol>
+                    <li>Genome-wide comparison of the species involved, based on <b>BLAST</b> software, to confirm conserved homologous genes between and within genomes.</li>
+                    <li>The homology information obtained from BLASTP was entered into <b>CollinearScan</b> or <b>MCScanX</b> for collinearity analysis to identify the synteny blocks.</li>
+                    <li>Identification of orthologs and paralogs associated with speciation and polyploidy by inter- and intra-genomic comparisons.</li>
+                    <li>Identification of conserved ancestral regions (CARs) by the combination of dotplots and gene collinearity between genomes.</li>
+                    <li>Identification of ancient chromosomal rearrangements in conjunction with species trees.</li>
+                    <li>Then, by identifying and collating all the CAR rearrangements, we can bottom-up infer the ancestral karyotype and its composition of the study species.</li>
+                    <li>After determining the ancestral genome, we can identify the fusion patterns and rearrangement trajectories of paleochromosome by comparing the CRAs in the dotplot between the modern and ancestral genome.</li>
+                </ol>
+
+                See the list on the left for the relevant process
+                <img src="../../static/image/karyotype_in.jpg" style="width: 100%" alt="">
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

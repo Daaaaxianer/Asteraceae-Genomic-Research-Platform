@@ -1,0 +1,856 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene detail{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-orange: #e67e22;
+        --dark-orange: #d35400;
+        --light-bg: #fffbf7;
+        --border-color: #eee;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .page-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin: 40px auto;
+        border: 1px solid rgba(0,0,0,0.02);
+        min-height: 600px;
+    }
+
+    .main-title {
+        color: var(--dark-orange);
+        font-weight: 800;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* 章节标题样式优化 */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0 20px;
+        position: relative;
+    }
+
+    .section-header::before,
+    .section-header::after {
+        content: "";
+        flex: 1;
+        border-bottom: 2px dotted var(--primary-orange);
+        margin: 0 20px;
+        opacity: 0.5;
+    }
+
+    .section-title-box {
+        background: #fff;
+        padding: 0 15px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .section-title-text {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin: 0;
+    }
+
+    .leaf-icon {
+        width: 24px;
+        height: auto;
+        margin-bottom: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 表格容器样式 */
+    .table-container {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        margin-bottom: 30px;
+    }
+
+    /* DataTables 样式重写 */
+    table.dataTable {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0;
+        margin-top: 10px !important;
+    }
+
+    table.dataTable thead th {
+        background-color: var(--light-bg) !important;
+        color: var(--dark-orange) !important;
+        font-weight: 600;
+        border-bottom: 2px solid var(--primary-orange) !important;
+        padding: 12px 30px 12px 15px !important;
+        white-space: nowrap;
+        position: relative;
+    }
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc,
+    table.dataTable thead .sorting_asc_disabled,
+    table.dataTable thead .sorting_desc_disabled {
+        background-position: right 10px center !important; /* 图标靠右 10px 居中 */
+        background-repeat: no-repeat !important;
+    }
+    table.dataTable thead th.checkbox-cell {
+        background-image: none !important; /* Removes default DataTables background arrow */
+        padding-right: 15px !important;    /* Resets padding */
+        pointer-events: none;              /* Optional: Prevents it from looking clickable */
+    }
+
+    /* NEW: Hide Bootstrap 5 DataTables sorting icons (pseudo-elements) */
+    table.dataTable thead th.checkbox-cell::before,
+    table.dataTable thead th.checkbox-cell::after {
+        content: none !important;
+        display: none !important;
+        border: none !important;
+    }
+
+    /* Ensure the checkbox column stays narrow */
+    .checkbox-cell {
+        text-align: center;
+        width: 40px !important;
+        max-width: 40px;
+    }
+    
+    /* 按钮样式 */
+    .action-btn-group {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-custom {
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-select {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+    .btn-select:hover {
+        background-color: #bbdefb;
+    }
+
+    .btn-download {
+        background-color: #fbe9e7;
+        color: #d84315;
+    }
+    .btn-download:hover {
+        background-color: #ffccbc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <div class="text-center">
+            <h2 class="main-title">Gene details</h2>
+        </div>
+
+        {% if cds_pep_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Sequence information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_sequence" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene</th>
+                                <th>Cds</th>
+                                <th>Cds_length</th>
+                                <th>GC_content</th>
+                                <th>Pep</th>
+                                <th>Pep_length</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in cds_pep_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ pair.1 }}</td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_sequence">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_sequence" data-filename="Sequence_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if gff_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Gff information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_gff" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Chromosome</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Strand</th>
+                                <th>Old_gene</th>
+                                <th>Gene</th>
+                                <th>Num</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in gff_infor %}
+                                <tr>
+                                    <td>{{ pair.1 }}</td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.0 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if interproscan_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Annotation information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_annotation" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Seq ID</th>
+                                <th>Length</th>
+                                <th>Analysis</th>
+                                <th>Description</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>IPR</th>
+                                <th>GO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for interproscan in interproscan_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ interproscan.1 }}</td>
+                                    <td>{{ interproscan.2 }}</td>
+                                    <td>{{ interproscan.3 }}</td>
+                                    <td>{{ interproscan.4 }}</td>
+                                    <td>{{ interproscan.5 }}</td>
+                                    <td>{{ interproscan.6 }}</td>
+                                    <td>{{ interproscan.7 }}</td>
+                                    <td>{{ interproscan.8 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_annotation">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_annotation" data-filename="Annotation_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if kegg_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Pathway information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_kegg" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Query</th>
+                                <th>KO</th>
+                                <th>Definition</th>
+                                <th>Second KO</th>
+                                <th>KEGG Genes ID</th>
+                                <th>GHOSTX Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for kegg_line in kegg_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ kegg_line.2 }}</td>
+                                    <td>{{ kegg_line.3 }}</td>
+                                    <td>{{ kegg_line.4 }}</td>
+                                    <td>{{ kegg_line.5 }}</td>
+                                    <td>{{ kegg_line.6 }}</td>
+                                    <td>{{ kegg_line.7 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_kegg">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_kegg" data-filename="KEGG_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if event_genes_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Event-related genes</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_event_genes" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene_1</th>
+                                <th>Gene_2</th>
+                                <th>Event_name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_genes_line in event_genes_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ event_genes_line.0 }}</td>
+                                    <td>{{ event_genes_line.1 }}</td>
+                                    <td>{{ event_genes_line.2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_event_genes">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_event_genes" data-filename="Event_genes.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if gene_type_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Duplication type information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_duplication" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene1</th>
+                                <th>Location1</th>
+                                <th>Gene2</th>
+                                <th>Location2</th>
+                                <th>E-value</th>
+                                <th>Duplicated-type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gene_type_line in gene_type_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ gene_type_line.0 }}</td>
+                                    <td>{{ gene_type_line.1 }}</td>
+                                    <td>{{ gene_type_line.2 }}</td>
+                                    <td>{{ gene_type_line.3 }}</td>
+                                    <td>{{ gene_type_line.4 }}</td>
+                                    <td>{{ gene_type_line.5 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_duplication">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_duplication" data-filename="Duplication_type_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if synteny_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Synteny information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_synteny" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Vvi1</th> <th>Blo1</th> <th>Blo2</th> <th>Bda1</th> <th>Bda2</th>
+                                <th>Bpe1</th> <th>Bpe2</th> <th>Bma1</th> <th>Bma2</th> <th>Cmo1</th>
+                                <th>Cmo2</th> <th>Cma1</th> <th>Cma2</th> <th>Car1</th> <th>Car2</th>
+                                <th>Sed1</th> <th>Cpe1</th> <th>Cpe2</th> <th>Bhi1</th> <th>Tan1</th>
+                                <th>Cmetu1</th> <th>Lac1</th> <th>Hepe1</th> <th>Mch1</th> <th>Lcy1</th>
+                                <th>Cla1</th> <th>Cam1</th> <th>Cec1</th> <th>Cco1</th> <th>Clacu1</th>
+                                <th>Cmu1</th> <th>Cre1</th> <th>Cone1</th> <th>Cone2</th> <th>Cone3</th>
+                                <th>Cone4</th> <th>Lsi1</th> <th>Csa1</th> <th>Chy1</th> <th>Cme1</th>
+                                <th>Blo3</th> <th>Blo4</th> <th>Bda3</th> <th>Bda4</th> <th>Bpe3</th>
+                                <th>Bpe4</th> <th>Bma3</th> <th>Bma4</th> <th>Sed2</th> <th>Cmo3</th>
+                                <th>Cmo4</th> <th>Cma3</th> <th>Cma4</th> <th>Car3</th> <th>Car4</th>
+                                <th>Cpe3</th> <th>Cpe4</th> <th>Bhi2</th> <th>Tan2</th> <th>Cmetu2</th>
+                                <th>Lac2</th> <th>Hepe2</th> <th>Mch2</th> <th>Lcy2</th> <th>Cla2</th>
+                                <th>Cam2</th> <th>Cec2</th> <th>Cco2</th> <th>Clacu2</th> <th>Cmu2</th>
+                                <th>Cre2</th> <th>Lsi2</th> <th>Csa2</th> <th>Chy2</th> <th>Cme2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for synteny_line in synteny_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    {% for item in synteny_line|slice:"1:" %}
+                                        <td>{{ item }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_synteny">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_synteny" data-filename="Synteny_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if gene_family_members %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Gene Family Members</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_gene_family" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene</th>
+                                <th>Event_type</th>
+                                <th>S_start</th>
+                                <th>S_end</th>
+                                <th>Function</th>
+                                <th>Ath_gene</th>
+                                <th>Identity(%)</th>
+                                <th>E-value</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in gene_family_members %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ member.2 }}</td>
+                                    <td>{{ member.14 }}</td>
+                                    <td>{{ member.9 }}</td>
+                                    <td>{{ member.10 }}</td>
+                                    <td>{{ member.13 }}</td>
+                                    <td>{{ member.1 }}</td>
+                                    <td>{{ member.3 }}</td>
+                                    <td>{{ member.11 }}</td>
+                                    <td>{{ member.12 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_gene_family">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_gene_family" data-filename="Gene_Family_Members.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if block_orthogroups_info %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Orthogroups Information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_block_ortho" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Orthogroup</th> <th>Bda</th> <th>Bhi</th> <th>Blo</th> <th>Bma</th> <th>Bpe</th>
+                                <th>Cam</th> <th>Car</th> <th>Cco</th> <th>Cec</th> <th>Chy</th> <th>Cla</th>
+                                <th>Clacu</th> <th>Cma</th> <th>Cme</th> <th>Cmetu</th> <th>Cmo</th> <th>Cmu</th>
+                                <th>Cone</th> <th>Cpe</th> <th>Cre</th> <th>Csa</th> <th>HCH</th> <th>Hepe</th>
+                                <th>Lac</th> <th>Lcy</th> <th>Lsi</th> <th>Mch</th> <th>Sed</th> <th>Tan</th>
+                                <th>Vvi</th> <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ortho_line in block_orthogroups_info %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    {% for item in ortho_line %}
+                                        <td>{{ item }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_block_ortho">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_block_ortho" data-filename="Block_Orthogroups_information.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if TF_pfam_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Transcription factors information</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_tf" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene</th>
+                                <th>Hmm_acc</th>
+                                <th>Hmm_name</th>
+                                <th>Score</th>
+                                <th>E-value</th>
+                                <th>Regulatory Factors</th>
+                                <th>Family</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for TF_pfam_line in TF_pfam_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ TF_pfam_line.0 }}</td>
+                                    <td>{{ TF_pfam_line.5 }}</td>
+                                    <td>{{ TF_pfam_line.6 }}</td>
+                                    <td>{{ TF_pfam_line.7 }}</td>
+                                    <td>{{ TF_pfam_line.8 }}</td>
+                                    <td>{{ TF_pfam_line.1 }}</td>
+                                    <td>{{ TF_pfam_line.2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_tf">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_tf" data-filename="Transcription_factors.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if expression_infor %}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Gene expression</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_expression" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Gene</th>
+                                <th>Chr</th>
+                                <th>Type</th>
+                                <th>da1</th> <th>da2</th> <th>da3</th> <th>da4</th> <th>da5</th>
+                                <th>da6</th> <th>da7</th> <th>da8</th> <th>da9</th> <th>da10</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expression_line in expression_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ expression_line.0 }}</td>
+                                    <td>{{ expression_line.2 }}</td>
+                                    <td>{{ expression_line.4 }}</td>
+                                    <td>{{ expression_line.7 }}</td>
+                                    <td>{{ expression_line.9 }}</td>
+                                    <td>{{ expression_line.10 }}</td>
+                                    <td>{{ expression_line.11 }}</td>
+                                    <td>{{ expression_line.12 }}</td>
+                                    <td>{{ expression_line.13 }}</td>
+                                    <td>{{ expression_line.14 }}</td>
+                                    <td>{{ expression_line.15 }}</td>
+                                    <td>{{ expression_line.16 }}</td>
+                                    <td>{{ expression_line.17 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_expression">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_expression" data-filename="Gene_expression.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if daixie_infor%}
+            <div class="section-header">
+                <div class="section-title-box">
+                    <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                    <h4 class="section-title-text">Gene located in metabolic pathway</h4>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="table_metabolic" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell">Select</th>
+                                <th>Formula</th>
+                                <th>Compounds</th>
+                                <th>CID</th>
+                                <th>Class I</th>
+                                <th>Class II</th>
+                                <th>CAS</th>
+                                <th>cpd_ID</th>
+                                <th>kegg_map</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for daixie_line in daixie_infor %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                    <td>{{ daixie_line.1 }}</td>
+                                    <td>{{ daixie_line.2 }}</td>
+                                    <td>{{ daixie_line.3 }}</td>
+                                    <td>{{ daixie_line.4 }}</td>
+                                    <td>{{ daixie_line.5 }}</td>
+                                    <td>{{ daixie_line.6 }}</td>
+                                    <td>{{ daixie_line.7 }}</td>
+                                    <td>{{ daixie_line.8 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-btn-group">
+                    <button type="button" class="btn-custom btn-select js-select-all" data-target="table_metabolic">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="btn-custom btn-download js-download" data-target="table_metabolic" data-filename="Metabolic_pathway.txt">
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // 1. 初始化所有表格
+        // 使用唯一的ID初始化，避免冲突
+        var tableIds = [
+            '#table_sequence', '#table_gff', '#table_annotation', 
+            '#table_kegg', '#table_event_genes', '#table_duplication', 
+            '#table_synteny', '#table_gene_family', '#table_block_ortho', 
+            '#table_tf', '#table_expression', '#table_metabolic'
+        ];
+
+        tableIds.forEach(function(id) {
+            if ($(id).length) {
+                $(id).DataTable({
+                    "scrollX": true,
+                    "autoWidth": false,
+                    "columnDefs": [
+                        { "orderable": false, "targets": 0 } // 第一列不排序
+                    ]
+                });
+            }
+        });
+
+        // 2. 通用全选功能
+        $(document).on('click', '.js-select-all', function() {
+            var targetId = $(this).data('target');
+            var table = $('#' + targetId);
+            
+            // 选中表格内的所有复选框
+            table.find('input[type="checkbox"]').prop('checked', true);
+        });
+
+        // 3. 通用下载功能
+        $(document).on('click', '.js-download', function() {
+            var targetId = $(this).data('target');
+            var fileName = $(this).data('filename') || 'download.txt';
+            var table = $('#' + targetId);
+            var selectedRows = [];
+
+            // 遍历所有行，查找被选中的行
+            table.find('tbody tr').each(function() {
+                var $row = $(this);
+                if ($row.find('input[type="checkbox"]').is(':checked')) {
+                    var rowData = [];
+                    $row.find('td').each(function(index) {
+                        // 跳过第一列（复选框列）
+                        if (index > 0) {
+                             // 处理包含链接的情况，只获取文本
+                             var link = $(this).find('a');
+                             if (link.length > 0) {
+                                 rowData.push(link.text().trim());
+                             } else {
+                                 rowData.push($(this).text().trim());
+                             }
+                        }
+                    });
+                    selectedRows.push(rowData.join("\t"));
+                }
+            });
+
+            if (selectedRows.length === 0) {
+                alert("Please select at least one row to download.");
+                return;
+            }
+
+            var data = selectedRows.join("\n");
+            var blob = new Blob([data], { type: "text/plain" });
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        });
+    });
+</script>
+{% endblock %}

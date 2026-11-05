@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<head>
+    <base href="http://cbcb.cdutcm.edu.cn/TCMPG/"/>
+</head>
+
+
+<body class="site-default navigation-default theme-default layout-custom nav-breakpoint-lg com_japagebuilder view-page item-173">
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Synteny</title>
+    <link rel="stylesheet"
+          href="/TCMPGStatic/test/templates/t4_blank/css/custom.css">
+    <script src="/TCMPGStatic/test/layui/layui.js"></script>
+</head>
+
+
+<body>
+
+
+
+<form action="tools/synteny/" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrfmiddlewaretoken"
+           value="c2JYWbBOJEWWhNVWZHbBdUHcwd2tql4PQn2J9PAQK7N95A64jGVnrFZZHAKynpjY">
+    <div class="form-group">
+        <label for="genome1">Genome1</label>
+        <select required="required"
+                class="form-control form-select required" id="genome1"
+                name="inputGenome1">
+            <option value="" selected="selected">- Select -</option><option>Acer_truncatum</option><option>Actinidia_chinensis_HongYang_v2</option><option>Actinidia_chinensis_HongYang_v3</option><option>Actinidia_chinensis_Red5</option><option>Actinidia_eriantha_White</option><option>Allium_sativum</option><option>Ananas_comosus</option>
+            <option>Antirrhinum_majus_IGDBv1</option>
+            <option>Apium_graveolens</option>
+            <option>Aquilaria_sinensis</option>
+            <option>Arachis_hypogaea_David</option>
+            <option>Asparagus_officinalis_CHR_V1_1</option>
+            <option>Averrhoa_carambola</option>
+            <option>Beta_vulgaris_RefBeet-1_2_2</option>
+            <option>Brassica_juncea_Varuna</option>
+            <option>Brassica_juncea_tumida</option>
+            <option>Brassica_nigra_Ni100</option>
+            <option>Brassica_nigra_YZ12151</option>
+            <option>Brassica_oleracea_var_botrytis_HDEM</option>
+            <option>Brassica_oleracea_var_capitata_JZSv1</option>
+            <option>Brassica_oleracea_var_capitata_JZSv2</option>
+            <option>Camellia_sinensis_CSS_20200506</option>
+            <option>Camellia_sinensis_CSS_v1_2</option>
+            <option>Camellia_sinensis_LJ_43</option>
+            <option>Cannabis_sativa_cs10</option>
+            <option>Capsicum_annuum_CM334</option>
+            <option>Capsicum_annuum_Zunla</option>
+            <option>Citrus_grandis_HWB</option>
+            <option>Coffea_arabica_Cara_1_0</option>
+            <option>Coriandrum_sativum</option>
+            <option>Cucumis_sativus_V3</option>
+            <option>Cucurbita_moschata_v1</option>
+            <option>Cucurbita_pepo_ASM280686v2</option>
+            <option>Dalbergia_odorifera</option>
+            <option>Daucus_carota_ASM162521v1</option>
+            <option>Diospyros_lotus_r1_1</option>
+            <option>Elaeis_guineensis_EG5</option>
+            <option>Eriobotrya_japonica</option>
+            <option>Euryale_ferox</option>
+            <option>Fagopyrum_tataricum_V2_IGDBv2</option>
+            <option>Fragaria_vesca_FraVesHawaii_1_0</option>
+            <option>Gardenia_jasminoides</option>
+            <option>Ginkgo_biloba</option>
+            <option>Glycine_max_Wm82_a2_v1</option>
+            <option>Gossypium_herbaceum_WHUv3_0rc</option>
+            <option>Gossypium_hirsutum_BGI_v1</option>
+            <option>Gossypium_hirsutum_CRI_ZM24_v1</option>
+            <option>Gossypium_hirsutum_CRI_v1</option>
+            <option>Gossypium_hirsutum_HAU_v1</option>
+            <option>Gossypium_hirsutum_NBI_v1_1</option>
+            <option>Gossypium_hirsutum_UTX_v2_1</option>
+            <option>Gossypium_hirsutum_WHU_v1</option>
+            <option>Gossypium_hirsutum_ZJU_v2_1</option>
+            <option>Helianthus_annuus_HanXRQr2_0</option>
+            <option>Hibiscus_cannabinus</option>
+            <option>Hordeum_vulgare_IBSC_PGSB_r1</option>
+            <option>Juglans_regia_Chandler_2_0</option>
+            <option>Juglans_regia_Walnut_2_0</option>
+            <option>Lagenaria_siceraria_v1</option>
+            <option>Lonicera_japonica</option>
+            <option>Lupinus_albus_20171117r1-v1</option>
+            <option>Lupinus_angustifolius_LupAngTanjil_v1_0</option>
+            <option>Manihot_esculenta_Manihot_esculenta_v6</option>
+            <option>Medicago_sativa</option>
+            <option>Miscanthus_sinensis_497_v7_1</option>
+            <option>Musa_acuminata_v2</option>
+            <option>Nyssa_sinensis</option>
+            <option>Olea_europaea_europaea</option>
+            <option>Olea_europaea_sylvestris</option>
+            <option>Oryza_sativa_Build_4_0</option>
+            <option>Panicum_miliaceum</option>
+            <option>Papaver_somniferum_ASM357369v1</option>
+            <option>Phaseolus_vulgaris_G19833</option>
+            <option>Phyllostachys_edulis</option>
+            <option>Pisum_sativum_v1a</option>
+            <option>Populus_tremula_02</option>
+            <option>Populus_trichocarpa_Pop_tri_v3</option>
+            <option>Prunus_mume_P_mume_V1_0</option>
+            <option>Prunus_persica_Prunus_persica_NCBIv2</option>
+            <option>Prunus_yedoensis_r3_1</option>
+            <option>Punica_granatum_ASM765513v2</option>
+            <option>Pyrus_bretschneideri_v1_1</option>
+            <option>Pyrus_communis_v2_0</option>
+            <option>Quercus_robur_PM1N</option>
+            <option>Raphanus_sativus_RSAskr_r1_0</option>
+            <option>Raphanus_sativus_Rs1_0</option>
+            <option>Rhododendron_simsii</option>
+            <option>Rosa_chinensis_v1_0</option>
+            <option>Rosa_chinensis_v2_0</option>
+            <option>Salvia_miltiorrhiza_2020</option>
+            <option>Senna_tora_ASM1485142v1</option>
+            <option>Sesamum_indicum_v2_0</option>
+            <option>Setaria_italica_version2_0</option>
+            <option>Solanum_chacoense_v4_1</option>
+            <option>Solanum_melongena_2020</option>
+            <option>Solanum_tuberosum_v3</option>
+            <option>Spinacia_oleracea_v1</option>
+            <option>Strobilanthes_cusia</option>
+            <option>Tectona_grandis_2019</option>
+            <option>Theobroma_cacao_V2</option>
+            <option>Toona_sinensis_V1</option>
+            <option>Tripterygium_wilfordii_ASM1340144v1</option>
+            <option>Triticum_aestivum_iwgsc_refseqv2_1</option>
+            <option>Trochodendron_aralioides</option>
+            <option>Vigna_angularis_Vigan1_1</option>
+            <option>Vigna_angularis_v1_a1</option>
+            <option>Vigna_unguiculata_ASM411807v1</option>
+            <option>Vitis_vinifera_V2_20</option>
+            <option>Vitis_vinifera_vCabSauv08_v1_1</option>
+            <option>Zea_mays_Zm-B73-REFERENCE-NAM-5_0</option>
+            <option>Zea_mays_Zm-Mo17-REFERENCE-CAU-1_0_Zm00014a_1</option>
+            <option>Zea_mays_Zm-W22-REFERENCE-NRGENE-2_0_Zm00004b_1</option>
+            <option>Ziziphus_jujuba_ZizJuj_1_1</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="genome2">Genome2</label>
+        <select required="required" class="form-control form-select required" id="genome2"
+                name="inputGenome2">
+            <option value="" selected="selected">- Select -</option>
+            <option>Acer_truncatum</option>
+            <option>Actinidia_chinensis_HongYang_v2</option>
+            <option>Actinidia_chinensis_HongYang_v3</option>
+            <option>Actinidia_chinensis_Red5</option>
+            <option>Actinidia_eriantha_White</option>
+            <option>Allium_sativum</option>
+            <option>Ananas_comosus</option>
+            <option>Antirrhinum_majus_IGDBv1</option>
+            <option>Apium_graveolens</option>
+            <option>Aquilaria_sinensis</option>
+            <option>Arachis_hypogaea_David</option>
+            <option>Asparagus_officinalis_CHR_V1_1</option>
+            <option>Averrhoa_carambola</option>
+            <option>Beta_vulgaris_RefBeet-1_2_2</option>
+            <option>Brassica_juncea_Varuna</option>
+            <option>Brassica_juncea_tumida</option>
+            <option>Brassica_nigra_Ni100</option>
+            <option>Brassica_nigra_YZ12151</option>
+            <option>Brassica_oleracea_var_botrytis_HDEM</option>
+            <option>Brassica_oleracea_var_capitata_JZSv1</option>
+            <option>Brassica_oleracea_var_capitata_JZSv2</option>
+            <option>Camellia_sinensis_CSS_20200506</option>
+            <option>Camellia_sinensis_CSS_v1_2</option>
+            <option>Camellia_sinensis_LJ_43</option>
+            <option>Cannabis_sativa_cs10</option>
+            <option>Capsicum_annuum_CM334</option>
+            <option>Capsicum_annuum_Zunla</option>
+            <option>Citrus_grandis_HWB</option>
+            <option>Coffea_arabica_Cara_1_0</option>
+            <option>Coriandrum_sativum</option>
+            <option>Cucumis_sativus_V3</option>
+            <option>Cucurbita_moschata_v1</option>
+            <option>Cucurbita_pepo_ASM280686v2</option>
+            <option>Dalbergia_odorifera</option>
+            <option>Daucus_carota_ASM162521v1</option>
+            <option>Diospyros_lotus_r1_1</option>
+            <option>Elaeis_guineensis_EG5</option>
+            <option>Eriobotrya_japonica</option>
+            <option>Euryale_ferox</option>
+            <option>Fagopyrum_tataricum_V2_IGDBv2</option>
+            <option>Fragaria_vesca_FraVesHawaii_1_0</option>
+            <option>Gardenia_jasminoides</option>
+            <option>Ginkgo_biloba</option>
+            <option>Glycine_max_Wm82_a2_v1</option>
+            <option>Gossypium_herbaceum_WHUv3_0rc</option>
+            <option>Gossypium_hirsutum_BGI_v1</option>
+            <option>Gossypium_hirsutum_CRI_ZM24_v1</option>
+            <option>Gossypium_hirsutum_CRI_v1</option>
+            <option>Gossypium_hirsutum_HAU_v1</option>
+            <option>Gossypium_hirsutum_NBI_v1_1</option>
+            <option>Gossypium_hirsutum_UTX_v2_1</option>
+            <option>Gossypium_hirsutum_WHU_v1</option>
+            <option>Gossypium_hirsutum_ZJU_v2_1</option>
+            <option>Helianthus_annuus_HanXRQr2_0</option>
+            <option>Hibiscus_cannabinus</option>
+            <option>Hordeum_vulgare_IBSC_PGSB_r1</option>
+            <option>Juglans_regia_Chandler_2_0</option>
+            <option>Juglans_regia_Walnut_2_0</option>
+            <option>Lagenaria_siceraria_v1</option>
+            <option>Lonicera_japonica</option>
+            <option>Lupinus_albus_20171117r1-v1</option>
+            <option>Lupinus_angustifolius_LupAngTanjil_v1_0</option>
+            <option>Manihot_esculenta_Manihot_esculenta_v6</option>
+            <option>Medicago_sativa</option>
+            <option>Miscanthus_sinensis_497_v7_1</option>
+            <option>Musa_acuminata_v2</option>
+            <option>Nyssa_sinensis</option>
+            <option>Olea_europaea_europaea</option>
+            <option>Olea_europaea_sylvestris</option>
+            <option>Oryza_sativa_Build_4_0</option>
+            <option>Panicum_miliaceum</option>
+            <option>Papaver_somniferum_ASM357369v1</option>
+            <option>Phaseolus_vulgaris_G19833</option>
+            <option>Phyllostachys_edulis</option>
+            <option>Pisum_sativum_v1a</option>
+            <option>Populus_tremula_02</option>
+            <option>Populus_trichocarpa_Pop_tri_v3</option>
+            <option>Prunus_mume_P_mume_V1_0</option>
+            <option>Prunus_persica_Prunus_persica_NCBIv2</option>
+            <option>Prunus_yedoensis_r3_1</option>
+            <option>Punica_granatum_ASM765513v2</option>
+            <option>Pyrus_bretschneideri_v1_1</option>
+            <option>Pyrus_communis_v2_0</option>
+            <option>Quercus_robur_PM1N</option>
+            <option>Raphanus_sativus_RSAskr_r1_0</option>
+            <option>Raphanus_sativus_Rs1_0</option>
+            <option>Rhododendron_simsii</option>
+            <option>Rosa_chinensis_v1_0</option>
+            <option>Rosa_chinensis_v2_0</option>
+            <option>Salvia_miltiorrhiza_2020</option>
+            <option>Senna_tora_ASM1485142v1</option>
+            <option>Sesamum_indicum_v2_0</option>
+            <option>Setaria_italica_version2_0</option>
+            <option>Solanum_chacoense_v4_1</option>
+            <option>Solanum_melongena_2020</option>
+            <option>Solanum_tuberosum_v3</option>
+            <option>Spinacia_oleracea_v1</option>
+            <option>Strobilanthes_cusia</option>
+            <option>Tectona_grandis_2019</option>
+            <option>Theobroma_cacao_V2</option>
+            <option>Toona_sinensis_V1</option>
+            <option>Tripterygium_wilfordii_ASM1340144v1</option>
+            <option>Triticum_aestivum_iwgsc_refseqv2_1</option>
+            <option>Trochodendron_aralioides</option>
+            <option>Vigna_angularis_Vigan1_1</option>
+            <option>Vigna_angularis_v1_a1</option>
+            <option>Vigna_unguiculata_ASM411807v1</option>
+            <option>Vitis_vinifera_V2_20</option>
+            <option>Vitis_vinifera_vCabSauv08_v1_1</option>
+            <option>Zea_mays_Zm-B73-REFERENCE-NAM-5_0</option>
+            <option>Zea_mays_Zm-Mo17-REFERENCE-CAU-1_0_Zm00014a_1</option>
+            <option>Zea_mays_Zm-W22-REFERENCE-NRGENE-2_0_Zm00004b_1</option>
+            <option>Ziziphus_jujuba_ZizJuj_1_1</option>
+        </select>
+    </div>
+
+    <p class="text-center">
+        <input type="reset" class="btn btn-outline-primary"
+               style="width:40%;" value="Reset">
+        <input type="submit" onclick="this.disabled=true; this.value='Processing...'; this.form.submit();" class="btn btn-outline-success" style="width:40%"
+               value="Submit">
+    </p>
+</form>
+</body>
+</html>
+
+
+
+                <div id="t4-breadcrumbs" class="t4-section  t4-breadcrumbs  t4-palette-light">
+                    <div class="t4-section-inner container">
+                        <nav role="navigation" aria-label="breadcrumbs">
+                            <ol itemscope itemtype="https://schema.org/BreadcrumbList"
+                                class="mod-breadcrumbs breadcrumb">
+                                <li class="active">
+                                </li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
+                                    class="mod-breadcrumbs__item breadcrumb-item">
+                                    <a style="box-sizing: border-box; color: #00a900; background: transparent;"
+                                       itemprop="item" href="" class="pathway">
+<span itemprop="name">Home
+</span>
+                                    </a>
+                                    <span class="divider">
+</span>
+                                    <meta itemprop="position" content="1">
+                                </li>
+                                <li class="active">
+                                </li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
+                                    class="mod-breadcrumbs__item breadcrumb-item">
+                                    <a style="box-sizing: border-box; color: #00a900; background: transparent;"
+                                       itemprop="item" href="tools/" class="pathway">
+<span itemprop="name">Tools
+</span>
+                                    </a>
+                                    <span class="divider">
+</span>
+                                    <meta itemprop="position" content="2">
+                                </li>
+                                <li aria-current="page" itemprop="itemListElement" itemscope
+                                    itemtype="https://schema.org/ListItem"
+                                    class="mod-breadcrumbs__item breadcrumb-item active">
+                                    <span itemprop="name">Synteny Viewer</span>
+                                    <meta itemprop="position" content="3">
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div id="t4-footer" class="t4-section  t4-footer  t4-palette-mainnav_c  t4-sticky">
+                    <div class="t4-section-inner container ">
+                        <div class="row">
+                            <div class="col-lg-9 col-12 col-md-9 footer1">Copyright &#169; 2021 TCMPG. All Rights
+                                Reserved.
+                            </div>
+                            <div class="col-lg-3 col-12 col-md-3" style="display:none">
+                                <script type="text/javascript"
+                                        src="//rf.revolvermaps.com/0/0/0.js?i=55u1hzvqzxg&amp;d=2&amp;p=3&amp;b=1&amp;w=193&amp;g=2&amp;f=arial&amp;fs=12&amp;r=0&amp;c0=ffffff&amp;c1=ffffff&amp;c2=ffffff&amp;ic0=0&amp;ic1=0"
+                                        async="async"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href='javascript:' id='back-to-top'>
+                    <i class='fa fa-chevron-up'>
+                    </i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

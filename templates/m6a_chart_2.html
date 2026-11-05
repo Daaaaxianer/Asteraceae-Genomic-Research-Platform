@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>N6-methyladenosine(m6A)</b><i></i></h3>
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+    <div id="container" style="height:800px; width: 1230px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option;
+        var days = ["A. duranensis","A. edgeworthii","A. evenia","A. hypogaea","A. ipaensis","A. monticola","A. precatorius","B. variegata","C. arietinum","C. cajan","D. odorifera","G. max","G. soja","L. albus","L. angustifolius","L. japonicus","M. albus","M. truncatula","P. sativum","P. vulgaris","S. suberectus","S. tora","T. pratense","T. subterranum","V. faba", "V. radiata","V. vinifera"];
+        var hours = ["Erasers","Readers","Wirters"];
+
+        var data = [
+            [0,0,9],[0,1,10],[0,2,8],[1,0,9],[1,1,12],[1,2,5],[2,0,10],[2,1,10],[2,2,5],[3,0,16],[3,1,20],[3,2,14],[4,0,9],[4,1,10],[4,2,7],[5,0,14],[5,1,15],[5,2,9],[6,0,9],[6,1,11],[6,2,3],[7,0,12],[7,1,16],[7,2,5],[8,0,9],[8,1,11],[8,2,5],[9,0,8],[9,1,11],[9,2,5],[10,0,11],[10,1,13],[10,2,3],[11,0,15],[11,1,20],[11,2,11],[12,0,15],[12,1,18],[12,2,10],[13,0,8],[13,1,17],[13,2,7],[14,0,9],[14,1,18],[14,2,7],[15,0,8],[15,1,11],[15,2,5],[16,0,14],[16,1,10],[16,2,7],[17,0,11],[17,1,9],[17,2,6],[18,0,9],[18,1,13],[18,2,3],[19,0,12],[19,1,11],[19,2,3],[20,0,10],[20,1,12],[20,2,6],[21,0,9],[21,1,8],[21,2,2],[22,0,11],[22,1,11],[22,2,8],[23,0,10],[23,1,10],[23,2,6],[24,0,10],[24,1,10],[24,2,9],[25,0,15],[25,1,9],[25,2,3], [26,0,8],[26,1,11],[26,2,4]
+        ]
+        data = data.map(function (item) {
+            return [item[1], item[0], item[2] || '-'];
+        });
+
+        option = {
+            tooltip: {
+                position: 'top'
+            },
+            grid: {
+                height: '80%',
+                top: '5%'
+            },
+
+            xAxis: {
+                type: 'category',
+                data: hours,
+                splitArea: {
+                    show: true
+                },
+                axisLabel: {
+                    fontStyle: 'italic',
+                    rotate: 45
+                }
+
+            },
+            yAxis: {
+                type: 'category',
+                data: days,
+                splitArea: {
+                    show: true
+                },
+                axisLabel: {
+                    fontStyle: 'italic',
+                    rotate: 30
+                }
+
+            },
+            visualMap: {
+                min: 0,
+                max: 20,
+                calculable: true,
+                orient: 'horizontal',
+                left: 'center',
+                bottom: '0%',
+                inRange: {
+                    {#color: ["#636FA4", "white", '#E8CBC0']#}
+                    {#color: ["#FF6E7F", "white", '#BFE9FF']#}
+                    {#color: ["#CC95C0", "#DBD4B4", '#7AA1D2']#}
+                    color: ["#D5DFCD", "white", "#FED69D"]
+                    {#color: ["#a6d0e4", "#f9ffea", '#ffecda', "#d4a5a5"]#}
+                    {#color: ["red", "blue", 'green', "yellow"]#}
+                }
+            },
+            series: [{
+                name: 'N6-methyladenosine(m6A)',
+                type: 'heatmap',
+                data: data,
+                label: {
+                    {# 热图 内部数字 #}
+                    show: true
+                },
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        };
+
+        option && myChart.setOption(option);
+        myChart.on('click', function (params) {
+            var name = params.name;
+                {#var hours = ["Erasers","Readers","Wirters"];#}
+
+                if (name === "Erasers") {window.location.href="{% url "m6a_wirters_genes_index_url" %}";}
+                if (name === "Readers") {window.location.href="{% url "m6a_readers_genes_url" %}";}
+                if (name === "Wirters") {window.location.href="{% url "m6a_erasers_genes_url" %}";}
+            });
+    </script>
+{% endblock %}
+
+
+

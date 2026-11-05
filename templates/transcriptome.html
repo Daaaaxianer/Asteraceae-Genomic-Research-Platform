@@ -1,0 +1,388 @@
+
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Asteraceae platform</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/shuye.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/highcharts.js"></script>
+
+
+{% endblock %}
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black;"><b>Gene Expression Search</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-12" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5">
+              Our research institute utilizes transcriptomic data sourced from the SRA database. Through our processing pipeline, we analyze the raw data to derive gene expression data. Users have the ability to input their own sequences and obtain expression data for the gene ID most closely matching the species in our platform, achieved through optimal blast alignment. Additionally, we offer visual representation of the data through heatmaps, facilitating users in comprehending the data more conveniently and efficiently.
+        </h6>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div class="row">
+
+
+            <div class="col-sm-5" style="padding-top: 10px">
+                <form action="geneExpression" method="post" enctype="multipart/form-data" novalidate="">
+                <input type="hidden" name="csrfmiddlewaretoken" value="DuLRqbeQKv118RWjyEJrliWFMV5vOoYnggQ8Vq31Vke8wLZpsY4QICRlVmQ3HBTs">
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Query Sequence</label>
+                         <button type="button" class="" id="query_sequence">Example</button>
+                        <div class="input-group">
+                            <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" required="" style="height: 100px"></textarea>
+                        </div>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Or, Gene/Genes ID</label>
+                         <button type="button" class="" id="exampleButton">Example</button>
+                        <div class="input-group">
+                            <textarea class="form-control" id="lastName" name="geneid" required="" style="height: 100px"></textarea>
+                        </div>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="form-label">query genome</label>
+                        <select class="form-control" id="state" name="sp_data_1" required="">
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cse">Chrysanthemum seticuspe</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cobi">Cosmos bipinnatus</option>
+                            <option value="Cyca">Cynara cardunculus</option>
+                            <option value="Dapi">Dahlia pinnata</option>
+                            <option value="Dein">Deinandra increscens</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Sma">Silybum marianum</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tco">Tanacetum coccineum</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state" class="form-label">Expression index</label>
+                        <select class="form-control" id="state" name="expression_index" required="">
+                            <option value="FPKM">FPKM</option>
+                            <option value="TPM">TPM</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+                </div>
+                </form>
+            </div>
+
+            <div class="col-sm-7" style="padding-top: 10px">
+                <form action="transcriptome_run" method="post" enctype="multipart/form-data" novalidate="">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="DuLRqbeQKv118RWjyEJrliWFMV5vOoYnggQ8Vq31Vke8wLZpsY4QICRlVmQ3HBTs">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="state" class="form-label">Species</label>
+                            <select class="form-control" id="initials" name="sp_data_1" onchange="Change_second_selectwords();">
+                                            <option value="Cien">Cichorium endivia</option>
+                                            <option value="Enbr">Erigeron breviscapus</option>
+                                            <option value="Smso">Smallanthus sonchifolius</option>
+                                            <option value="Cind">Chrysanthemum indicum</option>
+                                            <option value="Mimi">Mikania micrantha</option>
+                                            <option value="Arla">Arctium lappa</option>
+                                            <option value="Stre">Stevia rebaudiana</option>
+                                            <option value="Tsa">Taraxacum saghyz</option>
+                                            <option value="Chmo">Chrysanthemum morifolium</option>
+                                            <option value="Amtr">Ambrosia trifida</option>
+                                            <option value="Aarg">Artemisia argyi</option>
+                                            <option value="Ccar">Cynara cardunculus</option>
+                                            <option value="Aann">Artemisia annua</option>
+                                            <option value="Hean">Helianthus annuus</option>
+                                            <option value="Lssa">Lactuca sativa</option>
+                                            <option value="Tamo">Taraxacum mongolicum</option>
+                                            <option value="Cich">Cichorium intybus</option>
+
+
+
+            {#                    <option value="Cien">Cichorium endivia</option>#}
+            {#                    <option value="Enbr">Erigeron breviscapus</option>#}
+            {#                    <option value="Smso">Smallanthus sonchifolius</option>#}
+            {#                    <option value="Cind">Chrysanthemum indicum</option>#}
+            {#                    <option value="Mimi">Mikania micrantha</option>#}
+            {#                    <option value="Arla">Arctium lappa</option>#}
+            {#                    <option value="Stre">Stevia rebaudiana</option>#}
+            {#                    <option value="Tsa">Taraxacum saghyz</option>#}
+            {#                    <option value="Chmo">Chrysanthemum morifolium</option>#}
+            {#                    <option value="Amtr">Ambrosia trifida</option>#}
+            {#                    <option value="Aarg">Artemisia argyi</option>#}
+            {#                    <option value="Ccar">Cynara cardunculus</option>#}
+            {#                    <option value="Aann">Artemisia annua</option>#}
+            {#                    <option value="Hean">Helianthus annuus</option>#}
+            {#                    <option value="Lssa">Lactuca sativa</option>#}
+            {#                    <option value="Tamo">Taraxacum mongolicum</option>#}
+            {#                    <option value="Cich">Cichorium intybus</option>#}
+
+
+
+
+
+
+
+
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="state" class="form-label">Tissues</label>
+                            <select class="form-control" id="top_domains" name="sp_data_2" required="">
+                                <option value="flower">flower</option>
+                                <option value="fruit">fruit</option>
+                                <option value="leaves">leaves</option>
+                                <option value="Nodule">Nodule</option>
+                                <option value="pod">pod</option>
+                                <option value="root">root</option>
+                                <option value="seed">seed</option>
+                                <option value="shoot">shoot</option>
+                                <option value="stem">stem</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <script>
+                            var first_keywords = {};
+                            //定义每个字母对应的第二个下拉框
+                            first_keywords['Cien'] = ["root"];
+                            first_keywords['Enbr'] = ["stem","leaves","root"];
+                            first_keywords['Smso'] = ["root"];
+                            first_keywords['Cind'] = ["leaves","petal"];
+                            first_keywords['Mimi'] = ["plant"];
+                            first_keywords['Arla'] = ["plant"];
+                            first_keywords['Stre'] = ["plant"];
+                            first_keywords['Tsa'] = ["leaves","plant"];
+                            first_keywords['Chmo'] = ["leaves","plant"];
+                            first_keywords['Amtr'] = ["leaves","root"];
+                            first_keywords['Aarg'] = ["leaves"];
+                            first_keywords['Ccar'] = ["leaves","plant"];
+                            first_keywords['Aann'] = ["plant"];
+                            first_keywords['Hean'] = ["flower","stem","seed"];
+                            first_keywords['Lssa'] =["plant"];
+                            first_keywords['Tamo'] = ["plant"];
+                            first_keywords['Cich'] = ["stem","root"];
+
+
+
+                            function Change_second_selectwords() {
+                                //根据id找到两个下拉框对象
+                                var target1 = document.getElementById("initials");
+                                var target2 = document.getElementById("top_domains");
+                                //得到第一个下拉框的内容
+                                var selected_initial = target1.options[target1.selectedIndex].value;
+
+                                //清空第二个下拉框
+                                while (target2.options.length) {
+                                    target2.remove(0);
+                                }
+                                //根据第一个下拉框的内容找到对应的列表
+                                var initial_list = first_keywords[selected_initial];
+                                var value;
+                                if (initial_list) {
+                                    for (var i = 0; i < initial_list.length; i++) {
+                                        var item = new Option(initial_list[i], value=initial_list[i]);
+                                        //将列表中的内容加入到第二个下拉框
+                                        target2.options.add(item);
+                                    }
+                                }
+                            }
+                        </script>
+
+                        <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="submit">
+                    </div>
+                </form>
+            </div>
+
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+
+    <script>
+        document.getElementById('exampleButton').addEventListener('click', function() {
+            var exampleText = `
+gene-M8C21_001272
+gene-M8C21_001272
+gene-M8C21_001273
+gene-M8C21_001273
+gene-M8C21_001275`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MGDYSNDPLMRNQNAAVQARTKAQNRANVLQLKLIGQSHPTGLTANLLKLFEPRPPLEYKPPPEKRKCPPLTGMAQFVSKFAEPADPEYAPPKPVVETPVQRRERIHKLRLEKGAAKAAEELEKYDPHNDPNVSGDPYKTLFVARLSYETTESRIKREFESYGAIKRVRLVTDTVTNKPRGYAFIEYLHTRDMKGSYWLYAIDMSLLLILYFIDTVNYTAAYKQADGRKIEGRRVLVDVERGRTVPNWRPRRLGGGLGTTRMGVEVNQHDSGRDQLQSGPSRSEEPRVREDRHGDRDREKSRERGKDRDREQERSREHSSDRGRDRDYRDDRHNKDRDRHRDRDRERDRDRGRDRDRGRDRDRGRDRDRDRDRDRDRGREHDRHRDRDRDYEVGETDRGQSHDKETDYDHELKHDVDRHGERDRDYEPEDDRGWSNQSAHGHRHADPDHNPDSYDHYEHHQRRGHYDDGDDRGNHYSRYPDHDRMEDDYPTERATSEPRERERNRDMDREYHRSVRSHSREYDY
+>ZPYcontig73_002250.1
+MSTSLPVWKCHAWSTSTKVGSAKLARYFENLSPESPPYQLLWPQPPVCRSVKNRNRQPLLSPAQPPSLHCARRRSPLLWSYLPPSAAVVLSAHPPRSLPLYSLSPPMSVAADSPIHSSSSDDFIAYLDDALAASSPDASSDKEVENQDELESGRLYWKCSSFRFFVIAEEYVCTHPGSFGDMCIRCGQKLDGESGVTFGYIHKGLRLHDEEISRLRNTDVKNLLIRKKLYLILDLDHTLLNSTHLAHLNSEELHLISQADSLGDVSKGSLFKLDKMHMMTKLRPFVRTFLKEASEMFEMYIYTMGDRPYALEMAKLLDPLGEYFNAKVISRDDGTQKHQKGLDIVLGQESAVVILDDTEHAWVKHKDNLILMERYHFFGSSCRQFGFNCKSLAELKSDEDEAEGALTKILKVLKQVHSKFFDELKEDIAERDVRQVVLKSVRREVLSGCVVVFSRIFHGALPPLRQMAEQLGATCLMELDPSVTHVVATDAGTEKARWAVKEKKFLVHPRWIEAANYFWEKQPEENFVLKKKQ
+>ZPYcontig72_002250.1
+MNTRARTSLHSMKAPLNASKMENTIRGSSRTMASQKAAKNVRRSNRERKMALIQDLDKLKRKLQHEENVHRALERAFTRPLGALPRLPPYLPPYTLELLAEVAVLEEEVVRLEEQVVNFRQGLYQEAVYISSKRNAENMNDSIEQNTARISKHQRSKSFSQSEFHSMTMGRPQPSLARSASSRKLFSSDVATDHTGKLVNGRQFHRKQESFSSIPEEGKGKENRLFSNLVKDKQSPEKKTAKVNIPMKKSPLKQESAEKCMDHFKLQLDWRLADQEMAQSSSTSSSDDKVVEVDSTPNRISEDTVKCLCSIFLRIGTSNDFLMEPRTPPYSDRESSKEKDQLCDPYGICSESKTTDVGPYKNFCEGLSHQEKLAFWINIYNSCMLNAYLEHGIPESPEMVVALMQKATITVGGQLLNAITIEHFILRLPYHLKFTCPKAGKNDEVKARSIFGLEWCEPLVTFALSCGSWSSPAVRVYTASKVDEELEAAKREYLQAAVGITKGNKLIIPKLLDCCNYLFKRKWSTLCSLLNYKF
+>ZPYcontig71_002250.1
+MGLCVSKAPSESLSPSHNNNSKQEPEPASVNGGKKSPFFPFYSPSPAHYLFSKKSPARSPARTGSESTPRRFFKRPFPPPSPAKHIKAVLARRQGSVKPNEASIPEGSEAGGDDGVAVALDKSFGFSKHFKNKYELGSEVGRGHFGYTCAAKFKKGDLKGHQVAVKVIPKAKMTTAIAIEDVRREVKILRALTGHKNLVQFYDAYEDHDNVYIVMELCEGGELLDRILSRGGKYTEEDAKAVLTQILNVVAFCHMQGVVHRDLKPENFLFASKDENSELKAIDFGLSDFVKPDERLNDIVGSAYYVAPEVLHRAYSTEADIWSIGVIAYILLCGSRPFWARTESGIFRAVLKADPSFEEPPWPSLSDEAKDFVKRLLNKDPRKRMTAAQALCHPWIKNYKDVKAPLDILMFKLMKSYMRSSSLRKAALRALSKTLAVDELYYLKEQFSLLEPNKNGTISLENIKAALMKNATDAMKESRIPDFLGSLNALQFRRMDFDEFCAATLSVHQLEALDRWEQHARCAYELFEKDGNRAIVIEELASELGLGPSVPVHAVLHDWIRHTDGKLSFLGFVKLLHGPSRSLAKPQ
+>ZPYcontig70_002250.1
+MNTWLCVNESISVSIPKHKYSRSHSYSFPPNPLPLPSFLRLKSVSSLPKQQALNVSLTRHSTHSLQMADSSISDSDSSHPHPEYAEIVVVRHGETAWNADGRIQGHLDVELNEAGRQQAAAVADRLSREPKISFIYSSDLQRAYETAQIIASRCGGLEVIKDSDLRERHLGDLQGLIYREAAKTHPIAHKAFSSRNEDQEIPGGGESIAQLFQRCTSALQRIGRKHKGERVVVVTHGGFIRSLYRWACPNGRPAGKIHNTSVNVFHMYGEDKWTLKLWGDVSHLSQDEFLASGFGGDRTSG
+>ZPYcontig69_002250.1
+MAQRWRSAAGHLRTVAAATRRGPSSFQSSCYHTIQAIPREFTGSRVSARERTQGRIPAVVFFQNLLEKDPTIRPSFSSKKHLVTVERKQIKTILKSPDDAFSFCSTRFPLQIRAGSGSSHLLESGTVLPIKIHRDEESGKVLNLVFVWAEDGMNLKVDVPVVFKGEDVCLGVQKGGMLNKIRTSVKYLCPSEHIPSKIEVDVSNLDIEDKIFIRDIEVHPSLKLLSKNENMPICKVVPTSLGHQAKEDQ`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+
+    </div>
+</div>
+<!-- 显示热图 -->
+
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+
+    <script>
+        document.getElementById('exampleButton').addEventListener('click', function() {
+            var exampleText = `CtAH01G0000100
+CtAH01G0000200
+CtAH01G0000300
+CtAH01G0000400
+CtAH01G0000500
+CtAH01G0000600
+CtAH01G0000700
+CtAH01G0000800
+CtAH01G0000900`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MGDYSNDPLMRNQNAAVQARTKAQNRANVLQLKLIGQSHPTGLTANLLKLFEPRPPLEYKPPPEKRKCPPLTGMAQFVSKFAEPADPEYAPPKPVVETPVQRRERIHKLRLEKGAAKAAEELEKYDPHNDPNVSGDPYKTLFVARLSYETTESRIKREFESYGAIKRVRLVTDTVTNKPRGYAFIEYLHTRDMKGSYWLYAIDMSLLLILYFIDTVNYTAAYKQADGRKIEGRRVLVDVERGRTVPNWRPRRLGGGLGTTRMGVEVNQHDSGRDQLQSGPSRSEEPRVREDRHGDRDREKSRERGKDRDREQERSREHSSDRGRDRDYRDDRHNKDRDRHRDRDRERDRDRGRDRDRGRDRDRGRDRDRDRDRDRDRGREHDRHRDRDRDYEVGETDRGQSHDKETDYDHELKHDVDRHGERDRDYEPEDDRGWSNQSAHGHRHADPDHNPDSYDHYEHHQRRGHYDDGDDRGNHYSRYPDHDRMEDDYPTERATSEPRERERNRDMDREYHRSVRSHSREYDY
+>ZPYcontig73_002250.1
+MSTSLPVWKCHAWSTSTKVGSAKLARYFENLSPESPPYQLLWPQPPVCRSVKNRNRQPLLSPAQPPSLHCARRRSPLLWSYLPPSAAVVLSAHPPRSLPLYSLSPPMSVAADSPIHSSSSDDFIAYLDDALAASSPDASSDKEVENQDELESGRLYWKCSSFRFFVIAEEYVCTHPGSFGDMCIRCGQKLDGESGVTFGYIHKGLRLHDEEISRLRNTDVKNLLIRKKLYLILDLDHTLLNSTHLAHLNSEELHLISQADSLGDVSKGSLFKLDKMHMMTKLRPFVRTFLKEASEMFEMYIYTMGDRPYALEMAKLLDPLGEYFNAKVISRDDGTQKHQKGLDIVLGQESAVVILDDTEHAWVKHKDNLILMERYHFFGSSCRQFGFNCKSLAELKSDEDEAEGALTKILKVLKQVHSKFFDELKEDIAERDVRQVVLKSVRREVLSGCVVVFSRIFHGALPPLRQMAEQLGATCLMELDPSVTHVVATDAGTEKARWAVKEKKFLVHPRWIEAANYFWEKQPEENFVLKKKQ
+>ZPYcontig72_002250.1
+MNTRARTSLHSMKAPLNASKMENTIRGSSRTMASQKAAKNVRRSNRERKMALIQDLDKLKRKLQHEENVHRALERAFTRPLGALPRLPPYLPPYTLELLAEVAVLEEEVVRLEEQVVNFRQGLYQEAVYISSKRNAENMNDSIEQNTARISKHQRSKSFSQSEFHSMTMGRPQPSLARSASSRKLFSSDVATDHTGKLVNGRQFHRKQESFSSIPEEGKGKENRLFSNLVKDKQSPEKKTAKVNIPMKKSPLKQESAEKCMDHFKLQLDWRLADQEMAQSSSTSSSDDKVVEVDSTPNRISEDTVKCLCSIFLRIGTSNDFLMEPRTPPYSDRESSKEKDQLCDPYGICSESKTTDVGPYKNFCEGLSHQEKLAFWINIYNSCMLNAYLEHGIPESPEMVVALMQKATITVGGQLLNAITIEHFILRLPYHLKFTCPKAGKNDEVKARSIFGLEWCEPLVTFALSCGSWSSPAVRVYTASKVDEELEAAKREYLQAAVGITKGNKLIIPKLLDCCNYLFKRKWSTLCSLLNYKF
+>ZPYcontig71_002250.1
+MGLCVSKAPSESLSPSHNNNSKQEPEPASVNGGKKSPFFPFYSPSPAHYLFSKKSPARSPARTGSESTPRRFFKRPFPPPSPAKHIKAVLARRQGSVKPNEASIPEGSEAGGDDGVAVALDKSFGFSKHFKNKYELGSEVGRGHFGYTCAAKFKKGDLKGHQVAVKVIPKAKMTTAIAIEDVRREVKILRALTGHKNLVQFYDAYEDHDNVYIVMELCEGGELLDRILSRGGKYTEEDAKAVLTQILNVVAFCHMQGVVHRDLKPENFLFASKDENSELKAIDFGLSDFVKPDERLNDIVGSAYYVAPEVLHRAYSTEADIWSIGVIAYILLCGSRPFWARTESGIFRAVLKADPSFEEPPWPSLSDEAKDFVKRLLNKDPRKRMTAAQALCHPWIKNYKDVKAPLDILMFKLMKSYMRSSSLRKAALRALSKTLAVDELYYLKEQFSLLEPNKNGTISLENIKAALMKNATDAMKESRIPDFLGSLNALQFRRMDFDEFCAATLSVHQLEALDRWEQHARCAYELFEKDGNRAIVIEELASELGLGPSVPVHAVLHDWIRHTDGKLSFLGFVKLLHGPSRSLAKPQ
+>ZPYcontig70_002250.1
+MNTWLCVNESISVSIPKHKYSRSHSYSFPPNPLPLPSFLRLKSVSSLPKQQALNVSLTRHSTHSLQMADSSISDSDSSHPHPEYAEIVVVRHGETAWNADGRIQGHLDVELNEAGRQQAAAVADRLSREPKISFIYSSDLQRAYETAQIIASRCGGLEVIKDSDLRERHLGDLQGLIYREAAKTHPIAHKAFSSRNEDQEIPGGGESIAQLFQRCTSALQRIGRKHKGERVVVVTHGGFIRSLYRWACPNGRPAGKIHNTSVNVFHMYGEDKWTLKLWGDVSHLSQDEFLASGFGGDRTSG
+>ZPYcontig69_002250.1
+MAQRWRSAAGHLRTVAAATRRGPSSFQSSCYHTIQAIPREFTGSRVSARERTQGRIPAVVFFQNLLEKDPTIRPSFSSKKHLVTVERKQIKTILKSPDDAFSFCSTRFPLQIRAGSGSSHLLESGTVLPIKIHRDEESGKVLNLVFVWAEDGMNLKVDVPVVFKGEDVCLGVQKGGMLNKIRTSVKYLCPSEHIPSKIEVDVSNLDIEDKIFIRDIEVHPSLKLLSKNENMPICKVVPTSLGHQAKEDQ`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

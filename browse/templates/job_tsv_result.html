@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+.status-card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+    <h2 class="page-title">{{ page_title }}</h2>
+    <div class="title-line"></div>
+
+    {% if not result_file_ready %}
+    <div class="alert alert-warning status-card" role="alert">
+        {{ empty_message }}
+    </div>
+    {% elif not result %}
+    <div class="alert alert-warning status-card" role="alert">
+        {{ empty_message }}
+    </div>
+    {% endif %}
+
+    {% if truncated %}
+    <div class="alert alert-warning status-card" role="alert">
+        Showing the first {{ table_limit }} rows in the browser. Use Download Full TSV for all {{ result_count }} rows.
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="table-container">
+        <div class="action-row">
+            <div class="action-group">
+                <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+                <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="{{ filename }}"><i class="fas fa-download"></i> Download Selected</button>
+                {% if download_url %}
+                <a class="btn-custom btn-secondary-link" href="{{ download_url }}"><i class="fas fa-file-download"></i> Download Full TSV</a>
+                {% endif %}
+                {% if blast_download_url %}
+                <a class="btn-custom btn-secondary-link" href="{{ blast_download_url }}"><i class="fas fa-file-download"></i> Download BLAST Hits</a>
+                {% endif %}
+            </div>
+            <div class="text-muted fw-semibold">{{ shown_count }} shown / {{ result_count }} total rows</div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="{{ table_id }}" class="table table-hover result-table align-middle">
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                        {% for header in result_headers %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in result %}
+                    <tr>
+                        <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td>
+                        {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    var tableId = '#{{ table_id }}';
+    if ($.fn.DataTable && $(tableId).length && !$.fn.DataTable.isDataTable(tableId)) {
+        $(tableId).DataTable({
+            paging: true,
+            info: true,
+            searching: true,
+            lengthChange: true,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            pagingType: 'simple_numbers',
+            scrollX: true,
+            autoWidth: false,
+            columnDefs: [{ orderable: false, targets: 0 }]
+        });
+    }
+});
+</script>
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: '{{ table_id }}',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: '{{ filename }}'
+});
+</script>
+{% endblock %}

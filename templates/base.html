@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="AGRP (Asteraceae Genomic Research Platform) is a comprehensive multi-omics database integrating over 160 genomes, transcriptomes, and metabolomes. Access advanced tools for synteny analysis, gene family evolution, BLAST, and phylogenomics to explore Asteraceae diversity and evolution.">
+    <meta name="keywords" content="Asteraceae, AGRP, Genomics, Bioinformatics, Multi-omics, Genome Database, Gene Family, Synteny Analysis, Polyploidy, Helianthus, Lactuca, Artemisia, Transcriptome, Metabolome, Plant Evolution, BLAST">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>{% block title %}AGRP - Asteraceae Genomic Research Platform{% endblock %}</title>
+
+    <link rel="preload" as="image" href="{% static 'image/topback09.webp' %}">
+
+    <link href="{% static 'vendor/bootstrap5/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'image/logo.webp' %}" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+         
+        @font-face {
+            font-family: 'Muyao Softbrush';
+            src: url("{% static 'fonts/Muyao-Softbrush-2.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap; /* Optimization: Ensure text remains visible during load */
+        }
+        @font-face {
+            font-family: 'Muyao Softbrush Latin';
+            src: url("{% static 'fonts/Muyao-Softbrush-2-latin.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+            unicode-range: U+0020-007E;
+        }
+        /* @import removed to prevent render blocking */
+
+        body {
+            padding-top: 0 !important;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #fcfcfc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .body-footer-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #e9ecef;
+            margin: 0.5rem 0;
+        }
+
+        /* ==================== 2. Header & Logo ==================== */
+        .agrp-header {
+            background-image: url("{% static 'image/topback09.webp' %}");
+            background-size: cover;
+            background-position: center;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            position: relative;
+            z-index: 2000;
+        }
+
+        .header-logo-section {
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+            padding-left: 10px;
+        }
+
+        .header-logo-img {
+            height: 110px;
+            margin-right: 25px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .header-title h1 {
+            font-size: 3.4rem;
+            margin: 0;
+            color: #e67e22;
+            font-family: "Muyao Softbrush Latin", "Muyao Softbrush", cursive;
+            line-height: 1.0;
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 1);
+        }
+
+        .header-title p {
+            font-size: 2.1rem;
+            margin: 0;
+            color: #d35400;
+            font-family: "Muyao Softbrush Latin", "Muyao Softbrush", cursive;
+            margin-top: -8px;
+        }
+
+         
+        .agrp-navbar {
+            background-color: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            margin-top: 15px;
+            margin-bottom: 20px;
+            padding: 0 25px;
+            width: 100%;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .agrp-nav-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 60px;
+        }
+
+        .nav-link-custom {
+            color: #444 !important;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 18px 5px;
+            display: block;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom[aria-expanded="true"] {
+            color: #e67e22 !important;
+        }
+
+         
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-top: 0px !important;
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 10px 0;
+            min-width: 240px;
+        }
+
+        .scrollable-dropdown {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+         
+        .dropdown-submenu::after {
+            display: none !important;
+            content: "" !important;
+        }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -10px !important;
+            margin-left: 5px;
+            display: none;
+        }
+
+         
+        .dropdown-submenu > .dropdown-menu::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 100%;
+            width: 5px;
+            height: 100%;
+            background: transparent;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu > li > .dropdown-item {
+            padding: 8px 20px !important;
+            display: flex !important;
+            align-items: center !important;  
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95rem;
+            white-space: nowrap !important;  
+            line-height: 1.5 !important;     
+        }
+
+         
+        .dropdown-submenu > .dropdown-item {
+            position: relative !important;
+            padding-right: 35px !important;  
+        }
+
+        .dropdown-item.dropdown-toggle::after {
+            display: none !important;
+        }
+
+         
+        .dropdown-submenu > .dropdown-item::after {
+            content: "›" !important;
+            font-family: Arial, sans-serif !important;
+            font-weight: bold !important;
+            font-size: 1.4rem !important;
+            line-height: 1 !important;       
+            color: #bbb !important;
+
+             
+            position: absolute !important;
+            right: 15px !important;          
+            top: 50% !important;             
+            transform: translateY(-53%) !important;  
+
+            margin: 0 !important;
+            border: none !important;
+            display: block !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+        .dropdown-item:hover {
+            background-color: #fff5eb;
+            color: #e67e22 !important;
+        }
+
+         
+        .btn-agrp-switch {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            color: #fff !important;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-agrp-switch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(230, 126, 34, 0.5);
+            color: #fff !important;
+        }
+
+         
+        .welcome-box {
+            max-width: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 25px 30px;
+        }
+
+        .welcome-title {
+            font-family: 'Muyao Softbrush Latin', 'Muyao Softbrush', cursive;
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+        }
+
+         
+        #agrp-search-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            animation: fadeIn 0.4s ease-in-out;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-inputs-container {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-select, .search-input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-select:focus, .search-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        .search-select {
+            flex: 1;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .search-input {
+            flex: 3;
+        }
+
+        .search-options-box {
+            background-color: #fffdf5;
+            border: 1px solid #f0e6d2;
+            border-radius: 12px;
+            padding: 25px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .select-all-container {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e0d0b0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px 10px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #555;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .option-item:hover {
+            color: #d35400;
+        }
+
+        .form-check-input:checked {
+            background-color: #e67e22;
+            border-color: #e67e22;
+        }
+
+        .star-icon {
+            color: #e67e22;
+            margin-right: 6px;
+        }
+
+        .search-action-btn {
+            margin-top: 30px;
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .search-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+        }
+
+         
+        footer {
+            background-image: url("{% static 'image/footer009.webp' %}");
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: #fff8f0;
+            color: #4e3e3e;
+            font-size: 0.95rem;
+            padding-top: 1rem !important;
+            padding-bottom: 0.8rem !important;
+            margin-top: auto;
+        }
+
+        footer h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            color: #d35400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(211, 84, 0, 0.3);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .footer-about-text {
+            font-weight: 500;
+            line-height: 1.8;
+            color: #5d4037;
+            border: 1px solid rgba(93, 64, 55, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: justify;
+        }
+
+         
+        .footer-contact {
+            margin-top: 12px;
+            padding: 10px 0;
+            border-top: 1px dashed rgba(211, 84, 0, 0.2);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;  
+        }
+        .footer-contact-label {
+            color: #5d4037;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        .footer-contact a {
+            color: #d35400;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .footer-contact a:hover {
+            color: #e67e22;
+            text-decoration: underline;
+        }
+
+        .quick-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .quick-link-item a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            padding: 8px 4px;
+            height: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #5d4037;
+            background: transparent;
+            border: 1px solid rgba(93, 64, 55, 0.2);
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .quick-link-item a:hover {
+            background: rgba(230, 126, 34, 0.1);
+            color: #d35400;
+            border-color: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .footer-visitor-counter {
+            margin-top: 52px;
+            text-align: right;
+        }
+
+        .footer-visitor-counter img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .copyright-spacer {
+            margin-top: 50px;
+            border-top: 1px solid rgba(93, 64, 55, 0.15);
+            padding-top: 8px;
+            padding-bottom: 10px;
+        }
+
+        .copyright-text {
+            color: #665c54;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 992px) {
+            .agrp-nav-list {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+            }
+            .nav-link-custom {
+                width: 100%;
+                border-bottom: 1px solid #eee;
+            }
+            .footer-visitor-counter {
+                margin-top: 16px;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-inputs-container {
+                flex-direction: column;
+            }
+        }
+
+         
+        .scrollable-table {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .scrollable-table table {
+            min-width: 1200px;  
+            width: 100%;
+        }
+
+         
+        .scrollable-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #fff8f0;
+            z-index: 10;
+            border-bottom: 2px solid #e67e22;
+        }
+
+         
+        .scrollable-table .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .scrollable-table .table td,
+        .scrollable-table .table th {
+            padding: 10px 12px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+            min-width: 120px;  
+        }
+
+         
+        .scrollable-table .table td:nth-child(1) {  
+            min-width: 60px;
+            max-width: 60px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .scrollable-table .table td:nth-child(2) {  
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .scrollable-table .table td:nth-child(4) {  
+            min-width: 120px;
+            max-width: 150px;
+        }
+
+        .scrollable-table .table td:nth-child(5) {  
+            min-width: 200px;
+            max-width: 300px;
+            white-space: normal;  
+            word-break: break-word;
+        }
+
+         
+        .scrollable-table {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .scrollable-table table {
+            min-width: 1200px;  
+            width: 100%;
+        }
+
+         
+        .scrollable-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #fff8f0;
+            z-index: 10;
+            border-bottom: 2px solid #e67e22;
+        }
+
+         
+        .scrollable-table .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .scrollable-table .table td,
+        .scrollable-table .table th {
+            padding: 10px 12px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+            min-width: 120px;  
+        }
+
+         
+        .scrollable-table .table td:nth-child(1) {  
+            min-width: 60px;
+            max-width: 60px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .scrollable-table .table td:nth-child(2) {  
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .scrollable-table .table td:nth-child(4) {  
+            min-width: 120px;
+            max-width: 150px;
+        }
+
+        .scrollable-table .table td:nth-child(5) {  
+            min-width: 200px;
+            max-width: 300px;
+            white-space: normal;  
+            word-break: break-word;
+        }
+
+    </style>
+
+    <style>
+.input-group > .bio-file-picker { flex: 1 1 auto; width: 1%; }
+
+.bio-file-picker {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    min-height: calc(1.5em + .75rem + 2px);
+    overflow: hidden;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .375rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.bio-file-picker > input[type="file"] {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.bio-file-picker__button,
+.bio-file-picker__name {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding: .375rem .75rem;
+    pointer-events: none;
+}
+
+.bio-file-picker__button {
+    flex: 0 0 auto;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+}
+
+.bio-file-picker__name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.bio-file-picker:focus-within {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, .15);
+}
+
+.bio-file-picker:hover .bio-file-picker__button {
+    background-color: #e9ecef;
+}
+
+.bio-file-picker--lg {
+    min-height: calc(1.5em + 1rem + 2px);
+    border-radius: .5rem;
+    font-size: 1.25rem;
+}
+
+.bio-file-picker--lg .bio-file-picker__button,
+.bio-file-picker--lg .bio-file-picker__name {
+    padding: .5rem 1rem;
+}
+
+.bio-file-picker--sm {
+    min-height: calc(1.5em + .5rem + 2px);
+    border-radius: .25rem;
+    font-size: .875rem;
+}
+
+.bio-file-picker--sm .bio-file-picker__button,
+.bio-file-picker--sm .bio-file-picker__name {
+    padding: .25rem .5rem;
+}
+
+.bio-file-picker:has(input:disabled) {
+    opacity: .65;
+    cursor: not-allowed;
+}
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header class="agrp-header">
+        <div class="container">
+            <div class="header-logo-section">
+                <img src="{% static 'image/logo.webp' %}" alt="AGRP Logo" class="header-logo-img" width="110" height="110">
+                <div class="header-title">
+                    <h1>AGRP</h1>
+                    <p>Asteraceae Genomic Research Platform</p>
+                </div>
+            </div>
+
+            <nav class="agrp-navbar navbar-expand-lg">
+                <ul class="agrp-nav-list">
+                    <li class="agrp-nav-item"><a href="{% url 'index_url' %}" class="nav-link-custom">Home</a></li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Genomics</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'genome_url' %}">Genome</a></li>
+                                <li><a class="dropdown-item" href="/tools/jbrowse/?config=/tools/jbrowse/data/config.json" target="_blank">JBrowse</a></li>
+                                <li><a class="dropdown-item" href="{% url 'interproscan_index_url' %}">GO-annotations</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kegg_index_url' %}">KEGG-pathways</a></li>
+                                <li><a class="dropdown-item" href="{% url 'TF_genes_index_url' %}">Regulatory proteins</a></li>
+                                <li><a class="dropdown-item" href="{% url 'm6A_gene_url' %}">N6-methyladenosine(m6A)</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dupgen_finders_url' %}">Gene duplication type</a></li>
+                                <li><a class="dropdown-item" href="{% url 'TE_index_url1' %}">Transposable elements</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Geno-Syn</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'collinear_kaks_url' %}">Aster-Blocks</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dotplot_url' %}">Aster-Dotplots</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item" href="#">Aster-Alignments</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'hierarchical_alignments_Hean_url' %}">Hean-MGAs</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'hierarchical_alignments_Lssa_all_url' %}">Arla-MGAs</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'hierarchical_alignments_Vivi_url' %}">Vivi-MGAs</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'hierarchical_alignments_Eupl_url' %}">Eupl-MGAs</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'event_gene_url' %}">Aster-Evogenes</a></li>
+                                <li><a class="dropdown-item" href="{% url 'karyotype_url' %}">Aster-Ancgenome</a></li>
+                                <li><a class="dropdown-item" href="{% url 'ancestral_chromosome_url' %}">Aster-Anccalling</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item" href="#">Gene Family</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'orthologous_url' %}">Aster-Orthologous</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'function_gene_url' %}">Aster-Genefamiles</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'rubber_gene_url' %}">Aster-Rubbergenes</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'inulin_gene_url' %}">Aster-Inulingenes</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Multi-Omics</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'geneExpression_url' %}">Aster-Transcriptome</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item" href="#">Aster-Metabolome</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'metabolomics_plant_url' %}">Aster-Metabolomics</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'metabolomics_scent_url' %}">Aster-Floralscent</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'pan_genome_url' %}">Aster-Pangenome</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Aster-Infor</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'encyclopedia_url' %}">Aster-Encyclopedia</a></li>
+                                <li><a class="dropdown-item" href="{% url 'agroecology_url' %}">Aster-Agroecology</a></li>
+                                <li><a class="dropdown-item" href="{% url 'database_url' %}">Aster-Exterdata</a></li>
+                                <li><a class="dropdown-item" href="{% url 'references_url' %}">Aster-Literature</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Bio-Tools</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item" href="#">Web-Tools</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'all_tools_url' %}">All Tools</a></li>
+                                        <li class="dropdown-submenu"><a class="dropdown-item" href="#">Sequence similarity comparison and homology visualization</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{% url 'synvisio_url' %}">Syntenic-visualization</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_blast_dotplot_url' %}">B-Dotter</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_block_dotplot_url' %}">BB-Dotter</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'circos_url' %}">ShinyCircos</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'ks_distriplot_url' %}">Ks-Distriplot</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'jbrowse_url' %}">JBrowse</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_ks_dotplot_url' %}">Ks-dotplot</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'f_blast_url' %}">Blast</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'collinearity_generator_url' %}">Collinearity generator</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'sequence_alignment_url' %}">Seq-alignment</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'wgdi_dotplot_url' %}">Blast-dotplot</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'diamond_url' %}">Diamond</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'cds2geno_dotplot_url' %}">CDS2geno-Dotploting</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'paraat_url' %}">ParaAT</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu"><a class="dropdown-item" href="#">Inference and analysis of gene synteny</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{% url 'mga_circos_url' %}">MGA-circos</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_retention_url' %}">Paleo-gene_RI</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_loss_url' %}">Paleo-gene_RII</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_correspondence_mc_url' %}">Paleo-gene identifier</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'wgdi_correspondence_url' %}">Correspondence</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'wgdikaks_url' %}">Kaks calculate</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'GC_calculation_url' %}">GC-calculation</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_pindex_url' %}">P-index.calculator</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'wgdi_blockinfo_url' %}">Block_info</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'colinearscan_url' %}">CollinearScan</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'wgdimcs_url' %}">Block_run</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'zu_ks_calculate_url' %}">NG-KaKs-Cal</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'mcscanx_url' %}">MCScanX</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'kaks_calculator_url' %}">KaKs calculator</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'GenomeMountRateCalculator_url' %}">Genome Mount Rate Calculator</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu"><a class="dropdown-item" href="#">Gene structure and visualization</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{% url 'hmmer_url' %}">Hmmer</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'interproscan_url' %}">InterProScan</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'meme_suit_url' %}">MEME Suite</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'cpgfinder_url' %}">Cpgfinder</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'draw_gene_structure_url' %}">Gene structure</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'pfam_url' %}">Pfam</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'gsds_url' %}">GSDS</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'codonw_url' %}">CodonW</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'GF_ks_circos_url' %}">GF-Circos</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'sequence_fetch_url' %}">Sequence-fetch</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'dupgen_finder_url' %}">DupGen_finder</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'iTAK_url' %}">TransFam identifier</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'sequenceserver_url' %}">SequenceServer</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu"><a class="dropdown-item" href="#">Phylogenetic and expression analysis of genes</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{% url 'lollipop_chart_url' %}">Lollipop</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'iq_tree_url' %}">IQ-Tree</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'draw_heatmap_url' %}">Heatmap</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'fasttree_url' %}">FastTree</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'draw_list_tree_url' %}">Draw_list_trees</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'subtree_extractor_url' %}">Subtree-extrator</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'species_classification_url' %}">Species classification</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu"><a class="dropdown-item" href="#">Calculation Tools</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{% url 'bdi_finder_url' %}">BDI-finder</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'bdi_extractor_url' %}">BDI-extractor</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'bdi_combiner_url' %}">BDI-combiner</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'bdi_deduplicator_url' %}">BDI-deduplicator</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'sequence_screening_url' %}">SS-extractor</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'saf_converter_url' %}">SAF-converter</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'bbm_extraction_url' %}">BBM-extraction</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'deal_stars_url' %}">Deal_stars</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'block_number_count_url' %}">Block number count</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'geme_cds_exon_counter_url' %}">Gene_cds_exon_counter</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'blast_match_url' %}">Blast match</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'chromosome_length_url' %}">Chromosome length extractor</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'docker_url' %}">AGRP-toolkit</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'software_tools_url' %}">Bio-Software</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Aster-Stats</a>
+                            <ul class="dropdown-menu scrollable-dropdown">
+                                <li><a class="dropdown-item" href="{% url 'sp_tree_chart_url' %}"><span>Asteraceae Phylogenetic Tree</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'gene_replication_type_url' %}"><span>Gene Duplication Types</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'm6A_gene_chart_url' %}"><span>N6-methyladenosine</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'transposable_elements_url' %}"><span>Transposable Elements</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'regulatory_proteins_url' %}"><span>Regulatory Proteins</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'floral_morphology_url' %}"><span>Floral Morphology Regulation</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'terpenoid_biosynthesis_url' %}"><span>Terpenoid Biosynthesis</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'heat_stress_url' %}"><span>Heat Stress</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'salt_resistance_url' %}"><span>Salt Resistance</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'drought_tolerance_url' %}"><span>Drought Tolerance</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'rubber_synthesis_url' %}"><span>Rubber Synthesis Related Families</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'inulin_related_family_url' %}"><span>Inulin Related Family</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'mgas_eupl_ref_url' %}"><span>MGAs of <i>Euptelea pleiosperma</i> as reference</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'mgas_vitis_ref_url' %}"><span>MGAs of <i>Vitis vinifera</i> as reference</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'mgas_arctium_ref_url' %}"><span>MGAs of <i>Arctium lappa</i> as reference</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'mgas_helianthus_ref_url' %}"><span>MGAs of <i>Helianthus annuus</i> as reference</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item"><a class="nav-link-custom" href="{% url 'submit_url' %}">Submit-Projects</a></li>
+
+                    <li class="agrp-nav-item dropdown">
+                        <div class="dropdown">
+                            <a class="nav-link-custom dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Guides</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'user_manual_url' %}">User manual</a></li>
+                                <li><a class="dropdown-item" href="{% url 'api_documentation_url' %}">API Documentation</a></li>
+                                <li><a class="dropdown-item" href="{% url 'contact_url' %}">Contact</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="agrp-nav-item">
+                        <a href="javascript:void(0);" id="btn-agrp-switch" class="btn btn-sm btn-agrp-switch"><span>AGRP-Switch</span></a>
+                    </li>
+                </ul>
+            </nav>
+
+            {% block welcome_section %}{% endblock %}
+        </div>
+    </header>
+
+    <div id="agrp-search-panel" class="d-none" style="padding: 40px 20px; animation: fadeIn 0.4s ease-in-out; width: 100%;">
+    <div class="container">
+        <div class="all_box content" style="width: 100%; max-width: 1170px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            <h2 style="color:#d35400; font-weight:700; margin-bottom: 30px; text-align: center;">Gene Search</h2>
+            <form id="gene_search_form" action="{% url 'gene_detail' geneid='PLACEHOLDER' %}" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <div class="form-group mb-4">
+                            <label for="species_select" class="form-label fw-bold" style="color: #2c3e50;">Species</label>
+                            <select class="form-control" id="species_select" name="species" required style="font-style: italic; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                                <option value="Aann">Artemisia annua </option>
+                                <option value="Aary">Artemisia argyi</option>
+                                <option value="Amar">Ambrosia artemisiifolia</option>
+                                <option value="Amtr">Ambrosia trifida</option>
+                                <option value="Arla">Arctium lappa</option>
+                                <option value="Armi">Arctium minus</option>
+                                <option value="Artr">Artemisia tridentata </option>
+                                <option value="Bial">Bidens alba</option>
+                                <option value="Cati">Carthamus tinctorius </option>
+                                <option value="Ccar">Cynara cardunculus </option>
+                                <option value="Ceso">Centaurea solstitialis</option>
+                                <option value="Chla">Chrysanthemum lavandulifolium</option>
+                                <option value="Chma">Chrysanthemum makinoi</option>
+                                <option value="Chmo">Chrysanthemum morifolium</option>
+                                <option value="Chna">Chrysanthemum nankingense</option>
+                                <option value="Cich">Cichorium intybus</option>
+                                <option value="Cien">Cichorium endivia</option>
+                                <option value="Cind">Chrysanthemum indicum</option>
+                                <option value="Cobi">Cosmos bipinnatus</option>
+                                <option value="Cpa">Centrapalus pauciflorus</option>
+                                <option value="Dapi">Dahlia pinnata</option>
+                                <option value="Desu">Deinandra increscens subsp. villosa</option>
+                                <option value="Ecan">Erigeron canadensis</option>
+                                <option value="Enbr">Erigeron breviscapus</option>
+                                <option value="Fbi">Flaveria bidentis</option>
+                                <option value="Fbr">Flaveria brownii</option>
+                                <option value="Ffl">Flaveria floridana</option>
+                                <option value="Fli">Flaveria linearis</option>
+                                <option value="Fra">Flaveria ramosissima</option>
+                                <option value="Fro">Flaveria robusta </option>
+                                <option value="Fso">Flaveria sonorensis</option>
+                                <option value="Ftr">Flaveria trinervia</option>
+                                <option value="Glco">Glebionis coronaria</option>
+                                <option value="Hean">Helianthus annuus </option>
+                                <option value="Hetu">Helianthus tuberosus</option>
+                                <option value="Heub">Helichrysum umbraculigerum</option>
+                                <option value="Laca">Lactuca saligna</option>
+                                <option value="Lomi">Logfia minima</option>
+                                <option value="Lssa">Lactuca sativa </option>
+                                <option value="Mimi">Mikania micrantha</option>
+                                <option value="Pdy">Pulicaria dysenterica</option>
+                                <option value="Pin">Pluchea indica</option>
+                                <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                                <option value="Sain">Saussurea involucrata</option>
+                                <option value="Scae">Solidago caesia</option>
+                                <option value="Sesq">Senecio squalidus </option>
+                                <option value="Smso">Smallanthus sonchifolius</option>
+                                <option value="Soca">Solidago canadensis</option>
+                                <option value="Stre">Stevia rebaudiana </option>
+                                <option value="Taer">Tagetes erecta</option>
+                                <option value="Tako">Taraxacum koksaghyz </option>
+                                <option value="Tamo">Taraxacum mongolicum</option>
+                                <option value="Nin">Nymphoides indica</option>
+                                <option value="Vivi">Vitis vinifera</option>
+                                <option value="Busi">Buxus sinica</option>
+                                <option value="Tesi">Tetracentron sinense </option>
+                                <option value="Nenu">Nelumbo nucifera</option>
+                                <option value="Eupl">Euptelea pleiosperma</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="lastName" class="form-label fw-bold" style="color: #2c3e50;">Gene ID</label>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2" style="color: #666;">Example:</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="agrp-gene_id">Aann9g00954</button>
+                            </div>
+                            <input class="form-control" id="agrp-lastName" name="geneid" type="text" required>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="lastName_query_sequence" class="form-label fw-bold" style="color: #2c3e50;">Or, Query Sequence</label>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2" style="color: #666;">Example:</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="agrp-query_sequence">Load Example</button>
+                            </div>
+                            <textarea class="form-control" id="agrp-lastName_query_sequence" name="query_sequence" required></textarea>
+                        </div>
+
+                        <input class="w-100 btn btn-primary btn-lg" type="submit" value="Search" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); border: none; padding: 12px; border-radius: 30px; font-weight: bold; margin-top: 20px;">
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <div id="base-main-wrapper" style="flex: 1; width: 100%;">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="body-footer-divider" style="margin-bottom: 0;"></div>
+
+    <footer class="pt-4 pb-2">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h3>About Us</h3>
+                    <div class="footer-about-text">The Asteraceae Genomic Research Platform (AGRP) is a comprehensive database for Asteraceae evolution and multi-omics integration studies, developed and maintained by the Wang Lab at North China University of Science and Technology.</div>
+
+                    <div class="footer-contact">
+                        <span class="footer-contact-label">Have questions or feedback?</span>
+                        <a href="mailto:wangjinpeng@ncst.edu.cn">
+                            <i class="bi bi-envelope-fill me-1"></i>wangjinpeng@ncst.edu.cn
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h3>Quick Links</h3>
+                    <ul class="quick-link-list">
+                        <li class="quick-link-item"><a href="https://lgr.genomecenter.ucdavis.edu/" target="_blank">LGR</a></li>
+                        <li class="quick-link-item"><a href="https://yanglab.hzau.edu.cn/AMIR" target="_blank">AMIR</a></li>
+                        <li class="quick-link-item"><a href="http://www.compositae.org" target="_blank">GCD</a></li>
+                        <li class="quick-link-item"><a href="http://cichorieae.e-taxonomy.net/portal/" target="_blank">E-Taxonomy</a></li>
+                        <li class="quick-link-item"><a href="https://cgd.njau.edu.cn/" target="_blank">CGD</a></li>
+                        <li class="quick-link-item"><a href="http://cbcb.cdutcm.edu.cn/AGD/" target="_blank">AGD</a></li>
+                        <li class="quick-link-item"><a href="https://aster-rep.agr.unipi.it/" target="_blank">ASTER-REP</a></li>
+                        <li class="quick-link-item"><a href="https://asteraceaegenomesize.com" target="_blank">GSAD</a></li>
+                        <li class="quick-link-item"><a href="https://www.lettucegdb.com/" target="_blank">LettuceGDB</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer-visitor-counter">
+                        <a href="https://info.flagcounter.com/yulw" target="_blank" rel="noopener">
+                            <img id="flag-counter-image" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22205%22%2F%3E" data-src="https://s01.flagcounter.com/map/yulw/size_s/txt_010F05/border_170307/pageviews_1/viewers_0/flags_0/" alt="Flag Counter" border="0" width="400" height="205" decoding="async">
+                            <noscript>
+                                <style>#flag-counter-image { display: none; }</style>
+                                <img src="https://s01.flagcounter.com/map/yulw/size_s/txt_010F05/border_170307/pageviews_1/viewers_0/flags_0/" alt="Flag Counter" border="0" width="400" height="205">
+                            </noscript>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row copyright-spacer">
+                <div class="col-12 text-center">
+                    <p class="copyright-text mb-0">&copy; 2026 Asteraceae Genomic Research Platform. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'vendor/bootstrap5/js/bootstrap.bundle.min.js' %}" defer></script>
+    <script>
+    (function () {
+        const counter = document.getElementById('flag-counter-image');
+        if (!counter) return;
+
+        function loadCounter() {
+            const url = counter.dataset.src;
+            if (!url) return;
+            counter.removeAttribute('data-src');
+            counter.src = url;
+        }
+
+        if (document.readyState === 'complete') {
+            loadCounter();
+        } else {
+            window.addEventListener('load', loadCounter, { once: true });
+        }
+    })();
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+     
+    const switchBtn = document.getElementById('btn-agrp-switch');
+    const mainContent = document.getElementById('base-main-wrapper');
+    const searchPanel = document.getElementById('agrp-search-panel');
+
+    if (switchBtn) {
+        switchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (mainContent.classList.contains('d-none')) {
+
+                mainContent.classList.remove('d-none');
+                searchPanel.classList.add('d-none');
+                switchBtn.innerHTML = '<span>AGRP-Switch</span>';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+
+                mainContent.classList.add('d-none');
+                searchPanel.classList.remove('d-none');
+                switchBtn.innerHTML = '<span>Back to Main</span>';
+
+                searchPanel.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+     
+    const geneIdBtn = document.getElementById('agrp-gene_id');
+    if (geneIdBtn) {
+        geneIdBtn.addEventListener('click', function() {
+            const lastNameInput = document.getElementById('agrp-lastName');
+            if (lastNameInput) {
+                lastNameInput.value = 'Aann9g00954';
+            }
+        });
+    }
+
+    const querySeqBtn = document.getElementById('agrp-query_sequence');
+    if (querySeqBtn) {
+        querySeqBtn.addEventListener('click', function() {
+            const queryInput = document.getElementById('agrp-lastName_query_sequence');
+            if (queryInput) {
+                queryInput.value = `>ZPYcontig75_002250.1
+MGSLPLPLNQYSYPNARRDNSVVDDFHGITIPDPYRWLENPDAQEVKDFVHSQLQLTDSVLESCAARPNLRHKLTNLFDHPRYTVPFRRSHNTYFYFHNSGLQPHNVLYMQNGFHAGAQPHLLLDPNALSPDGSVSLTAVSVSQHADFLAYGLSSSGTDWVTINIMRIQDKHLLPHTLSWVKFSSISWTHDTKGFFYSRYPAPKEGQLVDAGTETNTNLYHELYYHFLGTDQSQDILCWRDPQNPEYRFRASVSDDGRYIIMYIEQGCDPVNKLYYCDMSELTNGLQGFGNKQEEEDPHAHATMLPFVKLVDTFDAQFQYVANDDTVFTFLTNKNAPKYKLVRVDLKEPINSWFDVIHESERDVLESACAVNGNQVIVSYLSDVKYVVQVRDLETGCLQHLLPIDIGTVNGISARRQDSIFFFGFSSFLSPGIVYQCDLGTQAPVIKIFREIVVPGFDRSQFHANQVFVASKDGTKIPMFIVARKDISLDGSHPCLLYGYGGFNASVTPCFSVSRIVLARHLGCVLSIANIRGGGEYGEEWHKAGSLAKKQNCFDDFISAAEYLVSVGYTQPAKLCIEGGSNGGLLVAACINQRPDLFGCALAHVGVMDMLRFHKFTIGHAWTSEFGCSEKEEEFHWLIKYSPLHNVRRPWEEFGGGSIQYPSTMLLTADHDDRVVPLHSLKLLATMQYVLSTSMKQSPQTNPIIARIECKAGHGAGRSMQKIIEEAADRYGFMAKVLEAHWIE
+>ZPYcontig73_002250.1
+MAVKRGVASAVVLCVLASVSVSLGEDPYRFFDWNVTYGDIYPLGVRQQGILINGQFPGPDIHSVTNDNLIINVFNSLDQPFLLSWNGVQQRRNSYEDGVFGTTCPIPPGKNFTYILQVKDQIGSFYYFPSLAFHKAAGGFGGIRILSRPRIPVPFPDPAGDYTVLIGDWYKANHTDLQRQLDSGRKLALPDGILINGRGENGASFNVEQGKSYRLRISNVGLENSLNFRIQNHKMTLVEVEGTHTLQTTYSSLDVHVGQSYSVLVTADQPPRDYYIVVSTRFTTTVLTTTGILRYSNSAGPVQGPPPGGPTTQIDWSLNQARSIRTNLTASGPRPNPQGSYHYGLINLTRTIVVSSSAGQVNGKQRYAINSVSYVAPDTPLKVADFFKIPGVFRVGSISDRPSGSAIYLDTSVMQTDYRTFVEIVFQNDEDIIQTYHLDGYSFFVVGMDGGTWTAGSRNEYNLRDAVSRCTTQVYPKSWTAIYVALDNVGMWNLRSEFWARQYLGQQFYMRVYTTSTSLRDEYPIPKNALLCGKASGRHTRPL`;
+            }
+        });
+    }
+
+     
+    const geneSearchForm = document.getElementById('gene_search_form');
+    if (geneSearchForm) {
+        geneSearchForm.addEventListener('submit', function(event) {
+            var geneIdInput = document.getElementById('agrp-lastName');
+            var querySequenceInput = document.getElementById('agrp-lastName_query_sequence');
+            var geneIdValue = geneIdInput ? geneIdInput.value.trim() : '';
+            var querySequenceValue = querySequenceInput ? querySequenceInput.value.trim() : '';
+
+
+            if (querySequenceValue !== '') {
+                return true;
+            }
+
+
+            if (geneIdValue === '') {
+                alert('Please enter a gene ID');
+                event.preventDefault();
+                return false;
+            } else {
+                var actionUrl = this.getAttribute('action');
+                actionUrl = actionUrl.replace('PLACEHOLDER', encodeURIComponent(geneIdValue));
+                this.setAttribute('action', actionUrl);
+                return true;
+            }
+        });
+    }
+});
+</script>
+    <script>
+(function () {
+    'use strict';
+
+    function enhance(input) {
+        if (input.closest('.bio-file-picker, .ancestor-file-picker') || input.dataset.nativeFilePicker !== undefined) return;
+
+        const picker = document.createElement('span');
+        picker.className = 'bio-file-picker';
+        if (input.classList.contains('form-control-lg')) picker.classList.add('bio-file-picker--lg');
+        if (input.classList.contains('form-control-sm')) picker.classList.add('bio-file-picker--sm');
+
+        const button = document.createElement('span');
+        button.className = 'bio-file-picker__button';
+        button.textContent = input.multiple ? 'Choose Files' : 'Choose File';
+        button.setAttribute('aria-hidden', 'true');
+
+        const name = document.createElement('span');
+        name.className = 'bio-file-picker__name';
+        name.setAttribute('aria-hidden', 'true');
+
+        function updateName() {
+            const files = input.files;
+            if (input.required) {
+                input.setCustomValidity(files.length ? '' : input.multiple
+                    ? 'Please choose one or more files.'
+                    : 'Please choose a file.');
+            }
+            name.textContent = files.length > 1
+                ? files.length + ' files selected'
+                : files.length === 1
+                    ? files[0].name
+                    : input.multiple ? 'No files chosen' : 'No file chosen';
+            name.title = files.length === 1 ? files[0].name : '';
+        }
+
+        input.parentNode.insertBefore(picker, input);
+        picker.append(input, button, name);
+        input.addEventListener('change', updateName);
+        if (input.form) {
+            input.form.addEventListener('reset', function () {
+                window.setTimeout(updateName, 0);
+            });
+        }
+        updateName();
+    }
+
+    function enhanceAll(root) {
+        if (root.matches && root.matches('input[type="file"]')) enhance(root);
+        if (root.querySelectorAll) root.querySelectorAll('input[type="file"]').forEach(enhance);
+    }
+
+    enhanceAll(document);
+    new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+                if (node.nodeType === 1) enhanceAll(node);
+            });
+        });
+    }).observe(document.body, { childList: true, subtree: true });
+}());
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

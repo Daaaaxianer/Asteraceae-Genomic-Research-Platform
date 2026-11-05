@@ -1,0 +1,492 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Asteraceae Genomics Bioinformatics Research Platform for Asteraceae research discovry">
+    <meta name="keywords" content="Asteraceae,Compositae,Arctium lappa,Helianthus annuus,Lactuca sativa,Taraxacum mongolicum,Artemisia annua,Senecio scandens">
+    <title>Asteraceae Platform</title>
+    <!-- bootstrap5 style -->
+    <link href="../../static/vendor/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../../static/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/vendor/bootstrap5/js/caidan.js"></script>
+    <link rel="icon" href="../../static/image/logo.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../../static/vendor/js/highcharts.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+      .content {
+        display: none;
+      }
+      .active {
+        display: block;
+      }
+    </style>
+        <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+    <style>
+          body{
+              padding-top:0 !important;
+          }
+          .carouselfig{
+              padding-top:20px !important;
+          }
+          .carousel-text{
+              color:black !important;
+          }
+             
+          .row .col {
+            height: 100%;
+          }
+
+           
+          .fixed-img {
+            height: 200px;  
+            object-fit: cover;  
+            width: 100%;  
+          }
+
+           
+          .card {
+            display: flex;
+            flex-direction: column;  
+          }
+
+           
+          .card-footer {
+            margin-top: auto;  
+          }
+             
+          .body-footer-divider {
+            width: 100%;  
+            height: 1px;  
+            background-color: #e9ecef;  
+             
+            margin: 2rem 0;  
+          }
+             
+            .dropdown-menu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -0.5rem;
+                margin-left: 0.125rem;
+            }
+
+             
+            @media (max-width: 768px) {
+                .dropdown-menu .dropdown-menu {
+                    position: static;
+                    margin-left: 1rem;
+                    border-left: 2px solid #dee2e6;
+                }
+            }
+
+             
+            .dropdown-toggle::after {
+                margin-left: 0.5em;
+            }
+
+             
+            .dropdown-menu {
+                z-index: 1020;
+            }
+             
+            .dropdown-menu .dropend {
+                position: relative;
+            }
+
+            .dropdown-menu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -0.5rem;
+                margin-left: 0.125rem;
+                display: none;
+            }
+
+             
+            .dropdown-menu .dropend:hover > .dropdown-menu {
+                display: block;
+            }
+
+             
+            @media (max-width: 768px) {
+                .dropdown-menu .dropdown-menu {
+                    position: static;
+                    margin-left: 1rem;
+                    border-left: 2px solid #dee2e6;
+                }
+
+                .dropdown-menu .dropend:hover > .dropdown-menu {
+                    display: none;
+                }
+
+                 
+                .dropdown-menu .dropend > .dropdown-toggle::after {
+                    content: "▶";
+                    float: right;
+                    margin-left: 0.5em;
+                    border: none;
+                }
+
+                .dropdown-menu .dropend.show > .dropdown-menu {
+                    display: block;
+                }
+            }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">Selected Analysis Tools</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 30px; padding-top: 30px">
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Tools</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><a class="dropdown-item" href="{% url "f_blast_url" %}" target="_blank">Blast</a></td>
+                            <td>Call the blast software to perform sequence alignment to arbitrary files.</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><a class="dropdown-item" href="{% url "diamond_url" %}" target="_blank">Diamond</a></td>
+                            <td>Call the Diamond software for sequence alignment, arbitrary files.</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><a class="dropdown-item" href="{% url "blast_match_url" %}" target="_blank"><b>*Blast match</b></a></td>
+                            <td>Leguminosae sequence alignment and best match.</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><a class="dropdown-item" href="{% url "sequence_fetch_url" %}" target="_blank"><b>*Sequence fetch</b></a></td>
+                            <td>Find cds and pep sequences for gene ids.</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><a class="dropdown-item" href="{% url "sequenceserver_url" %}" target="_blank">Sequenceserver</a></td>
+                            <td>Leguminosae sequence alignment and Matching visualization.</td>
+                        </tr>
+
+                        <tr>
+                            <td>6</td>
+                            <td><a class="dropdown-item" href="{% url "mcscanx_url" %}" target="_blank">MCScanX</a></td>
+                            <td>Calls MCScanX software to perform collinearity analysis on arbitrary files.</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><a class="dropdown-item" href="{% url "colinearscan_url" %}" target="_blank">ColinearScan</a></td>
+                            <td>Calls the ColinearScan software to perform collinearity analysis on any file.</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><a class="dropdown-item" href="{% url "synvisio_url" %}" target="_blank">Syntenic visualization</a></td>
+                            <td>A collinear visualization implemented by the invoked Synvisio software based on the results of MCScanX.</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><a class="dropdown-item" href="{% url "dupgen_finder_url" %}" target="_blank">Dupgen finder</a></td>
+                            <td>The Dupgen finder software is invoked to analyze the type of gene replication.</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><a class="dropdown-item" href="{% url "block_number_count_url" %}" target="_blank"><b>*Block number count</b></a></td>
+                            <td>Generates the block statistics result based on the ColinearScan result file.</td>
+                        </tr>
+
+                        <tr>
+                            <td>11</td>
+                            <td><a class="dropdown-item" href="{% url "paraat_url" %}" target="_blank">ParaAT</a></td>
+                            <td>Call ParaAT to calculate KaKs, which is generally used to compare pairs of gene sequences, reverse translate and prepare input files, and then call external software such as KaKs Calculator or PAML to perform the actual Ka/Ks calculation.</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><a class="dropdown-item" href="{% url "kaks_calculator_url" %}" target="_blank">KaKs_Calculator</a></td>
+                            <td>Call KaKs Calculator to calculate KaKs, integrating a variety of algorithms (such as NG86, YN00, MYN, LWL85, LPB93, MLWL), providing flexible calculation options.</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><a class="dropdown-item" href="{% url "zu_ks_calculate_url" %}" target="_blank"><b>*NG_KaKs_Cal</b></a></td>
+                            <td>We calculate kaks using bioperl based on the NEi-Gojobori (NG86) algorithm.</td>
+                        </tr>
+
+                        <tr>
+                            <td>14</td>
+                            <td><a class="dropdown-item" href="{% url "zu_blast_dotplot_url" %}" target="_blank"><b>*B_Dotter</b></a></td>
+                            <td>Self-developed blastp dot plot function.</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><a class="dropdown-item" href="{% url "zu_block_dotplot_url" %}" target="_blank"><b>*BB_Dotter</b></a></td>
+                            <td>Self-developed function of drawing block dot plots.</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><a class="dropdown-item" href="{% url "zu_ks_dotplot_url" %}" target="_blank"><b>*BBK_Dotter</b></a></td>
+                            <td>Self-developed ks dot plot function.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>17</td>
+                            <td><a class="dropdown-item" href="{% url "zu_correspondence_mc_url" %}" target="_blank"><b>*Paleo-gene_identifer</b></a></td>
+                            <td>Self-developed Correspondence process. According to the block diagram pixel file, blast, block, gff, lens file, generate the final mc result file.</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td><a class="dropdown-item" href="{% url "collinearity_generator_url" %}" target="_blank"><b>*Collinearity generator</b></a></td>
+                            <td>Self-developed to generate a collinear list according to multiple mc results generated.</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td><a class="dropdown-item" href="{% url "zu_retention_url" %}" target="_blank"><b>*Paleo-gene_RI</b></a></td>
+                            <td>Self-developed paleo-gene retention statistical tool based on mc results.</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td><a class="dropdown-item" href="{% url "zu_loss_url" %}" target="_blank"><b>*Paleo-gene_RII</b></a></td>
+                            <td>Self-developed ancient gene loss statistical tool based on mc results.</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td><a class="dropdown-item" href="{% url "zu_pindex_url" %}" target="_blank"><b>*P-index-calculator</b></a></td>
+                            <td>Self-developed P-index calculation, which can be two sets or multiple sets. There are parameters on the page, which can be set by yourself.</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td><a class="dropdown-item" href="{% url "draw_list_tree_url" %}" target="_blank"><b>*Draw_list_trees</b></a></td>
+                            <td>Self-developed tree formation based on collinear list.</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>23</td>
+                            <td><a class="dropdown-item" href="{% url "GC_calculation_url" %}" target="_blank"><b>*GC-calculation</b></a></td>
+                            <td>Calculation of GC content of genome or CDS sequence.</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td><a class="dropdown-item" href="{% url "chromosome_length_url" %}" target="_blank"><b>*Chromosome length extractor</b></a></td>
+                            <td>Chromosome length or gene length statistics.</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td><a class="dropdown-item" href="{% url "geme_cds_exon_counter_url" %}" target="_blank"><b>*Gene_cds_exon_counter</b></a></td>
+                            <td>Calculates the length and proportion of cds, exon, intron, and gene in the original gff file.</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td><a class="dropdown-item" href="{% url "GenomeMountRateCalculator_url" %}" target="_blank"><b>*Genome Mount Rate Calculator</b></a></td>
+                            <td>Genome mount rate calculator.</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>27</td>
+                            <td><a class="dropdown-item" href="{% url "GF_ks_circos_url" %}" target="_blank"><b>*GF_Circos</b></a></td>
+                            <td>Self-developed ks circle diagram function.</td>
+                        </tr>
+                        <tr>
+                            <td>28</td>
+                            <td><a class="dropdown-item" href="{% url "codonw_url" %}" target="_blank">Codonw</a></td>
+                            <td>Call Codonw, statistical sequence codon situation.</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td><a class="dropdown-item" href="{% url "cpgfinder_url" %}" target="_blank">Cpgfinder</a></td>
+                            <td>Call Cpgfinder to find CpG islands in the sequence.</td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td><a class="dropdown-item" href="{% url "meme_suit_url" %}" target="_blank">MEME Suite</a></td>
+                            <td>Motif of invoked memes, predicted proteins.</td>
+                        </tr>
+
+                        <tr>
+                            <td>31</td>
+                            <td><a class="dropdown-item" href="{% url "gsds_url" %}" target="_blank">GSDS</a></td>
+                            <td>Called GSDS, to achieve the function of drawing gene structure (CDS, UTR, Intron).</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td><a class="dropdown-item" href="{% url "hmmer_url" %}" target="_blank">Hmmer</a></td>
+                            <td>Invoking the Hmmer for gene family screening.</td>
+                        </tr>
+                        <tr>
+                            <td>33</td>
+                            <td><a class="dropdown-item" href="{% url "pfam_url" %}" target="_blank">Pfam</a></td>
+                            <td>Pfam is invoked to realize the function of identifying protein domains.</td>
+                        </tr>
+                        <tr>
+                            <td>34</td>
+                            <td><a class="dropdown-item" href="{% url "interproscan_url" %}" target="_blank">Interproscan</a></td>
+                            <td>Invoke interproscan software to achieve gene function annotation.</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td><a class="dropdown-item" href="{% url "sequence_alignment_url" %}" target="_blank">Seq alignment</a></td>
+                            <td>Three multi-sequence alignment software (mafft, clustalw, and muscle) are called, which is optional.</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td><a class="dropdown-item" href="{% url "fasttree_url" %}" target="_blank">FastTree</a></td>
+                            <td>Call FastTree software to achieve the function of building a phylogenetic tree.</td>
+                        </tr>
+                        <tr>
+                            <td>37</td>
+                            <td><a class="dropdown-item" href="{% url "iq_tree_url" %}" target="_blank">IQ-Tree</a></td>
+                            <td>Call IQ-Tree software to achieve the function of building a phylogenetic tree.</td>
+                        </tr>
+                        <tr>
+                            <td>38</td>
+                            <td><a class="dropdown-item" href="{% url "iTAK_url" %}" target="_blank">TransFam identifier</a></td>
+                            <td>Regulatory protein (RKs) prediction, invoked by iTak software, enables predictive transcription factors (TFs), transcription regulatory factors (TRs), and protein kinases (PKs).</td>
+                        </tr>
+
+                        <tr>
+                            <td>39</td>
+                            <td><a class="dropdown-item" href="{% url "draw_heatmap_url" %}" target="_blank"><b>*Heatmap</b></a></td>
+                            <td>The transcriptome and metabolome are combined to calculate Pearson coefficient to see the correlation between gene expression patterns and metabolite content patterns in each tissue, determine the correlation between genes and metabolites, and draw heat maps.</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td><a class="dropdown-item" href="{% url "lollipop_chart_url" %}" target="_blank"><b>*Lollipop</b></a></td>
+                            <td>Draw a lollipop chart function. It can be a metabolite or the number of genes that function as expressed.</td>
+                        </tr>
+                        <tr>
+                            <td>41</td>
+                            <td><a class="dropdown-item" href="{% url "draw_gene_structure_url" %}" target="_blank"><b>*Gene structure</b></a></td>
+                            <td>Function, the position of genes on chromosomes.</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>42</td>
+                            <td><a class="dropdown-item" href="{% url "circos_url" %}" target="_blank">ShinyCircos</a></td>
+                            <td>Call ShinyCircos to draw a circos diagram.</td>
+                        </tr>
+                        <tr>
+                            <td>43</td>
+                            <td><a class="dropdown-item" href="{% url "species_classification_url" %}" target="_blank"><b>*Species classification</b></a></td>
+                            <td>According to the Latin name of the input species, obtain the classification of the species from NCBI in batches.</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td><a class="dropdown-item" href="{% url "sequence_screening_url" %}" target="_blank"><b>*SS-extractor</b></a></td>
+                            <td>It is a gene sequence extraction tool. Upload pep file, cds file, gff file and ID file, and extract the corresponding gene ID information from the other three files according to the id file.</td>
+                        </tr>
+                        <tr>
+                            <td>45</td>
+                            <td><a class="dropdown-item" href="{% url "formatTofasta_url" %}" target="_blank"><b>*SAF-converter</b></a></td>
+                            <td>Global multi-sequence alignment file format conversion tool (pep or cds file). Format conversions for various file types are available, including genbank, fasta, embl, fastq, clustal, phylip, and nexus.</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td><a class="dropdown-item" href="{% url "find_replace_url" %}" target="_blank"><b>*BDI-finder</b></a></td>
+                            <td>Search and replace tool. This is a search and replace tool. You can upload a file and specify which characters to replace and which characters to replace. The tool looks for all matches in the file and replaces them with what you specify.</td>
+                        </tr>
+                        <tr>
+                            <td>47</td>
+                            <td><a class="dropdown-item" href="{% url "quchong_url" %}" target="_blank"><b>*BDI-deduplicator</b></a></td>
+                            <td>In the pep or cds file, delete the duplicate gene id and sequence according to the gene id.</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>48</td>
+                            <td><a class="dropdown-item" href="{% url "extract_row_url" %}" target="_blank"><b>*BDI-extractor</b></a></td>
+                            <td>This is a tool for extracting data by column. You can upload the file and specify the column number to be extracted, and the tool will extract the data for the corresponding column from the file.</td>
+                        </tr>
+                        <tr>
+                            <td>49</td>
+                            <td><a class="dropdown-item" href="{% url "file_merge_url" %}" target="_blank"><b>*BDI-combiner</b></a></td>
+                            <td>File merge tool. Upload multiple files of the same file format and eventually return a combined total file.</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td><a class="dropdown-item" href="{% url "deal_star_url" %}" target="_blank"><b>*Deal_stars</b></a></td>
+                            <td>Delete ". "from the pep protein file. And "*". The ". "in the Pep file And "*" stand for stop codons, which will report errors when running some software, such as diamond and interproscan. Cds file is not supposed to appear "." And "*".</td>
+                        </tr>
+                        <tr>
+                            <td>51</td>
+                            <td><a class="dropdown-item" href="{% url "subtree_extractor_url" %}" target="_blank"><b>*Subtree_extractor</b></a></td>
+                            <td>From a large phylogenetic tree file (can be a species tree, can be a gene tree), extracts a specified range of small phylogenetic trees.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>52</td>
+                            <td><a class="dropdown-item" href="{% url "wgdimcs_url" %}" target="_blank">Block_run</a></td>
+                            <td>Syntenic analysis tool based on WGDI.</td>
+                        </tr>
+                        <tr>
+                            <td>53</td>
+                            <td><a class="dropdown-item" href="{% url "wgdikaks_url" %}" target="_blank">KaKs calculate</a></td>
+                            <td>Calculation KaKs tool based on WGDI. The Ka/Ks is calculated using the Nei-Gojobori algorithm in the YN00 program based on PAML software.</td>
+                        </tr>
+                        <tr>
+                            <td>54</td>
+                            <td><a class="dropdown-item" href="{% url "wgdi_dotplot_url" %}" target="_blank">Blast dotplot</a></td>
+                            <td>WGDI-based blast dotplot tool.</td>
+                        </tr>
+                        <tr>
+                            <td>55</td>
+                            <td><a class="dropdown-item" href="{% url "wgdikaks_dot_url" %}" target="_blank">Ks dotplot</a></td>
+                            <td>Ks dotplot tool based on WGDI.</td>
+                        </tr>
+                        <tr>
+                            <td>56</td>
+                            <td><a class="dropdown-item" href="{% url "wgdi_blockinfo_url" %}" target="_blank">Block_info</a></td>
+                            <td>Screening out collinear fragments based on WGDI.</td>
+                        </tr>
+                        <tr>
+                            <td>57</td>
+                            <td><a class="dropdown-item" href="{% url "wgdi_correspondence_url" %}" target="_blank">Correspondence</a></td>
+                            <td>Correspondence process based on WGDI.</td>
+                        </tr>
+                        <tr>
+                            <td>58</td>
+                            <td><a class="dropdown-item" href="{% url "jbrowse_url" %}" target="_blank">JBrowse</a></td>
+                            <td>Call Jbrowse, to achieve the gene browser function, you can view the genome and GFF and other files.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

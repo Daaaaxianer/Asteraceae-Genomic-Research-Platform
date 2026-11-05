@@ -1,0 +1,87 @@
+{% extends 'tools_index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+    <script type="text/javascript">
+        const proData = {
+            "nt": ["HKY85", "JC69", "K80", "F81", "TN93", "GTR"],
+            "aa": ["LG", "WAG", "JTT", "MtREV", "Dayhoff", "DCMut", "RtREV", "CpREV", "VT", "Blosum62", "MtMam", "HIVw", "HIVb"],
+        };
+        window.onload = function () {
+            const oSelectPro = document.getElementById('model');
+            const oSelectCity = document.getElementById('list');
+
+            oSelectPro.onchange = function () {
+              //获取当前选中的标签值
+                const aRrayCity = proData[this.value];
+                //选择后清空option
+                oSelectCity.options.length=0;
+                for (let i=0; i<aRrayCity.length; i++){
+                    const oOption = document.createElement('option');
+                    oOption.innerHTML = aRrayCity[i];
+                    oOption.value = aRrayCity[i];
+                    oSelectCity.appendChild(oOption)
+                }
+            }
+        }
+    </script>
+
+
+{% endblock %}
+
+{% block body_index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Fabaceae blast and match<i></i>
+                </h3>
+
+                <form action="phyml_run" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <label for="state" class="form-label col-md-12">Species</label>
+                        <div class="col-md-6">
+                            <select class="btn-default choice form-control" name="patten" id="model" required>
+                                <option value="nt">Nucleic Acid</option>
+                                <option value="aa">protein</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="col-md-12 btn-default form-control" name="small" id="list">
+                                <option value="HKY85">HKY85</option>
+                                <option value="JC69">JC69</option>
+                                <option value="K80">K80</option>
+                                <option value="F81">F81</option>
+                                <option value="TN93">TN93</option>
+                                <option value="GTR">GTR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <input class="w-100 btn btn-primary btn-lg" type="submit" value="submit">
+                    <button id="clear" type="button" style="height: 27px;width: 60px;font-size: 15px;position: relative;left: 20px;">Clear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

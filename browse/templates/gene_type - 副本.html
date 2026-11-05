@@ -1,0 +1,77 @@
+{% extends 'tools_index.html' %}
+
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Duplication type</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Gene duplication type classification analysis, using <a href="https://github.com/DXXDR/DupGen_finder">DupGen_finder</a>, can divide all genes into 5 categories according to the replication type, namely WGD: whole genome duplication, TD: tandem duplication (two adjacent duplication genes), PD: Proximal duplications (repeated genes within 10 genes apart), TRD: transposed duplications (duplicated genes consisting of ancestral and new loci), DSD: scattered duplications (duplicated genes that are neither adjacent nor collinear)
+            <br>&emsp;&emsp;Among them, <em>Glycine max</em> was the species with the most WGD genes, and <em>Medicago truncatula</em> was the species with the most PD gene replication type, while TD TRD DSD was the species with the most <em>Arachis maconticola</em> Gene replication type, which might be because <em>Arachis Maconticola</em> is polyploid.
+        </h6>
+            <div class="col-md-5">
+                <img style="width: 100%" src="../../static/image/gene_type_new.jpg" alt="">
+            </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="gene_type_run" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="state" class="form-label">species database</label>
+                <select class="form-control" id="state" name="sp_data_1" required>
+                    <option value="Aev">Aeschynomene evenia</option>
+                    <option value="Adu">Arachis duranensis</option>
+                    <option value="Ahy">Arachis hypogaea</option>
+                    <option value="Aip">Arachis ipaensis</option>
+                    <option value="Amo">Arachis monticola</option>
+                    <option value="Aed">Amphicarpaea edgeworthii</option>
+                    <option value="Apr">Abrus precatorius</option>
+                    <option value="Bva">Bauhinia variegata</option>
+                    <option value="Car">Cicer arietinum</option>
+                    <option value="Cca">Cajanus cajan</option>
+                    <option value="Dod">Dalbergia odorifera</option>
+                    <option value="Gma">Glycine max</option>
+                    <option value="Gso">Glycine soja</option>
+                    <option value="Lal">Lupinus albus</option>
+                    <option value="Lan">Lupinus angustifolius</option>
+                    <option value="Lja">Lotus japonicus</option>
+                    <option value="Mal">Melilotus albus</option>
+                    <option value="Mtr">Medicago truncatula</option>
+                    <option value="Psa">Pisum sativum</option>
+                    <option value="Pvu">Phaseolus vulgaris</option>
+                    <option value="Ssu">Spatholobus suberectus</option>
+                    <option value="Sto">Senna tora</option>
+                    <option value="Tsu">Trifolium subterranum</option>
+                    <option value="Tpr">Trifolium pratense</option>
+                    <option value="Vfa">Vicia faba</option>
+                    <option value="Vra">Vigna radiata</option>
+                    <option value="Vvi">Vitis vinifera</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="state" class="form-label">species database</label>
+                <select class="form-control" id="state" name="sp_data_2" required>
+                    <option value="dispersed">dispersed</option>
+                    <option value="proximal">proximal</option>
+                    <option value="tandem">tandem</option>
+                    <option value="transposed">transposed</option>
+                    <option value="wgd">wgd</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+            <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">
+        </div>
+    </form>
+
+{% endblock %}

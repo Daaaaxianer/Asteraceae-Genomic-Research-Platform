@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>N6-methyladenosine(m6A) - Wirters</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;m6A (N6-methyladenosine) is the most common post-transcriptional modification of eukaryotic mRNAs, accounting for 80% of RNA methylation modifications. As early as the 1970s, m6A modifications have been identified in eukaryotic mRNA and lncRNA. The m6A genes consist of three groups, including writers, readers (IYT521-B homolog [YTH]) and erasers (alkylation repair protein-B [AlkB]).
+            <br>&emsp;&emsp;Wirters has four gene families, including MTA70, WTAP, HAKAI(0) and VIRILIZER, which are identified by accession numbers <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF05063/"><b>'PF05063'</b></a>, <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF17098/"><b>'PF17098'</b></a>, <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF18408/"><b>'PF18408'</b></a> and <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF15912/"><b>'PF15912'</b></a>, respectively. We identified a total of <b>157</b> writers. We did not detect HAKAI genes in 25 genomes of the Fabaceae family.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <!-- choose module -->
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td style="text-align: center">
+                    <a target="_blank" style="color: green;" href="{% url "m6a_wirters_genes" "W_MTA70" %}">
+                        <b>MTA70</b>
+                    </a>
+                    <br>
+                    <p style="margin-top: 16px">
+                        <a style="color: #b7ab25;font-size: 18px" href="https://www.ebi.ac.uk/interpro/entry/pfam/PF05063/" target="_blank"><b>PF05063</b></a>
+                    </p>
+                </td>
+
+                <td style="text-align: center">
+                    <a target="_blank" style="color: green;" href="{% url "m6a_wirters_genes" "W_WTAP" %}">
+                        <b>WTAP</b>
+                    </a>
+                    <p style="margin-top: 16px">
+                        <a style="color: #b7ab25;font-size: 18px" href="https://www.ebi.ac.uk/interpro/entry/pfam/PF17098/" target="_blank"><b>PF17098</b></a>
+                    </p>
+                </td>
+
+                <td style="text-align: center">
+                    <a target="_blank" style="color: green;" href="{% url "m6a_wirters_genes" "W_VIRILIZER" %}">
+                        <b>VIRILIZER</b>
+                    </a>
+                    <p style="margin-top: 16px">
+                        <a style="color: #b7ab25;font-size: 18px" href="https://www.ebi.ac.uk/interpro/entry/pfam/PF15912/" target="_blank"><b>PF15912</b></a>
+                    </p>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,1133 @@
+{% extends 'tools_index.html' %}
+
+
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>LGRPv2</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+    <script src="../static/vendor/js/home.js"></script>
+    <script src="../static/js/plotly-latest.min.js"></script>
+    <link href="../static/css/heziyangshi.css" rel="stylesheet">
+    <link href="../static/css/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+      .content {
+        display: none;
+      }
+      .active {
+        display: block;
+      }
+    </style>
+        <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p style="margin-bottom:10px"><strong><span style="font-size:16px;,sans-serif">Selected Analysis Tools</span></strong>
+                </p>
+
+<table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Tools</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Django</td>
+                <td>A high-level Python Web framework.</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Flask</td>
+                <td>A lightweight WSGI web application framework.</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>React</td>
+                <td>A JavaScript library for building user interfaces.</td>
+            </tr>
+             
+        </tbody>
+    </table>
+
+
+
+                <table cellspacing="0" cellpadding="0" width="100%!important">
+                    <tbody>
+                    <tr class="firstRow">
+                        <td valign="top" style="border-top:solid windowtext 1px;border-left:none;border-bottom:solid #7F7F7F 1px;border-right:none;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:9px;text-align:left">
+                                <span style="font-size: 17px; font-family: arial, helvetica, sans-serif;">Number</span>
+                            </p>
+                        </td>
+                        <td valign="top" style="border-top:solid windowtext 1px;border-left:none;border-bottom:solid #7F7F7F 1px;border-right:none;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:9px;text-align:left">
+                                <span style="font-size: 17px; font-family: arial, helvetica, sans-serif;">Tools</span>
+                            </p>
+                        </td>
+                        <td valign="top" style="border-top:solid windowtext 1px;border-left:none;border-bottom:solid #7F7F7F 1px;border-right:none;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:9px;text-align:left">
+                                <span style="font-size: 17px; font-family: arial, helvetica, sans-serif;">Description</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/f_blast" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">1</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/f_blast" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Blast</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Sequence alignment between arbitrary species
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/diamond" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Diamond
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Quickly search for homologous sequences</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/blast_match" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Blast match</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Leguminosae sequence alignment and best match
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/sequenceserver" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Sequence fetch
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Find cds and pep sequences for gene ids</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/sequenceserver" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Blast visualization
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2; padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Leguminosae sequence alignment and Matching visualization</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/mcscanx" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">MCScanX</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Identify homologous chromosomal regions
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/colinearscan" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">ColinearScan
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2; padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Identify homologous chromosomal regions.</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/synvisio" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Syntenic visualization</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Leguminosae syntenic visualization
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/kaks_calculator" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Dupgen finder
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2; padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Identify the replication patterns of different genes</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/synvisio" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Block number count</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Perform statistics on block result files
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/paraat" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">ParaAT</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Fast kaks batch operation
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/kaks_calculator" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">KaKs Calculator
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Perform calculations on kaks</span>
+                            </p>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/zu_ks_calculate" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">NG_KaKs_Cal
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2; padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">KaKs calculate</span>
+                            </p>
+                        </td>
+                    </tr>
+
+{#                    <tr>#}
+{#                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">#}
+{#                            <p style="margin-bottom:11px;text-align:left">#}
+{#                                <a href="/tools/zu_ka_distribution" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">#}
+{#                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Ks distribution</span>#}
+{#                                </a>#}
+{#                            </p>#}
+{#                        </td>#}
+{#                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">#}
+{#                            <p style="margin-bottom:11px;text-align:left">#}
+{#                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Peak plots are plotted based on KS values.#}
+{#                                </span>#}
+{#                            </p>#}
+{#                        </td>#}
+{#                    </tr>#}
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/zu_blast_dotplot" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">B_Dotter
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Plotting blastp dotplot diagrams</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/zu_block_dotplot" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">BB_Dotter</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Drawing block dotplot function
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/zu_ks_dotplot" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">BBK_Dotter
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Plotting Ks dotplot diagrams</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/zu_correspondence_mc" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Paleo-gene_identifer</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Subgenomic fractionation
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/collinearity_generator" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Collinearity generator
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Generate a collinear list</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/zu_retention" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Paleo-gene_RI</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Subgenomic retention
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/zu_loss" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Paleo-gene_RII
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Subgenomic loss</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/zu_pindex" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">P-index-calculator</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">p-index determines whether homologous doubling or heterologous doubling
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/draw_list_tree" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Draw_list_trees
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">The conformation tree is based on collinear list</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/GC_calculation" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">GC-calculation
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Statistics of GC content in gene
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/chromosome_length" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Chromosome length extractor
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Chromosome length statistics
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/geme_cds_exon_counter" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">gene_cds_exon_counter
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Gene structure information statistics
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/GenomeMountRateCalculator" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Mount Rate Calculator
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Chromosome hanging in rate calculation
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/GF_ks_circos" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        GF_Circos
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Gene family circle map
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/codonw" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Codonw
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Codon preference analysis
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/cpgfinder" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Cpgfinder
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Analysis of potential regions of CpG islands
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/meme_suit" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome MEME Suite
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Motif Analysis
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/gsds" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        GSDS
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Gene structure mapping
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/hmmer" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Hmmer
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Based on Hidden Markov Model
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/pfam" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Pfam
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    ldentification of gene structural domains
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/interproscan" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Interproscan
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Interproscan for gene prediction of protein function
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/sequence_alignment" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Seq alignment
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Multiple sequence alignment
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/fasttree" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome FastTree
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Rapid construction of phylogenetic trees
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/iq_tree" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        IQ-Tree
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Construct phylogenetic tree
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/iTAK" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome TransFam identifier
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Identification of transcription factor gene families
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/draw_heatmap" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Heatmap
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Heat mapping
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/lollipop_chart" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Lollipop
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Draw a lollipop diagram
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/draw_gene_structure" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Gene structure
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Mapping the structure of genes
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/circos" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome ShinyCircos
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                A tool for mapping the genosphere
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/species_classification" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Species classification
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Crawling species taxonomic information from NCBI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/sequence_screening" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome SS-extractor
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                cds, pep and gff information of species were extracted
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/formatTofasta" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        SAF-converter
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Multi-sequence alignment format conversion function
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/find_replace" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome BDI-finder
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Find and replace function for sequences
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/duplicate_removal" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        BDI-deduplicator
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Remove duplicate sequence
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/extract_row" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome BDI-extractor
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Extract column information
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/file_merge" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        BDI-combiner
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Multiple files are merged
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/deal_star" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Deal_stars
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                Remove the asterisk from the protein file
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/subtree_extractor" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Subtree_extractor
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    Extract the child tree from the parent tree file
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/wgdimcs" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Block_run
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                wgdimcs function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/wgdikaks" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        KaKs calculate
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    wgdikaks function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/wgdi_dotplot" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Blast dotplot
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                wgdi dotplot function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/wgdikaks_dot" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Ks dotplot
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    wgdikaks_dot function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <a href="/tools/wgdi_blockinfo" target="_blank" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                      <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Genome Block_info
+                                      </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="padding:0 7px 0 7px">
+                            <p style="margin-bottom:10px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                wgdi_blockinfo function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/wgdi_correspondence" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                        Correspondence
+                                    </span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">
+                                    wgdi_correspondence function module of WGDI
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                <tr>
+                        <td valign="top" style="border:none;border-right:solid #7F7F7F 1px;background:white;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <a href="/tools/docker" target="_blank" style="font-size: 11px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">
+                                    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Docker</span>
+                                </a>
+                            </p>
+                        </td>
+                        <td valign="top" style="background:#F2F2F2;padding:0 7px 0 7px">
+                            <p style="margin-bottom:11px;text-align:left">
+                                <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Tools packaging in the platform
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

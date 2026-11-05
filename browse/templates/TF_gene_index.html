@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Regulatory Proteins - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<script type="text/javascript">
+const proData = { "TF": ["AP2/ERF-AP2", "AP2/ERF-ERF", "AP2/ERF-RAV", "Alfin-like", "B3", "B3-ARF", "BBR-BPC", "BES1", "BSD", "C2C2-CO-like", "C2C2-Dof", "C2C2-GATA", "C2C2-LSD", "C2C2-YABBY", "C2H2", "C3H", "CAMTA", "CPP", "CSD", "DBB", "DBP", "E2F-DP", "EIL", "FAR1", "GARP-ARR-B", "GARP-G2-like", "GRAS", "GRF", "GeBP", "HB-BELL", "HB-HD-ZIP", "HB-KNOX", "HB-PHD", "HB-WOX", "HB-other", "HRT", "HSF", "LFY", "LIM", "LOB", "MADS-M-type", "MADS-MIKC", "MYB", "MYB-related", "NAC", "NF-X1", "NF-YA", "NF-YB", "NF-YC", "NOZZLE", "OFP", "PLATZ", "RWP-RK", "S1Fa-like", "SAP", "SBP", "SRS", "STAT", "TCP", "TUB", "Tify", "Trihelix", "ULT", "VOZ", "WRKY", "Whirly", "bHLH", "bZIP", "zf-HD"], "TR": ["ARID", "AUX/IAA", "Coactivator p15", "DDT", "GNAT", "HMG", "IWS1", "Jumonji", "LUG", "MBF1", "MED6", "MED7", "Others", "PHD", "Pseudo ARR-B", "RB", "Rcd1-like", "SET", "SNF2", "SOH1", "SWI/SNF-BAF60b", "SWI/SNF-SWI3", "TAZ", "TRAF", "mTERF"], "PK": ["CAMK_CAMKL-CHK1", "CMGC_MAPK", "RLK-Pelle_LRR-VIII-1", "RLK-Pelle_CR4L", "RLK-Pelle_LRR-I-1", "CAMK_OST1L", "CAMK_CDPK", "TKL_CTR1-DRK-2", "RLK-Pelle_Singleton", "AGC_RSK-2", "STE_STE11", "RLK-Pelle_LRR-III", "DNA binding protein SIFA", "RLK-Pelle_RLCK-VIIa-2", "RLK-Pelle_L-LEC", "RLK-Pelle_WAK", "RLK-Pelle_CrRLK1L-1", "CMGC_CLK", "CKI_CK1-P1", "RLK-Pelle_LysM", "CAMK_CAMKL-LKB", "RLK-Pelle_SD-2b", "RLK-Pelle_DLSV", "RLK-Pelle_LRR-IX", "RLK-Pelle_LRR-XI-1", "TKL_P1-5", "RLK-Pelle_LRR-I-2", "RLK-Pelle_PERK-2", "RLK-Pelle_LRR-II", "RLK-Pelle_LRR-XII-1", "RLK-Pelle_PERK-1", "WNK_NRBP", "RLK-Pelle_Extensin", "RLK-Pelle_RLCK-IXb", "RLK-Pelle_LRR-V", "RLK-Pelle_LRR-Xb-1", "RLK-Pelle_URK-1", "RLK-Pelle_WAK_LRK10L-1", "RLK-Pelle_LRR-VII-3", "RLK-Pelle_LRR-VII-2", "RLK-Pelle_RLCK-V", "AGC_NDR", "RLK-Pelle_LRR-XIV", "RLK-Pelle_LRR-Xb-2", "RLK-Pelle_LRR-XIIIa", "AGC_P1", "TKL_P1-4", "RLK-Pelle_LRR-XI-2", "CMGC_CDK-PITSLRE", "RLK-Pelle_LRR-VI-1", "CMGC_CDK-CRK7-CDK9", "RLK-Pelle_RLCK-X", "RLK-Pelle_RLCK-XV", "CMGC_CK2", "RLK-Pelle_LRR-XV", "RLK-Pelle_LRR-Xa", "STE_STE20-Fray", "CMGC_GSK", "CAMK_CAMK1-DCAMKL", "RLK-Pelle_RLCK-VI", "Group-P1-4", "SCY1_SCYL1", "NAK", "RLK-Pelle_RLCK-XII-1", "CMGC_CDK-P1", "RLK-Pelle_RLCK-IV", "RLK-Pelle_URK-3", "CMGC_CDK-CDK7", "RLK-Pelle_RLCK-II", "STE_STE7", "CKI_CK1", "CMGC_RCK", "TKL_P1-1", "STE_STE20-YSK", "RLK-Pelle_LRR-VI-2", "NEK", "TKL_P1-8", "CMGC_CDKS", "IRE1", "CAMK_AMPK", "RLK-Pelle_URK-2", "ULT", "STE_STE-P1", "RB", "RLK-Pelle_RLCK-XI", "NF-X1", "RLK-Pelle_RLCK-XVI", "RLK-Pelle_RLCK-IXa", "TKL_CTR1-DRK-1", "TKL_P1-7", "WEE", "HB->HB-KNOX", "RLK-Pelle_LRR-XIIIb", "RLK-Pelle_RLCK-VIII", "Group-P1-3", "CPP", "AGC_PKA-PKG", "BSD", "TTK", "BUB", "RLK-Pelle_RLCK-VIIb", "STE_STE20-P1", "AP2/ERF->AP2/ERF-RAV", "CMGC_DYRK-YAK", "CMGC_P1-Tthe", "RLK-Pelle_C-LEC", "CMGC_GSKL", "TKL_P1-3"] };
+
+window.onload = function () {
+    const model = document.getElementById("model");
+    const list = document.getElementById("list");
+    model.onchange = function () {
+        list.innerHTML = "";
+        proData[this.value].forEach(item => {
+            const opt = document.createElement("option");
+            opt.value = item;
+            opt.textContent = item;
+            list.appendChild(opt);
+        });
+    };
+};
+</script>
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+#myTable th,
+#myTable td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+
+        <h2 class="page-title">Regulatory Proteins (RPs)</h2>
+        <div class="title-line"></div>
+
+        <div class="desc-card">
+            We systemically compared TF/TR classification rules used in different databases, and derived a set of consensus rules based on the available literature for accurate plant TF/TR identification and classification. For plant PKs, we directly used the HMM profiles developed by Lehti-Shiu and Shiu (2012) to provide a comprehensive classification system. These consensus rules for TF/TR classification and HMM profiles for PK classification were implemented in iTAK, a computational program that provides consistency and uniformity on the identification and classification of plant TFs, TRs, and PKs. 
+We utilized iTAK to predict <strong>70</strong> transcription factor families, <strong>24</strong> transcription regulatory factor families, and <strong>129</strong> protein kinase families across <strong>53</strong> Asteraceae species and <strong>6</strong> outgroups. Detailed sequence information for these proteins was obtained via Pfam, yielding a total of <strong>262,108</strong> transcription regulators/transcription factors and protein kinases.
+        </div>
+
+        <form action="TF_genes_run_index" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-12">
+                    <label class="form-label">Query Genome</label>
+                    <select class="form-control" name="query_genome" required>
+                        <option value="ALL_SPECIES">All species</option>
+                        <option value="Aann" selected>Artemisia annua</option>
+<option value="Aary">Artemisia argyi</option>
+<option value="Amar">Ambrosia artemisiifolia</option>
+<option value="Amtr">Ambrosia trifida</option>
+<option value="Arla">Arctium lappa</option>
+<option value="Armi">Arctium minus</option>
+<option value="Artr">Artemisia tridentata</option>
+<option value="Bial">Bidens alba</option>
+<option value="Busi">Buxus sinica</option>
+<option value="Ccar">Cynara cardunculus</option>
+<option value="Ceso">Centaurea solstitialis</option>
+<option value="Chla">Chrysanthemum lavandulifolium</option>
+<option value="Chma">Chrysanthemum makinoi</option>
+<option value="Chmo">Chrysanthemum morifolium</option>
+<option value="Chna">Chrysanthemum nankingense</option>
+<option value="Cich">Cichorium intybus</option>
+<option value="Cien">Cichorium endivia</option>
+<option value="Cind">Chrysanthemum indicum</option>
+<option value="Cobi">Cosmos bipinnatus</option>
+<option value="Cpa">Centrapalus pauciflorus</option>
+<option value="Cati">Carthamus tinctorius</option>
+<option value="Dapi">Dahlia pinnata</option>
+<option value="Desu">Deinandra increscens</option>
+<option value="Ecan">Erigeron canadensis</option>
+<option value="Enbr">Erigeron breviscapus</option>
+<option value="Eupl">Euptelea pleiosperma</option>
+<option value="Fbi">Flaveria bidentis</option>
+<option value="Fbr">Flaveria brownii</option>
+<option value="Ffl">Flaveria floridana</option>
+<option value="Fli">Flaveria linearis</option>
+<option value="Fra">Flaveria ramosissima</option>
+<option value="Fro">Flaveria robusta</option>
+<option value="Fso">Flaveria sonorensis</option>
+<option value="Ftr">Flaveria trinervia</option>
+<option value="Gehy">Gerbera hybrida</option>
+<option value="Glco">Glebionis coronaria</option>
+<option value="Hean">Helianthus annuus</option>
+<option value="Hetu">Helianthus tuberosus</option>
+<option value="Heub">Helichrysum umbraculigerum</option>
+<option value="Laca">Lactuca saligna</option>
+<option value="Lomi">Logfia minima</option>
+<option value="Lssa">Lactuca sativa</option>
+<option value="Mimi">Mikania micrantha</option>
+<option value="Nenu">Nelumbo nucifera</option>
+<option value="Nin">Nymphoides indica</option>
+<option value="Pin">Pluchea indica</option>
+<option value="Pdy">Pulicaria dysenterica</option>
+<option value="Pslu">Pseudognaphalium luteoalbum</option>
+<option value="Sain">Saussurea involucrata</option>
+<option value="Scae">Solidago caesia</option>
+<option value="Sesq">Senecio squalidus</option>
+<option value="Smso">Smallanthus sonchifolius</option>
+<option value="Soca">Solidago canadensis</option>
+<option value="Stre">Stevia rebaudiana</option>
+<option value="Taer">Tagetes erecta</option>
+<option value="Tako">Taraxacum kok-saghyz</option>
+<option value="Tamo">Taraxacum mongolicum</option>
+<option value="Tesi">Tetracentron sinense</option>
+<option value="Vivi">Vitis vinifera</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-12">
+                    <label class="form-label">Regulatory Protein Type</label>
+                    <select class="form-control" id="model" name="tf_type">
+                        <option value="TR">Transcriptional Regulators</option>
+                        <option value="TF">Transcription Factors</option>
+                        <option value="PK">Protein Kinases</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-12">
+                    <label class="form-label">Family</label>
+                    <select class="form-control" id="list" name="tf_name">
+                        <option value="ARID">ARID</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,654 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Seq-fetch - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+         
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+         
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+         
+        .collapse.show {
+            display: block !important;
+        }
+
+        .btn-link {
+            color: #d35400;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        .btn-link:hover {
+            color: #a04000;
+            text-decoration: none;
+        }
+
+        .btn-link:focus {
+            box-shadow: none;
+            text-decoration: none;
+        }
+
+         
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            background-color: rgba(230, 126, 34, 0.05);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+
+        .card-body {
+            padding: 15px 20px;
+        }
+
+         
+        .sequence-container {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: auto;
+            white-space: pre-wrap;  
+            word-wrap: break-word;  
+            margin-top: 10px;
+        }
+
+         
+        .sequence-content {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.3;
+            white-space: pre;  
+            overflow-x: auto;  
+            word-break: keep-all;  
+            color: #333;
+            background: #fefefe;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+         
+        .sequence-line {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.3;
+            margin: 0;
+            padding: 0;
+            letter-spacing: 0.5px;
+        }
+
+         
+        .sequence-header {
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+         
+        @media (max-width: 768px) {
+            .content-box-wrapper {
+                padding: 25px;
+            }
+
+            .col-lg-6 {
+                margin-bottom: 30px;
+            }
+
+            .sequence-container {
+                font-size: 12px;
+                max-height: 300px;
+            }
+        }
+
+         
+        .copy-btn-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+         
+        .sequence-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .sequence-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .sequence-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .sequence-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+         
+        .collapse-arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .collapsed .collapse-arrow {
+            transform: rotate(-90deg);
+        }
+
+         
+        .sequence-stats {
+            font-size: 12px;
+            color: #666;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+         
+        <div class="row mb-4">
+            <div class="col-lg-12 text-center">
+                <h1 class="section-title">Sequence Fetch Results</h1>
+                <p class="section-subtitle">Retrieved sequences for your query</p>
+                <hr class="section-divider">
+            </div>
+        </div>
+
+         
+        {% if not_found_geneids %}
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card alert-warning">
+                    <div class="card-header">
+                        <button class="btn btn-link text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#notFoundEntries">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            {{ not_found_geneids|length }} entry(or entries) were not found
+                        </button>
+                    </div>
+                    <div id="notFoundEntries" class="collapse">
+                        <div class="card-body">
+                            <div class="sequence-container">
+                                {% for geneid in not_found_geneids %}
+                                    {{ geneid }}<br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+         
+        <div class="row">
+             
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h4 class="mb-0"><i class="bi bi-code-slash me-2"></i>CDS Sequences</h4>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button onclick="downloadContent_cds()" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-download me-1"></i>Download All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        {% if result %}
+                            {% for row in result %}
+                            <div class="result-card mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cds_{{ forloop.counter }}">
+                                            <i class="bi bi-caret-right-fill collapse-arrow"></i>
+                                            <strong>{{ row.1 }}</strong>
+                                            <span class="badge bg-secondary ms-2">Length: {{ row.4 }}</span>
+                                            <span class="badge bg-info ms-1">GC: {{ row.6 }}%</span>
+                                        </button>
+                                    </div>
+                                    <div id="cds_{{ forloop.counter }}" class="collapse">
+                                        <div class="card-body">
+                                            <div class="copy-btn-container">
+                                                <small class="text-muted">Click copy button to copy sequence</small>
+                                                <button type="button" class="clip btn btn-sm btn-outline-success" data-clipboard-target="#cds_seq_{{ forloop.counter }}">
+                                                    <i class="bi bi-clipboard me-1"></i>Copy
+                                                </button>
+                                            </div>
+                                            <div class="sequence-container">
+                                                <div class="sequence-header">>{{ row.1 }}</div>
+                                                <div id="cds_seq_{{ forloop.counter }}" class="sequence-content">
+                                                    {{ row.2 }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-inbox display-1 text-muted"></i>
+                                <p class="mt-3">No CDS sequences found</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+             
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h4 class="mb-0"><i class="bi bi-dna me-2"></i>Protein Sequences</h4>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button onclick="downloadContent_pep()" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-download me-1"></i>Download All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        {% if result %}
+                            {% for row in result %}
+                            <div class="result-card mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pep_{{ forloop.counter }}">
+                                            <i class="bi bi-caret-right-fill collapse-arrow"></i>
+                                            <strong>{{ row.1 }}</strong>
+                                            <span class="badge bg-secondary ms-2">Length: {{ row.5 }} aa</span>
+                                        </button>
+                                    </div>
+                                    <div id="pep_{{ forloop.counter }}" class="collapse">
+                                        <div class="card-body">
+                                            <div class="copy-btn-container">
+                                                <small class="text-muted">Click copy button to copy sequence</small>
+                                                <button type="button" class="clip btn btn-sm btn-outline-success" data-clipboard-target="#pep_seq_{{ forloop.counter }}">
+                                                    <i class="bi bi-clipboard me-1"></i>Copy
+                                                </button>
+                                            </div>
+                                            <div class="sequence-container">
+                                                <div class="sequence-header">>{{ row.1 }}</div>
+                                                <div id="pep_seq_{{ forloop.counter }}" class="sequence-content">
+                                                    {{ row.3 }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-inbox display-1 text-muted"></i>
+                                <p class="mt-3">No protein sequences found</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded successfully');
+
+
+            var clipboard = new ClipboardJS('.clip');
+
+            clipboard.on('success', function(e) {
+                console.log('Text copied successfully');
+                var btn = e.trigger;
+                var originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copied!';
+                btn.classList.add('btn-success');
+                btn.classList.remove('btn-outline-success');
+
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-success');
+                }, 2000);
+            });
+
+            clipboard.on('error', function(e) {
+                console.error('Copy failed:', e.action);
+                showToast("Copy failed. Please try again or copy manually.", "danger");
+            });
+
+
+            document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var arrow = this.querySelector('.collapse-arrow');
+                    if (arrow) {
+                        if (this.classList.contains('collapsed')) {
+                            arrow.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrow.style.transform = 'rotate(90deg)';
+                        }
+                    }
+                });
+
+
+                var arrow = button.querySelector('.collapse-arrow');
+                if (arrow) {
+                    arrow.style.transition = 'transform 0.3s ease';
+                    if (button.classList.contains('collapsed')) {
+                        arrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrow.style.transform = 'rotate(90deg)';
+                    }
+                }
+            });
+
+
+            function formatSequence(element) {
+                var text = element.textContent;
+                if (text.length > 80) {
+                    var formatted = '';
+                    for (var i = 0; i < text.length; i += 80) {
+                        formatted += text.substring(i, i + 80) + '\n';
+                    }
+                    element.textContent = formatted.trim();
+                }
+            }
+
+
+            document.querySelectorAll('.sequence-content').forEach(function(element) {
+                formatSequence(element);
+            });
+        });
+
+
+        function downloadContent_cds() {
+            let content = "";
+            {% for row in result %}
+            content += ">{{ row.1 }}\n{{ row.2 }}\n\n";
+            {% endfor %}
+
+            if (!content.trim()) {
+                showToast("No CDS sequences to download!", "warning");
+                return;
+            }
+
+            var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "cds_sequences.fasta";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast("CDS sequences downloaded successfully!", "success");
+        }
+
+
+        function downloadContent_pep() {
+            let content = "";
+            {% for row in result %}
+            content += ">{{ row.1 }}\n{{ row.3 }}\n\n";
+            {% endfor %}
+
+            if (!content.trim()) {
+                showToast("No protein sequences to download!", "warning");
+                return;
+            }
+
+            var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "protein_sequences.fasta";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast("Protein sequences downloaded successfully!", "success");
+        }
+
+
+        function showToast(message, type) {
+            var toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                toastContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999;';
+                document.body.appendChild(toastContainer);
+            }
+
+            var toastId = 'toast-' + Date.now();
+            var toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = 'alert alert-' + (type || 'info') + ' alert-dismissible fade show';
+            toast.role = 'alert';
+            toast.style.minWidth = '300px';
+            toast.style.marginBottom = '10px';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" onclick="document.getElementById('${toastId}').remove()"></button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(function() {
+                if (document.getElementById(toastId)) {
+                    document.getElementById(toastId).remove();
+                }
+            }, 3000);
+        }
+
+
+        function expandAll() {
+            document.querySelectorAll('.collapse').forEach(function(collapse) {
+                var bsCollapse = new bootstrap.Collapse(collapse, {
+                    toggle: false
+                });
+                bsCollapse.show();
+
+
+                var button = document.querySelector('[data-bs-target="#' + collapse.id + '"]');
+                if (button) {
+                    button.classList.remove('collapsed');
+                    var arrow = button.querySelector('.collapse-arrow');
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(90deg)';
+                    }
+                }
+            });
+        }
+
+
+        function collapseAll() {
+            document.querySelectorAll('.collapse.show').forEach(function(collapse) {
+                var bsCollapse = new bootstrap.Collapse(collapse, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+
+
+                var button = document.querySelector('[data-bs-target="#' + collapse.id + '"]');
+                if (button) {
+                    button.classList.add('collapsed');
+                    var arrow = button.querySelector('.collapse-arrow');
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+        }
+    </script>
+
+    <style>
+         
+        .sequence-content {
+            white-space: pre;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.3;
+            overflow-x: auto;
+        }
+
+         
+        .sequence-container {
+            min-height: 100px;
+            max-height: 500px;
+            background: #fcfcfc;
+        }
+
+         
+        .sequence-content div {
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+        }
+
+         
+        .bulk-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bulk-actions .btn {
+            padding: 5px 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Polyploidy index</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+
+    <div id="container" style="height: 500px">
+    </div>
+
+
+    <script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var option;
+
+    var xAxisData = ['G1 > G2', "G2 > G1", "No diff"];
+    var data1 = [];
+    var data2 = [];
+    var data3 = [];
+    var data4 = [];
+    var data5 = [];
+    var data6 = [];
+    var data7 = [];
+    var data8 = [];
+    var data9 = [];
+    var data10 = [];
+    var data11 = [];
+
+    for (var i = 0; i < 12; i++) {
+            // xAxisData.push('Class' + i);
+            data1.push(329,1095,1354);
+            data2.push(923,1429,1083);
+            data3.push(1102,528,1428);
+            data4.push(507,868,515);
+            data5.push(461,716,751);
+            data6.push(748,639,908);
+            data7.push(1422,526,947);
+            data8.push(814,1309,900);
+            data9.push(753,910,1056);
+            data10.push(833,410,478);
+            data11.push(1048,529,676);
+
+    }
+
+    var emphasisStyle = {
+            itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0,0,0,0.3)'
+            }
+    };
+
+    option = {
+            legend: {
+                    data: ["Pvu1","Pvu2","Pvu3","Pvu4","Pvu5","Pvu6","Pvu7","Pvu8","Pvu9","Pvu10","Pvu11"],
+                    left: '10%'
+            },
+            brush: {
+                    toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+                    xAxisIndex: 0
+            },
+
+            toolbox: {
+                    feature: {
+                            magicType: {
+                                    type: ['stack', 'tiled']
+                            },
+                            dataView: {}
+                    }
+            },
+            tooltip: {},
+
+            color: ['#E673A0','#E64D77', '#35BAE6', '#2B7E99', '#992343', '#E6DD63', "#01BFBF", "#1C8FFF", "#FD8E63", "#CC9900", "#BCB66A"],
+            xAxis: {
+                    data: xAxisData,
+                    name: 'X Axis',
+                    nameRotate: 30,
+                    splitLine: {show: false},
+                    splitArea: {show: false},
+                    axisLabel: {fontStyle: 'italic'}
+            },
+            yAxis: {},
+            grid: {
+                    bottom: 100
+            },
+            series: [
+                    {
+                            name: 'Pvu1',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data1
+                    },
+                    {
+                            name: 'Pvu2',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data2
+                    },
+                    {
+                            name: 'Pvu3',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data3
+                    },
+                    {
+                            name: 'Pvu4',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data4
+                    },
+                    {
+                            name: 'Pvu5',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data5
+                    },
+                    {
+                            name: 'Pvu6',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data6
+                    },
+                    {
+                            name: 'Pvu7',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data7
+                    },
+                    {
+                            name: 'Pvu8',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data8
+                    },
+                    {
+                            name: 'Pvu9',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data9
+                    },
+                    {
+                            name: 'Pvu10',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data10
+                    },
+                    {
+                            name: 'Pvu11',
+                            type: 'bar',
+
+                            emphasis: emphasisStyle,
+                            data: data11
+                    }
+            ]
+    };
+    myChart.on('brushSelected', renderBrushed);
+
+    function renderBrushed(params) {
+            var brushed = [];
+            var brushComponent = params.batch[0];
+
+            for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
+                    var rawIndices = brushComponent.selected[sIdx].dataIndex;
+                    brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
+            }
+
+            myChart.setOption({
+                    title: {
+                            backgroundColor: '#333',
+                            text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
+                            bottom: 0,
+                            right:'10%',
+                            width: 100,
+                            textStyle: {
+                                    fontSize: 12,
+                                    color: '#fff'
+                            }
+                    }
+            });
+    }
+    if (option && typeof option === 'object') {
+            myChart.setOption(option);
+    }
+
+    </script>
+
+{% endblock %}

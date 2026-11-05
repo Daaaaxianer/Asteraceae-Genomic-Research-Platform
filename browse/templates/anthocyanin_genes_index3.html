@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Anthocyanin gene</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;We selected <em>Arabidopsis thaliana</em> as the model organism and identified its Anthocyanin genes. By best matching, we identified the Anthocyanin genes of 25 other Fabaceae. They were identified using pfam and stored in the platform.
+            <br>&emsp;&emsp; Anthocyanins, a class of water-soluble natural pigments widely found in plants in nature, are colored glycosides obtained from the hydrolysis of anthocyanins. Most of the major color-presenting substances in fruits, vegetables and flowers are related to them. Under different pH conditions of plant cytosol vesicles, anthocyanins give colorful petals. Anthocyanins in their natural state are in the form of glycosides, called anthocyanins, and few free anthocyanins exist. Anthocyanins are mainly used in food coloring, but also in dyes, pharmaceuticals, cosmetics, etc. Our database uses Arabidopsis as a model species and counts 25 legume species with <b>1,564</b> anthocyanin genes were counted for easy browsing and downloading by researchers.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <!-- choose module -->
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Phaseolus vulgaris</i></p>
+                <a href="{% url "Anthocyaningenes" "Pvu" %}"><img src="../../static/image/Pvu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 62 </p>
+                <a href="{% url "Anthocyaningenes" "Pvu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Pvu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Pvu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Pisum sativum</i></p>
+                <a href="{% url "Anthocyaningenes" "Psa" %}"><img src="../../static/image/Psa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 43 </p>
+                <a href="{% url "Anthocyaningenes" "Psa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Psa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Psa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Senna tora</i></p>
+                <a href="{% url "Anthocyaningenes" "Sto" %}"><img src="../../static/image/Sto.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 53 </p>
+                <a href="{% url "Anthocyaningenes" "Sto" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Sto.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Sto.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Spatholobus suberectus</i></p>
+                <a href="{% url "Anthocyaningenes" "Ssu" %}"><img src="../../static/image/Ssu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 54 </p>
+                <a href="{% url "Anthocyaningenes" "Ssu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Ssu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Ssu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium pratense</i></p>
+                <a href="{% url "Anthocyaningenes" "Tpr" %}"><img src="../../static/image/Tpr.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 62 </p>
+                <a href="{% url "Anthocyaningenes" "Tpr" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Tpr.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Tpr.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium subterranum</i></p>
+                <a href="{% url "Anthocyaningenes" "Tsu" %}"><img src="../../static/image/Tsu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 58 </p>
+                <a href="{% url "Anthocyaningenes" "Tsu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Tsu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Tsu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vigna radiata</i></p>
+                <a href="{% url "Anthocyaningenes" "Vra" %}"><img src="../../static/image/Vra.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 50 </p>
+                <a href="{% url "Anthocyaningenes" "Vra" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Vra.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Vra.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vicia faba</i></p>
+                <a href="{% url "Anthocyaningenes" "Vfa" %}"><img src="../../static/image/Vfa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 61 </p>
+                <a href="{% url "Anthocyaningenes" "Vfa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Vfa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/Anthocyaningenes_Vfa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "anthocyanin_genes_index_url1" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "anthocyanin_genes_index_url2" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "anthocyanin_genes_index_url3" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "anthocyanin_genes_index_url3" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

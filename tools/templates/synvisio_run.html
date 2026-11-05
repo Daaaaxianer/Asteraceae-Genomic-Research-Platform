@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Synvisio - Asteraceae Platform{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block extra_js %}
+    <script>
+        (function () {
+            var dashboardUrl = "{{ dashboard_url|default:''|escapejs }}";
+            var fallbackUrl = "{% url 'synvisio_url' %}";
+
+            if (dashboardUrl) {
+                window.location.replace(dashboardUrl);
+                return;
+            }
+
+            window.location.replace(fallbackUrl);
+        })();
+    </script>
+{% endblock %}

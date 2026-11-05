@@ -1,0 +1,100 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Domain<i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;The HMM model downloaded from the Pfam database was used to identify family members using the <a href="https://www.ebi.ac.uk/Tools/pfa/pfamscan/"><b>PfamScan</b></a> software.
+            <br>&emsp;&emsp;A protein molecule transcribed from a gene can contain several structurally specific and functionally distinct regions, which are called domains. The domain can be considered as the basic unit of protein function, and the function of a protein is determined by the multiple domains it contains. The study of domains allows a better study of protein function, and genes with the same structural domain often form a gene family.
+            <br>&emsp;&emsp;Select a legume and click Submit to see the results of the gene annotation for the changed species. The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../../static/image/pfam_img.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+
+        <form action="pfam_index_run" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="state" class="form-label">species database</label>
+                    <select class="form-control" id="state" name="sp_data_1" required>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Ceso">Centaurea solstitialis</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata.nucleus</option>
+                            <option value="Desu">Deinandra increscens subsp. villosa</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+
+                <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">
+            </div>
+        </form>
+    </div>
+
+
+{#    <iframe src="http://47.92.161.27:8523/#/dashboard/bn" style="height: 1400px;width: 100%"></iframe>#}
+
+{% endblock %}

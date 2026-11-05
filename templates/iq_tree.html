@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}IQ-Tree - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+         
+        @media (min-width: 1200px) { .container { max-width: 1320px !important; } }
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title { font-family: "Georgia", serif; font-weight: 700; color: #d35400; font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .section-subtitle { font-family: "Arial", sans-serif; color: #7f8c8d; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+        .section-divider { margin: 1.5rem auto 3rem auto; border-top: 1px solid #e0e0e0; }
+        .tool-header { font-size: 1.4rem; color: #2c3e50; font-weight: 700; margin-bottom: 25px; padding-left: 15px; border-left: 5px solid #8e44ad; display: flex; align-items: center; }
+        .form-label { font-weight: 600; color: #34495e; margin-bottom: 5px;}
+        .form-control-lg, .form-select-lg { border-radius: 8px; padding: 12px 15px; font-size: 1rem; }
+        .btn-submit-custom { background-color: #8e44ad; border-color: #8e44ad; color: white; padding: 12px 40px; font-weight: 600; border-radius: 8px; width: 100%; font-size: 1.1rem; }
+        .btn-submit-custom:hover { background-color: #732d91; color: white; }
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-example-tag:hover { background: #e67e22; color: white; }
+        .loading-area { margin-top: 25px; display: none; text-align: center; }
+        .text-loading { margin-left: 12px; color: #7f8c8d; font-style: italic; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">IQ-Tree Construction</h2>
+            <p class="section-subtitle">Phylogenetic Analysis: Maximum Likelihood Tree</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="tool-header">Input Parameters</h3>
+
+                <div class="alert alert-light border mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill text-primary"></i>
+                    This tool uses <strong>IQ-TREE 2</strong>. Upload an <strong>aligned</strong> sequence file (MSA). <br>
+                    The system will <strong>automatically detect</strong> DNA/Protein sequence type.
+                </div>
+
+                <form id="iqtreeForm" action="{% url 'iq_tree_url' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label for="input_file" class="form-label">
+                            <i class="bi bi-file-earmark-text"></i> Upload Alignment File (MSA)
+                        </label>
+                        <input type="file" class="form-control form-control-lg" id="input_file" name="input_file" required>
+                        <div class="form-text mt-2">
+                            <a href="#" onclick="downloadSample(); return false;" class="btn-example-tag">
+                                <i class="bi bi-download"></i> Example
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label">Alignment Format</label>
+                            <select class="form-select form-select-lg" name="aln_format">
+                                <option value="FASTA" selected>FASTA</option>
+                                <option value="PHYLIP">PHYLIP</option>
+                                <option value="NEXUS">NEXUS</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Substitution Model (-m)</label>
+                            <select class="form-select form-select-lg" name="model">
+                                <option value="MFP" selected>Auto (ModelFinder Plus)</option>
+                                <option value="GTR+G">GTR+G (DNA)</option>
+                                <option value="HKY+G">HKY+G (DNA)</option>
+                                <option value="WAG+G">WAG+G (Protein)</option>
+                                <option value="LG+G">LG+G (Protein)</option>
+                                <option value="JTT+G">JTT+G (Protein)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Bootstrap (-B)</label>
+                            <input type="number" class="form-control form-control-lg" name="bootstrap" value="1000" min="0" max="5000">
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <div class="text-center">
+                        <button class="btn btn-submit-custom" type="button" onclick="go()" id="iqtreeSubmitButton">
+                            <i class="bi bi-diagram-3-fill"></i> Run IQ-TREE & Download
+                        </button>
+
+                        <div class="loading-area" id="loadingArea">
+                            <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-loading">Auto-detecting type & Running IQ-TREE...</span><br>
+                                <small class="text-muted">This may take a while.</small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function downloadSample() {
+
+            const data =
+`>Helianthus_annuus
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC
+>Artemisia_annua
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAATAC
+>Lactuca_sativa
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC
+>Cynara_cardunculus
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC
+>Gerbera_hybrida
+ATGTCACCACAAACAGAAACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC
+>Taraxacum_mongolicum
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC
+>Chrysanthemum_morifolium
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAATAC
+>Bidens_alba
+ATGTCACCACAAACAGAGACTAAAGCAAGTGTTGGATTCAAAGCTGGTGTTAAAGAGTAC`;
+
+            const blob = new Blob([data], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Asteraceae_aligned_rbcL.fasta';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function go() {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('iqtreeForm');
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+            loading.style.display = "block";
+            form.submit();
+        }
+
+        function getDownloadFilename(response, fallbackName) {
+            var disposition = response.headers.get('Content-Disposition') || '';
+            var utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+            if (utf8Match && utf8Match[1]) {
+                return decodeURIComponent(utf8Match[1]);
+            }
+
+            var asciiMatch = disposition.match(/filename="?([^";]+)"?/i);
+            if (asciiMatch && asciiMatch[1]) {
+                return asciiMatch[1];
+            }
+
+            return fallbackName;
+        }
+
+        async function go() {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('iqtreeForm');
+            var button = document.getElementById('iqtreeSubmitButton');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            if (button) {
+                button.disabled = true;
+            }
+
+            loading.style.display = "block";
+
+            try {
+                var response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    credentials: 'same-origin'
+                });
+
+                var contentType = response.headers.get('Content-Type') || '';
+                if (!response.ok || contentType.indexOf('application/zip') === -1) {
+                    var errorText = await response.text();
+                    document.open();
+                    document.write(errorText);
+                    document.close();
+                    return;
+                }
+
+                var blob = await response.blob();
+                var downloadUrl = window.URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = getDownloadFilename(response, 'iqtree_result.zip');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(downloadUrl);
+            } catch (error) {
+                document.open();
+                document.write(error.message);
+                document.close();
+                return;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                }
+
+                loading.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

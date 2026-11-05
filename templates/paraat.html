@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ParaAT - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+
+    <style>
+        /* 1. Force container width */
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+
+        /* 2. Main Content Card */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. Title Styling */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+        }
+
+        /* 4. Form Styling */
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-label-fancy {
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+
+        .form-label-fancy::before {
+            content: "★";
+            color: #e67e22;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        /* 5. Button Styling */
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+        /* Helper for links */
+        .text-link-orange {
+            color: #d35400;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .text-link-orange:hover {
+            color: #e67e22;
+        }
+
+        /* Small Tag Button for Example/Download */
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: auto; /* Push to right */
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">ParaAT</h2>
+            <p class="section-subtitle">Parallel Alignment and Translation Tool</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-11">
+                <p style="text-align: justify; color: #5d4037; line-height: 1.8; font-size: 1.05rem; font-weight: 500;">
+                    &emsp;&emsp;ParaAT is a tool developed by Professor Zhang Zhang's research group from the Institute of Genomics, Chinese Academy of Sciences. It integrates a complete set of analyses required for calculating Ka/Ks. 
+                    More detailed information can be found at <a href="{% url "software_tools_url" %}" target="_blank" class="text-link-orange">Pipeline flow examples</a>.
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="custom-form-card">
+                    <form action="paraat_run" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <label for="state" class="form-label-fancy">Result Output Format</label>
+                                <select class="form-select" id="state" name="patten" required style="height: 45px;">
+                                    <option value="axt">axt</option>
+                                    <option value="fasta">fasta</option>
+                                    <option value="paml">paml</option>
+                                    <option value="codon">codon</option>
+                                    <option value="clustal">clustal</option>
+                                    <option value="optional">optional</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a format.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="formFile1" class="form-label-fancy mb-0">Upload Homologs</label>
+                                    <a href="/api/download/public/static/example_file/Evaluation_of_nucleotide_mutation/paraAT/test.homologs" download="test.homologs" class="btn-example-tag">
+                                        <i class="bi bi-download"></i> Example
+                                    </a>
+                                </div>
+                                <input class="form-control" type="file" id="formFile1" name="homologs" required>
+                                <div class="invalid-feedback">File not uploaded</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="formFile2" class="form-label-fancy mb-0">Upload CDS File</label>
+                                    <a href="/api/download/public/static/example_file/Evaluation_of_nucleotide_mutation/paraAT/test.cds" download="test.cds" class="btn-example-tag">
+                                        <i class="bi bi-download"></i> Example
+                                    </a>
+                                </div>
+                                <input class="form-control" type="file" id="formFile2" name="cds" required>
+                                <div class="invalid-feedback">File not uploaded</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="formFile3" class="form-label-fancy mb-0">Upload PEP File</label>
+                                    <a href="/api/download/public/static/example_file/Evaluation_of_nucleotide_mutation/paraAT/test.pep" download="test.pep" class="btn-example-tag">
+                                        <i class="bi bi-download"></i> Example
+                                    </a>
+                                </div>
+                                <input class="form-control" type="file" id="formFile3" name="pep" required>
+                                <div class="invalid-feedback">File not uploaded</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-search-gradient" type="submit" onclick="go()">
+                                <i class="fa fa-rocket me-2"></i> Run Analysis
+                            </button>
+
+                            <div class="mt-3">
+                                <span id="wait1" class="spinner-border spinner-border-sm text-warning" style="display:none"></span>
+                                <span id="wait2" style="display:none; color: #d35400; font-weight: 700; font-size: 0.9rem;">&nbsp;&nbsp;RUNNING, PLEASE WAIT...</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vendor/js/jquery-3.5.1.js' %}"></script>
+    <script>
+        function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            // Optional: Simple check if files are selected before showing spinner
+            // if (document.getElementById('formFile1').value && document.getElementById('formFile2').value && document.getElementById('formFile3').value) {
+                if (hh1 && hh2) {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block";
+                }
+            // }
+        }
+    </script>
+{% endblock %}

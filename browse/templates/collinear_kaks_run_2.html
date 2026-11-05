@@ -1,0 +1,1013 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aster-Blocks{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: 2px solid #e67e22;
+    }
+
+    .species-name {
+        font-weight: 700;
+        font-style: italic;
+        color: #2c3e50;
+    }
+
+    .btn-action {
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        margin-right: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-view {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border: 1px solid #bbdefb;
+    }
+
+    .btn-down {
+        background-color: #fbe9e7;
+        color: #d84315;
+        border: 1px solid #ffccbc;
+    }
+
+    .blocks-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        margin: 12px 0 18px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f1dfcb;
+    }
+
+    .blocks-action-group {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+    }
+
+    .blocks-action-btn {
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 7px;
+        font-size: 0.94rem;
+        font-weight: 800;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        box-shadow: none;
+        transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+        white-space: nowrap;
+    }
+
+    .blocks-action-btn-primary {
+        color: #fff;
+        background: #d35400;
+        border-color: #d35400;
+        box-shadow: 0 6px 14px rgba(211, 84, 0, 0.18);
+    }
+
+    .blocks-action-btn-primary:hover {
+        color: #fff;
+        background: #b94a00;
+        border-color: #b94a00;
+    }
+
+    .blocks-action-btn-muted {
+        color: #44515c;
+        background: #fff;
+        border-color: #d8dee4;
+    }
+
+    .blocks-action-btn-muted:hover {
+        color: #d35400;
+        background: #fff8ef;
+        border-color: #efc89a;
+    }
+
+    .blocks-action-btn-soft {
+        color: #d35400;
+        background: #fff8ef;
+        border-color: #efc89a;
+    }
+
+    .blocks-action-btn-soft:hover {
+        color: #b94a00;
+        background: #fff3df;
+        border-color: #e8b66f;
+    }
+
+    .select-header {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .select-header input,
+    .row-checkbox {
+        width: 16px;
+        height: 16px;
+        accent-color: #d35400;
+        cursor: pointer;
+    }
+
+    .blocks-table-card {
+        background: #fff;
+        border: 1px solid #eadfd3;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+    }
+
+    .blocks-table-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+    }
+
+    .blocks-table-length,
+    .blocks-table-filter {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #2c3e50;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .blocks-table-length select,
+    .blocks-table-filter input {
+        height: 38px;
+        border: 1px solid #d8dee4;
+        border-radius: 7px;
+        color: #2c3e50;
+        background: #fff;
+        outline: 0;
+    }
+
+    .blocks-table-length select {
+        min-width: 72px;
+        padding: 0 10px;
+    }
+
+    .blocks-table-filter input {
+        width: 220px;
+        padding: 0 12px;
+    }
+
+    .blocks-table-length select:focus,
+    .blocks-table-filter input:focus {
+        border-color: #e67e22;
+        box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+    }
+
+    .blocks-table-wrap {
+        overflow-x: auto;
+    }
+
+    .blocks-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .blocks-table thead th {
+        background: #fffbf7;
+        color: #d35400;
+        font-weight: 700;
+        border-bottom: 2px solid #e67e22;
+        padding: 12px 14px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .blocks-table tbody td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #edf0f2;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .blocks-table tbody tr:nth-child(even) {
+        background: #fffdf9;
+    }
+
+    .blocks-table tbody tr:hover {
+        background: #fff6eb;
+    }
+
+    .blocks-table td:first-child,
+    .blocks-table th:first-child {
+        text-align: center;
+        width: 74px;
+    }
+
+    .blocks-table-empty {
+        padding: 28px 16px !important;
+        text-align: center !important;
+        color: #8a96a3;
+        font-weight: 700;
+    }
+
+    .blocks-table-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid #eadfd3;
+    }
+
+    .blocks-table-info {
+        color: #5f6b76;
+        font-weight: 600;
+    }
+
+    .blocks-table-nav,
+    .blocks-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .blocks-pagination {
+        gap: 6px;
+    }
+
+    .blocks-page-btn,
+    .page-jump-btn {
+        height: 36px;
+        border-radius: 7px;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .blocks-page-btn {
+        min-width: 36px;
+        padding: 0 10px;
+        border: 1px solid #d8dee4;
+        background: #fff;
+        color: #44515c;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .blocks-page-btn.is-active {
+        color: #fff;
+        background: #d35400;
+        border-color: #d35400;
+        box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+    }
+
+    .blocks-page-btn:not(:disabled):not(.is-active):hover {
+        color: #d35400;
+        background: #fff8ef;
+        border-color: #efc89a;
+    }
+
+    .blocks-page-btn:disabled {
+        color: #b6c0c9;
+        background: #f8fafb;
+        border-color: #e8edf1;
+        cursor: not-allowed;
+    }
+
+    .blocks-page-ellipsis {
+        min-width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #8a96a3;
+        font-weight: 800;
+    }
+
+    .page-jump-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #5f6b76;
+        font-size: 0.92rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .page-jump-input {
+        width: 58px;
+        height: 36px;
+        padding: 0 8px;
+        border: 1px solid #d8dee4;
+        border-radius: 7px;
+        color: #2c3e50;
+        text-align: center;
+        font-weight: 700;
+        outline: 0;
+    }
+
+    .page-jump-input:focus {
+        border-color: #e67e22;
+        box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+    }
+
+    .page-jump-total {
+        color: #8a96a3;
+    }
+
+    .page-jump-btn {
+        padding: 0 12px;
+        border: 1px solid #efc89a;
+        background: #fff8ef;
+        color: #d35400;
+    }
+
+    .page-jump-btn:hover {
+        background: #fff3df;
+        border-color: #e8b66f;
+    }
+
+    @media (max-width: 768px) {
+        .page-wrapper {
+            padding: 24px 16px;
+        }
+
+        .blocks-table-card {
+            padding: 12px;
+        }
+
+        .blocks-table-controls,
+        .blocks-table-footer {
+            align-items: stretch;
+        }
+
+        .blocks-table-filter,
+        .blocks-table-filter input {
+            width: 100%;
+        }
+
+        .blocks-table-nav {
+            justify-content: flex-start;
+        }
+
+        .blocks-action-group,
+        .blocks-action-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Collinear Block Search - {{ block_name }}<i></i></h3>
+                <div class="blocks-toolbar">
+                    <div class="blocks-action-group">
+                        <button id="selectAllBtn" class="blocks-action-btn blocks-action-btn-primary" type="button">Select All</button>
+                    </div>
+                    <div class="blocks-action-group">
+                        <button id="download-btn" class="blocks-action-btn blocks-action-btn-soft" type="button">Download Selected Rows</button>
+                    </div>
+                    <form id="myForm" class="blocks-action-group">
+                        {% csrf_token %}
+                        <button id="printDataBtn" class="blocks-action-btn blocks-action-btn-soft" type="button">Draw Ks peak</button>
+                    </form>
+                </div>
+
+                {% if image_data %}
+                    <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+                {% endif %}
+
+
+                <div class="blocks-table-card" data-blocks-table>
+                    <div class="blocks-table-controls">
+                        <label class="blocks-table-length">
+                            Show
+                            <select class="js-blocks-page-size" aria-label="Rows per page">
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">All</option>
+                            </select>
+                            entries per page
+                        </label>
+                        <label class="blocks-table-filter">
+                            Search:
+                            <input class="js-blocks-search" type="search" autocomplete="off" aria-label="Search table">
+                        </label>
+                    </div>
+
+                    <div class="blocks-table-wrap">
+                    <table id="myTable" class="table table-hover align-middle blocks-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="select-header">
+                                        <input type="checkbox" class="js-select-current-page" aria-label="Select current page rows">
+                                        <span>Select</span>
+                                    </label>
+                                </th>
+                                <th>Number</th>
+                                <th>Gene1</th>
+                                <th>Gene1_num</th>
+                                <th>Gene2</th>
+                                <th>Gene2_num</th>
+                                <th>Ka</th>
+                                <th>Ks</th>
+                                <th>Ka/Ks</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for pair in results %}
+                            <tr class="parent-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+{#                                <td>{{ pair.0 }}</td>#}
+{#                                <td>{{ pair.1 }}</td>#}
+                                <td>{{ pair.2 }}</td>
+                                <td>{{ pair.3 }}</td>
+                                <td>{{ pair.4 }}</td>
+                                <td>{{ pair.5 }}</td>
+                                <td>{{ pair.6 }}</td>
+{#                                <td>{{ pair.7 }}</td>#}
+                                <td>{{ pair.8 }}</td>
+                                <td>{{ pair.9 }}</td>
+                                <td>{{ pair.10 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+
+                    <div class="blocks-table-footer">
+                        <div class="blocks-table-info js-blocks-info"></div>
+                        <div class="blocks-table-nav">
+                            <div class="blocks-pagination js-blocks-pagination" aria-label="Table pagination"></div>
+                            <div class="page-jump-control js-page-jump" aria-label="Jump to page">
+                                <label for="blocks_detail_page_jump">Page</label>
+                                <input id="blocks_detail_page_jump" type="number" inputmode="numeric" class="page-jump-input js-page-jump-input" min="1" value="1" aria-label="Page number">
+                                <span class="page-jump-total js-page-jump-total">/ 1</span>
+                                <button type="button" class="page-jump-btn js-page-jump-btn">Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{##}
+{#                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+{#                <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>#}
+{#                <script>#}
+{#                    $(document).ready(function() {#}
+{#                        $('#myTable').DataTable();#}
+{##}
+{#                        // 初始化内部表格#}
+{#                        $('.sub-table').DataTable({#}
+{#                            "paging": false,  // 禁用分页#}
+{#                            "searching": false,  // 禁用搜索#}
+{#                            "info": false  // 禁用信息显示#}
+{#                        });#}
+{#                    });#}
+{#                </script>#}
+<script>
+    (function () {
+        function initBlocksTablePagination(options) {
+            var table = document.getElementById(options.tableId);
+            if (!table) {
+                return;
+            }
+
+            var card = table.closest("[data-blocks-table]");
+            var tbody = table.querySelector("tbody");
+            if (!card || !tbody) {
+                return;
+            }
+
+            var pageSizeSelect = card.querySelector(".js-blocks-page-size");
+            var searchInput = card.querySelector(".js-blocks-search");
+            var infoEl = card.querySelector(".js-blocks-info");
+            var paginationEl = card.querySelector(".js-blocks-pagination");
+            var jumpControl = card.querySelector(".js-page-jump");
+            var jumpInput = card.querySelector(".js-page-jump-input");
+            var jumpTotal = card.querySelector(".js-page-jump-total");
+            var jumpBtn = card.querySelector(".js-page-jump-btn");
+            var currentPageCheckbox = card.querySelector(".js-select-current-page");
+            var hasDetailRows = Boolean(options.hasDetailRows);
+            var rows = Array.prototype.slice.call(tbody.children);
+            var emptyRow = null;
+            var currentPageGroups = [];
+            var state = {
+                page: 1,
+                pageSize: pageSizeSelect ? pageSizeSelect.value : "5",
+                search: ""
+            };
+
+            var groups = rows.reduce(function (items, row) {
+                if (row.classList.contains("detail-row")) {
+                    return items;
+                }
+
+                var detailRow = null;
+                if (hasDetailRows && row.nextElementSibling && row.nextElementSibling.classList.contains("detail-row")) {
+                    detailRow = row.nextElementSibling;
+                }
+
+                items.push({
+                    row: row,
+                    detailRow: detailRow,
+                    searchText: (row.textContent + " " + (detailRow ? detailRow.textContent : "")).toLowerCase()
+                });
+                return items;
+            }, []);
+
+            function filteredGroups() {
+                if (!state.search) {
+                    return groups;
+                }
+
+                return groups.filter(function (group) {
+                    return group.searchText.indexOf(state.search) !== -1;
+                });
+            }
+
+            function pageSizeFor(total) {
+                if (state.pageSize === "all") {
+                    return Math.max(total, 1);
+                }
+
+                return parseInt(state.pageSize, 10) || 5;
+            }
+
+            function hideAllRows() {
+                groups.forEach(function (group) {
+                    group.row.style.display = "none";
+                    if (group.detailRow) {
+                        group.detailRow.style.display = "none";
+                    }
+                });
+            }
+
+            function groupCheckboxes(group) {
+                var checkboxes = Array.prototype.slice.call(group.row.querySelectorAll(".row-checkbox"));
+                if (group.detailRow) {
+                    checkboxes = checkboxes.concat(Array.prototype.slice.call(group.detailRow.querySelectorAll(".row-checkbox")));
+                }
+                return checkboxes;
+            }
+
+            function currentPageCheckboxes() {
+                return currentPageGroups.reduce(function (checkboxes, group) {
+                    return checkboxes.concat(groupCheckboxes(group));
+                }, []);
+            }
+
+            function updateCurrentPageSelector() {
+                if (!currentPageCheckbox) {
+                    return;
+                }
+
+                var checkboxes = currentPageCheckboxes();
+                var checkedCount = checkboxes.filter(function (checkbox) {
+                    return checkbox.checked;
+                }).length;
+
+                currentPageCheckbox.disabled = checkboxes.length === 0;
+                currentPageCheckbox.checked = checkboxes.length > 0 && checkedCount === checkboxes.length;
+                currentPageCheckbox.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
+            }
+
+            function ensureEmptyRow() {
+                if (emptyRow) {
+                    return emptyRow;
+                }
+
+                emptyRow = document.createElement("tr");
+                emptyRow.className = "blocks-empty-row";
+
+                var cell = document.createElement("td");
+                cell.className = "blocks-table-empty";
+                cell.colSpan = table.tHead && table.tHead.rows.length ? table.tHead.rows[0].cells.length : 1;
+                cell.textContent = "No matching records found";
+
+                emptyRow.appendChild(cell);
+                tbody.appendChild(emptyRow);
+                return emptyRow;
+            }
+
+            function pageNumbers(totalPages) {
+                var pages = [];
+                var start;
+                var end;
+                var i;
+
+                if (totalPages <= 7) {
+                    for (i = 1; i <= totalPages; i += 1) {
+                        pages.push(i);
+                    }
+                    return pages;
+                }
+
+                pages.push(1);
+                start = Math.max(2, state.page - 2);
+                end = Math.min(totalPages - 1, state.page + 2);
+
+                if (state.page <= 3) {
+                    end = 5;
+                }
+
+                if (state.page >= totalPages - 2) {
+                    start = totalPages - 4;
+                }
+
+                if (start > 2) {
+                    pages.push("ellipsis-start");
+                }
+
+                for (i = start; i <= end; i += 1) {
+                    pages.push(i);
+                }
+
+                if (end < totalPages - 1) {
+                    pages.push("ellipsis-end");
+                }
+
+                pages.push(totalPages);
+                return pages;
+            }
+
+            function goToPage(page, totalPages) {
+                state.page = Math.max(1, Math.min(totalPages, page));
+                render();
+            }
+
+            function addPageButton(label, page, totalPages, isDisabled, isActive) {
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "blocks-page-btn" + (isActive ? " is-active" : "");
+                button.textContent = label;
+                button.disabled = Boolean(isDisabled);
+
+                if (isActive) {
+                    button.setAttribute("aria-current", "page");
+                }
+
+                button.addEventListener("click", function () {
+                    goToPage(page, totalPages);
+                });
+                paginationEl.appendChild(button);
+            }
+
+            function addEllipsis() {
+                var ellipsis = document.createElement("span");
+                ellipsis.className = "blocks-page-ellipsis";
+                ellipsis.textContent = "...";
+                paginationEl.appendChild(ellipsis);
+            }
+
+            function renderPagination(totalPages) {
+                if (!paginationEl) {
+                    return;
+                }
+
+                paginationEl.innerHTML = "";
+                paginationEl.style.display = totalPages > 1 ? "flex" : "none";
+
+                if (jumpControl) {
+                    jumpControl.style.display = totalPages > 1 ? "inline-flex" : "none";
+                }
+
+                if (totalPages <= 1) {
+                    return;
+                }
+
+                addPageButton("Previous", state.page - 1, totalPages, state.page === 1, false);
+
+                pageNumbers(totalPages).forEach(function (page) {
+                    if (typeof page === "string") {
+                        addEllipsis();
+                    } else {
+                        addPageButton(String(page), page, totalPages, false, page === state.page);
+                    }
+                });
+
+                addPageButton("Next", state.page + 1, totalPages, state.page === totalPages, false);
+
+                if (jumpInput) {
+                    jumpInput.max = totalPages;
+                    jumpInput.value = state.page;
+                }
+
+                if (jumpTotal) {
+                    jumpTotal.textContent = "/ " + totalPages;
+                }
+            }
+
+            function renderInfo(startIndex, endIndex, total, filteredTotal) {
+                var text = "Showing " + startIndex + " to " + endIndex + " of " + filteredTotal + " entries";
+                if (filteredTotal !== total) {
+                    text += " (filtered from " + total + " total entries)";
+                }
+                infoEl.textContent = text;
+            }
+
+            function render() {
+                var filtered = filteredGroups();
+                var total = groups.length;
+                var filteredTotal = filtered.length;
+                var pageSize = pageSizeFor(filteredTotal);
+                var totalPages = Math.max(1, Math.ceil(filteredTotal / pageSize));
+                var start;
+                var end;
+
+                state.page = Math.max(1, Math.min(state.page, totalPages));
+                start = filteredTotal ? (state.page - 1) * pageSize : 0;
+                end = Math.min(start + pageSize, filteredTotal);
+
+                hideAllRows();
+
+                if (emptyRow) {
+                    emptyRow.style.display = "none";
+                }
+
+                if (!filteredTotal) {
+                    currentPageGroups = [];
+                    ensureEmptyRow().style.display = "";
+                    renderInfo(0, 0, total, 0);
+                    renderPagination(totalPages);
+                    updateCurrentPageSelector();
+                    return;
+                }
+
+                currentPageGroups = filtered.slice(start, end);
+                currentPageGroups.forEach(function (group) {
+                    group.row.style.display = "";
+                    if (group.detailRow) {
+                        group.detailRow.style.display = "";
+                    }
+                });
+
+                renderInfo(start + 1, end, total, filteredTotal);
+                renderPagination(totalPages);
+                updateCurrentPageSelector();
+            }
+
+            function jumpToPage() {
+                var filteredTotal = filteredGroups().length;
+                var totalPages = Math.max(1, Math.ceil(filteredTotal / pageSizeFor(filteredTotal)));
+                var requestedPage = parseInt(jumpInput.value, 10);
+
+                if (isNaN(requestedPage)) {
+                    jumpInput.value = state.page;
+                    jumpInput.focus();
+                    return;
+                }
+
+                goToPage(requestedPage, totalPages);
+            }
+
+            if (pageSizeSelect) {
+                pageSizeSelect.addEventListener("change", function () {
+                    state.pageSize = this.value;
+                    state.page = 1;
+                    render();
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener("input", function () {
+                    state.search = this.value.trim().toLowerCase();
+                    state.page = 1;
+                    render();
+                });
+            }
+
+            if (jumpInput) {
+                jumpInput.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        jumpToPage();
+                    }
+                });
+            }
+
+            if (jumpBtn) {
+                jumpBtn.addEventListener("click", jumpToPage);
+            }
+
+            if (currentPageCheckbox) {
+                currentPageCheckbox.addEventListener("change", function () {
+                    currentPageCheckboxes().forEach(function (checkbox) {
+                        checkbox.checked = currentPageCheckbox.checked;
+                    });
+                    updateCurrentPageSelector();
+                    document.dispatchEvent(new Event("blocksSelectionChanged"));
+                });
+            }
+
+            card.addEventListener("change", function (event) {
+                if (event.target.classList.contains("row-checkbox")) {
+                    updateCurrentPageSelector();
+                }
+            });
+
+            document.addEventListener("blocksSelectionChanged", updateCurrentPageSelector);
+
+            render();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function () {
+                initBlocksTablePagination({ tableId: "myTable", hasDetailRows: false });
+            });
+        } else {
+            initBlocksTablePagination({ tableId: "myTable", hasDetailRows: false });
+        }
+    })();
+</script>
+{# draw_ks_peak #}
+<script>
+    var printDataBtn = document.getElementById("printDataBtn");
+    printDataBtn.addEventListener("click", function() {
+        var selectedRows = [];
+        var checkboxes = document.querySelectorAll(".row-checkbox");
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                var row = checkbox.closest("tr");
+                var rowData = [];
+                var mainDataCells = row.querySelectorAll("td:nth-child(8), td:nth-child(9)"); // 获取第一组数据
+                mainDataCells.forEach(function(cell) {
+                    rowData.push(cell.textContent.trim());
+                });
+                var subTableDataCells = row.querySelectorAll(".sub-table tbody td:nth-child(8)"); // 获取第二组数据
+                subTableDataCells.forEach(function(cell) {
+                    rowData.push(cell.textContent.trim());
+                });
+                selectedRows.push(rowData);
+            }
+        });
+        {#console.log(selectedRows);#}
+
+        // 获取CSRF令牌
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // 发送数据到Django后端
+        var xhr = new XMLHttpRequest();
+        var url = "{% url 'draw_ks_peak' %}"; // 使用Django模板标签获取URL
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", csrfToken); // 将CSRF令牌添加到请求头中
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("Data sent successfully.");
+                    {#window.location.href = "/browse/ks_peak_img";#}
+
+                    var newWindow = window.open("/browse/ks_peak_img", "_blank");
+                    if (newWindow) {
+                        newWindow.focus(); // 将焦点设置到新窗口
+                    } else {
+                        console.error("Failed to open new window.");
+                    }
+                } else {
+                    console.error("Error sending data:", xhr.statusText);
+                }
+            }
+        };
+        var data = JSON.stringify({ selectedRows: selectedRows });
+        xhr.send(data);
+    });
+</script>
+
+
+
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+
+                    function allRowCheckboxes() {
+                        return Array.prototype.slice.call(document.querySelectorAll(".row-checkbox"));
+                    }
+
+                    function updateSelectAllButton() {
+                        var checkboxes = allRowCheckboxes();
+                        var checkedCount = checkboxes.filter(function(checkbox) {
+                            return checkbox.checked;
+                        }).length;
+                        var allSelected = checkboxes.length > 0 && checkedCount === checkboxes.length;
+
+                        selectAllBtn.disabled = checkboxes.length === 0;
+                        selectAllBtn.textContent = allSelected ? "Deselect All" : "Select All";
+                        selectAllBtn.classList.toggle("blocks-action-btn-primary", !allSelected);
+                        selectAllBtn.classList.toggle("blocks-action-btn-muted", allSelected);
+                    }
+
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = allRowCheckboxes();
+                        var allSelected = checkboxes.length > 0 && checkboxes.every(function(checkbox) {
+                            return checkbox.checked;
+                        });
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = !allSelected;
+                        });
+                        updateSelectAllButton();
+                        document.dispatchEvent(new Event("blocksSelectionChanged"));
+                    });
+
+                    document.addEventListener("change", function(event) {
+                        if (event.target.classList.contains("row-checkbox") || event.target.classList.contains("js-select-current-page")) {
+                            updateSelectAllButton();
+                        }
+                    });
+                    document.addEventListener("blocksSelectionChanged", updateSelectAllButton);
+                    updateSelectAllButton();
+
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Blocks_information.txt";
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+
+                <script>
+                    function toggleDetails(element) {
+                        var detailsRow = element.closest("tr").nextElementSibling;
+                        if (detailsRow.classList.contains("hidden-info")) {
+                            detailsRow.classList.remove("hidden-info");
+                        } else {
+                            detailsRow.classList.add("hidden-info");
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

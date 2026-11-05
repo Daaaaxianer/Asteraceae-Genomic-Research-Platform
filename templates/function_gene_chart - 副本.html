@@ -1,0 +1,125 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Functional Genes</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 700px">
+
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+        var option;
+        option = {
+          title: {
+            text: ''
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          legend: {},
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+          },
+          yAxis: {
+            type: 'category',
+            data: ["Anthocyaningenes","Auxingenes","RLP","NBS","RLK","pending flowering time genes","flowering time genes","flower development genes","Erasers","Readers","Wirters","Fatty acid hydroxylase","Fatty acyl-coenzyme A reductase, NAD-binding domain","CRAL-TRIO lipid binding domain","Nitrogen regulatory protein","Carbon-nitrogen hydrolase"]
+          },
+          series: [
+            {
+              name: '',
+              type: 'bar',
+              label: {
+              show: true,
+              color: 'white'
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [1564,2467,123,7836,23901,1809,7749,1706,280,327,157,498,363,1136,33,229]
+            }
+          ]
+        };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+        window.addEventListener('resize', myChart.resize);
+
+
+        option && myChart.setOption(option);
+        myChart.on('click', function (params) {
+            var name = params.name;
+            // document.write(name);
+            // window.location.href="../../static/data/dotplot/tree_and_mcscan.png";
+            // window.location.href="../../static/data/hhh.fasta";
+            if (name === "Anthocyaningenes") {
+                window.location.href="{% url "anthocyanin_genes_index_url1" %}";
+            }
+            if (name === "Auxingenes") {
+                window.location.href="{% url "Auxin_genes_index_url1" %}";
+            }
+            if (name === "RLP") {
+                window.location.href="{% url "Resistencegenes_genes" "RLP" %}";
+            }
+            if (name === "NBS") {
+                window.location.href="{% url "Resistencegenes_genes" "NBS" %}";
+            }
+            if (name === "RLK") {
+                window.location.href="{% url "Resistencegenes_genes" "RLK" %}";
+            }
+            if (name === "pending flowering time genes") {
+                window.location.href="{% url "pending_flowler_time_index_url1" %}";
+            }
+            if (name === "flowering time genes") {
+                window.location.href="{% url "flowler_time_index_url1" %}";
+            }
+            if (name === "flower development genes") {
+                window.location.href="{% url "flower_development_index_url1" %}";
+            }
+            if (name === "Erasers") {
+                window.location.href="{% url "m6a_erasers_genes_url" %}";
+            }
+            if (name === "Readers") {
+                window.location.href="{% url "m6a_readers_genes_url" %}";
+            }
+            if (name === "Wirters") {
+                window.location.href="{% url "m6a_wirters_genes_index_url" %}";
+            }
+            if (name === "Fatty acid hydroxylase") {
+                window.location.href="{% url "Fatty_acid_genes" "fah" %}";
+            }
+            if (name === "Fatty acyl-coenzyme A reductase, NAD-binding domain") {
+                window.location.href="{% url "Fatty_acid_genes" "facar" %}";
+            }
+            if (name === "CRAL-TRIO lipid binding domain") {
+                window.location.href="{% url "Fatty_acid_genes" "cral_trio" %}";
+            }
+            if (name === "Nitrogen regulatory protein") {
+                window.location.href="{% url "Nitrogen_fixation_genes" "pii" %}";
+            }
+            if (name === "Carbon-nitrogen hydrolase") {
+                window.location.href="{% url "Nitrogen_fixation_genes" "cnh" %}";
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                {#"ajax": "../static/gene_type/{{ sp_data_1 }}.{{ sp_data_2 }}.json",#}
+                "ajax": "../static/gene_type_json/{{ sp_name }}.{{ type }}.json",
+            });
+        });
+    </script>
+    <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Duplication type</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Gene duplication type classification analysis, using <a href="https://github.com/DXXDR/DupGen_finder">DupGen_finder</a>, can divide all genes into 5 categories according to the replication type, namely WGD: whole genome duplication, TD: tandem duplication (two adjacent duplication genes), PD: Proximal duplications (repeated genes within 10 genes apart), TRD: transposed duplications (duplicated genes consisting of ancestral and new loci), DSD: scattered duplications (duplicated genes that are neither adjacent nor collinear)
+            <br>&emsp;&emsp;Among them, <em>Glycine max</em> was the species with the most WGD genes, and <em>Medicago truncatula</em> was the species with the most PD gene replication type, while TD TRD DSD was the species with the most <em>Arachis maconticola</em> Gene replication type, which might be because <em>Arachis Maconticola</em> is polyploid.
+        </h6>
+            <div class="col-md-5">
+                <img style="width: 100%" src="../../static/image/gene_type_new.jpg" alt="">
+            </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th>Duplicate 1</th>
+                    <th>Location</th>
+                    <th>Duplicate 2</th>
+                    <th>Location</th>
+                    <th>E-value</th>
+                </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+		<div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Pisum sativum</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; Hologalegina; IRL clade; Fabeae; Pisum</p>
+                    <p><b>Abbr: </b> Psa</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=14</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Psa.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> The pea is most commonly the small spherical seed or the seed-pod of the flowering plant species Pisum sativum. Each pod contains several peas, which can be green or yellow. Botanically, pea pods are fruit, since they contain seeds and develop from the ovary of a (pea) flower. The name is also used to describe other edible seeds from the Fabaceae such as the pigeon pea (Cajanus cajan), the cowpea (Vigna unguiculata), and the seeds from several species of Lathyrus.
+
+Peas are annual plants, with a life cycle of one year. They are a cool-season crop grown in many parts of the world; planting can take place from winter to early summer depending on location. The average pea weighs between 0.1 and 0.36 gram. The immature peas (and in snow peas the tender pod as well) are used as a vegetable, fresh, frozen or canned; varieties of the species typically called field peas are grown to produce dry peas like the split pea shelled from a matured pod. These are the basis of pease porridge and pea soup, staples of medieval cuisine; in Europe, consuming fresh immature green peas was an innovation of early modern cuisine.
+                    </p>
+                    <p><b>Distribution: </b> The top producer of green peas – by far – is China with 12.2 million tons, followed by India (4.8 million tons), USA (0.31 million tons), France (0.23 million tons) and Egypt (0.15 million tons).    United Kingdom, Pakistan, Algeria, Peru and Turkey complete the top 10.</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://www.nature.com/articles/s41588-022-01172-2">Improved pea reference genome and pan-genome highlight genomic features and evolutionary characteristics</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> Data from the Whole Genome Shotgun project of Pisum sativum cultivar Zhongwan6 (PeaZW6) have been deposited at DDBJ/ENA/GenBank under accession JAMSHJ000000000. All raw sequencing data and the 118 pan-genome assemblies have been deposited at NCBI under the BioProject PRJNA730094. The PeaZW6 assembly (<a href="https://doi.org/10.5281/zenodo.6622409">https://doi.org/10.5281/zenodo.6622409</a>), and the 118 pan-genome assemblies (<a href="https://doi.org/10.5281/zenodo.6622578">https://doi.org/10.5281/zenodo.6622578</a>) are also available as Zenodo datasets. The PeaZW6 assembly along with genome browser and basic analysis tools are also available at Pea Genome Database (<a href="https://www.peagdb.com/">https://www.peagdb.com/</a>).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

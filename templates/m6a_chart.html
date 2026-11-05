@@ -1,0 +1,157 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">N6-methyladenosine</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 30px; padding-top: 30px">
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 900px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
+        },
+        legend: {},
+        grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+        },
+        xAxis: {
+        type: 'value'
+        },
+        yAxis: {
+        type: 'category',
+        data: ["Ambrosia artemisiifolia",	"Ambrosia trifida",	"Arctium lappa",	"Arctium minus",	"Artemisia annua ",	"Artemisia tridentata ",	"Artemisia argyi",	"Bidens alba",	"Buxus sinica",	"Carthamus tinctorius ",	"Centaurea solstitialis",	"Centrapalus pauciflorus",	"Chrysanthemum indicum",	"Chrysanthemum lavandulifolium",	"Chrysanthemum makinoi",	"Chrysanthemum nankingense",	"Chrysanthemum morifolium",	"Cichorium endivia",	"Cichorium intybus",	"Cosmos bipinnatus",	"Cynara cardunculus ",	"Dahlia pinnata",	"Deinandra increscens",	"Erigeron breviscapus",	"Erigeron canadensis",	"Euptelea pleiosperma",	"Flaveria bidentis",	"Flaveria brownii",	"Flaveria floridana",	"Flaveria linearis",	"Flaveria ramosissima",	"Flaveria robusta ",	"Flaveria sonorensis",	"Flaveria trinervia",	"Glebionis coronaria",	"Helianthus annuus ",	"Helianthus tuberosus",	"Helichrysum umbraculigerum",	"Lactuca saligna",	"Lactuca sativa ",	"Logfia minima",	"Mikania micrantha",	"Nelumbo nucifera",	"Nymphoides indica",	"Pluchea indica",	"Pseudognaphalium luteoalbum",	"Pulicaria dysenterica",	"Saussurea involucrata",	"Senecio squalidus ",	"Smallanthus sonchifolius",	"Solidago caesia",	"Solidago canadensis",	"Stevia rebaudiana ",	"Tagetes erecta",	"Taraxacum koksaghyz ",	"Taraxacum mongolicum",	"Tetracentron sinense ", "Vitis vinifera"]
+        },
+        series: [
+        {
+          name: 'Readers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [9,17,13,13,9,11,9,22,8,24,7,7,16,22,43,15,12,11,14,14,9,29,9,10,11,10,10,9,11,9,11,8,10,6,10,16,28,10,9,17,11,14,8,7,10,9,11,11,12,10,27,15,12,11,15,6,14,10]
+        },
+        {
+          name: 'Erasers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [19,29,15,12,11,13,20,49,7,18,7,11,19,48,69,26,10,8,22,18,7,36,26,10,20,7,8,6,6,10,14,17,9,8,19,35,43,15,8,13,9,12,10,10,13,10,19,17,10,12,30,17,18,22,9,8,10,8]
+        },
+        {
+          name: 'Writers',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [5,9,5,5,4,5,4,12,5,4,4,2,8,10,19,7,4,5,7,6,4,12,7,7,4,6,5,4,4,4,6,6,4,2,9,7,20,6,5,8,4,7,4,3,6,6,5,5,5,7,13,8,6,6,5,2,6,5]
+        },
+        ]
+        };
+
+        option && myChart.setOption(option);
+        myChart.on('click', function (params) {
+                var name = params.name;
+                if (
+                    name === "Ambrosia artemisiifolia" ||
+                    name === "Ambrosia trifida" ||
+                    name === "Arctium lappa" ||
+                    name === "Arctium minus" ||
+                    name === "Artemisia annua " ||
+                    name === "Artemisia tridentata " ||
+                    name === "Artemisia argyi" ||
+                    name === "Bidens alba" ||
+                    name === "Buxus sinica " ||
+                    name === "Carthamus tinctorius " ||
+                    name === "Centaurea solstitialis" ||
+                    name === "Centrapalus pauciflorus" ||
+                    name === "Chrysanthemum indicum" ||
+                    name === "Chrysanthemum lavandulifolium" ||
+                    name === "Chrysanthemum makinoi" ||
+                    name === "Chrysanthemum nankingense" ||
+                    name === "Chrysanthemum morifolium" ||
+                    name === "Cichorium endivia" ||
+                    name === "Cichorium intybus" ||
+                    name === "Cosmos bipinnatus" ||
+                    name === "Cynara cardunculus " ||
+                    name === "Dahlia pinnata" ||
+                    name === "Deinandra increscens" ||
+                    name === "Erigeron breviscapus" ||
+                    name === "Erigeron canadensis" ||
+                    name === "Euptelea pleiosperma" ||
+                    name === "Flaveria bidentis" ||
+                    name === "Flaveria brownii" ||
+                    name === "Flaveria floridana" ||
+                    name === "Flaveria linearis" ||
+                    name === "Flaveria ramosissima" ||
+                    name === "Flaveria robusta " ||
+                    name === "Flaveria sonorensis" ||
+                    name === "Flaveria trinervia" ||
+                    name === "Glebionis coronaria" ||
+                    name === "Helianthus annuus " ||
+                    name === "Helianthus tuberosus" ||
+                    name === "Helichrysum umbraculigerum" ||
+                    name === "Lactuca saligna" ||
+                    name === "Lactuca sativa " ||
+                    name === "Logfia minima" ||
+                    name === "Mikania micrantha" ||
+                    name === "Nelumbo nucifera" ||
+                    name === "Nymphoides indica" ||
+                    name === "Pluchea indica" ||
+                    name === "Pseudognaphalium luteoalbum" ||
+                    name === "Pulicaria dysenterica" ||
+                    name === "Saussurea involucrata" ||
+                    name === "Senecio squalidus " ||
+                    name === "Smallanthus sonchifolius" ||
+                    name === "Solidago caesia" ||
+                    name === "Solidago canadensis" ||
+                    name === "Stevia rebaudiana " ||
+                    name === "Tagetes erecta" ||
+                    name === "Taraxacum koksaghyz " ||
+                    name === "Taraxacum mongolicum" ||
+                    name === "Tetracentron sinense " ||
+                    name === "Vitis vinifera"
+                ) {
+                    window.location.href = "/browse/m6A_gene";
+                }
+            });
+
+    </script>
+    </div>
+{% endblock %}

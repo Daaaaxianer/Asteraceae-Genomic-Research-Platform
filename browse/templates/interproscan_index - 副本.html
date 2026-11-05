@@ -1,0 +1,146 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Gene Function Search<i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;<a href="https://www.ebi.ac.uk/interpro/download/"><b>Interproscan</b></a> is a gene annotation tool that allows the annotation of multiple databases in a single run.
+            <br>&emsp;&emsp;We analyzed 912,552 genes from 25 Fabaceae for annotation and obtained a total of 8,470,419 annotations. We have piggybacked on the platform so that researchers can not only easily access but also search to find annotation information of gene id, sequence length, analysis software, gene annotation information, start and stop positions, IPR number and Go number. In addition, we performed statistics on the structural domains of each of the 25 Fabaceae and outgroup grape species.
+            <br>&emsp;&emsp;Select a legume and click Submit to see the results of the gene annotation for the changed species. The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/interproscan_img.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+
+
+        <form action="interproscan_index_run" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="state" class="form-label">species database</label>
+                    <select class="form-control" id="initials" name="sp_data_1" onchange="Change_second_selectwords();">
+                        <option value="Aev">Aeschynomene evenia</option>
+                        <option value="Adu">Arachis duranensis</option>
+                        <option value="Ahy">Arachis hypogaea</option>
+                        <option value="Aip">Arachis ipaensis</option>
+                        <option value="Amo">Arachis monticola</option>
+                        <option value="Aed">Amphicarpaea edgeworthii</option>
+                        <option value="Apr">Abrus precatorius</option>
+                        <option value="Bva">Bauhinia variegata</option>
+                        <option value="Car">Cicer arietinum</option>
+                        <option value="Cca">Cajanus cajan</option>
+                        <option value="Dod">Dalbergia odorifera</option>
+                        <option value="Gma">Glycine max</option>
+                        <option value="Gso">Glycine soja</option>
+                        <option value="Lal">Lupinus albus</option>
+                        <option value="Lan">Lupinus angustifolius</option>
+                        <option value="Lja">Lotus japonicus</option>
+                        <option value="Mal">Melilotus albus</option>
+                        <option value="Mtr">Medicago truncatula</option>
+                        <option value="Psa">Pisum sativum</option>
+                        <option value="Pvu">Phaseolus vulgaris</option>
+                        <option value="Ssu">Spatholobus suberectus</option>
+                        <option value="Sto">Senna tora</option>
+                        <option value="Tsu">Trifolium subterranum</option>
+                        <option value="Tpr">Trifolium pratense</option>
+                        <option value="Vra">Vigna radiata</option>
+                        <option value="Vfa">Vicia faba</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="state" class="form-label">Tissues</label>
+                    <select class="form-control" id="top_domains" name="sp_data_2" required>
+{#                        <option value="AntiFam">AntiFam</option>#}
+{#                        <option value="CDD">CDD</option>#}
+{#                        <option value="Coils">Coils</option>#}
+{#                        <option value="Gene3D">Gene3D</option>#}
+{#                        <option value="Hamap">Hamap</option>#}
+{#                        <option value="MobiDBLite">MobiDBLite</option>#}
+{#                        <option value="PANTHER">PANTHER</option>#}
+{#                        <option value="Pfam">Pfam</option>#}
+{#                        <option value="PIRSF">PIRSF</option>#}
+{#                        <option value="PRINTS">PRINTS</option>#}
+{#                        <option value="ProSitePatterns">ProSitePatterns</option>#}
+{#                        <option value="ProSiteProfiles">ProSiteProfiles</option>#}
+{#                        <option value="SFLD">SFLD</option>#}
+{#                        <option value="SMART">SMART</option>#}
+{#                        <option value="SUPERFAMILY">SUPERFAMILY</option>#}
+{#                        <option value="TIGRFAM">TIGRFAM</option>#}
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+
+                <script>
+                    var first_keywords = {};
+                    //定义每个字母对应的第二个下拉框
+                    first_keywords['Apr'] = ["CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Lan'] = ["CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Mtr'] = ["CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Tpr'] = ["CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Vra'] = ["CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+
+                    first_keywords['Ahy'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Adu'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Aed'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Aev'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Aip'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Amo'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Bva'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Cca'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Car'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Dod'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Gma'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Gso'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Lal'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Lja'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Mal'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Psa'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Pvu'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Ssu'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Sto'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+                    first_keywords['Vfa'] = ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"];
+
+
+                    function Change_second_selectwords() {
+                        //根据id找到两个下拉框对象
+                        var target1 = document.getElementById("initials");
+                        var target2 = document.getElementById("top_domains");
+                        //得到第一个下拉框的内容
+                        var selected_initial = target1.options[target1.selectedIndex].value;
+
+                        //清空第二个下拉框
+                        while (target2.options.length) {
+                            target2.remove(0);
+                        }
+                        //根据第一个下拉框的内容找到对应的列表
+                        var initial_list = first_keywords[selected_initial];
+                        var value;
+                        if (initial_list) {
+                            for (var i = 0; i < initial_list.length; i++) {
+                                var item = new Option(initial_list[i], value=initial_list[i]);
+                                //将列表中的内容加入到第二个下拉框
+                                target2.options.add(item);
+                            }
+                        }
+                    }
+                </script>
+
+                <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">
+            </div>
+        </form>
+    </div>
+
+
+{#    <iframe src="http://47.92.161.27:8523/#/dashboard/bn" style="height: 1400px;width: 100%"></iframe>#}
+
+{% endblock %}

@@ -1,0 +1,66 @@
+<div class="switch-results">
+    <p class="switch-query">AGRP-ID: <strong>{{ switch_gene }}</strong> <span>Species: {{ switch_species }}</span></p>
+    <nav class="switch-index" aria-label="Gene resources">
+        {% for section in switch_sections %}
+            <a href="#{{ section.anchor }}">{{ section.title }} <span>{% if section.unavailable %}Unavailable{% elif section.rows %}{{ section.rows|length }}{% else %}No records{% endif %}</span></a>
+        {% endfor %}
+    </nav>
+
+    {% for section in switch_sections %}
+        <section id="{{ section.anchor }}" class="switch-section" aria-labelledby="{{ section.anchor }}_title">
+            <div class="section-header">
+                <div class="section-title-box">
+                    <h3 id="{{ section.anchor }}_title" class="section-title-text">{{ section.title }}</h3>
+                </div>
+            </div>
+            {% if section.note %}<p class="switch-note">{{ section.note }}</p>{% endif %}
+
+            {% if section.plot %}
+                <figure class="switch-plot" data-plot-source="{{ section.plot_id }}">
+                    <figcaption>Block: {{ section.plot.block }}</figcaption>
+                    <svg viewBox="0 0 760 330" role="img" aria-label="Syntenic block gene ordinal dotplot"></svg>
+                </figure>
+                {{ section.plot|json_script:section.plot_id }}
+            {% endif %}
+            {% if section.plot_limited %}<p class="switch-note">The plot displays the first 4,000 pairs in this block.</p>{% endif %}
+
+            {% if section.rows %}
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table id="{{ section.id }}" class="table table-hover result-table align-middle switch-table">
+                            <thead><tr>
+                                <th class="checkbox-cell"><input type="checkbox" class="select-current-page-checkbox" data-target="{{ section.id }}" aria-label="Select current page"><span>Select</span></th>
+                                {% for column in section.columns %}<th scope="col">{{ column }}</th>{% endfor %}
+                            </tr></thead>
+                            <tbody>
+                                {% for row in section.rows %}<tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox" aria-label="Select result row"></td>
+                                    {% for cell in row %}<td><div{% if section.id == 'table_sequence' or section.id == 'table_protein' %} class="switch-sequence"{% endif %}>{% if cell.url %}<a href="{{ cell.url }}">{{ cell.value }}</a>{% else %}{{ cell.value }}{% endif %}</div></td>{% endfor %}
+                                </tr>{% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="action-btn-group">
+                        <button type="button" class="btn-custom btn-select js-select-all" data-target="{{ section.id }}">Select All</button>
+                        <button type="button" class="btn-custom btn-download js-download" data-target="{{ section.id }}" data-filename="{{ switch_gene }}_{{ section.id }}.txt">Download Selected</button>
+                    </div>
+                </div>
+            {% else %}
+                <p class="switch-empty" role="status">{{ section.empty_message }}</p>
+            {% endif %}
+            {% if section.limited %}<p class="switch-note">Results are limited to 1,000 rows. Refine the query in the corresponding resource to explore more records.</p>{% endif %}
+            {% if section.links or section.actions %}
+                <div class="switch-resource-links">
+                    {% for link in section.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+                    {% for action in section.actions %}
+                        <form action="{{ action.url }}" method="post">
+                            {% csrf_token %}
+                            {% for name, value in action.fields.items %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+                            <button type="submit" class="btn-custom">{{ action.label }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    {% endfor %}
+</div>

@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Transposable elements - Artemisia_annua{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-orange: #e67e22;
+        --dark-orange: #d35400;
+        --light-bg: #fffbf7;
+        --border-color: #eee;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .page-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin: 40px auto;
+        border: 1px solid rgba(0,0,0,0.02);
+        min-height: 600px;
+    }
+
+    .main-title {
+        color: var(--dark-orange);
+        font-weight: 800;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    /* 简介区域样式 */
+    .intro-section {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px dotted #eee;
+    }
+    
+    .intro-text {
+        color: #555;
+        line-height: 1.8;
+        text-align: justify;
+        font-size: 1.05rem;
+    }
+
+    .intro-img-box {
+        text-align: center;
+        padding: 10px;
+        background: var(--light-bg);
+        border-radius: 8px;
+    }
+
+    .intro-img-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    /* 章节标题样式 */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0 20px;
+        position: relative;
+    }
+
+    .section-header::before,
+    .section-header::after {
+        content: "";
+        flex: 1;
+        border-bottom: 2px dotted var(--primary-orange);
+        margin: 0 20px;
+        opacity: 0.5;
+    }
+
+    .section-title-box {
+        background: #fff;
+        padding: 0 15px;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .section-title-text {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin: 0;
+    }
+
+    .leaf-icon {
+        width: 24px;
+        height: auto;
+        margin-bottom: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 表格容器样式 */
+    .table-container {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        margin-bottom: 30px;
+    }
+
+    .table-custom th, .table-custom td {
+        vertical-align: middle;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .table-custom a {
+        color: #2e7d32; /* 深绿色链接，配合原本风格 */
+        text-decoration: none;
+        font-weight: 600;
+        display: block;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+
+    .table-custom a:hover {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <h2 class="main-title">Transposable elements - <i>Artemisia annua</i></h2>
+
+        <div class="row intro-section align-items-center">
+            <div class="col-md-8">
+                <div class="intro-text">
+                    <p>
+                        &emsp;&emsp;<strong>Transposable elements (TEs):</strong> also known as jumping genes, are DNA sequences that can change their position in a cell. There are two types of transposons: type I transposons (Retrotransposon) and type II transposons (DNA transposons).
+                    </p>
+                    <p>
+                        &emsp;&emsp;<strong>Type I transposons:</strong> DNA is used as a template and is transcribed into mRNA, which is then reverse transcribed into cDNA and inserted into a new position in the genome by the action of integrase. 
+                    </p>
+                    <p>
+                        &emsp;&emsp;<strong>Type II transposons:</strong> The mechanism of transposition of type II transposon is called "cut-and-paste". The transposase cuts the TE from its original position in the genome and pastes it into other regions of the genome. The gaps formed by the cut are repaired by DNA.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="intro-img-box">
+                    <img src="{% static 'image/TE_img.png' %}" alt="TE Mechanism">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                <h4 class="section-title-text">Class I</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <tbody>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI" %}">ClassI</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_LTR" %}">LTR</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_LTR_Copia" %}">LTR_Copia</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_LTR_Gypsy" %}">LTR_Gypsy</a></td>
+                        </tr>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_nLTR_LINE_L1" %}">nLTR_LINE_L1</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_nLTR" %}">nLTR</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_nLTR_PLE" %}">nLTR_PLE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassI_nLTR_SINE_tRNA" %}">nLTR_SINE_tRNA</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                <h4 class="section-title-text">Class II</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <tbody>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII" %}">ClassII</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_CACTA_MITE" %}">DNA_CACTA_MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_CACTA_nMITE" %}">DNA_CACTA_nMITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_Harbinger_MITE" %}">DNA_Harbinger_MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_Harbinger_nMITE" %}">DNA_Harbinger_nMITE</a></td>
+</tr>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_hAT_MITE" %}">DNA_hAT_MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_hAT_nMITE" %}">DNA_hAT_nMITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_hAT_unknown" %}">DNA_hAT_unknown</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_Mutator_MITE" %}">DNA_Mutator_MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_Mutator_unknown" %}">DNA_Mutator_unknown</a></td>
+</tr>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_TcMar_MITE" %}">DNA_TcMar_MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_DNA_TcMar_nMITE" %}">DNA_TcMar_nMITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_MITE" %}">MITE</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassII_MITE" %}">nMITE</a></td>
+                            <td class="text-muted">---</td>
+</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                <h4 class="section-title-text">Class III</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <tbody>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "ClassIII_Helitron" %}">Helitron</a></td>
+                            <td class="text-muted">---</td>
+                            <td class="text-muted">---</td>
+                            <td class="text-muted">---</td>
+                            <td class="text-muted">---</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <img src="{% static 'image/shuye.png' %}" class="leaf-icon" alt="leaf">
+                <h4 class="section-title-text">Other</h4>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <tbody>
+                        <tr>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "Low_complexity" %}">Low_complexity</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "Simple_repeat" %}">Simple_repeat</a></td>
+                            <td><a target="_blank" href="{% url "TE_type" "Artemisia_annua" "unknown" %}">unknown</a></td>
+                            <td class="text-muted">---</td>
+                            <td class="text-muted">---</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

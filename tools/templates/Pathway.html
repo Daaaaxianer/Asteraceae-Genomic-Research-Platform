@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Pathway</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 1200px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
+        },
+        legend: {},
+        grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+        },
+        xAxis: {
+        type: 'value'
+        },
+        yAxis: {
+        type: 'category',
+        data: ["Artemisia annua","Artemisia argyi","Ambrosia artemisiifolia","Ambrosia trifida","Arctium lappa","Arctium minus","Artemisia tridentata","Bidens alba","Buxus sinica","Carthamus tinctorius","Cynara cardunculus","Centaurea solstitialis","Chrysanthemum lavandulifolium","Chrysanthemum makinoi","Chrysanthemum morifolium","Chrysanthemum nankingense","Cichorium intybus","Cichorium endivia","Chrysanthemum indicum","Cosmos bipinnatus","Centrapalus pauciflorus","Dahlia pinnata","Deinandra increscens subsp. villosa","Erigeron canadensis","Erigeron breviscapus","Euptelea pleiosperma","Flaveria bidentis","Flaveria brownii","Flaveria floridana","Flaveria linearis","Flaveria ramosissima","Flaveria robusta","Flaveria sonorensis","Flaveria trinervia","Glebionis coronaria","Helianthus annuus","Helianthus tuberosus","Helichrysum umbraculigerum","Lactuca saligna","Logfia minima","Lactuca sativa","Mikania micrantha","Nelumbo nucifera","Pulicaria dysenterica","Pluchea indica","Pseudognaphalium luteoalbum","Saussurea involucrata","Solidago caesia","Senecio squalidus","Smallanthus sonchifolius","Solidago canadensis","Stevia rebaudiana","Taraxacum koksaghyz","Taraxacum mongolicum","Tagetes erecta","Nymphoides indica","Tetracentron sinense","Vitis vinifera"]
+        },
+        series: [
+        {
+
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [44462, 62852, 29020, 73455, 31448, 48471, 73455, 165387, 26973, 45333, 26500, 33539, 64260, 93209, 138761, 43823, 39769, 32027, 50609, 46078, 22130, 181922, 33094, 34263, 42618, 25271, 22955, 65400, 81425, 42825, 37322, 36962, 49626, 52199, 73180, 70845, 181098, 25392, 42910, 41065, 44234, 41488, 27607, 29984, 36187, 75155, 121818, 47639, 70775, 44868, 83395, 54455, 40338, 35878, 47429, 54712, 32696, 37477]
+        }
+          ]
+        };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+
+{% endblock %}

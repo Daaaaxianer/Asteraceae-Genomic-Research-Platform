@@ -1,0 +1,693 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <meta name="description" content="Asteraceae Genomics Bioinformatics Research Platform for Asteraceae research discovry">
+    <meta name="keywords" content="Asteraceae,Compositae,Arctium lappa,Helianthus annuus,Lactuca sativa,Taraxacum mongolicum,Artemisia annua,Senecio scandens">
+
+    <link rel="stylesheet" href="{% static 'vendor/css/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/searchPanes.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/select.dataTables.min.css' %}">
+
+    <script type="text/javascript" src="{% static 'vendor/js/jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/dataTables.searchPanes.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/dataTables.select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/highcharts.js' %}"></script>
+
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 主内容容器 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 子版块标题样式 */
+        .subsection-header {
+            color: #d35400;
+            font-weight: 800;
+            border-left: 5px solid #e67e22;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            font-size: 1.4rem;
+        }
+
+        .subsection-header img {
+            height: 32px;
+            margin-right: 12px;
+            vertical-align: bottom;
+        }
+
+        /* 5. 数据库卡片样式 */
+        .db-card {
+            background-color: #fffcf9; /* 极淡的暖色背景 */
+            border: 1px solid #f0e6da;
+            border-radius: 12px;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .db-card:hover {
+            background-color: #ffffff;
+            border-color: #e67e22;
+            transform: translateY(-6px); /* 悬浮上移 */
+            box-shadow: 0 12px 25px rgba(230, 126, 34, 0.12); /* 橙色系阴影 */
+        }
+
+        .db-card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* 卡片标题 - 已修改为居中且无图标 */
+        .db-card-title {
+            font-family: "Arial", sans-serif;
+            font-weight: 800;
+            font-size: 1.35rem; /* 稍微调大一点点以突出标题 */
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center; /* 居中对齐 */
+            display: block;
+            border-bottom: 1px dashed #e0e0e0;
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 卡片文本排版 */
+        .db-info-item {
+            margin-bottom: 10px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .db-label {
+            font-weight: 700;
+            color: #e67e22; /* 标签颜色 */
+            display: block; /* 标签独占一行或块级显示，排版更清晰 */
+            margin-bottom: 2px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 底部链接按钮化 */
+        .db-link-btn {
+            margin-top: auto;
+            padding-top: 15px;
+            text-align: center; /* 按钮也随标题居中，或者保持 right */
+        }
+
+        .visit-btn {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #d35400;
+            text-decoration: none;
+            border: 1px solid #d35400;
+            padding: 6px 20px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .db-card:hover .visit-btn {
+            background-color: #d35400;
+            color: #fff;
+        }
+
+        /* 修复stretched-link的点击范围 */
+        .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            content: "";
+        }
+
+        /* 强制相对定位，确保 stretched-link 生效 */
+        .position-relative {
+            position: relative !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">External Database Link</h2>
+            <p class="section-subtitle">Comprehensive collection of Asteraceae resources & tools</p>
+        </div>
+        <hr class="section-divider">
+
+        <h4 class="subsection-header">
+            Specialized Asteraceae Database
+        </h4>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">AMIR</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full name</span>
+                      Asteraceae Multi-omics Information Resource
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Platform for collecting, organizing, displaying, and comparing omics data of Asteraceae species.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      3,897 expression profiles, 74 species, 132 genomes, 4M+ genes.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://yanglab.hzau.edu.cn/AMIR" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">GCD</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full name</span>
+                      Global Compsitae Database
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Chrysanthemum genome database containing data and useful tools like sgRNA search.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Reference genomes of 6 chrysanthemum species and transcriptome data.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://www.compositae.org" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">E-Taxonomy</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full name</span>
+                      Cichorieae.e-taxonomy.net
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Classified and geographically referenced species of Cichorieae with descriptions and images.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Includes 105 genera, covering over 7500 species and hybrids.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://cichorieae.e-taxonomy.net/portal/node/8" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">AGD</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full name</span>
+                      Asteraceae Genome Database
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      High-quality genomic sequences and organelle genomic data with analytical tools.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Tools include BLAST, JBrowse, SSR Finder, HmmSearch, Heatmap, etc.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://cbcb.cdutcm.edu.cn/AGD/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">ASTER-REP</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Database for studying structure and function of transposable elements in Asteraceae.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Total of 328,696 full-length TEs included.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://aster-rep.agr.unipi.it/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative" style="background-color: #f5f5f5; border-style: dashed;">
+                <div class="db-card-body">
+                  <div class="db-card-title">
+                      TAD
+                      <span class="badge bg-secondary" style="font-size:0.65rem; vertical-align: middle; margin-left: 8px;">Discontinued</span>
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Collection of data and evolutionary relationships within Asteraceae.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Genomic, transcriptomic, and methylomic info of 14 species.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">GSAD</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full Name</span>
+                      Genome size in Asteraceae database
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Catalogue of genome size data for Asteraceae family.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Genome sizes of 1,555 species, 337 species and 46 genera.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://asteraceaegenomesize.com" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">CGD</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full Name</span>
+                      Candida Genome Database
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Chrysanthemum genome database with visualized expression data.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Reference genomes of 6 species, transcriptome data from 9 tissues.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://www.candidagenome.org/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">CyMSatDB</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Full Name</span>
+                      Cynara cardunculus MicroSatellite DataBase
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Automatic primer design tool and microsatellite data organization.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Based on whole genome SSR mining.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://www.artichokegenome.unito.it/cymsatdb/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <h4 class="subsection-header">
+            Comprehensive related database
+        </h4>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">PlantCFG</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Collects, organises, displays and compares flowering genes from a wide range of plants.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://yanglab.hzau.edu.cn/PlantCFG" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">LettuceGDB</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      A comprehensive database of lettuce as a globally popular leafy vegetable and representative Asteraceae plant.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://www.lettucegdb.com/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">pensoft</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      A number of cytogenetic properties are available in the database.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://compcytogen.pensoft.net/article/11395/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">DNA C</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      The Plant DNA C-Value Database currently contains C-value data for 12,273 species.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://cvalues.science.kew.org/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">GPB</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Statistics and trends in global biological databases.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://academic.oup.com/gpb/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">TRY</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Database of plant traits in the database.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://www.try-db.org/TryWeb/Home.php" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">GERDH</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Database for flowering genes with submission module.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://yanglab.hzau.edu.cn/PlantCFG" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">Springer</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Record the data of the Asteraceae family.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      2420 records, 19 tribes, 106 genera and 535 species.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://link.springer.com/article/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">ZINC15</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Function</span>
+                      Free database of compounds for virtual screening.
+                  </div>
+                  <div class="db-info-item">
+                      <span class="db-label">Data</span>
+                      Over 230 million compounds in 3D formats.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://zinc15.docking.org/catalogs/asternp/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">NGDC</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Comprehensive multi-omics data resource platform.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://ngdc.cncb.ac.cn/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <h4 class="subsection-header">
+            <img src="{% static 'image/logo.png' %}" alt="Logo">
+            Online Bioinformatics Tool Website
+        </h4>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">evolview</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Interactive phylogenetic tree visualisation tool. Supports Newick, Nexus, Nhx and PhyloXML.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://www.evolgenius.info/evolview/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">iTOL v5</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Interactive Phylogenetic Tree Visualiser for displaying and manipulating trees.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://itol.embl.de/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">MEME</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      A platform of online tools for discovering and analysing sequence motifs.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://meme-suite.org/meme/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">IqTree</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Efficient phylogenetic software for maximum likelihood analysis.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="http://iqtree.cibiv.univie.ac.at/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">AKRUP</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Generic pipeline for ancestral karyotype reconstruction.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://github.com/Genome-structure-evolution-analysis/AKRUP" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <div class="db-card position-relative">
+                <div class="db-card-body">
+                  <div class="db-card-title">ExPASy</div>
+                  <div class="db-info-item">
+                      <span class="db-label">Description</span>
+                      Bioinformatics Resource Portal covering proteomics, genomics, phylogeny, etc.
+                  </div>
+                  <div class="db-link-btn">
+                      <span class="visit-btn">Visit Website <i class="bi bi-arrow-right-short"></i></span>
+                  </div>
+                  <a href="https://www.expasy.org/" class="stretched-link" target="_blank"></a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

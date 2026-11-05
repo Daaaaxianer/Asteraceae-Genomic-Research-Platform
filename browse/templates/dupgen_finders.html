@@ -1,0 +1,1240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene duplication type - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+.status-card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.all-species-note,
+.all-species-job {
+    background: #fff8ef !important;
+    border: 1px solid #efc89a !important;
+    color: #8a4a06 !important;
+}
+
+.all-species-job strong {
+    color: #b94a00;
+}
+
+.all-species-job .progress {
+    background: #f7e3ca;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.all-species-job .progress-bar {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+}
+
+.all-species-job.alert-success {
+    background: #edf8f1 !important;
+    border-color: #9dd6b4 !important;
+    color: #146c43 !important;
+}
+
+.all-species-job.alert-success .progress-bar {
+    background: #198754;
+}
+
+.all-species-job.alert-danger {
+    background: #fff1f1 !important;
+    border-color: #f0aaa8 !important;
+    color: #9f1d20 !important;
+}
+
+.all-species-job .btn-success {
+    background: #d35400;
+    border-color: #d35400;
+    color: #fff;
+}
+
+.all-species-job .btn-success:hover {
+    background: #b94a00;
+    border-color: #b94a00;
+}
+
+.all-species-job .btn-outline-secondary {
+    background: #fff;
+    border-color: #efc89a;
+    color: #8a4a06;
+}
+
+.all-species-job .btn-outline-secondary:hover {
+    background: #fff3df;
+    border-color: #e8b66f;
+    color: #b94a00;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+#myTable th,
+#myTable td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+        /* ===================== Unified AGRP DataTable style ===================== */
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        .table-container {
+            background: #fff !important;
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            padding: 20px 20px 16px !important;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06) !important;
+            margin-bottom: 22px !important;
+            overflow: visible !important;
+        }
+
+        .table-responsive.table-container {
+            overflow-x: auto !important;
+        }
+
+        .action-bar,
+        .action-row,
+        .table-action-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .action-group,
+        .table-action-group {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+
+        .btn-custom,
+        .action-bar .btn,
+        .table-action-row .btn {
+            border-radius: 7px !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            padding: 8px 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
+            line-height: 1.2 !important;
+        }
+
+        .btn-select,
+        .action-bar .btn-primary,
+        .table-action-row .btn-primary,
+        .action-bar .btn-outline-primary {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border: 1px solid var(--dark-orange) !important;
+        }
+
+        .btn-select:hover,
+        .action-bar .btn-primary:hover,
+        .table-action-row .btn-primary:hover,
+        .action-bar .btn-outline-primary:hover {
+            color: #fff !important;
+            background: #b94a00 !important;
+            border-color: #b94a00 !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-download,
+        .action-bar .btn-success,
+        .table-action-row .btn-success {
+            color: var(--dark-orange) !important;
+            background: #fff !important;
+            border: 1px solid #efc89a !important;
+        }
+
+        .btn-download:hover,
+        .action-bar .btn-success:hover,
+        .table-action-row .btn-success:hover {
+            color: #b94a00 !important;
+            background: #fff8ef !important;
+            border-color: #e8b66f !important;
+        }
+
+        table.dataTable,
+        table.result-table,
+        table.genome-table {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        table.result-table thead th,
+        table.genome-table thead th,
+        .table-container table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        table.result-table td,
+        table.genome-table td,
+        .table-container table td {
+            padding: 10px 15px !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+            border-bottom: 1px solid #edf0f2 !important;
+        }
+
+        table.result-table tbody tr:nth-child(even),
+        table.genome-table tbody tr:nth-child(even),
+        .table-container table tbody tr:nth-child(even) {
+            background-color: #fffdf9 !important;
+        }
+
+        table.result-table tbody tr:hover,
+        table.genome-table tbody tr:hover,
+        .table-container table tbody tr:hover {
+            background-color: #fff6eb !important;
+        }
+
+        .checkbox-cell {
+            text-align: center !important;
+            width: 76px !important;
+            min-width: 76px !important;
+            padding-right: 15px !important;
+        }
+
+        table.dataTable thead th.checkbox-cell::before,
+        table.dataTable thead th.checkbox-cell::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .current-page-select {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            cursor: pointer !important;
+            user-select: none !important;
+        }
+
+        .current-page-select input {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50 !important;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center !important;
+            row-gap: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px !important;
+            padding-top: 12px !important;
+            border-top: 1px solid #f0e4d8 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            color: #495057 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px !important;
+            border: 1px solid #d9e0e6 !important;
+            border-radius: 7px !important;
+            background-color: #fff !important;
+            color: #2c3e50 !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px !important;
+            margin: 0 !important;
+            padding: 4px 28px 4px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px !important;
+            margin: 0 !important;
+            padding: 6px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+            outline: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .pagination .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            min-width: 36px !important;
+            height: 36px !important;
+            padding: 0 10px !important;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4 !important;
+            background: #fff !important;
+            color: #44515c !important;
+            box-sizing: border-box !important;
+            box-shadow: none !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border-color: var(--dark-orange) !important;
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22) !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:not(.current):not(.disabled):hover {
+            color: var(--dark-orange) !important;
+            background: #fff8ef !important;
+            border-color: #efc89a !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: #b6c0c9 !important;
+            background: #f8fafb !important;
+            border-color: #e8edf1 !important;
+        }
+
+        .page-jump-control {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            color: #5f6b76 !important;
+            font-size: 0.92rem !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+        }
+
+        .page-jump-input {
+            width: 58px !important;
+            height: 36px !important;
+            padding: 0 8px !important;
+            border: 1px solid #d8dee4 !important;
+            border-radius: 7px !important;
+            color: #2c3e50 !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            outline: 0 !important;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+        }
+
+        .page-jump-total {
+            color: #8a96a3 !important;
+        }
+
+        .page-jump-btn {
+            height: 36px !important;
+            padding: 0 12px !important;
+            border: 1px solid #efc89a !important;
+            border-radius: 7px !important;
+            background: #fff8ef !important;
+            color: var(--dark-orange) !important;
+            font-weight: 800 !important;
+            line-height: 1 !important;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df !important;
+            border-color: #e8b66f !important;
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                padding: 12px !important;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0 !important;
+                width: 100% !important;
+            }
+
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate,
+            .dataTables_wrapper .pagination {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+        }
+
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">Duplication Type</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        Gene duplication type classification analysis, using DupGen_finder, can divide all genes into 5 categories according to the replication type, namely WGD: whole genome duplication, TD: tandem duplication (two adjacent duplication genes), PD: Proximal duplications (repeated genes within 10 genes apart), TRD: transposed duplications (duplicated genes consisting of ancestral and new loci), DSD: scattered duplications (duplicated genes that are neither adjacent nor collinear).
+	We identified <strong>1,991,974</strong> gene pairs from WGD, <strong>227,821</strong> gene pairs from TD, <strong>171,027</strong> gene pairs from PD, <strong>872,396</strong> gene pairs from TRD, and <strong>2,312,254</strong> gene pairs from DSD across <strong>53</strong> Asteraceae species and <strong>6</strong> outgroups.
+    </div>
+
+    <form action="{% url 'dupgen_finders_url' %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    <div class="form-card">
+        <div class="mb-4">
+            <label class="form-label">
+                Query Sequence
+                <button type="button" class="example-btn" id="query_sequence">Example</button>
+            </label>
+            <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" rows="5">{{ query_sequence_value|default_if_none:'' }}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">
+                Or, Gene / Genes ID
+                <button type="button" class="example-btn" id="exampleButton">Example</button>
+            </label>
+            <textarea class="form-control" id="lastName" name="geneid" rows="5">{{ geneid_value|default_if_none:'' }}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Query Genome</label>
+            <select class="form-control" id="state" name="sp_data_1" data-selected="{{ selected_sp_data_1|default:'Aann' }}">
+                <option value="ALL_SPECIES">All species</option>
+                <!-- 原 option 完整保留 -->
+                <option value="Aann" selected>Artemisia annua</option>
+<option value="Aary">Artemisia argyi</option>
+<option value="Amar">Ambrosia artemisiifolia</option>
+<option value="Amtr">Ambrosia trifida</option>
+<option value="Arla">Arctium lappa</option>
+<option value="Armi">Arctium minus</option>
+<option value="Artr">Artemisia tridentata</option>
+<option value="Bial">Bidens alba</option>
+<option value="Busi">Buxus sinica</option>
+<option value="Ccar">Cynara cardunculus</option>
+<option value="Ceso">Centaurea solstitialis</option>
+<option value="Chla">Chrysanthemum lavandulifolium</option>
+<option value="Chma">Chrysanthemum makinoi</option>
+<option value="Chmo">Chrysanthemum morifolium</option>
+<option value="Chna">Chrysanthemum nankingense</option>
+<option value="Cich">Cichorium intybus</option>
+<option value="Cien">Cichorium endivia</option>
+<option value="Cind">Chrysanthemum indicum</option>
+<option value="Cobi">Cosmos bipinnatus</option>
+<option value="Cpa">Centrapalus pauciflorus</option>
+<option value="Cati">Carthamus tinctorius</option>
+<option value="Dapi">Dahlia pinnata</option>
+<option value="Desu">Deinandra increscens</option>
+<option value="Ecan">Erigeron canadensis</option>
+<option value="Enbr">Erigeron breviscapus</option>
+<option value="Eupl">Euptelea pleiosperma</option>
+<option value="Fbi">Flaveria bidentis</option>
+<option value="Fbr">Flaveria brownii</option>
+<option value="Ffl">Flaveria floridana</option>
+<option value="Fli">Flaveria linearis</option>
+<option value="Fra">Flaveria ramosissima</option>
+<option value="Fro">Flaveria robusta</option>
+<option value="Fso">Flaveria sonorensis</option>
+<option value="Ftr">Flaveria trinervia</option>
+<option value="Gehy">Gerbera hybrida</option>
+<option value="Glco">Glebionis coronaria</option>
+<option value="Hean">Helianthus annuus</option>
+<option value="Hetu">Helianthus tuberosus</option>
+<option value="Heub">Helichrysum umbraculigerum</option>
+<option value="Laca">Lactuca saligna</option>
+<option value="Lomi">Logfia minima</option>
+<option value="Lssa">Lactuca sativa</option>
+<option value="Mimi">Mikania micrantha</option>
+<option value="Nenu">Nelumbo nucifera</option>
+<option value="Nin">Nymphoides indica</option>
+<option value="Pin">Pluchea indica</option>
+<option value="Pdy">Pulicaria dysenterica</option>
+<option value="Pslu">Pseudognaphalium luteoalbum</option>
+<option value="Sain">Saussurea involucrata</option>
+<option value="Scae">Solidago caesia</option>
+<option value="Sesq">Senecio squalidus</option>
+<option value="Smso">Smallanthus sonchifolius</option>
+<option value="Soca">Solidago canadensis</option>
+<option value="Stre">Stevia rebaudiana</option>
+<option value="Taer">Tagetes erecta</option>
+<option value="Tako">Taraxacum kok-saghyz</option>
+<option value="Tamo">Taraxacum mongolicum</option>
+<option value="Tesi">Tetracentron sinense</option>
+<option value="Vivi">Vitis vinifera</option>
+            </select>
+        </div>
+
+        <input class="w-100 btn btn-lg search-btn" type="submit" value="Search">
+    </div>
+
+    {% if all_species_blast_target_limit %}
+    <div class="alert status-card all-species-note" role="alert">
+        All-species DupGen sequence search is enabled and uses the top {{ all_species_blast_target_limit }} BLAST targets before duplication lookup.
+    </div>
+    {% endif %}
+
+    {% if dupgen_job_id %}
+    <div
+        id="dupgen-job-panel"
+        class="alert alert-info status-card all-species-job"
+        role="status"
+        data-status-url="{% url 'dupgen_job_status_url' dupgen_job_id %}">
+        <div><strong>All-species DupGen job submitted.</strong></div>
+        <div>Job ID: {{ dupgen_job_id }}</div>
+        <div id="dupgen-job-message">Waiting to start...</div>
+        <div id="dupgen-job-counts"></div>
+        <div class="progress mt-3" style="height: 10px;">
+            <div id="dupgen-job-progress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+            <a id="dupgen-job-result" class="btn btn-success btn-sm d-none" href="#">View results</a>
+            <a id="dupgen-job-download" class="btn btn-success btn-sm d-none" href="#">Download DupGen TSV</a>
+            <a id="dupgen-job-blast-download" class="btn btn-outline-secondary btn-sm d-none" href="#">Download BLAST hits TSV</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+    {% endif %}
+
+    {% if info_message %}
+    <div class="alert alert-info" role="alert">
+        {{ info_message }}
+    </div>
+    {% endif %}
+
+    {% if not_found_geneids %}
+    <div class="alert alert-warning" role="alert">
+        The following gene IDs were not found: {{ not_found_geneids|join:", " }}
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="section-divider"></div>
+
+    <div class="result-title">
+        <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+        Results
+    </div>
+
+    <div class="action-bar">
+        <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+        <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="DupGen_selected_rows.txt"><i class="fas fa-download"></i> Download Selected</button>
+    </div>
+
+    <div class="table-responsive table-container">
+        <table id="myTable" class="table table-bordered table-hover result-table align-middle">
+            <thead>
+                <tr>
+                    <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                    <th>Species</th>
+                    <th>Gene1</th>
+                    <th>Chr</th>
+                    <th>Gene2</th>
+                    <th>Chr</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for pair in result %}
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td>
+                    <td>{{ pair.1 }}</td>
+                    <td>
+                        {% if pair.2 %}
+                        <a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>{{ pair.3 }}</td>
+                    <td>{{ pair.4 }}</td>
+                    <td>{{ pair.5 }}</td>
+                    <td>{{ pair.7 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    </form>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    if ($('#myTable').length) {
+        $('#myTable').DataTable({
+            paging: true,
+            info: true,
+            searching: true,
+            lengthChange: true,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            pagingType: 'simple_numbers',
+            scrollX: true,
+            autoWidth: false,
+            columnDefs: [
+                { orderable: false, targets: 0 }
+            ]
+        });
+    }
+});
+</script>
+
+<script>
+var genomeSelect = document.getElementById('state');
+if (genomeSelect && genomeSelect.dataset.selected) {
+    genomeSelect.value = genomeSelect.dataset.selected;
+}
+
+document.getElementById('exampleButton').onclick = function() {
+    document.getElementById('lastName').value =
+`Aann1g00001
+Aann1g00002
+Aann1g00003
+Aann1g00004`;
+};
+
+document.getElementById('query_sequence').onclick = function() {
+    document.getElementById('lastName_query_sequence').value =
+`>sequence1
+MATTTTTRKEGHGLLLGRFEIGKLLGHGSFAKVYLARNVTTNEYVAIKVIDKEKIMKGGL
+IAHIKREISILRRVRHPNIVQLFEVMATKTKIFFVMEYVKGGELFNKVAKGRLKEEIARK
+YFQQLISAVGFCHARGVFHRDLKPENILLDDDGDLKVSDFGLSAISEQIRGDGLFHTFCG
+TPAYVAPEVLGRKGYEAAKVDIWSCGVILFVLMAGYLPFHDQNIMVLYKKIYRGEFRCPR
+WFSPELSRLLKRLLDINPDSRITIPEIMENKWFKKGFRHVKFYIEDDKLCSVKDGEVEDD
+GIDYSSDQSSYSESESETETRRRLSVSSLPRPASLNAFDLISFSRGFSLSGLFEDGVEES
+RFVSREPISAIISKLEEIAKVLKFTVRKKDCRISLEGSREGVKGPLTITVEIFELTPSLN
+VVEVKKRAGDRGEYDEFCARELRPRLQELMHTNQSGEPSNIPSDSE`;
+};
+</script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    var selectAllBtn = document.getElementById("selectAllBtn");
+    var downloadBtn = document.getElementById("download-btn");
+
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener("click", function () {
+            document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+                cb.checked = true;
+            });
+        });
+    }
+
+    if (downloadBtn) {
+        downloadBtn.addEventListener("click", function () {
+            var rows = [];
+
+            document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+                if (cb.checked) {
+                    var row = cb.closest("tr");
+                    var data = [];
+                    row.querySelectorAll("td").forEach(function (td) {
+                        data.push(td.textContent.trim());
+                    });
+                    rows.push(data.join("\t"));
+                }
+            });
+
+            if (rows.length === 0) {
+                alert("Please select at least one row.");
+                return;
+            }
+
+            var blob = new Blob([rows.join("\n")], {type: "text/plain"});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "gene_type_selected_rows.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+
+    var jobPanel = document.getElementById("dupgen-job-panel");
+    if (jobPanel) {
+        var messageEl = document.getElementById("dupgen-job-message");
+        var countsEl = document.getElementById("dupgen-job-counts");
+        var progressEl = document.getElementById("dupgen-job-progress");
+        var resultEl = document.getElementById("dupgen-job-result");
+        var downloadEl = document.getElementById("dupgen-job-download");
+        var blastDownloadEl = document.getElementById("dupgen-job-blast-download");
+
+        function updateDupgenJobPanel(data) {
+            var status = data.status || "running";
+            var progress = Math.max(0, Math.min(100, parseInt(data.progress || 0, 10)));
+            messageEl.textContent = data.message || status;
+            progressEl.style.width = progress + "%";
+            progressEl.setAttribute("aria-valuenow", progress);
+
+            var counts = [];
+            if (data.blast_hit_count !== undefined) {
+                counts.push("BLAST hits: " + data.blast_hit_count);
+            }
+            if (data.recognized_gene_count !== undefined) {
+                counts.push("Matched genes: " + data.recognized_gene_count);
+            }
+            if (data.result_count !== undefined) {
+                counts.push("DupGen records: " + data.result_count);
+            }
+            if (data.failed_species && data.failed_species.length) {
+                counts.push("Failed species: " + data.failed_species.join(", "));
+            } else if (data.failed_species_count !== undefined && data.failed_species_count > 0) {
+                counts.push("Failed species: " + data.failed_species_count);
+            }
+            countsEl.textContent = counts.join(" | ");
+
+            jobPanel.classList.remove("alert-info", "alert-success", "alert-danger");
+            if (status === "done") {
+                jobPanel.classList.add("alert-success");
+                if (data.result_url) {
+                    resultEl.href = data.result_url;
+                    resultEl.classList.remove("d-none");
+                }
+                if (data.download_url) {
+                    downloadEl.href = data.download_url;
+                    downloadEl.classList.remove("d-none");
+                }
+                if (data.blast_download_url) {
+                    blastDownloadEl.href = data.blast_download_url;
+                    blastDownloadEl.classList.remove("d-none");
+                }
+                return true;
+            }
+            if (status === "error") {
+                jobPanel.classList.add("alert-danger");
+                return true;
+            }
+            jobPanel.classList.add("alert-info");
+            return false;
+        }
+
+        function pollDupgenJobStatus() {
+            fetch(jobPanel.dataset.statusUrl, { credentials: "same-origin" })
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
+                    if (!updateDupgenJobPanel(data)) {
+                        window.setTimeout(pollDupgenJobStatus, 4000);
+                    }
+                })
+                .catch(function () {
+                    messageEl.textContent = "Could not read job status. Retrying...";
+                    window.setTimeout(pollDupgenJobStatus, 6000);
+                });
+        }
+
+        pollDupgenJobStatus();
+    }
+
+});
+</script>
+
+
+
+<script>
+/* Unified AGRP table behavior */
+(function () {
+    function hasJqueryDataTables() {
+        return typeof window.jQuery !== 'undefined' && jQuery.fn && jQuery.fn.DataTable;
+    }
+
+    function getDataTable(table) {
+        if (!hasJqueryDataTables() || !table || !table.id) {
+            return null;
+        }
+        var selector = '#' + table.id;
+        if (!jQuery.fn.dataTable.isDataTable(selector)) {
+            return null;
+        }
+        return jQuery(selector).DataTable();
+    }
+
+    function installPageJump(table) {
+        var dt = getDataTable(table);
+        if (!dt || table.dataset.pageJumpInstalled === '1') {
+            return;
+        }
+        table.dataset.pageJumpInstalled = '1';
+
+        function renderPageJump() {
+            var info = dt.page.info();
+            var wrapper = jQuery('#' + table.id + '_wrapper');
+            var paginate = wrapper.find('.dataTables_paginate');
+            paginate.find('.page-jump-control').remove();
+
+            if (!info || info.pages <= 1 || !paginate.length) {
+                return;
+            }
+
+            var inputId = table.id + '_page_jump';
+            var control = jQuery('<div class="page-jump-control" aria-label="Jump to page"></div>');
+            var input = jQuery('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                id: inputId,
+                min: 1,
+                max: info.pages,
+                value: info.page + 1,
+                'aria-label': 'Page number'
+            });
+            var total = jQuery('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+            var button = jQuery('<button type="button" class="page-jump-btn">Go</button>');
+
+            function jumpToPage() {
+                var requestedPage = parseInt(input.val(), 10);
+                if (isNaN(requestedPage)) {
+                    input.val(info.page + 1).focus();
+                    return;
+                }
+                requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                dt.page(requestedPage - 1).draw('page');
+            }
+
+            input.on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    jumpToPage();
+                }
+            });
+            button.on('click', jumpToPage);
+
+            control
+                .append(jQuery('<label></label>').attr('for', inputId).text('Page'))
+                .append(input)
+                .append(total)
+                .append(button);
+            paginate.append(control);
+        }
+
+        dt.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    function tableRows(table, selector) {
+        var dt = getDataTable(table);
+        if (dt) {
+            return jQuery(dt.rows(selector).nodes());
+        }
+        return jQuery(table).find('tbody tr');
+    }
+
+    function selectionTable() {
+        var box = document.querySelector('.row-checkbox');
+        return box ? box.closest('table') : null;
+    }
+
+    function allFilteredCheckboxes(table) {
+        return tableRows(table, {search: 'applied'}).find('.row-checkbox');
+    }
+
+    function currentPageCheckboxes(table) {
+        return tableRows(table, {page: 'current'}).find('.row-checkbox');
+    }
+
+    function updateSelectionControls() {
+        var table = selectionTable();
+        if (!table) {
+            return;
+        }
+
+        var allBoxes = allFilteredCheckboxes(table);
+        var checkedAllCount = allBoxes.filter(':checked').length;
+        var allSelected = allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+        var selectAllBtn = document.getElementById('selectAllBtn');
+        if (selectAllBtn) {
+            selectAllBtn.innerHTML = allSelected
+                ? '<i class="fas fa-square"></i> Clear Selection'
+                : '<i class="fas fa-check-square"></i> Select All';
+        }
+
+        var pageBoxes = currentPageCheckboxes(table);
+        var checkedPageCount = pageBoxes.filter(':checked').length;
+        jQuery('.js-select-current-page').each(function () {
+            this.checked = pageBoxes.length > 0 && checkedPageCount === pageBoxes.length;
+            this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+        });
+    }
+
+    function replaceButton(id) {
+        var button = document.getElementById(id);
+        if (!button) {
+            return null;
+        }
+        var clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+        return clone;
+    }
+
+    function downloadSelectedRows(table, downloadBtn) {
+        var rows = [];
+        var headers = [];
+        jQuery(table).find('thead th').each(function (index) {
+            var text = jQuery(this).text().trim();
+            if (index === 0 && jQuery(this).find('.js-select-current-page').length) {
+                return;
+            }
+            if (/^select$/i.test(text) || /^image$/i.test(text)) {
+                return;
+            }
+            headers.push(text);
+        });
+        if (headers.length) {
+            rows.push(headers.join('\t'));
+        }
+
+        tableRows(table, {search: 'applied'}).each(function () {
+            var row = this;
+            var checkbox = row.querySelector('.row-checkbox');
+            if (!checkbox || !checkbox.checked) {
+                return;
+            }
+            var data = [];
+            jQuery(row).find('td').each(function (index) {
+                var cell = jQuery(this);
+                var headerText = jQuery(table).find('thead th').eq(index).text().trim();
+                if (index === 0 || /^select$/i.test(headerText) || /^image$/i.test(headerText) || cell.find('img').length) {
+                    return;
+                }
+                data.push(cell.text().trim().replace(/\s+/g, ' '));
+            });
+            rows.push(data.join('\t'));
+        });
+
+        if (rows.length <= (headers.length ? 1 : 0)) {
+            alert('Please select at least one row.');
+            return;
+        }
+
+        var blob = new Blob([rows.join('\n')], {type: 'text/plain'});
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = (downloadBtn && downloadBtn.dataset.filename) || 'selected_rows.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (hasJqueryDataTables()) {
+            jQuery('table.dataTable, table[id]').each(function () {
+                installPageJump(this);
+                var dt = getDataTable(this);
+                if (dt) {
+                    dt.on('draw length.dt search.dt order.dt page.dt', updateSelectionControls);
+                }
+            });
+        }
+
+        var selectAllBtn = replaceButton('selectAllBtn');
+        var downloadBtn = replaceButton('download-btn');
+        var table = selectionTable();
+
+        if (selectAllBtn && table) {
+            selectAllBtn.addEventListener('click', function () {
+                var allBoxes = allFilteredCheckboxes(table);
+                var shouldSelect = allBoxes.filter(':checked').length !== allBoxes.length;
+                allBoxes.prop('checked', shouldSelect);
+                updateSelectionControls();
+            });
+        }
+
+        if (downloadBtn && table) {
+            downloadBtn.addEventListener('click', function () {
+                downloadSelectedRows(table, downloadBtn);
+            });
+        }
+
+        jQuery(document).on('click', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+        });
+
+        jQuery(document).on('change', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+            var targetTable = selectionTable();
+            if (!targetTable) {
+                return;
+            }
+            currentPageCheckboxes(targetTable).prop('checked', this.checked);
+            updateSelectionControls();
+        });
+
+        jQuery(document).on('change', '.row-checkbox', updateSelectionControls);
+        updateSelectionControls();
+    });
+})();
+</script>
+
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'myTable',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: 'DupGen_selected_rows.txt'
+});
+</script>
+
+{% endblock %}

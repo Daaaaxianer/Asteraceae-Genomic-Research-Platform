@@ -1,0 +1,1107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aster-Genefamiles - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+/* 表格响应式 */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;   /* 横向滚动 */
+}
+
+/* 针对 BLAST 表格 */
+#myTable2 {
+    min-width: 1200px;   /* 根据列数适当调整 */
+    font-size: 0.85rem;  /* 可选：缩小字体让表格更紧凑 */
+}
+
+#myTable2 th,
+#myTable2 td {
+    white-space: nowrap;  /* 禁止换行 */
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 小屏幕适配 */
+@media (max-width: 768px) {
+    #myTable2 {
+        min-width: 800px; /* 小屏幕时减小宽度 */
+        font-size: 0.75rem;
+    }
+}
+/* 分页整体容器 */
+.dataTables_paginate {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 分页按钮样式 */
+.dataTables_paginate a,
+.dataTables_paginate span {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 鼠标悬停效果 */
+.dataTables_paginate a:hover {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    color: #fff;
+    border-color: #e67e22;
+}
+
+/* 当前页高亮 */
+.dataTables_paginate .current {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    color: #fff !important;
+    border-color: #e67e22;
+    font-weight: 700;
+}
+
+.status-card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.all-species-job {
+    background: #fff8ef !important;
+    border: 1px solid #efc89a !important;
+    color: #8a4a06 !important;
+}
+
+.all-species-job strong {
+    color: #b94a00;
+}
+
+.all-species-job .progress {
+    background: #f7e3ca;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.all-species-job .progress-bar {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+}
+
+.all-species-job.alert-success {
+    background: #edf8f1 !important;
+    border-color: #9dd6b4 !important;
+    color: #146c43 !important;
+}
+
+.all-species-job.alert-success .progress-bar {
+    background: #198754;
+}
+
+.all-species-job.alert-danger {
+    background: #fff1f1 !important;
+    border-color: #f0aaa8 !important;
+    color: #9f1d20 !important;
+}
+
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">Aster-Genefamilies</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        &emsp;&emsp;Using the model plant Arabidopsis thaliana as a reference, 210 important gene family members within the Asteraceae family have been identified. Users can determine the gene family to which a sequence belongs by performing a BLAST match. Alternatively, by selecting a gene family of interest—such as MADS-box or HSF—the webpage will display all members of that gene family across all Asteraceae plants.
+    </div>
+
+    {% if function_gene_job_id %}
+    <div
+        id="function-gene-job-panel"
+        class="alert alert-info status-card all-species-job"
+        role="status"
+        data-status-url="{% url 'function_gene_job_status_url' function_gene_job_id %}">
+        <div><strong>All-species Aster-Genefamiles job submitted.</strong></div>
+        <div>Job ID: {{ function_gene_job_id }}</div>
+        <div id="function-gene-job-message">Waiting to start...</div>
+        <div id="function-gene-job-counts"></div>
+        <div class="progress mt-3" style="height: 10px;">
+            <div id="function-gene-job-progress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+            <a id="function-gene-job-result" class="btn btn-success btn-sm d-none" href="#">View results</a>
+            <a id="function-gene-job-download" class="btn btn-success btn-sm d-none" href="#">Download results TSV</a>
+            <a id="function-gene-job-blast-download" class="btn btn-outline-secondary btn-sm d-none" href="#">Download BLAST hits TSV</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if all_species_blast_target_limit %}
+    <div class="alert status-card all-species-job" role="alert">
+        All-species sequence search is running in the background and uses the top {{ all_species_blast_target_limit }} BLAST targets before function-gene lookup.
+    </div>
+    {% endif %}
+
+    <form action="function_gene" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="container">
+            {% if not result %}
+                <div class="form-card">
+                    <div class="mb-4">
+                        <label class="form-label">
+                            Query Sequence
+                            <button type="button" class="example-btn" id="query_sequence">Example</button>
+                        </label>
+                        <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" rows="5">{{ submitted_query_sequence|default:'' }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Or, Gene / Genes ID
+                            <button type="button" class="example-btn" id="exampleButton">Example</button>
+                        </label>
+                        <textarea class="form-control" id="lastName" name="geneid" rows="5">{{ submitted_geneid|default:'' }}</textarea>
+                    </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-12" style="padding-top: 20px">
+                        <label for="lastName" class="form-label">Or, select function</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <select class="form-control" id="state" name="function" required>
+                                <option value="None;"></option>
+                                <option value="14-3-3 family;">14-3-3 family</option>
+                                <option value="Acyl Lipid Metabolism Gene Families;">Acyl Lipid Metabolism Gene Families</option>
+                                <option value="AGC Kinase Gene Family;">AGC Kinase Gene Family</option>
+                                <option value="Aldehyde Dehydrogenase Gene Family;">Aldehyde Dehydrogenase Gene Family</option>
+                                <option value="Alfin-like Transcription Factor Family;">Alfin-like Transcription Factor Family</option>
+                                <option value="Amino Acid/Auxin Permease AAAP Family;">Amino Acid/Auxin Permease AAAP Family</option>
+                                <option value="Antiporter Super Family;">Antiporter Super Family</option>
+                                <option value="Antiporters;">Antiporters</option>
+                                <option value="AP2-EREBP Transcription Factor Family;">AP2-EREBP Transcription Factor Family</option>
+                                <option value="ARIADNE family;">ARIADNE family</option>
+                                <option value="ARID Transcription Factor Family;">ARID Transcription Factor Family</option>
+                                <option value="AS2 family;">AS2 family</option>
+                                <option value="AT-hook Motif Nuclear Localized (AHL) Family;">AT-hook Motif Nuclear Localized (AHL) Family</option>
+                                <option value="AtRKD Transcription Factor Family;">AtRKD Transcription Factor Family</option>
+                                <option value="B3 DNA Binding Superfamily;">B3 DNA Binding Superfamily</option>
+                                <option value="Basic Helix-Loop-Helix Transcription Factor Gene Family;">Basic Helix-Loop-Helix Transcription Factor Gene Family</option>
+                                <option value="Basic region leucine zipper (bZIP) Transcription Factor Gene Family;">Basic region leucine zipper (bZIP) Transcription Factor Gene Family</option>
+                                <option value="BBR/BPC Transcription factor family;">BBR/BPC Transcription factor family</option>
+                                <option value="bZIP Transcription Factor Family;">bZIP Transcription Factor Family</option>
+                                <option value="BZR Transcription Factor Family;">BZR Transcription Factor Family</option>
+                                <option value="C2C2-CO-like Transcription Factor Family;">C2C2-CO-like Transcription Factor Family</option>
+                                <option value="C2C2-Dof Transcription Factor Family;">C2C2-Dof Transcription Factor Family</option>
+                                <option value="C2C2-Gata Transcription Factor Family;">C2C2-Gata Transcription Factor Family</option>
+                                <option value="C2C2-YABBY Transcription Factor Family;">C2C2-YABBY Transcription Factor Family</option>
+                                <option value="C2H2 Transcription Factor Family;">C2H2 Transcription Factor Family</option>
+                                <option value="C3H Transcription Factor Family;">C3H Transcription Factor Family</option>
+                                <option value="Calmodulin-binding Proteins;">Calmodulin-binding Proteins</option>
+                                <option value="CAMTA Transcription Factor Family;">CAMTA Transcription Factor Family</option>
+                                <option value="Carbohydrate Esterase;">Carbohydrate Esterase</option>
+                                <option value="CBL-interacting serine-threonine protein kinases;">CBL-interacting serine-threonine protein kinases</option>
+                                <option value="CCAAT-DR1 Transcription Factor Family;">CCAAT-DR1 Transcription Factor Family</option>
+                                <option value="CCAAT-HAP2 Transcription Factor Family;">CCAAT-HAP2 Transcription Factor Family</option>
+                                <option value="CCAAT-HAP3 Transcription Factor Family;">CCAAT-HAP3 Transcription Factor Family</option>
+                                <option value="CCAAT-HAP5 Transcription Factor Family;">CCAAT-HAP5 Transcription Factor Family</option>
+                                <option value="Cell Wall Biosynthesis;">Cell Wall Biosynthesis</option>
+                                <option value="Chloroplast and Mitochondria Gene Families;">Chloroplast and Mitochondria Gene Families</option>
+                                <option value="COBRA Gene Family;">COBRA Gene Family</option>
+                                <option value="Core Cell Cycle Gene Families;">Core Cell Cycle Gene Families</option>
+                                <option value="Core DNA Replication Machinery Family;">Core DNA Replication Machinery Family</option>
+                                <option value="CPP Transcription Factor Family;">CPP Transcription Factor Family</option>
+                                <option value="Cytochrome P450;">Cytochrome P450</option>
+                                <option value="Cytoplasmic Ribosomal Protein Gene Family;">Cytoplasmic Ribosomal Protein Gene Family</option>
+                                <option value="Cytoskeleton Gene Families;">Cytoskeleton Gene Families</option>
+                                <option value="E2F-DP Transcription Factor Family;">E2F-DP Transcription Factor Family</option>
+                                <option value="EF-hand Containing Proteins;">EF-hand Containing Proteins</option>
+                                <option value="EIL Transcription Factor Family;">EIL Transcription Factor Family</option>
+                                <option value="Eukaryotic Initiation Factors Gene Family;">Eukaryotic Initiation Factors Gene Family</option>
+                                <option value="EXO70 exocyst subunit family;">EXO70 exocyst subunit family</option>
+                                <option value="Expansin Gene Family;">Expansin Gene Family</option>
+                                <option value="FH2 protein (formin) Gene Family;">FH2 protein (formin) Gene Family</option>
+                                <option value="G2-like Transcription Factor Family;">G2-like Transcription Factor Family</option>
+                                <option value="GeBP Transcription Factor Family;">GeBP Transcription Factor Family</option>
+                                <option value="Glutamine Dumper (GDU) Family;">Glutamine Dumper (GDU) Family</option>
+                                <option value="Glutathione S-transferase Gene Family;">Glutathione S-transferase Gene Family</option>
+                                <option value="Glycoside Hydrolase;">Glycoside Hydrolase</option>
+                                <option value="Glycosyltransferase;">Glycosyltransferase</option>
+                                <option value="GRAS Transcription Factor Family;">GRAS Transcription Factor Family</option>
+                                <option value="GRF Transcription Factor Family;">GRF Transcription Factor Family</option>
+                                <option value="Histidine Kinase Gene Family;">Histidine Kinase Gene Family</option>
+                                <option value="Homeobox Transcription Factor Family;">Homeobox Transcription Factor Family</option>
+                                <option value="HRT Transcription Factor Family;">HRT Transcription Factor Family</option>
+                                <option value="HSF;">HSF</option>
+                                <option value="IDZ Gene Family;">IDZ Gene Family</option>
+                                <option value="Inorganic Solute Cotransporters;">Inorganic Solute Cotransporters</option>
+                                <option value="Ion Channels;">Ion Channels</option>
+                                <option value="IQD Protein Family;">IQD Protein Family</option>
+                                <option value="JUMONJI Transcription Factor Family;">JUMONJI Transcription Factor Family</option>
+                                <option value="Leucine-rich Repeat extension Gene Families;">Leucine-rich Repeat extension Gene Families</option>
+                                <option value="Lipid Metabolism Gene Families;">Lipid Metabolism Gene Families</option>
+                                <option value="LysM Receptor-like Kinase (LYKs) Gene Family;">LysM Receptor-like Kinase (LYKs) Gene Family</option>
+                                <option value="LysM Receptor-like Protein (LYPs) Gene Family;">LysM Receptor-like Protein (LYPs) Gene Family</option>
+                                <option value="MADS-box Gene Family;">MADS-box Gene Family</option>
+                                <option value="Major Intrinsic Protein MIP;">Major Intrinsic Protein MIP</option>
+                                <option value="MAP Kinase Gene Family;">MAP Kinase Gene Family</option>
+                                <option value="MAP Kinase Kinase Gene Family;">MAP Kinase Kinase Gene Family</option>
+                                <option value="MAP Kinase Kinase Kinase;">MAP Kinase Kinase Kinase</option>
+                                <option value="MAP Kinase Kinase Kinase Kinase;">MAP Kinase Kinase Kinase Kinase</option>
+                                <option value="Mechanosensitive Ion Channel Family;">Mechanosensitive Ion Channel Family</option>
+                                <option value="Miscellaneous Gene Families;">Miscellaneous Gene Families</option>
+                                <option value="MLO family;">MLO family</option>
+                                <option value="Monolignol Biosynthesis Gene Families;">Monolignol Biosynthesis Gene Families</option>
+                                <option value="MRS2 Gene Family;">MRS2 Gene Family</option>
+                                <option value="MYB Transcription Factor Family;">MYB Transcription Factor Family</option>
+                                <option value="MYB-Related Transcription Factor Family;">MYB-Related Transcription Factor Family</option>
+                                <option value="Myosins gene family;">Myosins gene family</option>
+                                <option value="NAC Transcription Factor Family;">NAC Transcription Factor Family</option>
+                                <option value="NADPH P450 reductases;">NADPH P450 reductases</option>
+                                <option value="Nicotianamine Synthase Gene Family;">Nicotianamine Synthase Gene Family</option>
+                                <option value="NLP Transcription Factor Family;">NLP Transcription Factor Family</option>
+                                <option value="Nodulin-like Gene Family;">Nodulin-like Gene Family</option>
+                                <option value="Non-SMC Element family;">Non-SMC Element family</option>
+                                <option value="Organic Solute Cotransporters;">Organic Solute Cotransporters</option>
+                                <option value="Orphan Transcription Factor Family;">Orphan Transcription Factor Family</option>
+                                <option value="Peroxidase;">Peroxidase</option>
+                                <option value="PHD Gene Family;">PHD Gene Family</option>
+                                <option value="PHD Transcription Factor Family;">PHD Transcription Factor Family</option>
+                                <option value="Phospholipase D Gene Family (Wang group);">Phospholipase D Gene Family (Wang group)</option>
+                                <option value="Phytocyanin Superfamily;">Phytocyanin Superfamily</option>
+                                <option value="Plant Defensins Gene Families;">Plant Defensins Gene Families</option>
+                                <option value="Plant U-box Gene Family;">Plant U-box Gene Family</option>
+                                <option value="Pollen Coat Proteome;">Pollen Coat Proteome</option>
+                                <option value="Polysaccharide Lyase;">Polysaccharide Lyase</option>
+                                <option value="PP2C-type Phosphatase Gene Family;">PP2C-type Phosphatase Gene Family</option>
+                                <option value="Primary Pumps ATPases;">Primary Pumps ATPases</option>
+                                <option value="Primary Pumps ATPases(2);">Primary Pumps ATPases(2)</option>
+                                <option value="Protein tyrosine phosphatase (PTP) family;">Protein tyrosine phosphatase (PTP) family</option>
+                                <option value="PRT Gene Family;">PRT Gene Family</option>
+                                <option value="RAD5/RAD16-like Gene Family;">RAD5/RAD16-like Gene Family</option>
+                                <option value="Rapid Response to Elicitors;">Rapid Response to Elicitors</option>
+                                <option value="RAV Transcription Factor Family;">RAV Transcription Factor Family</option>
+                                <option value="RCI2 Gene Family;">RCI2 Gene Family</option>
+                                <option value="Receptor kinase-like Gene Family;">Receptor kinase-like Gene Family</option>
+                                <option value="REM Transcription Factor Family;">REM Transcription Factor Family</option>
+                                <option value="Response Regulator Gene Family;">Response Regulator Gene Family</option>
+                                <option value="SBP-box Gene Family;">SBP-box Gene Family</option>
+                                <option value="Single Myb Histone (SMH) Gene Family;">Single Myb Histone (SMH) Gene Family</option>
+                                <option value="SNARE and Associated Proteins;">SNARE and Associated Proteins</option>
+                                <option value="Strubbelig Receptor Gene Family;">Strubbelig Receptor Gene Family</option>
+                                <option value="Structural Maintenance of Chromosomes family;">Structural Maintenance of Chromosomes family</option>
+                                <option value="Su(var)3-9 homologs;">Su(var)3-9 homologs</option>
+                                <option value="Subtilisin-like Serine Gene Family;">Subtilisin-like Serine Gene Family</option>
+                                <option value="Sucrose Transporter Gene Family;">Sucrose Transporter Gene Family</option>
+                                <option value="Sulfurtransferasese/Rhodanese;">Sulfurtransferasese/Rhodanese</option>
+                                <option value="SUVH1/3-interacting DNAJ domain-containing protein superfamily;">SUVH1/3-interacting DNAJ domain-containing protein superfamily</option>
+                                <option value="TCP Transcription Factor Family;">TCP Transcription Factor Family</option>
+                                <option value="Tify Gene Family;">Tify Gene Family</option>
+                                <option value="Trehalose Biosynthesis Gene Families;">Trehalose Biosynthesis Gene Families</option>
+                                <option value="Trihelix Transcription Factor Family;">Trihelix Transcription Factor Family</option>
+                                <option value="TRM (TON1 Recruiting Motif) Superfamily;">TRM (TON1 Recruiting Motif) Superfamily</option>
+                                <option value="TUB Transcription Factor Family;">TUB Transcription Factor Family</option>
+                                <option value="Type I MADS-box Gene Family;">Type I MADS-box Gene Family</option>
+                                <option value="U-box Gene Family;">U-box Gene Family</option>
+                                <option value="VOZ-9 Transcription Factor Family;">VOZ-9 Transcription Factor Family</option>
+                                <option value="Whirly Transcription Factor Family;">Whirly Transcription Factor Family</option>
+                                <option value="Wox Gene Family;">Wox Gene Family</option>
+                                <option value="WRKY Transcription Factor Family;">WRKY Transcription Factor Family</option>
+                                <option value="Xyloglucan Fucosyltransferase1;">Xyloglucan Fucosyltransferase1</option>
+                                <option value="ZF-HD Transcription Factor Family;">ZF-HD Transcription Factor Family</option>
+                                <option value="Zinc finger-homeobox gene family;">Zinc finger-homeobox gene family</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-12" style="padding-top: 20px">
+                        <label for="state" class="form-label">query genome</label>
+                            <select class="form-control" id="state" name="sp_data_1" required style="font-style: italic">
+                                <option value="ALL_SPECIES" {% if selected_sp_data_1 == "ALL_SPECIES" or sp_data_1 == "ALL_SPECIES" %}selected{% endif %}>All species</option>
+                                <option value="Aann" {% if selected_sp_data_1 == "Aann" or sp_data_1 == "Aann" or not selected_sp_data_1 and not sp_data_1 %}selected{% endif %}>Artemisia annua</option>
+                                <option value="Aarg">Artemisia argyi</option>
+                                <option value="Amar">Ambrosia artemisiifolia</option>
+                                <option value="Amtr">Ambrosia trifida</option>
+                                <option value="Arla">Arctium lappa</option>
+                                <option value="Armi">Arctium minus</option>
+                                <option value="Artr">Artemisia tridentata</option>
+                                <option value="Bial">Bidens alba</option>
+                                <option value="Busi">Buxus sinica</option>
+                                <option value="Cati">Carthamus tinctorius</option>
+                                <option value="Ccar">Cynara cardunculus</option>
+                                <option value="Ceso">Centaurea solstitialis</option>
+                                <option value="Chla">Chrysanthemum lavandulifolium</option>
+                                <option value="Chma">Chrysanthemum makinoi</option>
+                                <option value="Chmo">Chrysanthemum morifolium</option>
+                                <option value="Chna">Chrysanthemum nankingense</option>
+                                <option value="Cich">Cichorium intybus</option>
+                                <option value="Cien">Cichorium endivia</option>
+                                <option value="Cind">Chrysanthemum indicum</option>
+                                <option value="Cobi">Cosmos bipinnata</option>
+                                <option value="Cpa">Centrapalus pauciflorus</option>
+                                <option value="Dapi">Dahlia pinnata.nucleus</option>
+                                <option value="Desu">Deinandra increscens subsp. villosa</option>
+                                <option value="Ecan">Erigeron canadensis</option>
+                                <option value="Enbr">Erigeron breviscapus</option>
+                                <option value="Eupl">Euptelea pleiosperma</option>
+                                <option value="Fbi">Flaveria bidentis</option>
+                                <option value="Fbr">Flaveria brownii</option>
+                                <option value="Ffl">Flaveria floridana</option>
+                                <option value="Fli">Flaveria linearis</option>
+                                <option value="Fra">Flaveria ramosissima</option>
+                                <option value="Fro">Flaveria robusta</option>
+                                <option value="Fso">Flaveria sonorensis</option>
+                                <option value="Ftr">Flaveria trinervia</option>
+                                <option value="Glco">Glebionis coronaria</option>
+                                <option value="Hean">Helianthus annuus</option>
+                                <option value="Hetu">Helianthus tuberosus</option>
+                                <option value="Heub">Helichrysum umbraculigerum</option>
+                                <option value="Laca">Lactuca saligna</option>
+                                <option value="Lomi">Logfia minima</option>
+                                <option value="Lssa">Lactuca sativa</option>
+                                <option value="Mimi">Mikania micrantha</option>
+                                <option value="Nenu">Nelumbo nucifera</option>
+                                <option value="Nin">Nymphoides indica</option>
+                                <option value="Pdy">Pulicaria dysenterica</option>
+                                <option value="Pin">Pluchea indica</option>
+                                <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                                <option value="Sain">Saussurea involucrata</option>
+                                <option value="Scae">Solidago caesia</option>
+                                <option value="Sesq">Senecio squalidus</option>
+                                <option value="Smso">Smallanthus sonchifolius</option>
+                                <option value="Soca">Solidago canadensis</option>
+                                <option value="Stre">Stevia rebaudiana</option>
+                                <option value="Taer">Tagetes erecta</option>
+                                <option value="Tako">Taraxacum koksaghyz</option>
+                                <option value="Tamo">Taraxacum mongolicum</option>
+                                <option value="Tesi">Tetracentron sinense</option>
+                                <option value="Vivi">Vitis vinifera</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-12" style="padding-top: 20px; padding-bottom: 20px">
+                        <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+                    </div>
+                </div>
+                </div>
+            {% endif %}
+
+            {% if warning_message %}
+                <div class="alert alert-warning" role="alert" style="border-color:#f1c27d;background:#fff8e5;color:#9a6500;">
+                    {{ warning_message }}
+                </div>
+            {% endif %}
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/logo.png" style="position: absolute; top: 0; left: 0; transform: translate(-250%, -100%); width: 30px; height: auto;">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                {% if result_limit_reached %}
+                <div class="alert alert-warning" role="alert" style="border-color:#f1c27d;background:#fff8e5;color:#9a6500;">
+                    Showing the first {{ result_limit }} results. Please narrow the query if you need a smaller, more specific table.
+                </div>
+                {% endif %}
+
+
+<div class="table-container">
+<div class="action-row">
+    <div class="action-group">
+    <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+    <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="Function_gene_selected_rows.txt"><i class="fas fa-download"></i> Download Selected</button>
+    <!-- Draw Ks circos 表单 -->
+    <form id="myForm" class="form-inline d-flex align-items-center">
+        {% csrf_token %}
+        <!-- 输入框：最小 Ks -->
+        <div class="form-group mx-3">
+            <label for="minKs" class="mr-3">Ks range:</label>
+{#            <input type="number" step="any" id="minKs" name="minKs" class="form-control" style="width: 100px;" placeholder="0;0.5;1;1.5;2" required>#}
+            <input type="text" id="minKs" name="minKs" class="form-control" style="width: 100px;" value="0;0.5;1;1.5;2" required>
+        </div>
+
+        <!-- 输入框：最大 Ks -->
+        <div class="form-group mx-3">
+            <label for="maxKs" class="mx-3">Chr range</label>
+            <input type="number" step="any" id="maxKs" name="maxKs" class="form-control" style="width: 100px;" value="2" required>
+        </div>
+
+        <div class="form-group mx-3">
+            <label for="events" class="mx-3">WGDs</label>
+            <select id="events" name="events" class="form-control" style="width: 100px;" required>
+                <option value="ECH">ECH</option>
+                <option value="PCT" selected>PCT</option>
+                <option value="LSH">LSH</option>
+                <option value="RCT">RCT</option>
+                <option value="GST">GST</option>
+                <option value="CCT">CCT</option>
+                <option value="DCT">DCT</option>
+                <option value="BWGD">BWGD</option>
+                <option value="PWGD">PWGD</option>
+                <option value="hybridization">hybridization</option>
+            </select>
+        </div>
+
+
+        <!-- Draw Ks circos 提交按钮 -->
+        <button id="printDataBtn" class="btn-custom btn-secondary-link" type="button" onclick="submitksForm()"><i class="fas fa-chart-pie"></i> Fami-Circos</button>
+        <button id="printDataBtt" class="btn-custom btn-secondary-link" type="button" onclick="submittreeForm()"><i class="fas fa-tree"></i> Fami-Tree</button>
+
+        <script>
+        function submitksForm() {
+            // 获取按钮元素
+            const button = document.getElementById('printDataBtn');
+
+            // 修改按钮文本
+            button.textContent = 'loading...';
+            button.disabled = true; // 禁用按钮，防止重复点击
+
+            // 模拟异步请求，例如AJAX请求
+            setTimeout(() => {
+                // 在这里处理表单提交逻辑
+
+                // 模拟处理完成后，恢复按钮状态
+                button.textContent = 'Draw Ks circos';
+                button.disabled = false; // 恢复按钮可用状态
+            }, 10000); // 这里假设请求耗时3秒
+        }
+        </script>
+
+        <script>
+        function submittreeForm() {
+            // 获取按钮元素
+            const button = document.getElementById('printDataBtt');
+
+            // 修改按钮文本
+            button.textContent = 'loading...';
+            button.disabled = true; // 禁用按钮，防止重复点击
+
+            // 模拟异步请求，例如AJAX请求
+            setTimeout(() => {
+                // 在这里处理表单提交逻辑
+
+                // 模拟处理完成后，恢复按钮状态
+                button.textContent = 'PhyTree';
+                button.disabled = false; // 恢复按钮可用状态
+            }, 10000); // 这里假设请求耗时3秒
+        }
+        </script>
+
+    </form>
+    </div>
+    <div class="text-muted fw-semibold">{{ result|length }} matching genes</div>
+</div>
+
+                <div class="table-responsive">
+                    <table id="myTable2" class="table table-hover result-table align-middle">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                                <th>Gene</th>
+                                <th>Event_type</th>
+                                <th>S_start</th>
+                                <th>S_end</th>
+                                <th>Function</th>
+                                <th>Ath_gene</th>
+                                <th>Identity(%)</th>
+                                <th>E-value</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td>
+                                    <td><a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a></td>
+                                    <td>{{ pair.14 }}</td>
+                                    <td>{{ pair.9 }}</td>
+                                    <td>{{ pair.10 }}</td>
+                                    <td>{{ pair.13 }}</td>
+                                    <td><a href="https://www.arabidopsis.org/servlets/Search?type=general&search_action=detail&method=1&show_obsolete=F&name={{ pair.1 }}&sub_type=gene&SEARCH_EXACT=4&SEARCH_CONTAINS=1" target="_blank">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.11 }}</td>
+                                    <td>{{ pair.12 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+</div>
+
+<script>
+    var printDataBtn = document.getElementById("printDataBtn");
+    printDataBtn.addEventListener("click", function() {
+        var selectedRows = [];
+        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                var row = checkbox.closest("tr");
+                var rowData = [];
+                var mainDataCells = row.querySelectorAll("td:nth-child(2)"); // 获取第一组数据
+                mainDataCells.forEach(function(cell) {
+                    rowData.push(cell.textContent.trim());
+                });
+                selectedRows.push(rowData);
+            }
+        });
+
+        // 获取 minKs 和 maxKs 的值
+        var minKs = document.getElementById("minKs").value;
+        var maxKs = document.getElementById("maxKs").value;
+        var events = document.getElementById("events").value;
+
+        // 获取 CSRF 令牌
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // 发送数据到 Django 后端
+        var xhr = new XMLHttpRequest();
+        var url = "{% url 'draw_ks_circos' %}"; // 使用 Django 模板标签获取 URL
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", csrfToken); // 将 CSRF 令牌添加到请求头中
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("Data sent successfully.");
+                    var newWindow = window.open("/browse/ks_circos_img", "_blank");
+                    if (newWindow) {
+                        newWindow.focus();
+                    } else {
+                        console.error("Failed to open new window.");
+                    }
+                } else {
+                    console.error("Error sending data:", xhr.statusText);
+                }
+            }
+        };
+
+        // 构造 JSON 数据，包括 selectedRows、minKs 和 maxKs
+        var data = JSON.stringify({
+            selectedRows: selectedRows,
+            minKs: minKs,
+            maxKs: maxKs,
+            events: events
+        });
+        xhr.send(data);
+    });
+</script>
+
+<script>
+    var printDataBtt = document.getElementById("printDataBtt");
+    printDataBtt.addEventListener("click", function() {
+        var selectedRows = [];
+        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                var row = checkbox.closest("tr");
+                var rowData = [];
+                var mainDataCells = row.querySelectorAll("td:nth-child(2)"); // 获取第一组数据
+                mainDataCells.forEach(function(cell) {
+                    rowData.push(cell.textContent.trim());
+                });
+                selectedRows.push(rowData);
+            }
+        });
+
+        // 获取 minKs 和 maxKs 的值
+        var minKs = document.getElementById("minKs").value;
+        var maxKs = document.getElementById("maxKs").value;
+        var events = document.getElementById("events").value;
+
+        // 获取 CSRF 令牌
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // 发送数据到 Django 后端
+        var xhr = new XMLHttpRequest();
+        var url = "{% url 'draw_tree' %}"; // 使用 Django 模板标签获取 URL
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", csrfToken); // 将 CSRF 令牌添加到请求头中
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("Data sent successfully.");
+                    var newWindow = window.open("/browse/tree_img", "_blank");
+                    if (newWindow) {
+                        newWindow.focus();
+                    } else {
+                        console.error("Failed to open new window.");
+                    }
+                } else {
+                    console.error("Error sending data:", xhr.statusText);
+                }
+            }
+        };
+
+        // 构造 JSON 数据，包括 selectedRows、minKs 和 maxKs
+        var data = JSON.stringify({
+            selectedRows: selectedRows,
+            minKs: minKs,
+            maxKs: maxKs,
+            events: events
+        });
+        xhr.send(data);
+    });
+</script>
+
+
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    var deselectAllBtn = document.getElementById("deselectAllBtn");
+
+                    if (selectAllBtn) {
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+                    }
+
+                    if (deselectAllBtn) {
+                    deselectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = false;
+                        });
+                    });
+                    }
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    if (downloadBtn) {
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll("#myTable2 .row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+                    }
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Function_gene_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+
+
+            {% endif %}
+
+            {% if blast_results %}
+                <div class="section-divider"></div>
+
+                <div class="result-title">
+                    <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+                    Results
+                </div>
+
+                <div class="action-bar">
+                    <button type="button" id="blastSelectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+                    <button type="button" id="blastDownloadBtn" class="btn-custom btn-download" data-filename="Function_gene_blast_hits.txt"><i class="fas fa-download"></i> Download Selected Rows</button>
+                </div>
+
+                <div class="table-container">
+                <div class="table-responsive">
+                    <table id="functionBlastTable" class="table table-hover result-table align-middle">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                                <th>Query ID</th>
+                                <th>Subject ID</th>
+                                <th>Identity</th>
+                                <th>Length</th>
+                                <th>Mismatch</th>
+                                <th>Gapopen</th>
+                                <th>Qstart</th>
+                                <th>Qend</th>
+                                <th>Sstart</th>
+                                <th>Send</th>
+                                <th>evalue</th>
+                                <th>Bitscore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in blast_results %}
+                                <tr>
+                                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td>
+                                    <td>{{ pair.0 }}</td>
+                                    <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.7 }}</td>
+                                    <td>{{ pair.8 }}</td>
+                                    <td>{{ pair.9 }}</td>
+                                    <td>{{ pair.10 }}</td>
+                                    <td>{{ pair.11 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-sm-2"></div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable(
+                    {
+                        "pageLength": 10, // 默认显示100条
+                        "lengthMenu": [10, 25, 50, 100, 500, 1000, 2000], // 设置显示条数的选项
+                        // 其他配置...
+                    }
+                );
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                ['#myTable2', '#functionBlastTable'].forEach(function(selector) {
+                    if ($.fn.DataTable && $(selector).length && !$.fn.DataTable.isDataTable(selector)) {
+                        $(selector).DataTable({
+                            paging: true,
+                            info: true,
+                            searching: true,
+                            lengthChange: true,
+                            pageLength: 10,
+                            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+                            pagingType: 'simple_numbers',
+                            scrollX: true,
+                            autoWidth: false,
+                            columnDefs: [{ orderable: false, targets: 0 }]
+                        });
+                    }
+                });
+            });
+        </script>
+
+
+    <script>
+        document.getElementById('exampleButton').onclick = function() {
+        document.getElementById('lastName').value =
+    `Aann1g00001
+Aann1g00002
+Aann1g00003
+Aann1g00004`;
+        };
+        var geneidExample = document.getElementById('geneid');
+        if (geneidExample) {
+        geneidExample.addEventListener('click', function() {
+                    var exampleText = `Apr07g01842
+        Aann1g00001
+        Aann1g00002
+        Aann1g00003
+        `;
+            document.getElementById('lastName').value = exampleText;
+        });
+        }
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MAPQRRRLHHLQRFPLLIPLISAVAAALMFLFALLSLLAPSPNETNHMHRPRQRSSFDVQSEDNAIGDNVFRVPKIIGKLNRGLWSFNNSVNFYGCSNASSEFPKAQAITHPDRYLVIATSGGLNQQRTGITDAVVAARILNSTLVVPKLDQRSFWKDSSNFSEIFDVEWFISFLSKDVKIIKELPAKVGRRSSLYSMRVPRKCSERCYINRILPILQKKHVIQLSKYDYRLANRLDPEYQKLRCRVNYHGLRFTDPILAMGRKLVRRMRMRSKHYIALHLFLDVIIFSCSRFEPDMLAFSGCDYGGGEKEQKELGAIRKRWKTLHGANPDKQRRQGKCPLTPEEVGLMLRALGYGSGVHIYVASGEIYGGENTLAPLRALFPNIHSKETIAIKEELEPFSSFSSRMAALDFIVCDESDVFVTNNNGNMAKILAGRRRYFGHKPTIRPNAKNLYQLIMNRNNMTWEAFASRVRTFQKGFMGEPNEVRPGRGVFHENPSTCICEDSVPKVGQDSGHRKHGKDNAINENDDDEDYDDSELPEMEDDDYENDEDLSDRVEKGTYNGTVSDYDAMNSQNPELEEVVSD
+>ZPYcontig73_002250.1
+MIVIISREPCDIVYWDFVTCVRYLAGYESEPTKHCCETVATLNKEDKQYTERICQCIEDLAKGIRIKFDLERIQFLPDRCHMPITFPISNDFNCSIIQSTANWNGKLKV
+`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+        <script>
+            var kNumberExample = document.getElementById('k_number');
+            if (kNumberExample) {
+            kNumberExample.addEventListener('click', function() {
+                var exampleText = `K03094`;
+                document.getElementById('lastName').value = exampleText;
+            });
+            }
+        </script>
+
+        <script>
+            var geneFunctionExample = document.getElementById('gene_function');
+            if (geneFunctionExample) {
+            geneFunctionExample.addEventListener('click', function() {
+                var exampleText = `Antiporters;`;
+                document.getElementById('lastName').value = exampleText;
+            });
+            }
+        </script>
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+    </form>
+    </div>
+        </div>
+    </div>
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'myTable2',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: 'Function_gene_selected_rows.txt'
+});
+AGRPTable.bind({
+    tableId: 'functionBlastTable',
+    selectAllButtonId: 'blastSelectAllBtn',
+    downloadButtonId: 'blastDownloadBtn',
+    filename: 'Function_gene_blast_hits.txt'
+});
+
+(function () {
+    var jobPanel = document.getElementById('function-gene-job-panel');
+    if (!jobPanel) {
+        return;
+    }
+
+    var messageEl = document.getElementById('function-gene-job-message');
+    var countsEl = document.getElementById('function-gene-job-counts');
+    var progressEl = document.getElementById('function-gene-job-progress');
+    var resultEl = document.getElementById('function-gene-job-result');
+    var downloadEl = document.getElementById('function-gene-job-download');
+    var blastDownloadEl = document.getElementById('function-gene-job-blast-download');
+
+    function showLink(element, url) {
+        if (!element || !url) {
+            return;
+        }
+        element.href = url;
+        element.classList.remove('d-none');
+    }
+
+    function updateJobPanel(data) {
+        var status = data.status || 'running';
+        var progress = Math.max(0, Math.min(100, parseInt(data.progress || 0, 10)));
+        messageEl.textContent = data.message || status;
+        progressEl.style.width = progress + '%';
+        progressEl.setAttribute('aria-valuenow', progress);
+
+        var counts = [];
+        if (data.blast_hit_count !== undefined) {
+            counts.push('BLAST hits: ' + data.blast_hit_count);
+        }
+        if (data.recognized_gene_count !== undefined) {
+            counts.push('Matched genes: ' + data.recognized_gene_count);
+        }
+        if (data.result_count !== undefined) {
+            counts.push('Function gene records: ' + data.result_count);
+        }
+        countsEl.textContent = counts.join(' | ');
+
+        jobPanel.classList.remove('alert-info', 'alert-success', 'alert-danger');
+        if (status === 'done') {
+            jobPanel.classList.add('alert-success');
+            showLink(resultEl, data.result_url);
+            showLink(downloadEl, data.download_url);
+            showLink(blastDownloadEl, data.blast_download_url);
+            return true;
+        }
+        if (status === 'error') {
+            jobPanel.classList.add('alert-danger');
+            return true;
+        }
+        jobPanel.classList.add('alert-info');
+        return false;
+    }
+
+    function pollJobStatus() {
+        fetch(jobPanel.dataset.statusUrl, {credentials: 'same-origin'})
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                if (!updateJobPanel(data)) {
+                    window.setTimeout(pollJobStatus, 4000);
+                }
+            })
+            .catch(function () {
+                messageEl.textContent = 'Could not read job status. Retrying...';
+                window.setTimeout(pollJobStatus, 6000);
+            });
+    }
+
+    pollJobStatus();
+})();
+</script>
+{% endblock %}

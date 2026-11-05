@@ -1,0 +1,523 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        const proData = {
+                        'Aann': ['Aann01', 'Aann02', 'Aann03', 'Aann04', 'Aann05', 'Aann06', 'Aann07', 'Aann08', 'Aann09'],
+                        'Aarg': ['Aarg01', 'Aarg02', 'Aarg03', 'Aarg04', 'Aarg05', 'Aarg06', 'Aarg07', 'Aarg08', 'Aarg09', 'Aarg10', 'Aarg11', 'Aarg12', 'Aarg13', 'Aarg14', 'Aarg15', 'Aarg16', 'Aarg17'],
+                        'Amar': ['Amar'],
+                        'Arla': ['Arla01', 'Arla02', 'Arla03', 'Arla04', 'Arla05', 'Arla06', 'Arla07', 'Arla08', 'Arla09', 'Arla10', 'Arla11', 'Arla12', 'Arla13', 'Arla14', 'Arla15', 'Arla16', 'Arla17', 'Arla18'],
+                        'Armi': ['Armi01', 'Armi02', 'Armi03', 'Armi04', 'Armi05', 'Armi06', 'Armi07', 'Armi08', 'Armi09', 'Armi10', 'Armi11', 'Armi12', 'Armi13', 'Armi14', 'Armi15', 'Armi16', 'Armi17', 'Armi18'],
+                        'Amtr': ['Amtr01', 'Amtr02', 'Amtr03', 'Amtr04', 'Amtr05', 'Amtr06', 'Amtr07', 'Amtr08', 'Amtr09', 'Amtr10', 'Amtr11', 'Amtr12'],
+                        'Artr': ['Artr01', 'Artr02', 'Artr03', 'Artr04', 'Artr05', 'Artr06', 'Artr07', 'Artr08', 'Artr09', ],
+                        'Bial': ['Bial01', 'Bial02', 'Bial03', 'Bial04', 'Bial05', 'Bial06', 'Bial07', 'Bial08', 'Bial09', 'Bial10','Bial11', 'Bial12', 'Bial13', 'Bial14', 'Bial15', 'Bial16', 'Bial17', 'Bial18', 'Bial19', 'Bial20','Bial21', 'Bial22', 'Bial23', 'Bial24', 'Bial25', 'Bial26', 'Bial27', 'Bial28', 'Bial29', 'Bial30','Bial31', 'Bial32', 'Bial33', 'Bial34', 'Bial35', 'Bial36', 'Bial37', 'Bial38', 'Bial39', 'Bial40','Bial41', 'Bial42', 'Bial43', 'Bial44', 'Bial45',],
+                        'Busi': ['Busi01', 'Busi02', 'Busi03', 'Busi04', 'Busi05', 'Busi06', 'Busi07', 'Busi08', 'Busi09', 'Busi10','Busi11', 'Busi12', 'Busi13', 'Busi14',],
+                        'Cobi': ['Cobi01', 'Cobi02', 'Cobi03', 'Cobi04', 'Cobi05', 'Cobi06', 'Cobi07', 'Cobi08', 'Cobi09'],
+                        'Ccar': ['Ccar01', 'Ccar02', 'Ccar03', 'Ccar04', 'Ccar05', 'Ccar06', 'Ccar07', 'Ccar08', 'Ccar09', 'Ccar10','Ccar11', 'Ccar12', 'Ccar13', 'Ccar14', 'Ccar15', 'Ccar16', 'Ccar17'],
+                        'Cien': ['Cien01', 'Cien02', 'Cien03', 'Cien04', 'Cien05', 'Cien06', 'Cien07', 'Cien08', 'Cien09'],
+                        'Chin': ['Chin01', 'Chin02', 'Chin03', 'Chin04', 'Chin05', 'Chin06', 'Chin07', 'Chin08', 'Chin09'],
+                        'Cich': ['Cich01', 'Cich02', 'Cich03', 'Cich04', 'Cich05', 'Cich06', 'Cich07', 'Cich08', 'Cich09',],
+                        'Chla': ['Chla01', 'Chla02', 'Chla03', 'Chla04', 'Chla05', 'Chla06', 'Chla07', 'Chla08', 'Chla09'],
+                        'Chma': ['Chma01', 'Chma02', 'Chma03', 'Chma04', 'Chma05', 'Chma06', 'Chma07', 'Chma08', 'Chma09'],
+                        'Chmo': ['Chmo01', 'Chmo02', 'Chmo03', 'Chmo04', 'Chmo05', 'Chmo06', 'Chmo07', 'Chmo08', 'Chmo09', 'Chmo10','Chmo11', 'Chmo12', 'Chmo13', 'Chmo14', 'Chmo15', 'Chmo16', 'Chmo17', 'Chmo18', 'Chmo19', 'Chmo20','Chmo21', 'Chmo22', 'Chmo23', 'Chmo24', 'Chmo25', 'Chmo26', 'Chmo27'],
+                        'Chna': ['Chna01', 'Chna02', 'Chna03', 'Chna04', 'Chna05', 'Chna06', 'Chna07', 'Chna08', 'Chna09'],
+                        'Coca': ['Coca01', 'Coca02', 'Coca03', 'Coca04', 'Coca05', 'Coca06', 'Coca07', 'Coca08', 'Coca09', 'Coca10'],
+                        'Cpa': ['Cpa'],
+                        'Cse': ['Cse01', 'Cse02', 'Cse03', 'Cse04', 'Cse05', 'Cse06', 'Cse07', 'Cse08', 'Cse09', 'Cse10'],
+                        'Ceso': ['Ceso01', 'Ceso02', 'Ceso03', 'Ceso04', 'Ceso05', 'Ceso06', 'Ceso07', 'Ceso08'],
+                        'Cati': ['Cati01', 'Cati02', 'Cati03', 'Cati04', 'Cati05', 'Cati06', 'Cati07', 'Cati08', 'Cati09', 'Cati10', 'Cati11', 'Cati12'],
+                        'Dapi': ['Dapi01','Dapi02','Dapi03','Dapi04','Dapi05','Dapi06','Dapi07','Dapi08','Dapi09','Dapi10','Dapi11','Dapi12','Dapi13','Dapi14','Dapi15','Dapi16','Dapi17','Dapi18','Dapi19','Dapi20','Dapi21','Dapi22','Dapi23','Dapi24','Dapi25','Dapi26','Dapi27','Dapi28','Dapi29','Dapi30','Dapi31','Dapi32','Dapi33','Dapi34','Dapi35','Dapi36','Dapi37','Dapi38','Dapi39','Dapi40','Dapi41','Dapi42','Dapi43','Dapi44','Dapi45','Dapi46','Dapi47','Dapi48','Dapi49','Dapi50','Dapi51','Dapi52','Dapi53','Dapi54','Dapi55','Dapi56','Dapi57'],
+                        'Desu': ['Desu'],
+                        'Ecan': ['Ecan01','Ecan02','Ecan03','Ecan04','Ecan05','Ecan06','Ecan07','Ecan08','Ecan09'],
+                        'Enbr': ['Enbr01', 'Enbr02', 'Enbr03', 'Enbr04', 'Enbr05', 'Enbr06', 'Enbr07', 'Enbr08', 'Enbr09'],
+                        'Eupl': ['Eupl01', 'Eupl02', 'Eupl03', 'Eupl04', 'Eupl05', 'Eupl06', 'Eupl07', 'Eupl08', 'Eupl09', 'Eupl10','Eupl11', 'Eupl12', 'Eupl13', 'Eupl14'],
+                        'Fbi': ['Fbi'],
+                        'Fbr': ['Fbr'],
+                        'Ffl': ['Ffl'],
+                        'Fli': ['Fli01', 'Fli02', 'Fli03', 'Fli04', 'Fli05', 'Fli06', 'Fli07', 'Fli08', 'Fli09', 'Fli10','Fli11', 'Fli12', 'Fli13', 'Fli14', 'Fli15', 'Fli16', 'Fli17', 'Fli18'],
+                        'Fra': ['Fra01','Fra02','Fra03','Fra04','Fra05','Fra06','Fra07','Fra08','Fra09','Fra10','Fra11','Fra12','Fra13','Fra14','Fra15','Fra16','Fra17','Fra18'],
+                        'Fro': ['Fro01','Fro02','Fro03','Fro04','Fro05','Fro06','Fro07','Fro08','Fro09','Fro10','Fro11','Fro12','Fro13','Fro14','Fro15','Fro16','Fro17','Fro18'],
+                        'Fso': ['Fso01','Fso02','Fso03','Fso04','Fso05','Fso06','Fso07','Fso08','Fso09','Fso10','Fso11','Fso12','Fso13','Fso14','Fso15','Fso16','Fso17','Fso18'],
+                        'Ftr': ['Ftr01','Ftr02','Ftr03','Ftr04','Ftr05','Ftr06','Ftr07','Ftr08','Ftr09','Ftr10','Ftr11','Ftr12','Ftr13','Ftr14','Ftr15','Ftr16','Ftr17','Ftr18'],
+                        'Glco': ['Glco01', 'Glco02', 'Glco03', 'Glco04', 'Glco05', 'Glco06', 'Glco07', 'Glco08', 'Glco09'],
+                        'Hean': ['Hean01','Hean02','Hean03','Hean04','Hean05','Hean06','Hean07','Hean08','Hean09','Hean10','Hean11','Hean12','Hean13','Hean14','Hean15','Hean16','Hean17'],
+                        'Hetu': ['Hetu01','Hetu02','Hetu03','Hetu04','Hetu05','Hetu06','Hetu07','Hetu08','Hetu09','Hetu10','Hetu11','Hetu12','Hetu13','Hetu14','Hetu15','Hetu16','Hetu17','Hetu18','Hetu19','Hetu20','Hetu21','Hetu22','Hetu23','Hetu24','Hetu25','Hetu26','Hetu27','Hetu28','Hetu29','Hetu30','Hetu31','Hetu32','Hetu33','Hetu34','Hetu35','Hetu36','Hetu37','Hetu38','Hetu39','Hetu40','Hetu41','Hetu42','Hetu43','Hetu44','Hetu45','Hetu46','Hetu47','Hetu48','Hetu49','Hetu50','Hetu51','Hetu52','Hetu53','Hetu54','Hetu55','Hetu56','Hetu57','Hetu58','Hetu59','Hetu60','Hetu61'],
+                        'Heub': ['Heub01', 'Heub02', 'Heub03', 'Heub04', 'Heub05', 'Heub06', 'Heub07'],
+                        'Laca': ['Laca01', 'Laca02', 'Laca03', 'Laca04', 'Laca05', 'Laca06', 'Laca07', 'Laca08', 'Laca09'],
+                        'Lomi': ['Lomi01', 'Lomi02', 'Lomi03', 'Lomi04', 'Lomi05', 'Lomi06', 'Lomi07', 'Lomi08', 'Lomi09', 'Lomi10','Lomi11', 'Lomi12', 'Lomi13', 'Lomi14', 'Lomi15'],
+                        'Lssa': ['Lssa01', 'Lssa02', 'Lssa03', 'Lssa04', 'Lssa05', 'Lssa06', 'Lssa07', 'Lssa08', 'Lssa09'],
+                        'Mmi': ['Mimi01','Mimi02','Mimi03','Mimi04','Mimi05','Mimi06','Mimi07','Mimi08','Mimi09','Mimi10','Mimi11','Mimi12','Mimi13','Mimi14','Mimi15','Mimi16','Mimi17','Mimi18','Mimi19'],
+                        'Nenu': ['Nenu01', 'Nenu02', 'Nenu03', 'Nenu04', 'Nenu05', 'Nenu06', 'Nenu07', 'Nenu08'],
+                        'Nin': ['Nin01', 'Nin02', 'Nin03', 'Nin04', 'Nin05', 'Nin06', 'Nin07', 'Nin08', 'Nin09'],
+                        'Pdy': ['Pdy01', 'Pdy02', 'Pdy03', 'Pdy04', 'Pdy05', 'Pdy06', 'Pdy07', 'Pdy08', 'Pdy09'],
+                        'Pin': ['Pin'],
+                        'Pslu': ['Pslu01', 'Pslu02', 'Pslu03', 'Pslu04', 'Pslu05', 'Pslu06', 'Pslu07'],
+                        'Scae': ['Scae'],
+                        'Sain': ['Sain01','Sain02','Sain03','Sain04','Sain05','Sain06','Sain07','Sain08','Sain09','Sain10','Sain11','Sain12','Sain13','Sain14','Sain15','Sain16'],
+                        'Soca': ['Soca01', 'Soca02', 'Soca03', 'Soca04', 'Soca05', 'Soca06', 'Soca07', 'Soca08', 'Soca09'],
+                        'Stre': ['Stre01', 'Stre02', 'Stre03', 'Stre04', 'Stre05', 'Stre06', 'Stre07', 'Stre08', 'Stre09', 'Stre10','Stre11'],
+                        'Smso': ['Smso01','Smso02','Smso03','Smso04','Smso05','Smso06','Smso07','Smso08','Smso09','Smso10','Smso11','Smso12','Smso13','Smso14','Smso15','Smso16','Smso17','Smso18','Smso19','Smso20','Smso21','Smso22','Smso23','Smso24','Smso25','Smso26','Smso27','Smso28','Smso29'],
+                        'Sesq': ['Sesq'],
+                        'Taer': ['Taer01', 'Taer02', 'Taer03', 'Taer04', 'Taer05', 'Taer06', 'Taer07', 'Taer08', 'Taer09', 'Taer10', 'Taer11', 'Taer12'],
+                        'Tesi': ['Tesi01','Tesi02','Tesi03','Tesi04','Tesi05','Tesi06','Tesi07','Tesi08','Tesi09','Tesi10','Tesi11','Tesi12','Tesi13','Tesi14','Tesi15','Tesi16','Tesi17','Tesi18','Tesi19','Tesi20','Tesi21','Tesi22','Tesi23','Tesi24'],
+                        'Tako': ['Tako01', 'Tako02', 'Tako03', 'Tako04', 'Tako05', 'Tako06', 'Tako07', 'Tako08'],
+                        'Tamo': ['Tamo01', 'Tamo02', 'Tamo03', 'Tamo04', 'Tamo05', 'Tamo06', 'Tamo07', 'Tamo08'],
+                        'Vivi': ['Vivi01','Vivi02','Vivi03','Vivi04','Vivi05','Vivi06','Vivi07','Vivi08','Vivi09','Vivi10','Vivi11','Vivi12','Vivi13','Vivi14','Vivi15','Vivi16','Vivi17','Vivi18','Vivi19'],
+        };
+        window.onload = function () {
+            const oSelectPro = document.getElementById('model');
+            const oSelectCity = document.getElementById('list');
+            oSelectPro.onchange = function () {
+                const aRrayCity = proData[this.value];
+                oSelectCity.options.length=0;
+                for (let i=0; i<aRrayCity.length; i++){
+                    const oOption = document.createElement('option');
+                    oOption.innerHTML = aRrayCity[i];
+                    oOption.value = aRrayCity[i];
+                    oSelectCity.appendChild(oOption)
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/collinear_kaks_mc/colinearscan_kaks.json",
+
+            });
+        });
+    </script>
+
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Syn-Blocks</b><i></i></h3>
+    <div class="row" style="">
+        <h6 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+{#            &emsp;&emsp;Annotated genes were used as input to compare chromosomes within a genome or across genomes. First, we performed a mutual search of protein sequences for potential homologous genes by <a href="https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/"><b>BLASTP</b></a> software. And we set stringent parameters e values <1e-5 and scores >100. Some uncertainties could be excluded by the set stringent parameters. Next, information on homologous genes was used as input and collinearity of homologous gene pairs was located by using#}
+{#            <a href=""><b>ColinearScan</b></a> and <a href=""><b>McScanX</b></a> software. The Ks of collinear gene pairs was calculated by the Nei–Gojobori approach  implementing the Bioperl statistical module (<a#}
+{#                href="https://bioperl.org/">https://bioperl.org</a>).#}
+            &emsp;&emsp;In the Syn-Blocks interface, we provided pairwise genomic synteny blocks (SBs) and flexible tools for visualizing and analyzing evolutionary relationships between SBs. Using  <a href=""><b>ColinearScan</b></a> and <a href=""><b>McScanX</b></a> for GenS inference, we detected <b>8,944,924</b> SBs from <b>17,203</b> pairwise genome comparisons, including <b>125,506,348</b> synteny gene pairs (SGPs). We calculated the nonsynonymous (<em>Ka</em>) and synonymous (<em>Ks</em>) substitution rates for each SGP, along with the median and mean values for each SB. Users can flexibly analyze specific chromosomes, and options like 'Block search' and 'Draw Ks peaks' allow easy identification of Ks peaks related to key evolutionary events.
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/gognxianxing.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;margin-top: 40px"><b>Blocks Search</b><i></i>
+                </h3>
+                <form action="collinear_kaks_run" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group" style="margin-top: 30px">
+                        <label for="state" class="form-label">Query Genome</label>
+                        <select class="btn-default choice form-control" id="model" name="query_genome" required>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Ceso">Centaurea solstitialis</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata.nucleus</option>
+                            <option value="Desu">Deinandra increscens subsp. villosa</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid state.
+                        </div>
+                    </div>
+
+                    <div class="form-group"  style="margin-top: 30px">
+                        <label for="state" class="form-label">Chromosome</label>
+                        <select class="col-md-12 btn-default form-control" name="chromosome" id="list">
+                            <option value="Chromosome 01">Chromosome 01</option>
+                            <option value="Chromosome 02">Chromosome 02</option>
+                            <option value="Chromosome 03">Chromosome 03</option>
+                            <option value="Chromosome 04">Chromosome 04</option>
+                            <option value="Chromosome 05">Chromosome 05</option>
+                            <option value="Chromosome 06">Chromosome 06</option>
+                            <option value="Chromosome 07">Chromosome 07</option>
+                            <option value="Chromosome 08">Chromosome 08</option>
+                            <option value="Chromosome 09">Chromosome 09</option>
+                            <option value="Chromosome 10">Chromosome 10</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 30px">
+                        <label for="state" class="form-label">Reference Genome</label>
+                        <select class="form-control" id="state" name="reference_genome" required>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">ArCatium lappa</option>
+                            <option value="Armi">ArCatium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccarr">Cynara cardunculus</option>
+                            <option value="Ceso">Cientaurea solstitialis</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cichd">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Cientrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata.nucleus</option>
+                            <option value="Desu">Deinandra incresCiens subsp. villosa</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenTaerica</option>
+                            <option value="Pin">Psluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">TetraCientron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid state.
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 8px">
+                        <label for="chromosome2" class="form-label">Chromosomes2</label>
+    {#                    <select class="form-control" id="chromosome2" name="chromosome_data_2" multiple required>#}
+                        <select class="form-control" id="chromosome2" name="chromosome_data_2[]" multiple required>
+                            <!-- Options will be dynamically added here -->
+                        </select>
+                        <button type="button" id="selectAll2">Select All</button>
+                        <button type="button" id="deselectAll2">Deselect All</button>
+                    </div>
+
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" type="submit" value="Search">
+
+
+{#                    <hr class="my-4">#}
+{#                    <input class="w-100 btn btn-primary btn-lg" type="submit" value="Search" onclick="go()">#}
+{#                    <center>#}
+{#                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>#}
+{#                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>#}
+{#                    </center>#}
+
+
+                    <script>
+                        // 获取物种选框和染色体号选框
+                        var species1Select = document.getElementById('species1');
+                        var chromosome1Select = document.getElementById('chromosome1');
+                        var species2Select = document.getElementById('species2');
+                        var chromosome2Select = document.getElementById('chromosome2');
+
+                        // 定义染色体号数据
+                        var chromosomeData = {
+                            'Aann': ['Aann01', 'Aann02', 'Aann03', 'Aann04', 'Aann05', 'Aann06', 'Aann07', 'Aann08', 'Aann09'],
+                            'Aarg': ['Aarg01', 'Aarg02', 'Aarg03', 'Aarg04', 'Aarg05', 'Aarg06', 'Aarg07', 'Aarg08', 'Aarg09', 'Aarg10', 'Aarg11', 'Aarg12', 'Aarg13', 'Aarg14', 'Aarg15', 'Aarg16', 'Aarg17'],
+                            'Amar': ['Amar'],
+                            'Arla': ['Arla01', 'Arla02', 'Arla03', 'Arla04', 'Arla05', 'Arla06', 'Arla07', 'Arla08', 'Arla09', 'Arla10', 'Arla11', 'Arla12', 'Arla13', 'Arla14', 'Arla15', 'Arla16', 'Arla17', 'Arla18'],
+                            'Armi': ['Armi01', 'Armi02', 'Armi03', 'Armi04', 'Armi05', 'Armi06', 'Armi07', 'Armi08', 'Armi09', 'Armi10', 'Armi11', 'Armi12', 'Armi13', 'Armi14', 'Armi15', 'Armi16', 'Armi17', 'Armi18'],
+                            'Amtr': ['Amtr01', 'Amtr02', 'Amtr03', 'Amtr04', 'Amtr05', 'Amtr06', 'Amtr07', 'Amtr08', 'Amtr09', 'Amtr10', 'Amtr11', 'Amtr12'],
+                            'Artr': ['Artr01', 'Artr02', 'Artr03', 'Artr04', 'Artr05', 'Artr06', 'Artr07', 'Artr08', 'Artr09', ],
+                            'Bial': ['Bial01', 'Bial02', 'Bial03', 'Bial04', 'Bial05', 'Bial06', 'Bial07', 'Bial08', 'Bial09', 'Bial10','Bial11', 'Bial12', 'Bial13', 'Bial14', 'Bial15', 'Bial16', 'Bial17', 'Bial18', 'Bial19', 'Bial20','Bial21', 'Bial22', 'Bial23', 'Bial24', 'Bial25', 'Bial26', 'Bial27', 'Bial28', 'Bial29', 'Bial30','Bial31', 'Bial32', 'Bial33', 'Bial34', 'Bial35', 'Bial36', 'Bial37', 'Bial38', 'Bial39', 'Bial40','Bial41', 'Bial42', 'Bial43', 'Bial44', 'Bial45',],
+                            'Busi': ['Busi01', 'Busi02', 'Busi03', 'Busi04', 'Busi05', 'Busi06', 'Busi07', 'Busi08', 'Busi09', 'Busi10','Busi11', 'Busi12', 'Busi13', 'Busi14',],
+                            'Cobi': ['Cobi01', 'Cobi02', 'Cobi03', 'Cobi04', 'Cobi05', 'Cobi06', 'Cobi07', 'Cobi08', 'Cobi09'],
+                            'Ccar': ['Ccar01', 'Ccar02', 'Ccar03', 'Ccar04', 'Ccar05', 'Ccar06', 'Ccar07', 'Ccar08', 'Ccar09', 'Ccar10','Ccar11', 'Ccar12', 'Ccar13', 'Ccar14', 'Ccar15', 'Ccar16', 'Ccar17'],
+                            'Cien': ['Cien01', 'Cien02', 'Cien03', 'Cien04', 'Cien05', 'Cien06', 'Cien07', 'Cien08', 'Cien09'],
+                            'Chin': ['Chin01', 'Chin02', 'Chin03', 'Chin04', 'Chin05', 'Chin06', 'Chin07', 'Chin08', 'Chin09'],
+                            'Cich': ['Cich01', 'Cich02', 'Cich03', 'Cich04', 'Cich05', 'Cich06', 'Cich07', 'Cich08', 'Cich09',],
+                            'Chla': ['Chla01', 'Chla02', 'Chla03', 'Chla04', 'Chla05', 'Chla06', 'Chla07', 'Chla08', 'Chla09'],
+                            'Chma': ['Chma01', 'Chma02', 'Chma03', 'Chma04', 'Chma05', 'Chma06', 'Chma07', 'Chma08', 'Chma09'],
+                            'Chmo': ['Chmo01', 'Chmo02', 'Chmo03', 'Chmo04', 'Chmo05', 'Chmo06', 'Chmo07', 'Chmo08', 'Chmo09', 'Chmo10','Chmo11', 'Chmo12', 'Chmo13', 'Chmo14', 'Chmo15', 'Chmo16', 'Chmo17', 'Chmo18', 'Chmo19', 'Chmo20','Chmo21', 'Chmo22', 'Chmo23', 'Chmo24', 'Chmo25', 'Chmo26', 'Chmo27'],
+                            'Chna': ['Chna01', 'Chna02', 'Chna03', 'Chna04', 'Chna05', 'Chna06', 'Chna07', 'Chna08', 'Chna09'],
+                            'Coca': ['Coca01', 'Coca02', 'Coca03', 'Coca04', 'Coca05', 'Coca06', 'Coca07', 'Coca08', 'Coca09', 'Coca10'],
+                            'Cpa': ['Cpa'],
+                            'Cse': ['Cse01', 'Cse02', 'Cse03', 'Cse04', 'Cse05', 'Cse06', 'Cse07', 'Cse08', 'Cse09', 'Cse10'],
+                            'Ceso': ['Ceso01', 'Ceso02', 'Ceso03', 'Ceso04', 'Ceso05', 'Ceso06', 'Ceso07', 'Ceso08'],
+                            'Cati': ['Cati01', 'Cati02', 'Cati03', 'Cati04', 'Cati05', 'Cati06', 'Cati07', 'Cati08', 'Cati09', 'Cati10', 'Cati11', 'Cati12'],
+                            'Dapi': ['Dapi01','Dapi02','Dapi03','Dapi04','Dapi05','Dapi06','Dapi07','Dapi08','Dapi09','Dapi10','Dapi11','Dapi12','Dapi13','Dapi14','Dapi15','Dapi16','Dapi17','Dapi18','Dapi19','Dapi20','Dapi21','Dapi22','Dapi23','Dapi24','Dapi25','Dapi26','Dapi27','Dapi28','Dapi29','Dapi30','Dapi31','Dapi32','Dapi33','Dapi34','Dapi35','Dapi36','Dapi37','Dapi38','Dapi39','Dapi40','Dapi41','Dapi42','Dapi43','Dapi44','Dapi45','Dapi46','Dapi47','Dapi48','Dapi49','Dapi50','Dapi51','Dapi52','Dapi53','Dapi54','Dapi55','Dapi56','Dapi57'],
+                            'Desu': ['Desu'],
+                            'Ecan': ['Ecan01','Ecan02','Ecan03','Ecan04','Ecan05','Ecan06','Ecan07','Ecan08','Ecan09'],
+                            'Enbr': ['Enbr01', 'Enbr02', 'Enbr03', 'Enbr04', 'Enbr05', 'Enbr06', 'Enbr07', 'Enbr08', 'Enbr09'],
+                            'Eupl': ['Eupl01', 'Eupl02', 'Eupl03', 'Eupl04', 'Eupl05', 'Eupl06', 'Eupl07', 'Eupl08', 'Eupl09', 'Eupl10','Eupl11', 'Eupl12', 'Eupl13', 'Eupl14'],
+                            'Fbi': ['Fbi'],
+                            'Fbr': ['Fbr'],
+                            'Ffl': ['Ffl'],
+                            'Fli': ['Fli01', 'Fli02', 'Fli03', 'Fli04', 'Fli05', 'Fli06', 'Fli07', 'Fli08', 'Fli09', 'Fli10','Fli11', 'Fli12', 'Fli13', 'Fli14', 'Fli15', 'Fli16', 'Fli17', 'Fli18'],
+                            'Fra': ['Fra01','Fra02','Fra03','Fra04','Fra05','Fra06','Fra07','Fra08','Fra09','Fra10','Fra11','Fra12','Fra13','Fra14','Fra15','Fra16','Fra17','Fra18'],
+                            'Fro': ['Fro01','Fro02','Fro03','Fro04','Fro05','Fro06','Fro07','Fro08','Fro09','Fro10','Fro11','Fro12','Fro13','Fro14','Fro15','Fro16','Fro17','Fro18'],
+                            'Fso': ['Fso01','Fso02','Fso03','Fso04','Fso05','Fso06','Fso07','Fso08','Fso09','Fso10','Fso11','Fso12','Fso13','Fso14','Fso15','Fso16','Fso17','Fso18'],
+                            'Ftr': ['Ftr01','Ftr02','Ftr03','Ftr04','Ftr05','Ftr06','Ftr07','Ftr08','Ftr09','Ftr10','Ftr11','Ftr12','Ftr13','Ftr14','Ftr15','Ftr16','Ftr17','Ftr18'],
+                            'Glco': ['Glco01', 'Glco02', 'Glco03', 'Glco04', 'Glco05', 'Glco06', 'Glco07', 'Glco08', 'Glco09'],
+                            'Hean': ['Hean01','Hean02','Hean03','Hean04','Hean05','Hean06','Hean07','Hean08','Hean09','Hean10','Hean11','Hean12','Hean13','Hean14','Hean15','Hean16','Hean17'],
+                            'Hetu': ['Hetu01','Hetu02','Hetu03','Hetu04','Hetu05','Hetu06','Hetu07','Hetu08','Hetu09','Hetu10','Hetu11','Hetu12','Hetu13','Hetu14','Hetu15','Hetu16','Hetu17','Hetu18','Hetu19','Hetu20','Hetu21','Hetu22','Hetu23','Hetu24','Hetu25','Hetu26','Hetu27','Hetu28','Hetu29','Hetu30','Hetu31','Hetu32','Hetu33','Hetu34','Hetu35','Hetu36','Hetu37','Hetu38','Hetu39','Hetu40','Hetu41','Hetu42','Hetu43','Hetu44','Hetu45','Hetu46','Hetu47','Hetu48','Hetu49','Hetu50','Hetu51','Hetu52','Hetu53','Hetu54','Hetu55','Hetu56','Hetu57','Hetu58','Hetu59','Hetu60','Hetu61'],
+                            'Heub': ['Heub01', 'Heub02', 'Heub03', 'Heub04', 'Heub05', 'Heub06', 'Heub07'],
+                            'Laca': ['Laca01', 'Laca02', 'Laca03', 'Laca04', 'Laca05', 'Laca06', 'Laca07', 'Laca08', 'Laca09'],
+                            'Lomi': ['Lomi01', 'Lomi02', 'Lomi03', 'Lomi04', 'Lomi05', 'Lomi06', 'Lomi07', 'Lomi08', 'Lomi09', 'Lomi10','Lomi11', 'Lomi12', 'Lomi13', 'Lomi14', 'Lomi15'],
+                            'Lssa': ['Lssa01', 'Lssa02', 'Lssa03', 'Lssa04', 'Lssa05', 'Lssa06', 'Lssa07', 'Lssa08', 'Lssa09'],
+                            'Mmi': ['Mimi01','Mimi02','Mimi03','Mimi04','Mimi05','Mimi06','Mimi07','Mimi08','Mimi09','Mimi10','Mimi11','Mimi12','Mimi13','Mimi14','Mimi15','Mimi16','Mimi17','Mimi18','Mimi19'],
+                            'Nenu': ['Nenu01', 'Nenu02', 'Nenu03', 'Nenu04', 'Nenu05', 'Nenu06', 'Nenu07', 'Nenu08'],
+                            'Nin': ['Nin01', 'Nin02', 'Nin03', 'Nin04', 'Nin05', 'Nin06', 'Nin07', 'Nin08', 'Nin09'],
+                            'Pdy': ['Pdy01', 'Pdy02', 'Pdy03', 'Pdy04', 'Pdy05', 'Pdy06', 'Pdy07', 'Pdy08', 'Pdy09'],
+                            'Pin': ['Pin'],
+                            'Pslu': ['Pslu01', 'Pslu02', 'Pslu03', 'Pslu04', 'Pslu05', 'Pslu06', 'Pslu07'],
+                            'Scae': ['Scae'],
+                            'Sain': ['Sain01','Sain02','Sain03','Sain04','Sain05','Sain06','Sain07','Sain08','Sain09','Sain10','Sain11','Sain12','Sain13','Sain14','Sain15','Sain16'],
+                            'Soca': ['Soca01', 'Soca02', 'Soca03', 'Soca04', 'Soca05', 'Soca06', 'Soca07', 'Soca08', 'Soca09'],
+                            'Stre': ['Stre01', 'Stre02', 'Stre03', 'Stre04', 'Stre05', 'Stre06', 'Stre07', 'Stre08', 'Stre09', 'Stre10','Stre11'],
+                            'Smso': ['Smso01','Smso02','Smso03','Smso04','Smso05','Smso06','Smso07','Smso08','Smso09','Smso10','Smso11','Smso12','Smso13','Smso14','Smso15','Smso16','Smso17','Smso18','Smso19','Smso20','Smso21','Smso22','Smso23','Smso24','Smso25','Smso26','Smso27','Smso28','Smso29'],
+                            'Sesq': ['Sesq'],
+                            'Taer': ['Taer01', 'Taer02', 'Taer03', 'Taer04', 'Taer05', 'Taer06', 'Taer07', 'Taer08', 'Taer09', 'Taer10', 'Taer11', 'Taer12'],
+                            'Tesi': ['Tesi01','Tesi02','Tesi03','Tesi04','Tesi05','Tesi06','Tesi07','Tesi08','Tesi09','Tesi10','Tesi11','Tesi12','Tesi13','Tesi14','Tesi15','Tesi16','Tesi17','Tesi18','Tesi19','Tesi20','Tesi21','Tesi22','Tesi23','Tesi24'],
+                            'Tako': ['Tako01', 'Tako02', 'Tako03', 'Tako04', 'Tako05', 'Tako06', 'Tako07', 'Tako08'],
+                            'Tamo': ['Tamo01', 'Tamo02', 'Tamo03', 'Tamo04', 'Tamo05', 'Tamo06', 'Tamo07', 'Tamo08'],
+                            'Vivi': ['Vivi01','Vivi02','Vivi03','Vivi04','Vivi05','Vivi06','Vivi07','Vivi08','Vivi09','Vivi10','Vivi11','Vivi12','Vivi13','Vivi14','Vivi15','Vivi16','Vivi17','Vivi18','Vivi19'],
+                        };
+
+                        // 更新染色体号选框的选项
+                        // 更新染色体号选框的选项
+                        function updateChromosomes(selectElement, species) {
+                            // 清除旧的选项
+                            selectElement.innerHTML = '';
+
+                            // 添加新的选项
+                            chromosomeData[species].forEach(function(chromosome) {
+                                var option = document.createElement('option');
+                                option.textContent = chromosome;
+                                option.value = chromosome;
+                                selectElement.appendChild(option);
+                            });
+                        }
+
+                        // 初始化染色体号选框
+                        updateChromosomes(chromosome1Select, species1Select.value);
+                        updateChromosomes(chromosome2Select, species2Select.value);
+
+                        // 监听物种选框的变化事件，更新染色体号选框
+                        species1Select.addEventListener('change', function() {
+                            updateChromosomes(chromosome1Select, this.value);
+                        });
+
+                        species2Select.addEventListener('change', function() {
+                            updateChromosomes(chromosome2Select, this.value);
+                        });
+
+                        // 修改后的染色体选择处理逻辑
+                        function handleChromosomeClick(selectElement, event) {
+                            event.preventDefault();
+                            const option = event.target;
+                            if (option.tagName === 'OPTION') {
+                                // 切换选中状态
+                                option.selected = !option.selected;
+                                // 更新对号显示
+                                if (option.selected) {
+                                    option.textContent = option.value + ' ✔';
+                                } else {
+                                    option.textContent = option.value;
+                                }
+                            }
+                        }
+
+                        // 初始化染色体选项（带值存储）
+                        function updateChromosomes(selectElement, species) {
+                            const selectedValues = Array.from(selectElement.options)
+                                .filter(opt => opt.selected)
+                                .map(opt => opt.value);
+
+                            selectElement.innerHTML = '';
+                            chromosomeData[species].forEach(chromosome => {
+                                const option = document.createElement('option');
+                                option.value = chromosome;
+                                option.textContent = chromosome;
+                                if (selectedValues.includes(chromosome)) {
+                                    option.selected = true;
+                                    option.textContent += ' ✔';
+                                }
+                                selectElement.appendChild(option);
+                            });
+                        }
+
+                        // 全选/取消全选功能
+                        function toggleAll(selectElement, select) {
+                            Array.from(selectElement.options).forEach(option => {
+                                option.selected = select;
+                                option.textContent = select ? option.value + ' ✔' : option.value;
+                            });
+                        }
+
+                        // 初始化事件监听
+                        function initChromosomeEvents() {
+                            // 染色体选择事件
+                            chromosome1Select.addEventListener('mousedown', (e) => handleChromosomeClick(chromosome1Select, e));
+                            chromosome2Select.addEventListener('mousedown', (e) => handleChromosomeClick(chromosome2Select, e));
+
+                            // 全选/取消全选
+                            document.getElementById('selectAll1').addEventListener('click', () => toggleAll(chromosome1Select, true));
+                            document.getElementById('deselectAll1').addEventListener('click', () => toggleAll(chromosome1Select, false));
+                            document.getElementById('selectAll2').addEventListener('click', () => toggleAll(chromosome2Select, true));
+                            document.getElementById('deselectAll2').addEventListener('click', () => toggleAll(chromosome2Select, false));
+
+                            // 物种切换时保留已选状态
+                            species1Select.addEventListener('change', () => {
+                                updateChromosomes(chromosome1Select, species1Select.value);
+                            });
+                            species2Select.addEventListener('change', () => {
+                                updateChromosomes(chromosome2Select, species2Select.value);
+                            });
+                        }
+
+                        // 初始化执行
+                        initChromosomeEvents();
+                    </script>
+
+{#                    <script>#}
+{#                        function go() {#}
+{#                            var hh1 = document.getElementById("wait1");#}
+{#                            var hh2 = document.getElementById("wait2");#}
+{#                            if (hh1.style.display === "none" && hh2.style.display === "none") {#}
+{#                                hh1.style.display = "inline-block";#}
+{#                                hh2.style.display = "inline-block"#}
+{#                            }#}
+{#                            document.getElementById('go').submit()#}
+{#                        }#}
+{#                    </script>#}
+                </form>
+            </div>
+
+            <div class="col-lg-8">
+                <table id="example" class="display">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="text-align: center">Species1</th>
+                            <th rowspan="2" style="text-align: center">Species2</th>
+                            <th colspan="2" style="text-align: center">MCScanX</th>
+                            <th colspan="2" style="text-align: center">ColinearScan</th>
+                        </tr>
+                        <tr>
+                            <th>Blocks</th>
+                            <th>Tandem</th>
+                            <th>KaKs</th>
+                            <th><em>Blocks</em></th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

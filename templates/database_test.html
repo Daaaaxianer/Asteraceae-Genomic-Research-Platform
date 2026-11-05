@@ -1,0 +1,232 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>LGRPv2</title>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../static/js/jquery-3.5.1.js"></script>
+    <script src="../static/js/jquery.dataTables.min.js"></script>
+    <link href="../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6"
+        style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">
+        Database<i></i>
+    </h3>
+
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>SoyBase </i></p>
+                <a href="#"><img src="../static/image/1.jpg" alt="Soybase"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: SoyBase, the USDA-ARS soybean genetics and genomics database, is a comprehensive repository for professionally curated genetics, genomics and related data resources for soybean.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size:16px">Link: <a href="https://soybase.org/">https://soybase.org/</a>
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>Soykb</i></p>
+                <a href="#"><img src="../static/image/2.jpg" alt="Soykb"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: A comprehensive web resource developed for bridging soybean translational genomics and molecular breeding research.</a></p>
+                <br>
+                <br>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://soykb.org/">https://soykb.org/</a>
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>Legoo</i></p>
+                <a href="#"><img src="../static/image/3.jpg" alt="Legoo"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: LeGOO integrates genetics and reverse genetics approaches, massive amounts of data. Furthermore LeGOO collects and represents biological information from peer-reviewed publications..</a></p>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://lipm-browsers.toulouse.inra.fr/k/legoo/">https://lipm-browsers.toulouse.<br>inra.fr/k/legoo/</a></p>               
+                </p>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>Soynet</i></p>
+                <a href="#"><img src="../static/image/4.jpg" alt="Soynet"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: a functional gene network and coexpression network database for a legume crop, soybean.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://www.inetbio.org/soynet/">http://www.inetbio.org/soynet/</a></p>
+                <br>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>NCGR</i></p>
+                <a href="#"><img src="../static/image/5.jpg" alt="NCGR"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: The Medicago Genome Initiative (MGI) is a database of EST sequences of the model legume MEDICAGO: truncatula.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://www.ncgr.org/">https://www.ncgr.org/</a></p>
+                <br>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>CicArVarDB</i></p>
+                <a href="#"><img src="../static/image/6.jpg" alt="CicArVarDB"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: SNP and InDel database for advancing genetics research and breeding applications in chickpea</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://cegresources.icrisat.org/cicarvardb/">https://cegresources.icrisat.<br>org/cicarvardb/</a></p>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>MTED</i></p>
+                <a href="#"><img src="../static/image/7.jpg" alt="MTED"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: MtED is a database which contains expression data of model legume Medicago truncatula through The Affymetrix GeneChip® Medicago Genome Array.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://bioinformatics.cau.edu.cn/MtED/">http://bioinformatics.cau.edu.cn/MtED/</a></p>
+                <br>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>VIGCS</i></p>
+                <a href="#"><img src="../static/image/8.jpg" alt="VIGCS"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: We present the first genome database for genus Vigna, the Vigna Genome Server, which is based on a high quality, annotated azuki bean reference genome sequence.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://viggs.dna.affrc.go.jp/">https://viggs.dna.affrc.go.jp/</a></p>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>MTTD</i></p>
+                <a href="#"><img src="../static/image/9.jpg" alt="MTTD"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: The Medicago Truncatula Transporter database is a database of protein sequences of transporters of the model legume Medicago truncatula.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://bioinformatics.cau.edu.cn/MtTransporter/">http://bioinformatics.cau.edu.cn<br>/MtTransporter/</a></p>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <!-- 10-12-->
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>CicArMiSatDB</i></p>
+                <a href="#"><img src="../static/image/10.jpg" alt="CicArMiSatDB"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: CicArMiSatDB is a web resource for exploring microsatellite (Simple Sequence Repeat) markers information for Chickpea. It provides valuable marker information to the chickpea breeding community.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="https://cegresources.icrisat.org/CicArMiSatDB/">https://cegresources.icrisat.<br>org/CicArMiSatDB/</a></p>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>SFGD</i></p>
+                <a href="#"><img src="../static/image/11.jpg" alt="SFGD"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: The SFGD is a comprehensive database integrating genome and transcriptome data, and also for soybean acyl-lipid metabolism pathways. </a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://bioinformatics.cau.edu.cn/SFGD/">http://bioinformatics.cau.edu.cn/SFGD/</a></p>
+                <br>
+                <br>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>Soybean VCF2Genomes</i></p>
+                <a href="#"><img src="../static/image/12.jpg" alt="Soybean VCF2Genomes"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: Soybean-VCF2Genomes is a database for identification the closest accession in soybean germplasm <br>collection. </a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://pgl.gnu.ac.kr/soy_vcf2genome/">http://pgl.gnu.ac.kr/soy_vcf2genome/</a></p>
+                <br>
+                <br>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 460px">
+                <p id='text_in_image'><i>TGIF-DB</i></p>
+                <a href="#"><img src="../static/image/13.jpg" alt="TGIF-DB"></a>
+                <p></p>
+                <p id='text_in_image' style="background: white; color:black;font-size:15px">Introduce: The resulting data for the gene sequences and their functional annotations for pearl millet, garden asparagus, chickpea and Tartary buckwheat were deposited in the figshare repository.</a></p>
+                <br>
+                <p id='text_in_image' style="background: white; color:black;font-size: 16px">Link: <a href="http://webpark2116.sakura.ne.jp/rlgpr/">http://webpark2116.sakura.ne.jp/rlgpr/</a></p>
+                <p></p>                
+                </p>
+            </div>
+        </div>
+
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "sp_introduce_url" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "sp_introduce2_url" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "sp_introduce3_url" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "sp_introduce2_url" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

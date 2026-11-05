@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inulin Related Family - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 白色卡片容器样式 */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 页面主标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图表标题样式 (无图标) */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22; /* 橙色左边框 */
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        
+        <div class="text-center">
+            <h2 class="section-title">Inulin Related Family</h2>
+            <p class="section-subtitle">Distribution of inulin synthesis and degradation genes across species</p>
+        </div>
+        <hr class="section-divider">
+
+        <h3 class="chart-header">
+            Gene Count Statistics (Stacked Bar)
+        </h3>
+        <div id="container_bar" style="height: 1200px; width: 100%;"></div>
+
+        <div class="my-5 border-top" style="border-top-style: dashed !important; opacity: 0.3;"></div>
+
+        <h3 class="chart-header">
+            Gene Distribution Heatmap
+        </h3>
+        <div id="container_heatmap" style="height: 1200px; width: 100%;"></div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // =========================================================
+            // 1. 数据源 (Generated from Excel)
+            // =========================================================
+            var speciesData = ["Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Gerbera hybrida", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum kok-saghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"];
+            
+            var geneCategories = ["FEHs", "FTs", "basal"];
+            
+            var data_FEHs = [9, 19, 7, 7, 4, 5, 10, 11, 2, 12, 1, 5, 10, 9, 22, 12, 7, 7, 12, 7, 5, 7, 6, 6, 5, 3, 5, 3, 4, 4, 4, 6, 3, 4, 6, 8, 13, 14, 5, 1, 7, 8, 5, 2, 6, 3, 3, 5, 8, 6, 7, 9, 5, 6, 6, 1, 7, 2, 3];
+            var data_FTs = [6, 17, 10, 7, 5, 6, 7, 24, 4, 8, 6, 6, 8, 7, 16, 5, 6, 7, 6, 15, 6, 8, 7, 8, 6, 1, 4, 2, 4, 3, 6, 6, 6, 3, 6, 4, 11, 17, 4, 8, 8, 8, 7, 4, 5, 7, 5, 9, 7, 7, 7, 11, 10, 10, 6, 4, 2, 3, 2];
+            var data_basal = [6, 11, 4, 4, 3, 4, 5, 9, 3, 8, 4, 3, 7, 6, 11, 7, 3, 3, 6, 8, 6, 3, 5, 4, 5, 1, 1, 2, 1, 6, 6, 5, 3, 0, 4, 6, 6, 12, 2, 6, 7, 4, 2, 2, 3, 4, 4, 4, 4, 5, 5, 10, 5, 3, 3, 4, 3, 3, 1];
+
+            // 整合 Series 数据对象
+            var seriesMap = [
+                { name: 'FEHs', data: data_FEHs },
+                { name: 'FTs', data: data_FTs },
+                { name: 'basal', data: data_basal }
+            ];
+
+            // =========================================================
+            // 2. 初始化堆积柱形图 (Stacked Bar Chart)
+            // =========================================================
+            var domBar = document.getElementById('container_bar');
+            if (domBar) {
+                var myChartBar = echarts.init(domBar, null, {renderer: 'canvas'});
+                
+                var barSeries = seriesMap.map(function(item) {
+                    return {
+                        name: item.name,
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: { focus: 'series' },
+                        data: item.data
+                    };
+                });
+
+                var optionBar = {
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    legend: { top: 'top', data: geneCategories }, 
+                    grid: { left: '3%', right: '4%', bottom: '1%', top: '60px', containLabel: true },
+                    xAxis: {
+                        type: 'value',
+                        name: 'Gene Count',
+                        position: 'top', 
+                        splitLine: { lineStyle: { type: 'dashed' } }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: speciesData,
+                        axisLabel: { fontStyle: 'italic', interval: 0, fontSize: 11 },
+                        inverse: true
+                    },
+                    series: barSeries
+                };
+                myChartBar.setOption(optionBar);
+            }
+
+            // =========================================================
+            // 3. 初始化热图 (Heatmap)
+            // =========================================================
+            var domHeatmap = document.getElementById('container_heatmap');
+            if (domHeatmap) {
+                var myChartHeatmap = echarts.init(domHeatmap, null, {renderer: 'canvas'});
+
+                // 转换数据为热图格式 [[xIndex, yIndex, value], ...]
+                var heatmapData = [];
+                // x轴: 基因类别, y轴: 物种
+                speciesData.forEach(function(species, yIndex) {
+                    seriesMap.forEach(function(seriesItem, xIndex) {
+                        heatmapData.push([xIndex, yIndex, seriesItem.data[yIndex]]);
+                    });
+                });
+
+                var optionHeatmap = {
+                    tooltip: {
+                        position: 'top',
+                        formatter: function (params) {
+                            return params.name + '<br/>' + 
+                                   geneCategories[params.value[0]] + ': ' + params.value[2];
+                        }
+                    },
+                    grid: {
+                        height: '90%',
+                        top: '5%',
+                        right: '10%', // 右侧留白给 visualMap
+                        left: '15%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: geneCategories,
+                        splitArea: { show: true },
+                        axisLabel: { interval: 0, rotate: 0, fontWeight: 'bold' },
+                        position: 'top'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: speciesData,
+                        splitArea: { show: true },
+                        axisLabel: { fontStyle: 'italic', interval: 0, fontSize: 10 },
+                        inverse: true
+                    },
+                    visualMap: {
+                        min: 0,
+                        max: 25, // 数据最大值约24，设为25
+                        calculable: true,
+                        orient: 'vertical',
+                        right: '2%',
+                        top: 'center',
+                        inRange: {
+                            color: ['#f6efa6', '#d88273', '#bf444c']
+                        }
+                    },
+                    series: [{
+                        name: 'Gene Counts',
+                        type: 'heatmap',
+                        data: heatmapData,
+                        label: {
+                            show: true,
+                            color: '#333',
+                            fontSize: 10
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }]
+                };
+                myChartHeatmap.setOption(optionHeatmap);
+            }
+
+            // =========================================================
+            // 4. 窗口缩放监听
+            // =========================================================
+            window.addEventListener('resize', function() {
+                if (domBar) myChartBar.resize();
+                if (domHeatmap) myChartHeatmap.resize();
+            });
+        });
+    </script>
+{% endblock %}

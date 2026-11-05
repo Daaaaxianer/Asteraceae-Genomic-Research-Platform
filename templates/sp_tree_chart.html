@@ -1,0 +1,957 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Phylogenetic Tree - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* 1. 强制页心宽度 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        /* 2. 主内容容器样式 (保持与其他页面一致) */
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* 3. 标题样式 */
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        /* 4. 图表标题装饰 */
+        .chart-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #e67e22; /* 橙色左边框 */
+            display: flex;
+            align-items: center;
+        }
+
+        .chart-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-image: url("{% static 'image/shuye.png' %}"); /* 使用您的叶子图标 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">Asteraceae Phylogenetic Tree</h2>
+            <p class="section-subtitle">Taxonomic classification and evolutionary relationships</p>
+        </div>
+        <hr class="section-divider">
+
+        <h3 class="chart-header">
+            Species Tree
+        </h3>
+        <div id="container_a" style="height: 800px; width: 100%;"></div>
+
+        <div class="my-5 border-top" style="border-top-style: dashed !important; opacity: 0.3;"></div>
+
+        <h3 class="chart-header">
+            Taxonomic Classification (Sunburst)
+        </h3>
+        <div id="container_b" style="height: 1300px; width: 100%;"></div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ==========================================
+        // Chart 1: Species Tree (原代码中的 container_a)
+        // ==========================================
+        var domA = document.getElementById('container_a');
+        var myChartA = echarts.init(domA, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+        myChartA.showLoading();
+
+        // 完整数据 A
+        const data_a = {
+            name: 'Asteraceae',
+            children: [
+                {
+                    name: 'Mutisioideae',
+                    children: [
+                        {
+                            name: 'Tr.Mutisieae',
+                        }
+                    ]
+                },
+                {
+                    name: 'Carduoideae',
+                    children: [
+                        {
+                            name: 'Tr.Cardueae',
+                            children: [
+                                {name: 'A.lappa', value: 40},
+                                {name: 'A.minus', value: 40},
+                                {name: 'C.tinctorius', value: 40},
+                                {name: 'C.cardunculus', value: 40},
+                                {name: 'C.solstitialis', value: 40},
+                                {name: 'S.involucrata', value: 40}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Vernonioideae',
+                    children: [
+                        {
+                            name: 'Tr.Vernonieae',
+                            children: [
+                                {name: 'C.pauciflorus', value: 40}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Cichorioideae',
+                    children: [
+                        {
+                            name: 'Tr.Cichorieae',
+                            children: [
+                                {name: 'C.intybus', value: 40},
+                                {name: 'C.endivia', value: 40},
+                                {name: 'L.saligna', value: 40},
+                                {name: 'L.sativa', value: 40},
+                                {name: 'T.koksaghyz', value: 40},
+                                {name: 'T.mongolicum', value: 40}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Asteroideae',
+                    children: [
+                        {
+                            name: 'Tr.Senecioneae',
+                            children: [
+                                {name: 'S.squalidus', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Gnaphalieae',
+                            children: [
+                                {name: 'H.umbraculigerum', value: 20},
+                                {name: 'L.minima', value: 20},
+                                {name: 'P.luteoalbum', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Astereae',
+                            children: [
+                                {name: 'E.canadensis', value: 40},
+                                {name: 'E.breviscapus', value: 40}
+                            ]
+                        },
+                        
+                        {
+                            name: 'Tr.Anthemideae',
+                            children: [
+                                {name: 'A.annua', value: 14},
+                                {name: 'A.argyi', value: 16},
+                                {name: 'A.tridentata', value: 16},
+                                {name: 'C.lavandulifolium', value: 16},
+                                {name: 'C.makinoi', value: 14},
+                                {name: 'C.morifolium', value: 14},
+                                {name: 'C.nankingense', value: 14},
+                                {name: 'C.indicum', value: 14},
+                                {name: 'G.coronaria', value: 14}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Inuleae',
+                            children: [
+                                {name: 'P.dysenterica', value: 20},
+                                {name: 'P.indica', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Coreopsideae',
+                            children: [
+                                {name: 'B.alba', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Heliantheae',
+                            children: [
+                                {name: 'A.artemisiifolia', value: 20},
+                                {name: 'A.trifida', value: 20},
+                                {name: 'C.bipinnatus', value: 20},
+                                {name: 'D.pinnata', value: 20},
+                                {name: 'D.increscens', value: 20},
+                                {name: 'H.annuus', value: 20},
+                                {name: 'H.tuberosus', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Millerieae',
+                            children: [
+                                {name: 'S.sonchifolius', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Eupatorieae',
+                            children: [
+                                {name: 'M.micrantha', value: 20},
+                                {name: 'S.rebaudiana', value: 20}
+                            ]
+                        },
+                        
+                        {
+                            name: 'Tr.Tageteae',
+                            children: [
+                                {name: 'F.bidentis', value: 20},
+                                {name: 'F.brownii', value: 20},
+                                {name: 'F.floridana', value: 20},
+                                {name: 'F.linearis', value: 20},
+                                {name: 'F.ramosissima', value: 20},
+                                {name: 'F.robusta', value: 20},
+                                {name: 'F.sonorensis', value: 20},
+                                {name: 'F.trinervia', value: 20},
+                                {name: 'T.erecta', value: 20}
+                            ]
+                        },
+                        {
+                            name: 'Tr.Eupatorieae',
+                            children: [
+                                {name: 'S.caesia', value: 20},
+                                {name: 'S.canadensis', value: 20}
+                            ]
+                        },
+                    ]
+                },
+                
+                
+                
+            ]
+        };
+
+        const optionA = {
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [
+                {
+                    type: 'tree',
+                    name: 'tree1',
+                    data: [data_a],
+                    top: '5%',
+                    left: '10%',
+                    bottom: '2%',
+                    right: '20%',
+                    symbolSize: 9,
+                    label: {
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        fontSize: 14
+                    },
+                    leaves: {
+                        label: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
+                        }
+                    },
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    expandAndCollapse: true,
+                    animationDuration: 550,
+                    animationDurationUpdate: 750,
+                    itemStyle: {
+                        color: '#d35400',
+                        borderColor: '#e67e22'
+                    },
+                    lineStyle: {
+                        color: '#f0c29e',
+                        curveness: 0.5
+                    }
+                }
+            ]
+        };
+
+        myChartA.hideLoading();
+        myChartA.setOption(optionA);
+
+
+        // ==========================================
+        // Chart 2: Taxonomic Sunburst (原代码中的 container)
+        // ==========================================
+        // 重命名容器 ID 为 container_b 防止冲突
+        var domB = document.getElementById('container_b');
+        var myChartB = echarts.init(domB, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+        // 完整数据 B (Sunburst Data)
+        var data_b = [
+            {
+                name: 'Asteroideae',
+                itemStyle: {
+                    color: '#da0d68'
+                },
+                children: [
+                    {
+                        name: 'Astereae',
+                        itemStyle: {
+                            color: '#e0719c'
+                        },
+                        children: [
+                            {
+                                name: 'Erigeron canadensis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#f99e1c'
+                                }
+                            },
+                            {
+                                name: 'Erigeron breviscapus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#ef5a78'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Solidagininae',
+                        itemStyle: {
+                            color: '#da1d23'
+                        },
+                        children: [
+                            {
+                                name: 'Solidago caesia',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d0545f'
+                                }
+                            },
+                            {
+                                name: 'Solidago canadensis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#f99e1c'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Anthemideae',
+                        itemStyle: {
+                            color: '#da5c1f'
+                        },
+                        children: [
+                            {
+                                name: 'Artemisia annua',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#da5c1f'
+                                }
+                            },
+                            {
+                                name: 'Artemisia argyi',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d78823'
+                                }
+                            },
+                            {
+                                name: 'Artemisia tridentata',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#23d72c'
+                                }
+                            },
+                            {
+                                name: 'Chrysanthemum lavandulifolium',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#23b6d7'
+                                }
+                            },
+                            {
+                                name: 'Chrysanthemum makinoi',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#2341d7'
+                                }
+                            },
+                            {
+                                name: 'Chrysanthemum morifolium',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#b023d7'
+                                }
+                            },
+                            {
+                                name: 'Chrysanthemum nankingense',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#7ad723'
+                                }
+                            },
+                            {
+                                name: 'Chrysanthemum indicum',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d7239e'
+                                }
+                            },
+                            {
+                                name: 'Glebionis coronaria',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d74423'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Coreopsideae',
+                        itemStyle: {
+                            color: '#d78823'
+                        },
+                        children: [
+                            {
+                                name: 'Bidens alba',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#ae341f'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Eupatorieae',
+                        itemStyle: {
+                            color: '#ae341f'
+                        },
+                        children: [
+                            {
+                                name: 'Mikania micrantha',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#310d0f'
+                                }
+                            },
+                            {
+                                name: 'Stevia rebaudiana',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d45a59'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Gnaphalieae',
+                        itemStyle: {
+                            color: '#310d0f'
+                        },
+                        children: [
+                            {
+                                name: 'Helichrysum umbraculigerum',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d45a59'
+                                }
+                            },
+                            {
+                                name: 'Logfia minima',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#e65832'
+                                }
+                            },
+                            {
+                                name: 'Pseudognaphalium luteoalbum',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#470604'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Heliantheae',
+                        itemStyle: {
+                            color: '#bb764c'
+                        },
+                        children: [
+                            {
+                                name: 'Ambrosia artemisiifolia',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#c89f83'
+                                }
+                            },
+                            {
+                                name: 'Ambrosia trifida',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#c8b283'
+                                }
+                            },
+                            {
+                                name: 'Cosmos bipinnatus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#83c8c2'
+                                }
+                            },
+                            {
+                                name: 'Dahlia pinnata',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#8a83c8'
+                                }
+                            },
+                            {
+                                name: 'Deinandra increscens',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#83abc8'
+                                }
+                            },
+                            {
+                                name: 'Helianthus annuus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#83c8c6'
+                                }
+                            },
+                            {
+                                name: 'Helianthus tuberosus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#c683c8'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Inuleae',
+                        itemStyle: {
+                            color: '#9d3388'
+                        },
+                        children: [
+                            {
+                                name: 'Pulicaria dysenterica',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#d4129d'
+                                }
+                            },
+                            {
+                                name: 'Pluchea indica',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#12d473'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Millerieae',
+                        itemStyle: {
+                            color: '#a87b64'
+                        },
+                        children: [
+                            {
+                                name: 'Smallanthus sonchifolius',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#b6c769'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Senecioneae',
+                        itemStyle: {
+                            color: '#dd4c51'
+                        },
+                        children: [
+                            {
+                                name: 'Senecio squalidus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#3e0317'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Tageteae',
+                        itemStyle: {
+                            color: '#b14d57'
+                        },
+                        children: [
+                            {
+                                name: 'Flaveria bidentis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#cc3d41'
+                                }
+                            },
+                             {
+                                name: 'Flaveria brownii',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#3dccb7'
+                                }
+                            },
+                             {
+                                name: 'Flaveria floridana',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#3d55cc'
+                                }
+                            },
+                             {
+                                name: 'Flaveria linearis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#93cc3d'
+                                }
+                            },
+                             {
+                                name: 'Flaveria ramosissima',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#823dcc'
+                                }
+                            },
+                             {
+                                name: 'Flaveria robusta',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#cc3dca'
+                                }
+                            },
+                             {
+                                name: 'Flaveria sonorensis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#c7cc3d'
+                                }
+                            },
+                             {
+                                name: 'Flaveria trinervia',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#cc3d41'
+                                }
+                            },
+                             {
+                                name: 'Tagetes erecta',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#3dcc90'
+                                }
+                            }
+                        ]
+                    },
+
+                ]
+            },
+            {
+                name: 'Carduoideae',
+                itemStyle: {
+                    color: '#7ac141'
+                },
+                children: [
+                    {
+                        name: 'Cardueae',
+                        itemStyle: {
+                            color: '#a3a830'
+                        },
+                        children: [
+                            {
+                                name: 'Arctium lappa',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#5e9a80'
+                                }
+                            },
+                            {
+                                name: 'Arctium minus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#625e9a'
+                                }
+                            },
+                            {
+                                name: 'Carthamus tinctorius',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#669a5e'
+                                }
+                            },
+                            {
+                                name: 'Cynara cardunculus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#9a905e'
+                                }
+                            },
+                            {
+                                name: 'Centaurea solstitialis',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#7f5e9a'
+                                }
+                            },
+                            {
+                                name: 'Saussurea involucrata',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#9a5e8e'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'Cichorioideae',
+                itemStyle: {
+                    color: '#ebb40f'
+                },
+                children: [
+                    {
+                        name: 'Cichorieae',
+                        itemStyle: {
+                            color: '#e1c315'
+                        },
+                        children: [
+                            {
+                                name: 'Cichorium intybus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#9ea718'
+                                }
+                            },
+                            {
+                                name: 'Cichorium endivia',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#5d18a7'
+                                }
+                            },
+                            {
+                                name: 'Lactuca saligna',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#18a2a7'
+                                }
+                            },
+                            {
+                                name: 'Lactuca sativa',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#7718a7'
+                                }
+                            },
+                            {
+                                name: 'Taraxacum koksaghyz',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#a7187a'
+                                }
+                            },
+                            {
+                                name: 'Taraxacum mongolicum',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#a75418'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'Vernonioideae',
+                itemStyle: {
+                    color: '#ebb40f'
+                },
+                children: [
+                    {
+                        name: 'Vernonieae',
+                        itemStyle: {
+                            color: '#e1c315'
+                        },
+                        children: [
+                            {
+                                name: 'Centrapalus pauciflorus',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#9ea718'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'Mutisioideae',
+                label: {
+                    show: true,
+                    rotate: 0,
+                    color: '#333',
+                    fontSize: 12
+                },
+                itemStyle: {
+                    color: '#2a9d8f'
+                },
+                children: [
+                    {
+                        name: 'Mutisieae',
+                        itemStyle: {
+                            color: '#43aa8b'
+                        },
+                        children: [
+                            {
+                                name: 'Gerbera hybrida',
+                                value: 1,
+                                itemStyle: {
+                                    color: '#90be6d'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const optionB = {
+            title: {
+                text: 'There are 53 classifications of Asteraceae plants',
+                subtext: 'Subfamily - Genus - Species name',
+                textStyle: {
+                    fontSize: 16,
+                    align: 'center',
+                    fontWeight: 'bold',
+                    color: '#34495e'
+                },
+                subtextStyle: {
+                    align: 'center',
+                    fontSize: 12
+                },
+                sublink: 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Undef&id=3803&lvl=3&keep=1&srchmode=1&unlock'
+            },
+            series: {
+                type: 'sunburst',
+                data: data_b,
+                center: ['50%', '56%'],
+                radius: [0, '82%'],
+                sort: undefined,
+                emphasis: {
+                    focus: 'ancestor'
+                },
+                levels: [
+                    {},
+                    {
+                        r0: '15%',
+                        r: '35%',
+                        itemStyle: {
+                            borderWidth: 2
+                        },
+                        label: {
+                            rotate: 'tangential'
+                        }
+                    },
+                    {
+                        r0: '35%',
+                        r: '70%',
+                        label: {
+                            align: 'right'
+                        }
+                    },
+                    {
+                        r0: '68%',
+                        r: '70%',
+                        label: {
+                            position: 'outside',
+                            fontSize: 11,
+                            silent: false
+                        },
+                        itemStyle: {
+                            borderWidth: 3
+                        }
+                    }
+
+                ]
+            }
+        };
+
+        myChartB.setOption(optionB);
+
+        // Resize Listener
+        window.addEventListener('resize', function() {
+            myChartA.resize();
+            myChartB.resize();
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Macrotyloma uniflorum</p>
+                    <p><b>CommonName: </b> Horse gram</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Macrotyloma</p>
+                    <p><b>Abbr: </b> Mun</p>
+                    <p><b>Level: </b> Genome</p>
+                    <p><b>chromosome number: </b> 2n=2X=20</p>
+                    <p><b>GenomeSize: </b> 350 Mb</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="../../static/image/Mun.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p><b>Introduction: </b> Perennial or annual climbing herb up to 0·6 m. long, often from a tough rootstock, possibly sometimes suberect. Stems sparsely to fairly densely covered with ± spreading soft whitish hairs. Leaflets 3, ovate-rhomboid, obovate or elliptic, the laterals oblique, 1–3·5(–8 in Indian material) cm. long, 0·7–2·7(–7·8 in Indian material) cm. wide, rounded or subacute at the apex, rounded at the base, rather thin, glabrescent to pubescent or rarely velvety on both surfaces; petiole 0·8–6·8 cm. long; rhachis 2·5–10 mm. long; petiolules 1–2 mm. long; stipules lanceolate, 4–8 mm. long, veined.</p>
+
+                    <p><b>Distribution: </b> Distributed in southern Taiwan, China (Pingtung); Native to India, but also found in Africa</p>
+
+                    <p><b>Article Title: </b> <a href="https://www.frontiersin.org/articles/10.3389/fpls.2021.758119/full">Genome, Transcriptome, and Germplasm Sequencing Uncovers Functional Variation in the Warm-Season Grain Legume Horsegram Macrotyloma uniflorum (Lam.) Verdc.</a></p>
+
+                    <p><b>Data source: </b>The whole genome assembly has been deposited at NCBI/DDBJ/EMBL with the accession ID NSKJ00000000.  The version described in this paper is NSKJ01000000.  The raw sequence reads of Illumina, PacBio, and RNA sequencing are deposited in NCBI SRA database with the accession numbers SRR10854883, SRR10854881, and SRR10854882, respectively.  The ddRADSeq raw sequence reads of Illumina is deposited in NCBI SRA database with the accession numbers from SRR14229121 to SRR14229160 under NCBI BioProject ID PRJNA721661.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

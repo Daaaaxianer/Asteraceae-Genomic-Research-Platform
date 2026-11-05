@@ -1,0 +1,506 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Manual - AGRP{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Reuse page wrapper style from statistics.html */
+    .page-wrapper {
+        background: #fff;
+        padding: 40px 50px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 800px;
+    }
+
+    .section-title {
+        font-family: "Georgia", "Times New Roman", serif;
+        font-weight: 700;
+        color: #d35400;
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 15px;
+    }
+
+    /* Sidebar Navigation Styles */
+    .sidebar-nav {
+        border-right: 1px solid #eee;
+        padding-right: 20px;
+        height: 100%;
+    }
+
+    .sticky-top {
+        position: sticky;
+        top: 100px; /* Adjust based on header height */
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Custom Scrollbar for sidebar */
+    .sticky-top::-webkit-scrollbar {
+        width: 4px;
+    }
+    .sticky-top::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        border-radius: 4px;
+    }
+
+    .nav-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .nav-item {
+        margin-bottom: 4px;
+    }
+
+    .nav-link-manual {
+        display: block;
+        padding: 6px 10px;
+        color: #555;
+        text-decoration: none;
+        font-size: 0.95rem;
+        border-radius: 4px;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+    }
+
+    .nav-link-manual:hover {
+        background-color: #fff8f0;
+        color: #d35400;
+        border-left-color: #d35400;
+    }
+
+    .nav-link-manual.active {
+        background-color: #fff5eb;
+        color: #d35400;
+        font-weight: 600;
+        border-left-color: #e67e22;
+    }
+
+    /* Sub-menu styling */
+    .sub-nav-list {
+        list-style: none;
+        padding-left: 20px;
+        margin-top: 2px;
+        display: none; /* Hidden by default, shown via JS or active state */
+    }
+    
+    /* Show sub-menu when parent is active or hovered (optional logic) */
+    .nav-item:hover .sub-nav-list,
+    .sub-nav-list.show {
+        display: block;
+    }
+
+    .sub-nav-link {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        color: #777;
+    }
+
+    /* Content Area Styles */
+    .manual-content {
+        padding-left: 20px;
+    }
+
+    .manual-section {
+        margin-bottom: 50px;
+        scroll-margin-top: 120px; /* Offset for fixed header */
+    }
+
+    .manual-h2 {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .manual-h3 {
+        color: #e67e22;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .manual-h4 {
+        color: #5d4037;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .manual-text {
+        color: #444;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+
+    .highlight-box {
+        background-color: #f9fbfd;
+        border-left: 4px solid #3498db;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .sidebar-nav {
+            border-right: none;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .sticky-top {
+            position: static;
+        }
+        .page-wrapper {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <div class="text-center">
+            <h2 class="section-title">User Manual</h2>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <div class="sidebar-nav">
+                    <div class="sticky-top">
+                        <ul class="nav-list">
+                            <li class="nav-item"><a href="#sec_1" class="nav-link-manual">1. Home</a></li>
+                            
+                            <li class="nav-item">
+                                <a href="#sec_2" class="nav-link-manual">2. Genomics</a>
+                                <ul class="sub-nav-list show">
+                                    <li><a href="#sec_2_1" class="nav-link-manual sub-nav-link">2.1 Genome</a></li>
+                                    <li><a href="#sec_2_2" class="nav-link-manual sub-nav-link">2.2 JBrowse</a></li>
+                                    <li><a href="#sec_2_3" class="nav-link-manual sub-nav-link">2.3 GO-annotations</a></li>
+                                    <li><a href="#sec_2_4" class="nav-link-manual sub-nav-link">2.4 KEGG-pathways</a></li>
+                                    <li><a href="#sec_2_5" class="nav-link-manual sub-nav-link">2.5 Regulatory Proteins</a></li>
+                                    <li><a href="#sec_2_6" class="nav-link-manual sub-nav-link">2.6 N6-methyladenosine (m6A)</a></li>
+                                    <li><a href="#sec_2_7" class="nav-link-manual sub-nav-link">2.7 Gene duplication type</a></li>
+                                    <li><a href="#sec_2_8" class="nav-link-manual sub-nav-link">2.8 Transposable elements</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#sec_3" class="nav-link-manual">3. Geno-Syn</a>
+                                <ul class="sub-nav-list show">
+                                    <li><a href="#sec_3_1" class="nav-link-manual sub-nav-link">3.1 Aster-Blocks</a></li>
+                                    <li><a href="#sec_3_2" class="nav-link-manual sub-nav-link">3.2 Aster-Dotplots</a></li>
+                                    <li><a href="#sec_3_3" class="nav-link-manual sub-nav-link">3.3 Aster-Alignments</a></li>
+                                    <li><a href="#sec_3_4" class="nav-link-manual sub-nav-link">3.4 Aster-Evogenes</a></li>
+                                    <li><a href="#sec_3_5" class="nav-link-manual sub-nav-link">3.5 Aster-Ancgenome</a></li>
+                                    <li><a href="#sec_3_6" class="nav-link-manual sub-nav-link">3.6 Aster-Anccalling</a></li>
+                                    <li><a href="#sec_3_7" class="nav-link-manual sub-nav-link">3.7 Gene family</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#sec_4" class="nav-link-manual">4. Multi-Omics</a>
+                                <ul class="sub-nav-list show">
+                                    <li><a href="#sec_4_1" class="nav-link-manual sub-nav-link">4.1 Aster-Transcriptome</a></li>
+                                    <li><a href="#sec_4_2" class="nav-link-manual sub-nav-link">4.2 Aster-Metabolome</a></li>
+                                    <li><a href="#sec_4_3" class="nav-link-manual sub-nav-link">4.3 Aster-Pangenome</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#sec_5" class="nav-link-manual">5. Aster-Infor</a>
+                                <ul class="sub-nav-list show">
+                                    <li><a href="#sec_5_1" class="nav-link-manual sub-nav-link">5.1 Aster-Encyclopedia</a></li>
+                                    <li><a href="#sec_5_2" class="nav-link-manual sub-nav-link">5.2 Aster-Agroecology</a></li>
+                                    <li><a href="#sec_5_3" class="nav-link-manual sub-nav-link">5.3 Aster-Exterdata</a></li>
+                                    <li><a href="#sec_5_4" class="nav-link-manual sub-nav-link">5.4 Aster-Literature</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#sec_6" class="nav-link-manual">6. Bio-Tools</a>
+                                <ul class="sub-nav-list show">
+                                    <li><a href="#sec_6_1" class="nav-link-manual sub-nav-link">6.1 Web-Tools</a></li>
+                                    <li><a href="#sec_6_2" class="nav-link-manual sub-nav-link">6.2 Bio-Software</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item"><a href="#sec_7" class="nav-link-manual">7. Aster-Stats</a></li>
+                            <li class="nav-item"><a href="#sec_8" class="nav-link-manual">8. Submit-Projects</a></li>
+                            <li class="nav-item"><a href="#sec_9" class="nav-link-manual">9. AGRP-Switch</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-12">
+                <div class="manual-content">
+                    
+                    <div id="sec_1" class="manual-section">
+                        <h2 class="manual-h2">1. Home</h2>
+                        <p class="manual-text">The Home portal serves as the main interface, intuitively presenting the platform's overall resource distribution and quick links to featured resources, offering users a comprehensive overview and fast access experience.</p>
+                        <p class="manual-text">This interface includes an AGRP introduction video, quick-access links to various resources, 62 window-style tool links, 9 genomic analysis pipelines and related software links, 156 genomic resource entries, AGRP update logs, citation methods for AGRP and our previous Asteraceae research articles, and links to publications citing our prior Asteraceae research.</p>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_2" class="manual-section">
+                        <h2 class="manual-h2">2. Genomics</h2>
+                        <p class="manual-text">The Genomics Portal integrates the most comprehensive genomic and annotation resources. We have developed a system fully linked to AGRP-identifiers, enabling users to freely access relevant data resources and conduct integrated exploration across functional interfaces.</p>
+
+                        <div id="sec_2_1">
+                            <h3 class="manual-h3">2.1 Genome</h3>
+                            <p class="manual-text">The Genome interface displays taxonomy, genome size, number of chromosomes, assembly level, data source, sequencing platform/method, assembly method, date, and reference links for 156 genomes (150 Asteraceae genomes and 6 outgroups).</p>
+                            <p class="manual-text">It also highlights the 59 species (53 Asteraceae and 6 outgroups) used in the AGRP analysis. Users can freely select gene regions on chromosomes across different species and download gene CDS and PEP sequences.</p>
+                        </div>
+
+                        <div id="sec_2_2">
+                            <h3 class="manual-h3">2.2 JBrowse</h3>
+                            <p class="manual-text">The JBrowse interface provides visualization, browsing, and analysis of data for 59 species.</p>
+                        </div>
+
+                        <div id="sec_2_3">
+                            <h3 class="manual-h3">2.3 GO-annotations</h3>
+                            <p class="manual-text">The GO-annotations interface provides 23,959,751 annotation entries from the InterProScan software across 59 species. Users can query relevant annotation information in the AGRP database by searching for sequences or AGRP-IDs of corresponding species, with the freedom to select the scope of the query database.</p>
+                        </div>
+
+                        <div id="sec_2_4">
+                            <h3 class="manual-h3">2.4 KEGG-pathways</h3>
+                            <p class="manual-text">The KEGG-pathways interface provides 921,857 KEGG annotations across 59 species. Users can query relevant annotation information in the AGRP database by searching for sequences or AGRP-IDs corresponding to the target species.</p>
+                        </div>
+
+                        <div id="sec_2_5">
+                            <h3 class="manual-h3">2.5 Regulatory Proteins</h3>
+                            <p class="manual-text">The Regulatory Proteins interface provides 262,108 annotated entries across 59 species. Users may freely select the species, Regulatory Protein type, and specific families within different types for querying.</p>
+                        </div>
+
+                        <div id="sec_2_6">
+                            <h3 class="manual-h3">2.6 N6-methyladenosine (m6A)</h3>
+                            <p class="manual-text">The N6-methyladenosine (m6A) interface provides 2,129 N6-methyladenosine modifications across 59 species. Users can freely select the species to query, the Regulatory Factors type, and different families within each type.</p>
+                        </div>
+
+                        <div id="sec_2_7">
+                            <h3 class="manual-h3">2.7 Gene duplication type</h3>
+                            <p class="manual-text">The Gene Duplication Type interface provides duplication information for 5,575,472 genes across 59 species. Users can search for relevant information in the AGRP database by entering the sequence of the target species or its AGRP-ID.</p>
+                        </div>
+
+                        <div id="sec_2_8">
+                            <h3 class="manual-h3">2.8 Transposable elements</h3>
+                            <p class="manual-text">The Transposable Elements interface provides annotation information for 187,648,748 TEs across 53 Asteraceae genomes. Users can view the total number of TEs in each species, detailed counts by classification, and download complete annotation data for each species.</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_3" class="manual-section">
+                        <h2 class="manual-h2">3. Geno-Syn</h2>
+                        <p class="manual-text">The Geno-Syn portal encompasses the largest-scale genomic synteny analysis, ancestral genomes, whole-genome orthologs, and trait-associated gene families, empowering users to delve into genome recombination and functional innovation driven by whole-genome duplication within Asteraceae plants.</p>
+
+                        <div id="sec_3_1">
+                            <h3 class="manual-h3">3.1 Aster-Blocks</h3>
+                            <p class="manual-text">The Aster-Blocks interface provides 59 x 59 = 3,481 species-specific and interspecies resources related to species synteny obtained via ColinearScan and MCScanX.</p>
+                            <p class="manual-text">Users can download whole-genome alignment data or freely select different chromosomes across various species for comparison. They can obtain and download synteny information, visualize synteny using the online Genome Synteny Viewer tool, and generate Ks peak distribution plots with Draw Ks peak.</p>
+                        </div>
+
+                        <div id="sec_3_2">
+                            <h3 class="manual-h3">3.2 Aster-Dotplots</h3>
+                            <p class="manual-text">The Aster-Dotplots interface provides 59 x 59 = 3,481 BLASTP dotplots, BLOCK dotplots, and Ks dotplots within and between species. Users can download whole-genome alignment dotplots or freely select different chromosomes from various species for online comparison to obtain online visual dotplots.</p>
+                        </div>
+
+                        <div id="sec_3_3">
+                            <h3 class="manual-h3">3.3 Aster-Alignments</h3>
+                            <p class="manual-text">The Aster-Alignments subpage features four macro-matrix modules using <i>Euptelea pleiosperma</i>, <i>Vitis vinifera</i>, <i>Arctium lappa</i>, and <i>Helianthus annuus</i> as reference species. These modules encompass 1,450,041 AGRP-identifiers spanning 15 WGDs and 175 speciation events across six outgroups and 43 Asteraceae species.</p>
+
+                            <h4 class="manual-h4">3.3.1 Hean-MGAs</h4>
+                            <p class="manual-text">Hean-MGAs interface utilizes <i>Helianthus annuus</i>-based macro-matrices, allowing users to freely search sequences or AGRP-IDs across different species. If a gene exists within the macro-matrix, the interface will jump to its position in the macro-matrix list. Below, it displays the GFF information for all species genes within that list, along with a visual representation of the list achieved through DecoBrowse.</p>
+
+                            <h4 class="manual-h4">3.3.2 Arla-MGAs</h4>
+                            <p class="manual-text">Arla-MGAs interface utilizes <i>Arctium lappa</i>-based macro-matrices, with similar functionality for searching and visualization as Hean-MGAs.</p>
+
+                            <h4 class="manual-h4">3.3.3 Vivi-MGAs</h4>
+                            <p class="manual-text">Vivi-MGAs interface utilizes <i>Vitis vinifera</i>-based macro-matrices, providing sequence search and visualization capabilities using DecoBrowse.</p>
+
+                            <h4 class="manual-h4">3.3.4 Eupl-MGAs</h4>
+                            <p class="manual-text">Eupl-MGAs interface utilizes <i>Euptelea pleiosperma</i>-based macro-matrices, allowing users to freely search sequences or AGRP-IDs and visualize results.</p>
+                        </div>
+
+                        <div id="sec_3_4">
+                            <h3 class="manual-h3">3.4 Aster-Evogenes</h3>
+                            <p class="manual-text">The Aster-Evogenes interface provides 2,099,581 WGD-associated paralogs, speciation-associated orthologs, and single-copy genes across 59 species. Users can query relevant information in the AGRP database by searching for sequences of the corresponding species or by entering an AGRP-ID.</p>
+                        </div>
+
+                        <div id="sec_3_5">
+                            <h3 class="manual-h3">3.5 Aster-Ancgenome</h3>
+                            <p class="manual-text">The Aster-Ancgenome interface provides static and dynamic karyotype evolutionary trajectories of 29 ancestral evolutionary nodes and 29 representing species within genera.</p>
+                        </div>
+
+                        <div id="sec_3_6">
+                            <h3 class="manual-h3">3.6 Aster-Anccalling</h3>
+                            <p class="manual-text">The Aster-Anccalling interface provides download links for CDS, PEP, LENS, and GFF files across 29 ancestral genomes.</p>
+                            <div class="highlight-box">
+                                Users can perform online BLAST comparisons by selecting different ancestral nodes, either by providing protein sequences or uploading FASTA-formatted PEP, GFF, and LENS files for species genomes (file formats should follow the example files on this page). This process yields the karyotype of the target species genome.
+                            </div>
+                        </div>
+
+                        <div id="sec_3_7">
+                            <h3 class="manual-h3">3.7 Gene family</h3>
+                            <p class="manual-text">The Gene Family interface features four subpages: Aster-Orthogroups, Aster-Genefamilies, Aster-Rubbergenes, and Aster-Inulingenes, facilitating the identification and evolutionary research of Asteraceae trait genes.</p>
+                            
+                            <ul style="list-style-type: disc; padding-left: 20px;" class="manual-text">
+                                <li><strong>3.7.1 Aster-Orthogroups:</strong> Provides information on 104,001 orthogroups (OGs). Users can query by sequence or AGRP-ID, or click directly on a target OG.</li>
+                                <li><strong>3.7.2 Aster-Genefamilies:</strong> Provides annotation information for 1,097,511 genes across 180 families in 59 species. Includes tools like Fami-Tree and Fami-Circos.</li>
+                                <li><strong>3.7.3 Aster-Rubbergenes:</strong> Provides annotation information for 5,059 genes across 21 rubber synthesis-related families in 59 species.</li>
+                                <li><strong>3.7.4 Aster-Inulingenes:</strong> Provides annotation information for 1,079 genes belonging to the GH32 family across 59 species.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_4" class="manual-section">
+                        <h2 class="manual-h2">4. Multi-Omics</h2>
+                        <p class="manual-text">The Multi-Omics Portal provides extensive transcriptomic, metabolomic, and pan-genomic data resources for identifying genes associated with important traits in Asteraceae plants and elucidating their origins.</p>
+
+                        <div id="sec_4_1">
+                            <h3 class="manual-h3">4.1 Aster-Transcriptome</h3>
+                            <p class="manual-text">The Aster-Transcriptome interface provides gene expression quantification results across 20 species and various tissues. Users can search for relevant information in the AGRP database by entering sequences or AGRP-IDs for specific species and selecting an expression index (FPKM/TPM).</p>
+                        </div>
+
+                        <div id="sec_4_2">
+                            <h3 class="manual-h3">4.2 Aster-Metabolome</h3>
+                            <p class="manual-text">Aster-Metabolome integrates the largest database of Asteraceae secondary metabolites to date, comprising two subpages:</p>
+                            
+                            <h4 class="manual-h4">4.2.1 Aster-Metabolomics</h4>
+                            <p class="manual-text">Contains 17,541 compounds from 1,500 species, linked to 257,590 candidate enzyme genes. Users can query by PubChem CID.</p>
+
+                            <h4 class="manual-h4">4.2.2 Aster-Floralscent</h4>
+                            <p class="manual-text">Integrates 812 volatile organic compounds produced by floral organs across 87 plant species, linking them to 26,858 candidate genes. Users can query by PubChem CID.</p>
+                        </div>
+
+                        <div id="sec_4_3">
+                            <h3 class="manual-h3">4.3 Aster-Pangenome</h3>
+                            <p class="manual-text">The Aster-Pangenome interface provides 952 pangenome information for 15 species.</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_5" class="manual-section">
+                        <h2 class="manual-h2">5. Aster-Infor</h2>
+                        <p class="manual-text">The Aster-Infor portal aggregates species information, agronomic knowledge, literature, and external database links to support innovative research and breeding decisions within the Asteraceae family.</p>
+
+                        <div id="sec_5_1">
+                            <h3 class="manual-h3">5.1 Aster-Encyclopedia</h3>
+                            <p class="manual-text">Provides images, genome size, chromosome number, assembly quality, gene content, TE content, species descriptions, and genome sequencing references for 82 species. Among these, 29 species also provide genome karyotypes.</p>
+                        </div>
+
+                        <div id="sec_5_2">
+                            <h3 class="manual-h3">5.2 Aster-Agroecology</h3>
+                            <p class="manual-text">Provides images, morphological features, cultivation methods, pest management, and applications for 122 species.</p>
+                        </div>
+
+                        <div id="sec_5_3">
+                            <h3 class="manual-h3">5.3 Aster-Exterdata</h3>
+                            <p class="manual-text">Provides access to 56 external databases, including 9 Asteraceae-related databases, 14 comprehensive resource databases, and 33 tool-based databases.</p>
+                        </div>
+
+                        <div id="sec_5_4">
+                            <h3 class="manual-h3">5.4 Aster-Literature</h3>
+                            <p class="manual-text">Provides access to 30,416 Asteraceae-related publications from the past three decades. Users can click on the DOI or PMID to navigate to the original article interface or the PubMed interface.</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_6" class="manual-section">
+                        <h2 class="manual-h2">6. Bio-Tools</h2>
+                        
+                        <div id="sec_6_1">
+                            <h3 class="manual-h3">6.1 Web-Tools</h3>
+                            <p class="manual-text">Web-Tools comprises 62 user-friendly online tools. The All Tools interface provides an overview of all tools, allowing users to click on any tool to navigate directly to its online interface.</p>
+                            <p class="manual-text">Users can also access different tool interfaces based on five functional categories: Sequence similarity comparison and homology visualization, Inference and analysis of gene synteny, Gene structure and visualization, Phylogenetic and expression analysis of genes, and Calculation Tools.</p>
+                        </div>
+
+                        <div id="sec_6_2">
+                            <h3 class="manual-h3">6.2 Bio-Software</h3>
+                            <p class="manual-text">Bio-Software contains 72 tools available for local download. Users can click "reference" to view literature related to the software, download installation packages via "download," and access AGRP for software download methods, usage guidelines, and common precautions.</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div id="sec_7" class="manual-section">
+                        <h2 class="manual-h2">7. Aster-Stats</h2>
+                        <p class="manual-text">The Aster-Stats interface provides 16 interactive charts. Users can choose to view them online or click on the data to jump to the analysis interface.</p>
+                    </div>
+
+                    <div id="sec_8" class="manual-section">
+                        <h2 class="manual-h2">8. Submit-Projects</h2>
+                        <p class="manual-text">The Submit-Projects interface enables users to upload all resources beneficial to Asteraceae genome analysis—including genomes, transcriptomes, metabolomes, and pan-genomes—in compliance with transmission protocols, ensuring the continuous updating of the AGRP.</p>
+                    </div>
+
+                    <div id="sec_9" class="manual-section">
+                        <h2 class="manual-h2">9. AGRP-Switch</h2>
+                        <p class="manual-text">AGRP-Switch provides an integrated exploration of diverse omics data resources within the AGRP database. Users can retrieve all data results associated with omics interfaces across the platform with a single click by entering a gene's AGRP-ID or PEP.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        // Smooth scrolling for sidebar links
+        $('a.nav-link-manual[href^="#"]').on('click', function(event) {
+            var target = $(this.getAttribute('href'));
+            if(target.length) {
+                event.preventDefault();
+                
+                // Highlight active link
+                $('.nav-link-manual').removeClass('active');
+                $(this).addClass('active');
+
+                // Adjust offset for fixed header (approx 100px)
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 100
+                }, 800);
+            }
+        });
+
+        // Simple scroll spy logic (optional, highlights sidebar as you scroll)
+        $(window).scroll(function() {
+            var scrollDistance = $(window).scrollTop() + 120;
+            
+            // Assign active class to nav links while scolling
+            $('.manual-section').each(function(i) {
+                if ($(this).position().top <= scrollDistance) {
+                    $('.nav-link-manual.active').removeClass('active');
+                    $('a.nav-link-manual').eq(i).addClass('active');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

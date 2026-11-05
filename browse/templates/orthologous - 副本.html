@@ -1,0 +1,515 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+zJ3e4+78W5OwU6/A8gtt2Cxg4zg5hq6GwRbW4M" crossorigin="anonymous">
+    <style>
+        .form-check-label {
+            padding-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Orthologous Gene Search<i></i>
+            </h3>
+        </div>
+
+        <h6 class="col-md-12" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5;">
+            &emsp;&emsp;Genes that are duplicated as concomitant events of species formation and continue to have the same function are called orthologous genes. New gene functions can be caused by duplications that occur within the genome of a single species. Duplications within a genome result in paralogous gene.
+            <br>&emsp;&emsp;Orthogroups, orthologs and paralogs genes were identified using OrthoFinder (v2.5.1). First, the similarity relationship between protein sequences of all species was based on the Blastp similarity score (E-value 51e-5). The sequence alignment program was blast_gz and the conformational tree method was FastTree. MCL graph clustering algorithm (Inflation value >1.5) was used for cluster analysis to obtain single-copy and multi-copy gene families.
+        </h6>
+        <hr width="100%" style="border: dotted 2px">
+
+
+        <form action="orthologous" method="post" class="col-12" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10" style="padding-top: 20px">
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Gene ID</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="" id="gene_id">Example</button>
+                        <div class="input-group">
+{#                            <textarea class="form-control" id="lastName" name="geneid" required style="height: 100px"></textarea>#}
+                             <input class="form-control" id="lastName" name="geneid" type="text" required>
+                        </div>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-1"></div>
+                <div class="col-md-10" style="padding-top: 5px">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h6 for="state" class="form-label">Species</h6>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="checkAll">
+                                <label class="form-check-label" for="checkAll">Select All</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="border-bottom" style="margin: 0">
+
+                     <div class="row">
+                         <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Adu" name="Adu">
+                                <label class="form-check-label" for="Adu">Arachis duranensis</label>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Aev" name="Aev">
+                                <label class="form-check-label" for="Aev">Aeschynomene evenia</label>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Aed" name="Aed">
+                                <label class="form-check-label" for="Aev">Amphicarpaea edgeworthii</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Apr" name="Apr">
+                                <label class="form-check-label" for="Apr">Abrus precatorius</label>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Ahy" name="Ahy">
+                                <label class="form-check-label" for="Ahy">Arachis hypogaea</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Aip" name="Aip">
+                                <label class="form-check-label" for="Aip">Arachis ipaensis</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Amo" name="Amo">
+                                <label class="form-check-label" for="Amo">Arachis monticola</label>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Bva" name="Bva">
+                                <label class="form-check-label" for="Bva">Bauhinia variegata</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Cca" name="Cca">
+                                <label class="form-check-label" for="Cca">Cajanus cajan</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Car" name="Car">
+                                <label class="form-check-label" for="Car">Cicer arietinum</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Dod" name="Dod">
+                                <label class="form-check-label" for="Dod">Dalbergia odorifera</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Eupl" name="Eupl">
+                                <label class="form-check-label" for="Eupl">Euptelea pleiosperma</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Gma" name="Gma">
+                                <label class="form-check-label" for="Gma">Glycine max</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Gso" name="Gso">
+                                <label class="form-check-label" for="Gso">Glycine soja</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Lapu" name="Lapu">
+                                <label class="form-check-label" for="Lapu">Lablab purpureus</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Lja" name="Lja">
+                                <label class="form-check-label" for="Lja">Lotus japonicus</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Lal" name="Lal">
+                                <label class="form-check-label" for="Lal">Lupinus albus</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Lan" name="Lan">
+                                <label class="form-check-label" for="Lan">Lupinus angustifolius</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Mepo" name="Mepo">
+                                <label class="form-check-label" for="Mepo">Medicago polymorpha</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Mesa" name="Mesa">
+                                <label class="form-check-label" for="Mesa">Medicago sativa</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Mtr" name="Mtr">
+                                <label class="form-check-label" for="Mtr">Medicago truncatula</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Mal" name="Mal">
+                                <label class="form-check-label" for="Mal">Melilotus albus</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Phac" name="Phac">
+                                <label class="form-check-label" for="Phac">Phaseolus acutifolis</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Pvu" name="Pvu">
+                                <label class="form-check-label" for="Pvu">Phaseolus vulgaris</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Psa" name="Psa">
+                                <label class="form-check-label" for="Psa">Pisum sativum</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Pumo" name="Pumo">
+                                <label class="form-check-label" for="Pumo">Pueraria montana</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Rops" name="Rops">
+                                <label class="form-check-label" for="Rops">Robinia pseudoacacia</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Sto" name="Sto">
+                                <label class="form-check-label" for="Sto">Senna tora</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Seca" name="Seca">
+                                <label class="form-check-label" for="Seca">Sesbania cannabina</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Ssu" name="Ssu">
+                                <label class="form-check-label" for="Ssu">Spatholobus suberectus</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Tpr" name="Tpr">
+                                <label class="form-check-label" for="Tpr">Trifolium pratense</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Trre" name="Trre">
+                                <label class="form-check-label" for="Trre">Trifolium repens</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Tsu" name="Tsu">
+                                <label class="form-check-label" for="Tsu">Trifolium subterranum</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Vifa" name="Vifa">
+                                <label class="form-check-label" for="Vifa">Vicia faba</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Vian" name="Vian">
+                                <label class="form-check-label" for="Vian">Vigna angularis</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Vra" name="Vra">
+                                <label class="form-check-label" for="Vra">Vigna radiata</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Viun" name="Viun">
+                                <label class="form-check-label" for="Viun">Vigna unguiculata</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input checkItem" type="checkbox" id="Vvi" name="Vvi">
+                                <label class="form-check-label" for="Vvi">Vitis vinifera</label>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-md-1"></div>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+                </div>
+            </div>
+
+<!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-rqzmzSGD9TXiUDwkGv1I4fWzG1+76FJf1awodmxMk1rEdqwy6cvBCsfzpfEfmi8p" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function () {
+            var checkboxes = document.querySelectorAll('.checkItem');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = document.getElementById('checkAll').checked;
+            });
+        });
+    </script>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-300%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Select</th>  <!-- 新增一列用于复选框 -->
+                                <th>Seq ID</th>
+                                <th>Length</th>
+                                <th>Analysis</th>
+                                <th>Description</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>IPR</th>
+                                <th>GO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr>
+                                    <td><input type="checkbox" class="row-checkbox"></td> <!-- 新增一个复选框 -->
+                                    <td><a href="#">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.7 }}</td>
+                                    <td>{{ pair.8 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "Annotation_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+            {% if not_found_geneids %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Not found genes<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img src="../../static/image/shuye.png" style="position: absolute; top: 0; left: 0; transform: translate(-550%, -130%);">
+                            <hr style="position: absolute; top: 50%; left: 50%; width: 100%; border-color: black;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in not_found_geneids %}
+                                <tr>
+                                    <td>{{ pair }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+
+    <script>
+        document.getElementById('gene_id').addEventListener('click', function() {
+            var exampleText = `Adu04g00858`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+        <center>
+            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+        </center>
+        <script>
+            function go() {
+                var hh1 = document.getElementById("wait1");
+                var hh2 = document.getElementById("wait2");
+                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                    hh1.style.display = "inline-block";
+                    hh2.style.display = "inline-block"
+                }
+                document.getElementById('go').submit()
+            }
+        </script>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

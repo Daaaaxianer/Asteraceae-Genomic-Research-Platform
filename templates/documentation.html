@@ -1,0 +1,418 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>LGRPV2</b><i></i></h3>
+    <div>
+        <p style="margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0;background:white;font-variant-ligatures: normal;font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;word-spacing:0px">
+            <strong><span
+                    style="font-size:20px;font-family: &#39;Arial&#39;,sans-serif;color:black">I. Introduction</span></strong>
+        </p>
+        <p style="margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0;background:white"><strong><span
+                style="font-family:&#39;Arial&#39;,sans-serif;color:black">What is  LGRPV2?</span></strong>
+        </p>
+        <p style="margin-bottom:10px">
+            <strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif"></span></strong>
+            <span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">
+                Fabaceae (commonly known as legume), one of the most diverse families of angiosperms, plays an important role in the maintenance of terrestrial ecosystems and the reproduction of human civilization.  In recent years, the genomes of legumes have been rapidly accumulated.  Here, we developed an updated version of the Legume Genomics Research Platform (LGRPv2: <a
+                    href="http://www.fabaceae.cgrpoee.top">http://www.fabaceae.cgrpoee.top</a>), enabling the in-depth exploration of legume genomics.  LGRPv2 contains 105 published genomes of 56 legumes and our newly deciphered Tamarindus indica genome, and has JBrowse for browsing the 56 legume genomes (56-LGs) with chromosome level.  Analyzing of 56-LGs and outgroup grape (Vitis vinifera) genome, we annotated biological functions and duplication types of 18,050,760 protein-coding genes, generated 10,092 synteny dotplots and 82,416,492 blocks of pair-wise genomes, identified 589,512 paralogs and 218,284 orthologs, constructed hierarchical multigenome alignments, and inferred the ancestral genomes and chromosome rearrangements of legumes.  Moreover, we identified 59,127 synteny-based orthologroups, 81,343,237 transposable elements, 1,304 m6As, 176,927 regulatory factors, and 633,110 important trait genes in 56-LGs.  Consequently, we implemented a series of user-friendly query, analysis, and visualization tools and interfaces in LGRPv2 to facilitate the exploration of legume genomics using these large-scale results.  Notably, the development of DotView, SynView, DecoBrowse, and AncVisual tools provides four new gateways for using the current synteny data and ancestral genomes to reveal the paleogenome reshuffling and its consequences during the polyploidizations and (re)diploidizations in legumes.  Systematically, we integrated the species encyclopedia, multi omics data, ecological resources, cultivation techniques, relevant literatures, and external database connections, and developed the corresponding query interface for these resources.  Considering the mining of new data, we developed ‘one-stop’ comparative genomics toolbox containing 57 window operated bioinformatics tools, of which 29 tools are newly developed by us.  Besides, we provided interactive statistical charts, user manuals, communities, and submission ports for the resources of data and tools in LGRPv2.  In short, LGRPv2 is a comprehensive database with genomic synteny sources as the central gateway, and could be an important community for the exploration of legume genomics.
+            </span>
+        </p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:20px;font-family:&#39;Arial&#39;,sans-serif;color:black;background:white">II. Datasets and Workflow</span></strong>
+        </p>
+        <p style="margin-bottom:10px"><strong><span
+                style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif;color:black">Data sources</span></strong>
+        </p>
+        <p style="margin-bottom:10px; text-align: justify">
+            <span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">
+                LGRPV2 processed the genome data of 65 leguminous plant species, obtaining processed CDS, PEP, and GFF3 files respectively. The software and scripts used in the processing can be found on GitHub (<a
+                    href="https://github.com/zijian-yu/LGRPV2">https://github.com/zijian-yu/LGRPV2</a>). Detailed references corresponding to each plant species can be found in the supplementary tables of the article for more comprehensive information.
+            </span>
+        </p>
+
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span
+                style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif;color:black">Data analysis pipelines</span></strong>
+        </p>
+
+        <p style="margin-bottom:10px; text-align: justify"><strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Identification of polyploidy events.</span></strong><span
+                style="font-size:13px;font-family: &#39;Arial&#39;,sans-serif">
+            To identify polyploid events, we first performed genome-wide BALSTP (E-value <1e-5, score >100) within and between the studied genomes using the software BALST (Altschul et al., 1990). Then, using CollinearScan software (Wang et al., 2006), the best 10 BLASTP matches were selected for inferring gene splicing regions (blocks) within or between genomes. Where the maximum gap was set to 50 spacer genes and large gene families with more than 50 members were removed from the blocks.	The median value of synonymous nucleotide substitutions (Ks) for collocated genes was further used to determine the degree of divergence of the identified blocks. We calculated the Ks values between tandem gene pairs using the Bioperl statistical module and the Nei-Gojobori method (Nei & Gojobori, 1986). We further plotted adjacent gene pairs as dot plots based on genomic location and used different colored dots to distinguish whether the anchor gene pair was the best BLAST hit within/between genomes. We then identified the immediate and paralogous genomic regions within and between genomes based on the generated homology dot plots. Between genomes, a region was identified as an orthologous region if the median Ks of the gene pairs located in that splice region was approximately equal to the value of the Ks peak associated with species differentiation; within genomes, a region was identified as a paralogous region if the median Ks of the gene pairs located in that splice region was approximately equal to the value of the Ks peak associated with a particular polyploidization event. Finally, we can infer the history of WGD by investigating the ratio of syntenic depths within and between genomes.</span>
+        </p>
+
+        <p style="margin-bottom:10px; text-align: justify"><strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Identification of event-related genes and dating of key evolutionary events.</span></strong><span
+        style="font-size:13px;font-family: &#39;Arial&#39;,sans-serif"> Plant genomes evolve at different rates (Cui et al., 2006; Wang et al., 2011), making it difficult to determine the timing of key events in their evolutionary history. Here, we constructed a correction algorithm for redetermining key evolutionary events in monocotyledons. First, based on orthologous and paralogous regions identified within and between genomes, we isolated sets of orthologous and paralogous lineages resulting from species divergence and polyploidy events. Second, we determined the evolutionary rates of key evolutionary events in monocotyledons by performing nuclear function analysis of Ks between these orthologous and paralogous relatives. Finally, we performed several rounds of Ks correction for the evolutionary rates of these events according to different correction bases. The first round of correction was based on the Ks distribution peaks of the differentiation events in monocotyledons and grapes to have the same values. After the first round of correction, there was still a large divergence between the τ and σ events produced by homologous plants. Therefore, similar to the first round of correction, we performed several more rounds of Ks correction based on τ and σ events.
+Details of the correction process can also be found in our previous articles (Wang et al., 2017; Wang, J et al., 2018; Wang, J et al., 2019b; Wang et al., 2022), and the computational script of the correction algorithm has been stored in Github (https://github.com/wangjiaqi206/corrected-evolutionary-dating).</span>
+        </p>
+
+        <p style="margin-bottom:10px; text-align: justify"><strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Comparison of genome fractionation.</span></strong><span
+style="font-size:13px;font-family: &#39;Arial&#39;,sans-serif;"> By comparing the rates of gene retention and loss, we can characterize the degree of divergence between subgenomes produced by different polyploidization events. In which, the gene deletion rate was calculated by dividing the number of collinear gene deletions in the study species by the total number of genes per chromosome in reference genome. The genome retention rate was calculated by dividing the number of the most conserved collinear genes (orthologs retained in both reference genomes) in the study species by the number of relatively conserved tandem genes (orthologs only retained in the main reference genome). In addition, the degree of divergence between event-produced subgenomes can also be inferred by a statistical method we previously developed, the polyploidy index (P-index) (Wang, J et al., 2019a). In this study, the P-index among the subgenomes of the Acorus tatarinowii, Vanilla planifolia, Asparagus officinalis, A. setaceus and Zingiber officinale genomes was calculated, using V. vinifera, E. guineensis and M. acuminata as the references, where the sliding window was set to 95, disregarding the degree of divergence of subgenomes that are too similar or too different (parameter < 0.08 and > 0.8). In addition, previously studies have demonstrated that the P-index ~ 0.3 could be used as a threshold to classify auto- and allopolyploidies (Wang, J et al., 2019a). The reason is that the known and previously inferred allopolyploidies always have larger P-index > 0.3, including that the Brassica napus, Zea mays, Gossypium hirsutum, and Brassica oleracea (Schnable et al., 2011; Chalhoub et al., 2014; Li et al., 2014; Wang, M et al., 2015; Renny-Byfield et al., 2017). While the inferred autopolyploidies of Glycine Max, Populus trichocarpa, and Actinidia chinensis (Murat et al., 2017; Wang et al., 2017; Wang, JP et al., 2018) often have P-index < 0.3.
+            </span>
+        </p>
+
+        <p style="margin-bottom:10px; text-align: justify"><strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">The pipeline for inferring ancestral karyotypes and evolution.</span></strong><span
+style="font-size:13px;font-family: &#39;Arial&#39;,sans-serif;">
+The inference of ancestral genome structure and paleogenome remodelling trajectories is divided into 7 main steps. 1) Genome-wide comparison of the species involved, based on BLAST (Altschul et al., 1990) software, to confirm conserved homologous genes between and within genomes. 2) The homology information obtained from BLASTP was entered into CollinearScan (Wang et al., 2006) or MCScanX (Wang et al., 2012) for collinearity analysis to identify the synteny blocks. 3) Identification of orthologs and paralogs associated with speciation and polyploidy by inter- and intra-genomic comparisons. 4) Identification of conserved ancestral regions (CARs) by the combination of dotplots and gene collinearity between genomes. 5) Identification of ancient chromosomal rearrangements in conjunction with species trees. For example, if the conserved chromosomal regions CARs 1 and 2 are adjacent in the study species A, B, then it is reasonable to assume that CARs 1 and 2 are fused in the ancestor of A and B. If CARs 1 and 2 are not adjacent in study species B, it is difficult to determine the ancestral structure of species A and B. A reference species would then need to be introduced, and if CARs 1 and 2 also adjacent in the reference species R, then the ancestral structure of A and B would still be CAR1-CAR2. In addition, the inference of ancestral chromosomes rearrangements also needs to consider the effects of duplication, and we have modelled the possible scenarios in Then, by identifying and collating all the CAR rearrangements, we can bottom-up infer the ancestral karyotype and its composition of the study species. 7) After determining the ancestral genome, we can identify the fusion patterns and rearrangement trajectories of paleochromosome by comparing the CRAs in the dotplot between the modern and ancestral genome. For example, if the two chromosomes corresponding to the same ancestral chromosome in the study species are structurally different, such as the translocation, then this change should occur after the WGD; and conversely, before the WGD, such as the end-to-end joining fusion (EEJ) and nested chromosome fusion (NCF). The actual process of inferring ancestral genome and paleochromosome remodelling trajectories can be more complex, and requires careful and lengthy verification and validation.
+        </span>
+        </p>
+
+        <p style="margin-bottom:10px; text-align: justify"><strong><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Gene Family Analysis Pipeline.</span></strong><span
+style="font-size:13px;font-family: &#39;Arial&#39;,sans-serif;">
+Gene families can be easily identified in IPAP, which has three sequence matching modes, such as Blast, Diamond, and Blast match. these three functions can be used to match target sequences against known protein sequences and thus filter the desired gene families. In addition, there is also a structural domain identification function, which allows easy structural domain prediction of target sequences through the Pfam database. After the gene family sequences are identified, researchers can perform multiple sequence comparisons and then construct phylogenetic trees. Meanwhile, codon and CPG island prediction can be performed in IPAP, and non-synonymous substitution rate (Ka) and synonymous substitution rate (Ks) can also be calculated. In addition, researchers can predict and map motifs and gene structures. This greatly facilitates the needs of researchers for gene family analysis.
+</span>
+        </p>
+
+        <!-- III. Browse -->
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span
+                style="font-size:20px;font-family:&#39;Arial&#39;,sans-serif;color:black">III. Browse</span></strong></p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif">Community and collection of resources</span></strong>
+        </p>
+        <table border="2">
+            <tr class="firstRow">
+                <td style="width: 300px">
+                    <p style="margin-bottom:10px;text-align:center;font-size: 1rem">
+                        Items
+                    </p>
+                </td>
+                <td style="width: 500px">
+                    <p style="margin-bottom:10px;text-align:center;font-size: 1rem">
+                        Brief Introduction
+                    </p>
+                </td>
+                <td style="width: 200px">
+                    <p style="margin-bottom:10px;text-align:center;font-size: 1rem">
+                        Records
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Pair-wise dotplots -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "dotplot_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Pair-wise dotplots
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Homologous structure dotplot related to Fabaceae</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">2,028</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- P. vulgaris Hierarchical alignments -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "pvu_syntenic_url" %}"
+                           style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">P. vulgaris Hierarchical alignments
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Pvu Hierarchical alignments gene pairs</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">27,996</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- V. vinifera Hierarchical alignments -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "vvi_syntenic_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">V. vinifera Hierarchical alignments
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Pvu Hierarchical alignments gene pairs</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">28,164</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Event-related genes -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "ECH_event_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Event-related genes
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Information on gene pairs associated with Event-related</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">70,673</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Functional genes -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "Auxin_genes_index_url1" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Functional genes
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Function-related gene family information</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">50,178</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Transcription factor -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "TF_genes_index_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Transcription factor
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Transcription factor gene family information</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">50,056</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- ncRNA -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "ncRNA_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">ncRNA
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">These include rRNA, tRNA, snRNA, snoRNA and microRNA </span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">*</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Transposable elements -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "TE_index_url1" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Transposable elements
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Details of Transposable elements</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">*</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Orthologous Gene -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+{#                        <a href="{% url "gene_family_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Orthologous Gene#}
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Gene family information for Orthologous Gene</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">38,690</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Gene Function -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "interproscan_index_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Gene Function
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Information on functionally annotated genes</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">8,470,419</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Pathway -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "kegg_index_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Pathway
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Detailed information on Fabaceae-related Pathway</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">912,552</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Domain -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="{% url "pfam_index_url" %}" style="font-size: 13px; font-family: arial, helvetica, sans-serif; text-decoration: underline;">Domain
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">Information on domin identified using pfam libraries</span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">106,111</span>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- Fabaceae Community page -->
+            <tr>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <a href="http://www.community.cgrpoee.top/" target="_blank"
+                           style="font-size: 13px;">
+                            Fabaceae Community page
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+    <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">An online community for plant Karyotype research community
+    </span>
+                    </p>
+                </td>
+                <td>
+                    <p style="margin-bottom:10px;text-align:center">
+                        <span style="font-size: 13px; font-family: arial, helvetica, sans-serif;">-</span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+
+        <p style="margin-bottom:10px"><span
+                style="font-size: 13px; font-family: arial, helvetica, sans-serif;">&nbsp;</span>
+
+        </p>
+        <p style="margin-bottom:10px"><strong><span
+                style="font-size:20px;font-family:&#39;Arial&#39;,sans-serif;color:black;background:white">IV. FAQ</span></strong>
+        </p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif">A. What information does Leguminosae platform Database provide for plant Karyotype evolution?</span></strong>
+        </p>
+        <p style="margin-bottom:10px; text-align: justify"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">We built a user-friendly, web-based comparative and functional genomics platform, an integrated platform for polyploid and paleo-genomic evolutionary analysis in the Fabaceae (LGRPv2, http://www.fabaceae.cgrpoee.top/). We established 45 tools for analyzing polyploids and covariance pipelines, which we named IPAP (Integrated Polyploidy Analysis Pipeline). Then, we selected 25 representative collections of legumes to the chromosome level for systematic bioinformatics analysis. The analysis results are also stored in LGRPv2, a platform used to help researchers easily query, compare and download the results of these genomic resources and bioinformatics analyses. For example, the platform stores 2,028 = (25 + 1) * (25 + 1) * 3 homology structure dot plots. The homologous gene hierarchy table with P. vulgaris and V. vinifera as reference has 27,996 and 28,164 rows of homologous gene pairs, respectively. Based on the homologous gene hierarchy table, 70673 event-related genes and genomic hybrid gene pairs were obtained. Paleo-genomic karyotypes of Fabaceae were inferred and evolutionary trajectories were animated and displayed.MCScanX was used for gene identity analysis. The results of 676 (26*26) MCScanX were explored using SynVisio's interactive tool for multi-scale genome visualization 912,552 genes Fabaceae and 106,111 structural domain information, 38,690 orthogroups, 8,470, 419 gene function annotation analysis results, 912,552 pathway map annotation analysis information. Using the PfamScan software, and the HMM model downloaded from the Pfam database to identify functionally important genes, we identified, for example, growth hormone genes, anthocyanin genes, flowering-related genes, resistance genes, nitrogen fixation-related genes, oil synthesis genes, and m6A genes. cmscan software was used to identify ncRNAs. repeatModeler-2.0.3, RepeatMasker, and DeepTE were used for TE transposon prediction. orthofinder (v2.0.9) was used to identify 25 genome-directed genes. Functional and pathway annotations of genes were analyzed with InterProScan (v5.51) and GhostKoala, a tool provided by the Kyoto 64 Encyclopedia of Genes and Genomes (<a
+                href="http://www.genome.jp/kegg/">http://www.genome.jp/kegg/</a>), respectively. And, we collected 135 genomic information resources from 58 legume species (Table S1). We then selected a representative collection of 25 legumes to the chromosome level for systematic bioinformatic analysis. The analysis results are also stored in LGRPv2, a platform used to help researchers easily query, compare and download the results of these genomic resources and bioinformatics analyses</span>
+        </p>
+
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif">B. How to download the data in Leguminosae platform Database?</span></strong>
+        </p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">All data in the Legume Platform database can be downloaded from the appropriate resource page. Such as <a
+                href="{% url "species_data_url" %}" target="_blank">genome data</a>, <a
+                href="{% url "pan_genome_url" %}" target="_blank">pangenomic data</a>, <a
+                href="{% url "transcriptome_url" %}" target="_blank">transcriptome data</a>, <a
+                href="{% url "L_pathway_index_url" %}" target="_blank">Fabaceae pathways</a>, <a
+                href="{% url "JBrowse_index_url" %}" target="_blank">Jbrowse</a>etc.. </span></p>
+
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:16px;font-family:&#39;Arial&#39;,sans-serif">C. How to contact us?</span></strong>
+        </p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">If you meet any troubles or find any bugs when you visit Leguminosae platform Database, please email to <a
+                href="mailto:wangjinpeng@ibcas.ac.cn" target="_blank" textvalue="wangjinpeng@ibcas.ac.cn">wangjinpeng@ibcas.ac.cn</a> or <a
+                href="mailto:yuzijian1010@163.com" target="_blank"
+                textvalue="yuzijian1010@163.com">yuzijian1010@163.com</a>, pull requests in <a
+                href="http://www.community.cgrpoee.top/" target="_blank"><span
+                style="color:#4472C4">Fabaceae Community</span></a> or you can contact us by:</span></p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Address info 21 Bohai Road,Caofeidian, Tangshan 063210, Hebei, China</span>
+        </p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Tel: +86-0315-8805607</span>
+        </p>
+
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">&nbsp;</span>
+        </p>
+        <p style="margin-bottom:10px"><strong><span style="font-size:20px;font-family:等线;color:black;background:white">V. Citation</span></strong>
+        </p>
+        <p style="margin-bottom:10px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">Data files contained in the Leguminosae platform Database are free of all copyright restrictions and made fully and freely available for non-commercial use. Users of the data should cite the following articles:</span>
+        </p>
+
+        <p><a href="#" style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">・Fabaceae genomes bioinformatics
+            platform: A comprehensive database of Fabaceae genomes</a></p>
+        <p><a href="#" style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif">・Multi-dimensional reshuffling of
+            ancestral genome during post-polyploid diploidization shaped family Fabaceae</a></p>
+
+        <p style="margin-bottom:8px"><span style="font-size:13px;font-family:&#39;Arial&#39;,sans-serif"></span></p>
+    </div>
+
+{% endblock %}
+
+{% block switch %}
+{% endblock %}
+

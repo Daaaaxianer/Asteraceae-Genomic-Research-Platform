@@ -1,0 +1,165 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Flower development genes</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;We selected <em>Arabidopsis thaliana</em> as the model organism and identified its Flower development genes. By best matching, we identified the Flower development genes of 25 other Fabaceae. They were identified using pfam and stored in the platform.
+            <br>&emsp;&emsp; Flower development is an important integrated developmental process in the life cycle of angiosperms, involving the transition from infinite to finite growth and different developmental modes, including flowering induction, signaling, attribute determination, and organogenesis, which is both induced by environmental factors and regulated by its own internal factors, through a series of signal transduction processes to initiate the control genes in the flowering decision process. Under the regulation of a complex network of gene interactions, the vegetative meristem (VM) transforms into inflorescence meristem (IM), and then flanks the IM to form floral meristem (FM), which differentiates into floral organs. Using Arabidopsis as a model species, our database counts <b>1,706</b> flowering genes from 25 legumes for easy browsing and downloading by researchers.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <!-- choose module -->
+    <div id="choose_module">
+        <!-- 1-3 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Phaseolus vulgaris</i></p>
+                <a href="{% url "flower_development" "Pvu" %}"><img src="../../static/image/Pvu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 62 </p>
+                <a href="{% url "flower_development" "Pvu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Pvu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Pvu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Pisum sativum</i></p>
+                <a href="{% url "flower_development" "Psa" %}"><img src="../../static/image/Psa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 53 </p>
+                <a href="{% url "flower_development" "Psa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Psa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Psa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Senna tora</i></p>
+                <a href="{% url "flower_development" "Sto" %}"><img src="../../static/image/Sto.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 57 </p>
+                <a href="{% url "flower_development" "Sto" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Sto.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Sto.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+
+        <!-- 4-6 -->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Spatholobus suberectus</i></p>
+                <a href="{% url "flower_development" "Ssu" %}"><img src="../../static/image/Ssu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 61 </p>
+                <a href="{% url "flower_development" "Ssu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Ssu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Ssu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium pratense</i></p>
+                <a href="{% url "flower_development" "Tpr" %}"><img src="../../static/image/Tpr.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 62 </p>
+                <a href="{% url "flower_development" "Tpr" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Tpr.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Tpr.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Trifolium subterranum</i></p>
+                <a href="{% url "flower_development" "Tsu" %}"><img src="../../static/image/Tsu.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 52 </p>
+                <a href="{% url "flower_development" "Tsu" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Tsu.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Tsu.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <!-- 7-9 需要进行更改-->
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vigna radiata</i></p>
+                <a href="{% url "flower_development" "Vra" %}"><img src="../../static/image/Vra.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 52 </p>
+                <a href="{% url "flower_development" "Vra" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Vra.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Vra.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+
+        <div id="module_1">
+            <div style="height: 380px">
+                <p id='text_in_image'><i>Vigna radiata</i></p>
+                <a href="{% url "flower_development" "Vfa" %}"><img src="../../static/image/Vfa.png" alt="Homologues"></a>
+                <p id='text_in_image' style="background: white; color:black"> Total : 77 </p>
+                <a href="{% url "flower_development" "Vfa" %}" style="color:#00cd66; font-size: 20px"><b>more information</b></a><br>
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Vfa.cds.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>CDS</b></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="../../static/function_gene_cds_pep/flowerdevelopmentgenes_Vfa.pep.txt" style="color:#b7ab25; font-size: 20px" target="_blank"><b>Pro</b></a>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="{% url "flower_development_index_url1" %}">1</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "flower_development_index_url2" %}">2</a></li>
+            <li class="page-item"><a class="page-link" href="{% url "flower_development_index_url3" %}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="{% url "flower_development_index_url3" %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

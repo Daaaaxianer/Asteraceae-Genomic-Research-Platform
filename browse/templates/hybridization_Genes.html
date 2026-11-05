@@ -1,0 +1,109 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/event_genes/zajiao.json",
+                {#"deferRender": true,#}
+                {#"scrollX": true#}
+            });
+        });
+    </script>
+        <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>hybridization Genes</b>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-5" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Based on orthologous and paralogous regions identified within and between genomes, we isolated sets of orthologous and paralogous lineages resulting from species divergence and polyploidy events. We determined the evolutionary rates of key evolutionary events in Fabaceae by performing nuclear function analysis of Ks between these orthologous and paralogous relatives. A total of <b>8,266</b> gene pairs associated with hybridization Genes.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match</b></a>
+        </h6>
+        <div class="col-md-7">
+            <img style="width: 100%" src="../../static/image/ech_pct_cct.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display container">
+            <thead>
+            <tr>
+                <th>Gene ID 1</th>
+                <th>Gene ID 2</th>
+                <th><i>Ka</i></th>
+                <th><i>Ks</i></th>
+                <th><i>Ka/Ks</i></th>
+            </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+    </div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

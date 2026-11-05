@@ -1,0 +1,632 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Asteraceae Genomics Bioinformatics Research Platform for Asteraceae research discovry">
+    <meta name="keywords" content="Asteraceae,Compositae,Arctium lappa,Helianthus annuus,Lactuca sativa,Taraxacum mongolicum,Artemisia annua,Senecio scandens">
+    <title>Asteraceae Platform</title>
+    <!-- bootstrap5 style -->
+    <link href="../static/vendor/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/bootstrap5/js/caidan.js"></script>
+    <link rel="icon" href="../static/image/logo.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/highcharts.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script type="text/javascript">
+        const proData = {
+            "Apr": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20"],
+            "Aev": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20"],
+            "Adu": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20"],
+            "Aip": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20"],
+            "Dod": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20"],
+            "Aed": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Cca": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Pvu": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Vra": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Lapu": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Phac": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Pumo": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Rops": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Vian": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Viun": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22"],
+            "Psa": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14"],
+            "Mepo": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14"],
+            "Car": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16"],
+            "Mtr": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16"],
+            "Mal": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16"],
+            "Ahy": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40"],
+            "Bva": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28"],
+            "Sto": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26"],
+            "Seca": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24"],
+            "Amo": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40"],
+            "Trre": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32"],
+            "Gma": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40"],
+            "Mesa": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32"],
+            "Gso": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40"],
+            "Lan": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40"],
+            "Lja": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12"],
+            "Lal": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40", "Chromosome 41", "Chromosome 42", "Chromosome 43", "Chromosome 44", "Chromosome 45", "Chromosome 46", "Chromosome 47", "Chromosome 48", "Chromosome 49", "Chromosome 50"],
+            "Eupl": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28"],
+            "Vvi": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19"],
+            "Ssu": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18"],
+            "Tpr": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14"],
+            "Tsu": ["Chromosome 01", "Chromosome 02", "Chromosome 03", "Chromosome 04", "Chromosome 05", "Chromosome 06", "Chromosome 07", "Chromosome 08", "Chromosome 09", "Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16"],
+            "Vifa": ["Chromosome 1", "Chromosome 2", "Chromosome 3", "Chromosome 4", "Chromosome 5", "Chromosome 6", "Chromosome 7", "Chromosome 8", "Chromosome 9", "Chromosome 10", "Chromosome 11", "Chromosome 12"],
+            'Accr': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13'],
+            'Arst': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10'],
+            'Bach': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14'],
+            'Enph': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14'],
+            'Gabi': ['Chromosome 2179','Chromosome 1257','Chromosome 704','Chromosome 606','Chromosome 102','Chromosome 629','Chromosome 4891','Chromosome 3450','Chromosome 588','Chromosome 4914','Chromosome 2637','Chromosome 3995','Chromosome 4981','Chromosome 2574','Chromosome 817','Chromosome 4527','Chromosome 1726','Chromosome 2596','Chromosome 4141','Chromosome 4573','Chromosome 4634','Chromosome 4470','Chromosome 3462','Chromosome 4238','Chromosome 3986','Chromosome 4436','Chromosome 4624','Chromosome 4694','Chromosome 4766','Chromosome 4083'],
+            'Lasa': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7'],
+            'Mupr': ['Chromosome 425','Chromosome 601','Chromosome 2106','Chromosome 543','Chromosome 3503','Chromosome 565','Chromosome 2515','Chromosome 2873','Chromosome 393','Chromosome 3581','Chromosome 6649','Chromosome 32','Chromosome 100','Chromosome 4875','Chromosome 272','Chromosome 454','Chromosome 3124','Chromosome 7504','Chromosome 9369','Chromosome 238','Chromosome 823','Chromosome 1926','Chromosome 5812','Chromosome 802','Chromosome 1416','Chromosome 2159','Chromosome 2169','Chromosome 2604','Chromosome 2792','Chromosome 3912'],
+            'Phco': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11'],
+            'Pral': ['Chromosome 4774','Chromosome 1283','Chromosome 4561','Chromosome 4686','Chromosome 4746','Chromosome 4104','Chromosome 1576','Chromosome 943','Chromosome 1154','Chromosome 5517','Chromosome 3722','Chromosome 1284','Chromosome 4760','Chromosome 5106','Chromosome 2018','Chromosome 5082','Chromosome 3561','Chromosome 970','Chromosome 4191','Chromosome 2313','Chromosome 4782','Chromosome 4615','Chromosome 2077','Chromosome 3267','Chromosome 4803','Chromosome 4838','Chromosome 960','Chromosome 4402','Chromosome 4820','Chromosome 4752'],
+            'Prci': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14','Chromosome 15'],
+            'Pste': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9'],
+            'Pte': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14','Chromosome 15','Chromosome 16','Chromosome 17','Chromosome 18','Chromosome 19'],
+            'Sebi': ['Chromosome 20','Chromosome 13','Chromosome 3','Chromosome 31','Chromosome 9','Chromosome 23','Chromosome 26','Chromosome 62','Chromosome 29','Chromosome 71','Chromosome 16','Chromosome 2','Chromosome 38','Chromosome 28','Chromosome 60','Chromosome 14','Chromosome 5','Chromosome 12','Chromosome 50','Chromosome 77','Chromosome 155','Chromosome 172','Chromosome 27','Chromosome 7','Chromosome 81','Chromosome 182','Chromosome 66','Chromosome 117','Chromosome 133','Chromosome 147'],
+            'Spst': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11'],
+            'Stsc': ['Chromosome 60416','Chromosome 60417','Chromosome 1','Chromosome 30209','Chromosome 241657','Chromosome 120833','Chromosome 181246','Chromosome 30212','Chromosome 120835','Chromosome 2','Chromosome 60420','Chromosome 90637','Chromosome 120831','Chromosome 30211','Chromosome 90629','Chromosome 151036','Chromosome 181248','Chromosome 211450','Chromosome 90622','Chromosome 30210','Chromosome 90626','Chromosome 120830','Chromosome 151039','Chromosome 211451','Chromosome 241660','Chromosome 271863','Chromosome 60419','Chromosome 60421','Chromosome 90623','Chromosome 90625'],
+            'Trme': ['Chromosome 11','Chromosome 65','Chromosome 75','Chromosome 99','Chromosome 103','Chromosome 113','Chromosome 140','Chromosome 206','Chromosome 308','Chromosome 506','Chromosome 512','Chromosome 727','Chromosome 805','Chromosome 3','Chromosome 7','Chromosome 14','Chromosome 17','Chromosome 19','Chromosome 20','Chromosome 32','Chromosome 35','Chromosome 73','Chromosome 81','Chromosome 87','Chromosome 90','Chromosome 111','Chromosome 124','Chromosome 134','Chromosome 155','Chromosome 178'],
+            'Trsu': ['Chromosome 3815','Chromosome 3','Chromosome 7','Chromosome 28','Chromosome 30','Chromosome 32','Chromosome 38','Chromosome 37','Chromosome 114','Chromosome 5','Chromosome 6','Chromosome 47','Chromosome 31','Chromosome 33','Chromosome 39','Chromosome 14','Chromosome 46','Chromosome 40','Chromosome 79','Chromosome 18','Chromosome 27','Chromosome 66','Chromosome 48','Chromosome 99','Chromosome 61','Chromosome 71','Chromosome 15','Chromosome 87','Chromosome 45','Chromosome 106'],
+            'Vimu': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9','Chromosome 10','Chromosome 11'],
+            'Vium': ['Chromosome 1339','Chromosome 3237','Chromosome 3868','Chromosome 1159','Chromosome 276','Chromosome 9571','Chromosome 3104','Chromosome 6437','Chromosome 940','Chromosome 349','Chromosome 2610','Chromosome 6003','Chromosome 3906','Chromosome 2878','Chromosome 143','Chromosome 2515','Chromosome 3968','Chromosome 5600','Chromosome 764','Chromosome 2682','Chromosome 3902','Chromosome 812','Chromosome 693','Chromosome 4284','Chromosome 5514','Chromosome 6436','Chromosome 2216','Chromosome 3332','Chromosome 6674','Chromosome 842'],
+            'Vivi': ['Chromosome 1', 'Chromosome 2', 'Chromosome 3', 'Chromosome 4', 'Chromosome 5', 'Chromosome 6', 'Chromosome 7', 'Chromosome 8', 'Chromosome 9'],
+            'Acco': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13'],
+            'Alju': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13'],
+            'Bisa': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12'],
+            'Dere': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14'],
+            'Glsi': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13','Chromosome 14'],
+            "Lele": ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09',"Chromosome 10", "Chromosome 11", "Chromosome 12", "Chromosome 13", "Chromosome 14", "Chromosome 15", "Chromosome 16", "Chromosome 17", "Chromosome 18", "Chromosome 19", "Chromosome 20", "Chromosome 21", "Chromosome 22", "Chromosome 23", "Chromosome 24", "Chromosome 25", "Chromosome 26", "Chromosome 27", "Chromosome 28", "Chromosome 29", "Chromosome 30", "Chromosome 31", "Chromosome 32", "Chromosome 33", "Chromosome 34", "Chromosome 35", "Chromosome 36", "Chromosome 37", "Chromosome 38", "Chromosome 39", "Chromosome 40", "Chromosome 41", "Chromosome 42", "Chromosome 43", "Chromosome 44", "Chromosome 45", "Chromosome 46", "Chromosome 47", "Chromosome 48", "Chromosome 49", "Chromosome 50", "Chromosome 51", "Chromosome 52", "Chromosome 53", "Chromosome 54", "Chromosome 55", "Chromosome 56"],
+            'Mibi': ['Chromosome 01','Chromosome 02','Chromosome 03','Chromosome 04','Chromosome 05','Chromosome 06','Chromosome 07','Chromosome 08','Chromosome 09','Chromosome 10','Chromosome 11','Chromosome 12','Chromosome 13'],
+        };
+        window.onload = function () {
+            const oSelectPro = document.getElementById('model');
+            const oSelectCity = document.getElementById('list');
+            oSelectPro.onchange = function () {
+                const aRrayCity = proData[this.value];
+                oSelectCity.options.length=0;
+                for (let i=0; i<aRrayCity.length; i++){
+                    const oOption = document.createElement('option');
+                    oOption.innerHTML = aRrayCity[i];
+                    oOption.value = aRrayCity[i];
+                    oSelectCity.appendChild(oOption)
+                }
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                "scrollX": true,
+                "deferRender": true
+            });
+        });
+    </script>
+    <style>
+    /* 多级下拉菜单样式 */
+.dropdown-menu .dropend {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -0.5rem;
+    margin-left: 0.125rem;
+    display: none;
+}
+
+/* 鼠标悬停显示子菜单 */
+.dropdown-menu .dropend:hover > .dropdown-menu {
+    display: block;
+}
+
+/* 移动设备适配 */
+@media (max-width: 768px) {
+    .dropdown-menu .dropdown-menu {
+        position: static;
+        margin-left: 1rem;
+        border-left: 2px solid #dee2e6;
+    }
+
+    .dropdown-menu .dropend:hover > .dropdown-menu {
+        display: none;
+    }
+
+    /* 移动设备点击展开 */
+    .dropdown-menu .dropend > .dropdown-toggle::after {
+        content: "▶";
+        float: right;
+        margin-left: 0.5em;
+        border: none;
+    }
+
+    .dropdown-menu .dropend.show > .dropdown-menu {
+        display: block;
+    }
+}
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <div style="max-width: 1000px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+            <h2 class="text-center">Genomics</h2>
+        <p style="text-align: justify;">We collected the Latin names, associated literature, and genomic data links for 81 sequenced Asteraceae species from plaBiPD (https://www.plabipd.de). Based on the literature, we obtained Genome sequences, GFF files, nucleotide (CDS) sequences, and protein (PEP) sequences for 52 species from databases including NCBI (https://www.ncbi.nlm.nih.gov/), NGDC (https://ngdc.cncb.ac.cn/), and figshare (https://figshare.com/). We processed the raw data using Perl scripts to standardize the format for subsequent analysis.</p>
+    </div>
+</header>
+    <div class="container" style="margin-top: 40px; margin-bottom: 40px">
+        <div class="row">
+            <div class="col-lg-3">
+                <form action="species_data" method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12" style="padding-top: 40px">
+                            <h3 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black;">Gene download<i></i></h3>
+                            <label for="state" class="form-label">species database</label>
+                            <select style="font-style: italic;" class="btn-default choice form-control" id="model" name="sp_name" required>
+                                <option value="Aann">Artemisia annua</option>
+                                <option value="Amar">Ambrosia artemisiifolia</option>
+                                <option value="Adu">Artemisia argyi</option>
+                                <option value="Aed">Ambrosia trifida</option>
+                                <option value="Aev">Arctium lappa</option>
+                                <option value="Ahy">Arctium minus</option>
+                                <option value="Aip">Artemisia tridentata</option>
+                                <option value="Alju">Bidens alba</option>
+                                <option value="Amo">Buxus sinica</option>
+                                <option value="Apr">Carthamus tinctorius</option>
+                                <option value="Arst">Cynara cardunculus</option>
+                                <option value="Bach">Centaurea solstitialis</option>
+                                <option value="Bisa">Chrysanthemum lavandulifolium</option>
+                                <option value="Bva">Chrysanthemum makinoi</option>
+                                <option value="Car">Chrysanthemum morifolium</option>
+                                <option value="Cca">Chrysanthemum nankingense</option>
+                                <option value="Dere">Cichorium intybus</option>
+                                <option value="Dod">Cichorium endivia</option>
+                                <option value="Enph">Chrysanthemum indicum</option>
+                                <option value="Eupl">Cosmos bipinnata</option>
+                                <option value="Cpa">Centrapalus pauciflorus</option>
+                                <option value="Dapi">Dahlia pinnata.nucleus</option>
+                                <option value="Desu">Deinandra increscens subsp. villosa</option>
+                                <option value="Ecan">Erigeron canadensis</option>
+                                <option value="Enbr">Erigeron breviscapus</option>
+                                <option value="Eupl">Euptelea pleiosperma</option>
+                                <option value="Fbi">Flaveria bidentis</option>
+                                <option value="Fbr">Flaveria brownii</option>
+                                <option value="Ffl">Flaveria floridana</option>
+                                <option value="Fli">Flaveria linearis</option>
+                                <option value="Fra">Flaveria ramosissima</option>
+                                <option value="Fro">Flaveria robusta</option>
+                                <option value="Fso">Flaveria sonorensis</option>
+                                <option value="Ftr">Flaveria trinervia</option>
+                                <option value="Glco">Glebionis coronaria</option>
+                                <option value="Hean">Helianthus annuus</option>
+                                <option value="Hetu">Helianthus tuberosus</option>
+                                <option value="Heub">Helichrysum umbraculigerum</option>
+                                <option value="Laca">Lactuca saligna</option>
+                                <option value="Lomi">Logfia minima</option>
+                                <option value="Lssa">Lactuca sativa</option>
+                                <option value="Mimi">Mikania micrantha</option>
+                                <option value="Nenu">Nelumbo nucifera</option>
+                                <option value="Nin">Nymphoides indica</option>
+                                <option value="Pdy">Pulicaria dysenterica</option>
+                                <option value="Pin">Pluchea indica</option>
+                                <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                                <option value="Sain">Saussurea involucrata</option>
+                                <option value="Scae">Solidago caesia</option>
+                                <option value="Sesq">Senecio squalidus</option>
+                                <option value="Smso">Smallanthus sonchifolius</option>
+                                <option value="Soca">Solidago canadensis</option>
+                                <option value="Stre">Stevia rebaudiana</option>
+                                <option value="Taer">Tagetes erecta</option>
+                                <option value="Tako">Taraxacum koksaghyz</option>
+                                <option value="Tamo">Taraxacum mongolicum</option>
+                                <option value="Tesi">Tetracentron sinense</option>
+                                <option value="Vivi">Vitis vinifera</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="padding-top: 40px">
+                            <label for="state" class="form-label">Chromosome</label>
+        {#                    <select class="form-control" id="state" name="chromosome_number" required>#}
+                            <select class="col-md-12 btn-default form-control" name="chromosome_number" id="list">
+                                <option value="Chromosome 1">Chromosome 1</option>
+                                <option value="Chromosome 2">Chromosome 2</option>
+                                <option value="Chromosome 3">Chromosome 3</option>
+                                <option value="Chromosome 4">Chromosome 4</option>
+                                <option value="Chromosome 5">Chromosome 5</option>
+                                <option value="Chromosome 6">Chromosome 6</option>
+                                <option value="Chromosome 7">Chromosome 7</option>
+                                <option value="Chromosome 8">Chromosome 8</option>
+                                <option value="Chromosome 9">Chromosome 9</option>
+                                <option value="Chromosome 10">Chromosome 10</option>
+                                <option value="Chromosome 11">Chromosome 11</option>
+                                <option value="Chromosome 12">Chromosome 12</option>
+                                <option value="Chromosome 13">Chromosome 13</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-12" style="padding-top: 40px">
+                            <label for="firstName" class="form-label">Enter Start</label>
+                            <input type="text" class="form-control" id="firstName" name="start" value="1000" required="">
+                        </div>
+
+                        <div class="col-lg-12" style="padding-top: 40px">
+                            <label for="firstName" class="form-label">Enter End</label>
+                            <input type="text" class="form-control" id="firstName" name="end" value="300000" required="">
+                        </div>
+
+    {#                    <div style="width: 100%; height: 40px; background-color: #FFFFFF"></div>#}
+
+
+                        <input class="w-100 btn btn-primary btn-lg" style="margin-top: 20px" type="submit" value="submit" onclick="go()">
+                        <center>
+                            <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                            <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                        </center>
+                        <script>
+                            function go() {
+                                var hh1 = document.getElementById("wait1");
+                                var hh2 = document.getElementById("wait2");
+                                if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                    hh1.style.display = "inline-block";
+                                    hh2.style.display = "inline-block"
+                                }
+                                document.getElementById('go').submit()
+                            }
+                        </script>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-9">
+                <!-- 1 Genome Information -->
+                <div>
+                    <table id="example" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Subfamily</th>
+                                <th>Tribs</th>
+                                <th>Genus</th>
+                                <th>Genome</th>
+                                <th>Data link</th>
+                                <th>Genome size</th>
+                                <th>Number of chromosomes</th>
+                                <th>Time</th>
+                                <th>Assembly level</th>
+                                <th>Number of scaffolds</th>
+                                <th>Scaffold N50</th>
+                                <th>Scaffold L50</th>
+                                <th>Number of contigs</th>
+                                <th>Contig N50</th>
+                                <th>Contig L50</th>
+                                <th>GC percent</th>
+                                <th>Genes</th>
+                                <th>Protein-coding</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Arctium lappa (1)</td>
+                                <td>Carduoideae</td>
+                                <td>Cardueae</td>
+                                <td>Arctium</td>
+                                <td><a href="https://doi.org/10.6084/m9.figshare.11590983" target="_blank"><i class="bi bi-download"></i></a></td>
+                                <td>1.79 Gb</td>
+                                <td>2n=36</td>
+                                <td>44510</td>
+                                <td>chromosome</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                                <td>*</td>
+                            </tr>
+    <tr> <td>Arctium lappa (2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Arctium</td> <td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525745.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.7 Gb</td> <td>2n=36</td> <td>44705</td> <td>chromosome</td> <td>299</td> <td>91 Mb</td> <td>7</td> <td>309</td> <td>74.7 Mb</td> <td>9</td> <td>36.5</td> <td>46935</td> <td>40570</td></tr>
+    <tr> <td>Arctium minus(1)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Arctium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954870635.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.9 Gb</td> <td>2n=36</td> <td>45121</td> <td>chromosome</td> <td>30</td> <td>103.5 Mb</td> <td>7</td> <td>44</td> <td>80.9 Mb</td> <td>9</td> <td>36.5</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Arctium minus(2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Arctium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954871535.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>465.4 Mb</td> <td>2n=36</td> <td>45122</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>5756</td> <td>141.8 kb</td> <td>492</td> <td>37</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Carthamus tinctorius (1)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Carthamus</td> <td><a href="The Genome Database of Carthamus tinctorius(http://safflower.sc uec.edu.cn) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.06 Gb</td> <td>2n=24</td> <td>44280</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Carthamus tinctorius (2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Carthamus</td> <td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001633085.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>661.9 Mb</td> <td>2n=24</td> <td>42487</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Carthamus tinctorius(3)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Carthamus</td> <td><a href="https://ngdc.cncb.ac.cn/gwh/Assembly/25633/show " target="_blank"><i class="bi bi-download"></i></a></td><td>1.17Gb</td> <td>2n=24</td> <td>45198</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Saussurea involucrata</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Saussurea</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_033807775.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>2452 Mb</td> <td>2n = 32</td> <td>45251</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Saussurea bogedaensis</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Saussurea</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041870115.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Sep, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Silybum marianum(1)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Silybum</td> <td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001541825.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.5 Gb</td> <td>2n=34</td> <td>42395</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>37</td> <td>*</td></tr>
+    <tr> <td>Silybum marianum(2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Silybum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036898165.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>694.4 Mb</td> <td>2n=34</td> <td>45350</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cynara cardunculus (1)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Cynara</td> <td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_001531365.2/ " target="_blank"><i class="bi bi-download"></i></a></td><td>725 Mb</td> <td>2n=34</td> <td>43207</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cynara cardunculus(2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Cynara</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228875.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>859.1 Mb</td> <td>2n=34</td> <td>Oct, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cynara cardunculus(3)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Cynara</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228895.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>858 Mb</td> <td>2n=34</td> <td>Oct, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Centaurea solstitialis</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Centaurea</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030169165.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>765.1 Mb</td> <td>2n=16</td> <td>45083</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Carduus pycnocephalus(1)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Carduus </td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919605.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Oct, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Carduus pycnocephalus(2)</td> <td>Carduoideae</td> <td>Cardueae</td> <td>Carduus </td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919555.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Oct, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cichorium endivia(1)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Cichorium</td> <td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023376185.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>887  Mb</td> <td>2n=18</td> <td>44699</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cichorium endivia(2)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Cichorium</td> <td><a href=" CRA005068、CRA005069 and CRA005054 " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>44721</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cichorium intybus(1)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Cichorium</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525715.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.3 Gb</td> <td>2n=18</td> <td>44705</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cichorium intybus(2)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Cichorium</td> <td><a href="https://bioinformatics.psb.ugent.be/gdb/Cichorium_intybus/ " target="_blank"><i class="bi bi-download"></i></a></td><td>919 Mb</td> <td>2n=18</td> <td>45090</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cichorium intybus(3)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Cichorium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030463085.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.8 Gb</td> <td>-</td> <td>45121</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca saligna</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949927565.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>2.2 Gb</td> <td>2n=18</td> <td>45014</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(1)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002870075.3/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.4 Gb</td> <td>2n=18</td> <td>43109</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(2)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000227445.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.1 Gb</td> <td>2n=18</td> <td>40820</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(3)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900198505.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2 Gb</td> <td>2n=18</td> <td>42987</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(4)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900243165.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.2 Gb</td> <td>2n=18</td> <td>43102</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(5)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://lettucegdb.com/genome " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>45127</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(6)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://figshare.com/s/f5f0e8068d5a236ea408(Lactuca_sativa_cv._PKU06_T2T) " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(7)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041283435.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Aug, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca sativa(8)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039583335.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>May, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca virosa</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_928212115.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>3.4 Gb</td> <td>-</td> <td>45192</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Lactuca serriola</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Lactuca</td> <td><a href="- " target="_blank"><i class="bi bi-download"></i></a></td><td>2.8 Gb</td> <td>-</td> <td>75943</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Taraxacum koksaghyz (1)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Taraxacum</td> <td><a href="NGDC(https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA000437) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.29 Gb</td> <td>2n=16</td> <td>42998</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Taraxacum koksaghyz (2)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Taraxacum</td> <td><a href="NGDC(https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA005187) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.08 Gb</td> <td>2n=16</td> <td>44551</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Taraxacum mongolicum</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Taraxacum</td> <td><a href="NGDC(https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA005187) " target="_blank"><i class="bi bi-download"></i></a></td><td>790Mb</td> <td>3x=24</td> <td>44551</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tragopogon pratensis (1)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Tragopogon</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059535.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>-</td> <td>Jun, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tragopogon pratensis (2)</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Tragopogon</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059265.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>-</td> <td>May, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pilosella piloselloides</td> <td>Cichorioideae</td> <td>Cichorieae</td> <td>Pilosella</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040114295.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>-</td> <td>Jun, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tanacetum coccineum</td> <td>Anthemideae</td> <td>Anthemidinae</td> <td>Tanacetum</td> <td><a href="GCA_026074375.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>9.5 Gb</td> <td>-</td> <td>*</td> <td> scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tanacetum parthenium (feverfew)</td> <td>Anthemideae</td> <td>Anthemidinae</td> <td>Tanacetum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204775.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>-</td> <td>Jul, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tanacetum parthenium (feverfew)</td> <td>Anthemideae</td> <td>Anthemidinae</td> <td>Tanacetum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204795.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>-</td> <td>Jul, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tanacetum vulgare (tansy)</td> <td>Anthemideae</td> <td>Anthemidinae</td> <td>Tanacetum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264315.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>-</td> <td>Sep, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tanacetum vulgare (tansy)</td> <td>Anthemideae</td> <td>Anthemidinae</td> <td>Tanacetum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264305.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>-</td> <td>Sep, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia annua (1)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="GPGD(http://www.gpgenome.com/species/92) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.5 Gb</td> <td>2n=18</td> <td>44713</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia annua (2)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_014162995.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.8 Gb</td> <td>2n=18</td> <td>44054</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia annua (3)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_003112345.1/） " target="_blank"><i class="bi bi-download"></i></a></td><td>1.8 Gb</td> <td>2n=18</td> <td>43228</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia annua (4)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038048965.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.5 Gb</td> <td></td> <td>Apr, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia tridentata (1)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023558565.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>4.2 Gb</td> <td>2n=18</td> <td>44712</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia tridentata (2)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021014915.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>4.5 Gb</td> <td>2n=18</td> <td>44530</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia tridentata(3)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021014915.2/ " target="_blank"><i class="bi bi-download"></i></a></td><td>3.9 Gb</td> <td>-</td> <td>*</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia tridentata（4）</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037463035.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Mar, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia princeps</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="GCA_035048425.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>591.2 Mb</td> <td>-</td> <td>*</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia ludoviciana</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="GCA_034509245.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>*</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia argyi</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="NGDC(https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA010808) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.89 Gb</td> <td>2n=34</td> <td>45054</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia argyi</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030686995.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>2n=34</td> <td>44723</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia argyi</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029874665.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>2n=34</td> <td>*</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia argyi</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028659345.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>2n=34</td> <td>*</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Artemisia ifranensis</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Artemisia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040967555.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Jul, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum nankingense</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="http://210.22.121.250:8880/asteraceae/download/downloadPage " target="_blank"><i class="bi bi-download"></i></a></td><td>5.7 Gb</td> <td>-</td> <td>2862627</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum nankingense</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="http://210.22.121.250:8880/asteraceae/download/downloadPage " target="_blank"><i class="bi bi-download"></i></a></td><td>3.5 Gb</td> <td>-</td> <td>2862627</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum indicum</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="Chrysanthemum Genome Database(http://www.amwayabrc.com/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.07 Gb </td> <td>2n=18</td> <td>43391</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum indicum</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="https://figshare.com/articles/dataset/The_genome_of_Chrysanthemum_indicum/21463119/1 " target="_blank"><i class="bi bi-download"></i></a></td><td>3.11 Gb</td> <td>2n=18</td> <td>45322</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum indicum</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="http://210.22.121.250:8880/asteraceae/download/downloadPage " target="_blank"><i class="bi bi-download"></i></a></td><td>6.18 Gb</td> <td>-</td> <td>1753</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum lavandulifolium</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_019973895.1/)https://plantgarden.jp/en/download/Chrysanthemum_seticuspe/t1111766.G002/ " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=18</td> <td>44439</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum lavandulifolium</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="Mum Garden(http://mum-garden.kazusa.or.jp/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.72 Gb</td> <td>2n=18</td> <td>43501</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum lavandulifolium</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_022545495.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.7 Gb</td> <td>2n=18</td> <td>44641</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum lavandulifolium</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_004359105.1/  https://plantgarden.jp/en/download/Chrysanthemum_seticuspe/t1111766.G001/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum makinoi</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="Chrysanthemum genome(https://www.chrysanthemumgenome.wur.nl/)http://210.22.121.250:8880/asteraceae/download/downloadPage同一个https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_910596185.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>3.19 Gb</td> <td>2n=18</td> <td>44565</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Chrysanthemum morifolium</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Chrysanthemum</td> <td><a href="FigShare(https://figshare.com/articles/dataset/A_chromosome-scale_genome_assembly_of_hexaploid_cultivated_chrysanthemum/21655364/2) " target="_blank"><i class="bi bi-download"></i></a></td><td>8.15 Gb</td> <td>2n=54</td> <td>45014</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Glebionis coronaria(1)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Glebionis</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025667525.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>6.8 Gb</td> <td>2n=18</td> <td>44846</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Glebionis coronaria（2）</td> <td>Asteroideae</td> <td>Anthemideae</td> <td>Glebionis</td> <td><a href="https://figshare.com/articles/dataset/Annotated_reference_genome_of_Glebionis_coronaria/20294385 " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>44839</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Matricaria chamomilla var. recutita (German chamomile)</td> <td>Asteroideae</td> <td>Anthemideae</td> <td> Matricaria</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963920955.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Oct, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Matricaria chamomilla</td> <td>Asteroideae</td> <td>Anthemideae</td> <td> Matricaria</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964235185.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Aug, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Matricaria chamomilla</td> <td>Asteroideae</td> <td>Anthemideae</td> <td> Matricaria</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964234995.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>Aug, 2024</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Erigeron canadensis</td> <td>Asteroideae</td> <td> Astereae</td> <td>Erigeron</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_010389155.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>426.2 Mb</td> <td>2n=18</td> <td>43899</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Erigeron canadensis</td> <td>Asteroideae</td> <td> Astereae</td> <td>Erigeron</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000775935.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>326.2 Mb</td> <td>2n=18</td> <td>41956</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Erigeron philadelphicus</td> <td>Asteroideae</td> <td> Astereae</td> <td>Erigeron</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024320915.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>619.6 Mb</td> <td>2n=18</td> <td>44760</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Erigeron breviscapus</td> <td>Asteroideae</td> <td> Astereae</td> <td>Erigeron</td> <td><a href="MPOD(http://medicinalplants.ynau.edu.cn/genome/detail/68) " target="_blank"><i class="bi bi-download"></i></a></td><td> 1.43 Gb</td> <td>2n=18</td> <td>44102</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Erigeron breviscapus</td> <td>Asteroideae</td> <td> Astereae</td> <td>Erigeron</td> <td><a href="- " target="_blank"><i class="bi bi-download"></i></a></td><td>1.2 Gb</td> <td>Scaffold</td> <td>244311</td> <td>31.5 Kb</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Solidago caesia</td> <td>Asteroideae</td> <td> Solidagininae</td> <td>Solidago</td> <td><a href="GCA_028566075.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>-</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Solidago azorica</td> <td>Asteroideae</td> <td> Solidagininae</td> <td>Solidago</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040966195.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>2B3TCUQD3C (isolate)</td> <td>Jul, 2024</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Solidago canadensis</td> <td>Asteroideae</td> <td> Solidagininae</td> <td>Solidago</td> <td><a href="实验室测序项目 " target="_blank"><i class="bi bi-download"></i></a></td><td>855 Mb</td> <td>2n=18</td> <td>*</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Mikania micrantha</td> <td>Asteroideae</td> <td>Eupatorieae</td> <td>Mikania</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_009363875.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.8 Gb</td> <td>2n=38</td> <td>43766</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ageratina adenophora</td> <td>Asteroideae</td> <td>Eupatorieae</td> <td>Ageratina</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042767725.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>-</td> <td>Oct, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Stevia rebaudiana (1)</td> <td>Asteroideae</td> <td>Eupatorieae</td> <td>Stevia</td> <td><a href="FigShare(https://figshare.com/articles/dataset/Stevia_rebaudiana_genome_data/14169491/1) " target="_blank"><i class="bi bi-download"></i></a></td><td>1405 Mb</td> <td>2n=22</td> <td>44348</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Stevia rebaudiana (2)</td> <td>Asteroideae</td> <td>Eupatorieae</td> <td>Stevia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009936405.2/ " target="_blank"><i class="bi bi-download"></i></a></td><td>411.4 Mb</td> <td>2n=22</td> <td>43857</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Bidens hawaiensis (1)</td> <td>Asteroideae</td> <td>Coreopsideae </td> <td>Bidens</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521415.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.5 Gb</td> <td>2n=6x=72</td> <td>44580</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Bidens hawaiensis (2)</td> <td>Asteroideae</td> <td>Coreopsideae </td> <td>Bidens</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521975.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.9 Gb</td> <td>2n=6x=72</td> <td>44580</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Bidens alba</td> <td>Asteroideae</td> <td>Coreopsideae </td> <td>Bidens</td> <td><a href="https://zenodo.org/records/10160015 " target="_blank"><i class="bi bi-download"></i></a></td><td>3.75 Gb</td> <td>Chromosome</td> <td>*</td> <td>75.1 Mb</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Cosmos bipinnatus</td> <td>Asteroideae</td> <td>Coreopsideae </td> <td>Bidens</td> <td><a href="https://zenodo.org/records/10160015 " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>79.4 Mb</td> <td>46076</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Dahlia pinnata</td> <td>Asteroideae</td> <td>Coreopsideae </td> <td>Bidens</td> <td><a href="118.5 Mb " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>KelvinV1</td> <td>*</td> <td>7.86 Gb</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia artemisiifolia</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024762085.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.3 Gb</td> <td>2n=36</td> <td>44802</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia artemisiifolia (new)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199755.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.1 Gb</td> <td>*</td> <td>*</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia artemisiifolia (new)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199705.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.2 Gb</td> <td>2n=24</td> <td>*</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia x helenae (new)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030844885.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>*</td> <td> 2024-03-13</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia x helenae</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="GCA_030844895.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>-</td> <td>*</td> <td>*</td> <td>Chromosomes</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Ambrosia trifida</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Ambrosia</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028751855.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>1.7 Gb</td> <td>2n=24</td> <td>45297</td> <td>Chromosomes</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Scalesia atractyloides</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Scalesia</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_947069175.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.2 Gb</td> <td>2n=4x=68</td> <td>44850</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Silphium perfoliatum</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Silphium</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900538075.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>121.7 Mb</td> <td>2n=14</td> <td>43439</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (1)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002127325.2/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=34</td> <td>42867</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (2)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538245.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (3)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538285.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (4)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651665.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.1 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (5)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651675.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.2 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (6)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651695.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (7)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651735.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (8)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651805.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.1 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus (9)</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026652165.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>3.2 Gb</td> <td>2n=34</td> <td>44902</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="- " target="_blank"><i class="bi bi-download"></i></a></td><td>3.2 Gb</td> <td>Chromosome</td> <td>4232</td> <td>-</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="- " target="_blank"><i class="bi bi-download"></i></a></td><td>6.1 Gb</td> <td>Chromosome</td> <td>4232</td> <td>-</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus annuus</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="* " target="_blank"><i class="bi bi-download"></i></a></td><td>3.01 Gb</td> <td>*</td> <td>4232</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus tuberosus</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="https://ngdc.cncb.ac.cn/gwh/Genome/158494/show " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td> 2023-05-01</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helianthus tuberosus</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="GCA_030545235.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>21.6 Gb</td> <td>Chromosome</td> <td>4233</td> <td>192.9 Mb</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Helichrysum umbraculigerum</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Helianthus</td> <td><a href="文章附表 " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>45047</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Silphium perfoliatum</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Silphium</td> <td><a href="GCA_900538075.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>121.7 Mb</td> <td>*</td> <td>43439</td> <td>contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Rudbeckia hirta</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Rudbeckia</td> <td><a href="GCA_028566315.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>571.1 Mb</td> <td>*</td> <td>44966</td> <td>Scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Deinandra increscens subsp. villosa</td> <td>Asteroideae</td> <td>Heliantheae</td> <td>Deinandra</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039602395.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>Submitter</td> <td>May, 2024</td> <td></td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Senecio squalidus (1)</td> <td>Asteroideae</td> <td>Senecioneae</td> <td>Senecio</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910822075.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>652 Mb</td> <td>2n=20</td> <td>44610</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Senecio squalidus (2)</td> <td>Asteroideae</td> <td>Senecioneae</td> <td>Senecio</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910821995.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>161.2 Mb</td> <td>2n=20</td> <td>44610</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Smallanthus sonchifolius</td> <td>Asteroideae</td> <td>Millerieae</td> <td>Smallanthus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525975.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>2.7 Gb</td> <td>2n=58</td> <td>44705</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria trinervia</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506515.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.8 Gb</td> <td>2n=36</td> <td>44836</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria sonorensis</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506505.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.2 Gb</td> <td>2n=36</td> <td>44836</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria ramosissima</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025215565.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.3 Gb</td> <td>2n=36</td> <td>44820</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria linearis</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024085815.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.7 Gb</td> <td>2n=36</td> <td>44748</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria robusta (1)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506415.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>551.5 Mb</td> <td>2n=36</td> <td>44836</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria robusta (2)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326485.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>518.9 Mb</td> <td>2n=36</td> <td>44298</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria floridana</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326465.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.6 Gb</td> <td>2n=36</td> <td>44299</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria brownii</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326445.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>924.1 Mb</td> <td>2n=36</td> <td>44299</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Flaveria bidentis</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Flaveria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326385.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1 Gb</td> <td>2n=36</td> <td>44299</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tagetes erecta(1)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Tagetes</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026213115.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>621.2 Mb</td> <td>2n=24</td> <td>44883</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tagetes erecta(2)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Tagetes</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026259685.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>434.6 Mb</td> <td>2n=24</td> <td>44886</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tagetes erecta(4)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Tagetes</td> <td><a href="- " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>45021</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Tagetes erecta(3)</td> <td>Asteroideae</td> <td>Tageteae</td> <td>Tagetes</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030867185.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>*</td> <td>Chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pluchea indica</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Pluchea</td> <td><a href="NGDC(https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=Pluchea%20indica) " target="_blank"><i class="bi bi-download"></i></a></td><td>1776.74 Mb</td> <td>2n=20</td> <td>44678</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pulicaria dysenterica (1)</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Pulicaria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_947179395.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>833.3 Mb</td> <td>2n=18</td> <td>44862</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pulicaria dysenterica (2)</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Pulicaria</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_947179335.2/) " target="_blank"><i class="bi bi-download"></i></a></td><td>609.7 Mb</td> <td>2n=18</td> <td>44897</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Dittrichia graveolens</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Dittrichia </td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502395.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>*</td> <td>Apr, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Dittrichia graveolens</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Dittrichia </td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502355.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>*</td> <td>Apr, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pulicaria dysenterica（1）</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Dittrichia </td> <td><a href="https://identifiers.org/ena.embl/PRJEB50479 " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>45211</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pulicaria dysenterica（2)</td> <td>Asteroideae</td> <td>Inuleae</td> <td>Dittrichia </td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947179395.2/ " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Logfia minima</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Logfia</td> <td><a href="GCA_963921325.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>544.9 Mb</td> <td>2n=30</td> <td>45299</td> <td>Chromosomes</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Logfia minima</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Logfia</td> <td><a href="GCA_963921315.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>5.9 Mb</td> <td>2n=30</td> <td>45299</td> <td>contigs</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Gnaphalium uliginosum</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Logfia</td> <td><a href="GCA_963930675.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>*</td> <td>Chromosomes</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Gnaphalium uliginosum</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Logfia</td> <td><a href="GCA_963930705.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>*</td> <td>*</td> <td>*</td> <td>contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pseudognaphalium luteoalbum</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Pseudognaphalium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422505.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>881.3 Mb</td> <td>2n=14</td> <td>45182</td> <td>chromosome</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Pseudognaphalium luteoalbum</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Pseudognaphalium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422485.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>6.7 Mb</td> <td>2n=14</td> <td>45182</td> <td>contigs</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Filago lutescens</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Pseudognaphalium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964188195.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>*</td> <td>Jun, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Filago lutescens</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Pseudognaphalium</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964187975.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>*</td> <td>Jun, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Omalotheca supina</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Omalotheca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263845.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Chromosome</td> <td>*</td> <td>Sep, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Omalotheca supina</td> <td>Asteroideae</td> <td>Gnaphalieae</td> <td>Omalotheca</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263965.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Scaffold</td> <td>*</td> <td>Sep, 2024</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Calendula officinalis</td> <td>Asteroideae</td> <td>Calenduleae</td> <td>Calendula</td> <td><a href="GCA_963853835.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>1.2 Gb</td> <td>2n=32</td> <td>45272</td> <td>Chromosomes</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Calendula officinalis</td> <td>Asteroideae</td> <td>Calenduleae</td> <td>Calendula</td> <td><a href="GCA_963853825.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>328.4 Mb</td> <td>2n=32</td> <td>45272</td> <td>Contig</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Calendula officinalis</td> <td>Asteroideae</td> <td>Calenduleae</td> <td>Calendula</td> <td><a href="GCA_029618835.1 " target="_blank"><i class="bi bi-download"></i></a></td><td>486.8 Mb</td> <td>2n=32</td> <td>45023</td> <td>contigs</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Calendula officinalis (common marigold)</td> <td>Asteroideae</td> <td>Calenduleae</td> <td>Calendula</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963853825.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Contig</td> <td>*</td> <td>Dec, 2023</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Calendula officinalis (common marigold)</td> <td>Asteroideae</td> <td>Calenduleae</td> <td>Calendula</td> <td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029618835.1/ " target="_blank"><i class="bi bi-download"></i></a></td><td>Contig</td> <td>*</td> <td>Apr, 2023</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+    <tr> <td>Centrapalus pauciflorus</td> <td>Vernonioideae</td> <td>Vernonieae</td> <td>Centrapalus</td> <td><a href="NCBI(https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_020465985.1/) " target="_blank"><i class="bi bi-download"></i></a></td><td>1.4 Gb</td> <td>2n=36</td> <td>44482</td> <td>scaffold</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td> <td>*</td></tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% if result %}
+    <div class="container">
+        <div class="col-lg-12">
+            <h2 style="font-size: 1.5rem; padding-top: 20px">
+                <img src="../static/image/logo.png" alt="Logo" style="height: 30px; margin-right: 10px; vertical-align: middle;">
+                Sequence Fetch
+            </h2>
+        </div>
+        <div class="row" style="padding-bottom: 20px">
+            <div class="card col-lg-6">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-lg-6" style="text-align: right;">
+                        <h4>CDS</h4>
+                    </div>
+                    <div class="col-lg-6" style="display: flex; align-items: center; justify-content: flex-end;">
+                        <button onclick="downloadContent_cds()" class="btn-custom btn btn-sm" style="margin-bottom: 10px;">Download</button>
+                    </div>
+                </div>
+
+                {% for row in result %}
+                <div class="card">
+                    <div class="card-header">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#{{ row.0 }}" aria-expanded="true">
+                            {{ row.0 }} &nbsp;&nbsp;&nbsp; Length: {{ row.3 }} &nbsp;&nbsp;&nbsp;GC_content: {{ row.5 }}
+                        </button>
+                    </div>
+                    <div id="{{ row.0 }}" class="collapse" style="margin: 10px 15px 0px 15px;">
+                        <div class="d-flex justify-content-end">
+                            <input type="button" value="Copy" class="clip btn btn-secondary btn-sm" data-clipboard-target="#{{ row.0 }}_copy">
+                        </div>
+                        <p id="{{ row.0 }}_copy" class="text-monospace" style="text-align: justify;">>{{ row.0 }}<br>{{ row.1 }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="card col-lg-6">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-lg-6" style="text-align: right;">
+                        <h4>PEP</h4>
+                    </div>
+                    <div class="col-lg-6" style="display: flex; align-items: center; justify-content: flex-end;">
+                        <button onclick="downloadContent_pep()" class="btn-custom btn btn-sm" style="margin-bottom: 10px;">Download</button>
+                    </div>
+                </div>
+
+                {% for row in result %}
+                    <div class="card">
+                        <div class="card-header">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#{{ row.0 }}_pep" aria-expanded="true">
+                                {{ row.0 }} &nbsp;&nbsp;&nbsp; Length: {{ row.4 }}
+                            </button>
+                        </div>
+                        <div id="{{ row.0 }}_pep" class="collapse" style="margin: 10px 15px 0px 15px;">
+                            <div class="d-flex justify-content-end">
+                                <input type="button" value="Copy" class="clip btn btn-secondary btn-sm" data-clipboard-target="#{{ row.0 }}_copy_pep">
+                            </div>
+                            <p id="{{ row.0 }}_copy_pep" class="text-monospace" style="text-align: justify;">>{{ row.0 }}<br>{{ row.2 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        <script>
+            function downloadContent_cds() {
+                let content = "";
+                {% for row in result %}
+                content += ">{{ row.0 }}\n{{ row.1 }}\n";
+                {% endfor %}
+                var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = url;
+                a.download = "cds_content.txt";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        </script>
+
+        <script>
+            function downloadContent_pep() {
+                let content = "";
+                {% for row in result %}
+                content += ">{{ row.0 }}\n{{ row.2 }}\n";
+                {% endfor %}
+                var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = url;
+                a.download = "pep_content.txt";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        </script>
+
+        <script>
+            var clipboard = new ClipboardJS('.clip');
+        </script>
+    </div>
+
+{% endif %}
+
+{% endblock %}
+
+<script>
+    // 初始化Bootstrap折叠组件
+    document.addEventListener('DOMContentLoaded', function() {
+        var collapseElementList = [].slice.call(document.querySelectorAll('.collapse'))
+        var collapseList = collapseElementList.map(function (collapseEl) {
+            return new bootstrap.Collapse(collapseEl, {
+                toggle: false
+            })
+        })
+    });
+</script>
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

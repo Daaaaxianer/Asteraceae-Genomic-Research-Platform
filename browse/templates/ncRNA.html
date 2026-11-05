@@ -1,0 +1,203 @@
+{% extends 'tools_index.html' %}
+
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Non-coding RNA</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Non-coding RNA (ncRNA) refers to a variety of RNA molecules that are not translated into proteins. In the past, such RNAs were also called small ribonucleic acids (sRNAs). However, some ncRNA molecules are actually quite large. Other lesser used synonyms are non-messenger RNA (nmRNA), small non-messenger RNA (snmRNA), or functional RNA (fRNA). The part of the DNA sequence that is transcribed exclusively into non-coding RNA is called an RNA gene or a non-coding RNA gene. Non-coding RNA genes are used to produce tRNA (transfer RNA) and rRNA (ribosomal RNA), as well as some small RNAs such as snoRNAs, microRNAs, siRNAs and piRNAs.
+            <br>
+            &emsp;&emsp;We performed whole genomes of 25 Fabaceae using <a href="http://eddylab.org/infernal/">infernal</a> and <a href="https://rfam.org/">Rfam</a> database. And we stored the results into the LGRPv2 platform. Click to go to the download page of the related software. To see more about the Rfam family, please see <a href="https://rfam.org/">https://rfam.org/</a>.
+        </h6>
+            <div class="col-md-5">
+                <img style="width: 100%" src="../../static/image/ncRNA_number.jpg" alt="">
+            </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="ncRNA_run" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="state" class="form-label">Species</label>
+                <select class="form-control" id="initials" name="sp_data_1" onchange="Change_second_selectwords();">
+                    <option value="Aev">Aeschynomene evenia</option>
+                    <option value="Adu">Arachis duranensis</option>
+                    <option value="Ahy">Arachis hypogaea</option>
+                    <option value="Aip">Arachis ipaensis</option>
+                    <option value="Amo">Arachis monticola</option>
+                    <option value="Aed">Amphicarpaea edgeworthii</option>
+                    <option value="Apr">Abrus precatorius</option>
+                    <option value="Bva">Bauhinia variegata</option>
+                    <option value="Car">Cicer arietinum</option>
+                    <option value="Cca">Cajanus cajan</option>
+                    <option value="Dod">Dalbergia odorifera</option>
+                    <option value="Gma">Glycine max</option>
+                    <option value="Gso">Glycine soja</option>
+                    <option value="Lal">Lupinus albus</option>
+                    <option value="Lan">Lupinus angustifolius</option>
+                    <option value="Lja">Lotus japonicus</option>
+                    <option value="Mal">Melilotus albus</option>
+                    <option value="Mtr">Medicago truncatula</option>
+                    <option value="Psa">Pisum sativum</option>
+                    <option value="Pvu">Phaseolus vulgaris</option>
+                    <option value="Ssu">Spatholobus suberectus</option>
+                    <option value="Sto">Senna tora</option>
+                    <option value="Tsu">Trifolium subterranum</option>
+                    <option value="Tpr">Trifolium pratense</option>
+                    <option value="Vra">Vigna radiata</option>
+                    <option value="Vvi">Vitis vinifera</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="state" class="form-label">ncRNA type</label>
+                <select class="form-control" id="top_domains" name="sp_data_2" required>
+                    <option value="Cis-reg">Cis-reg</option>
+                    <option value="Cis-reg_riboswitch">Cis-reg_riboswitch</option>
+                    <option value="Gene">Gene</option>
+                    <option value="GenesnRNAsplicing">GenesnRNAsplicing</option>
+                    <option value="Gene_antisense">Gene_antisense</option>
+                    <option value="Gene_miRNA">Gene_miRNA</option>
+                    <option value="Gene_ribozyme">Gene_ribozyme</option>
+                    <option value="Gene_rRNA">Gene_rRNA</option>
+                    <option value="Gene_snRNA_snoRNA_CD-box">Gene_snRNA_snoRNA_CD-box</option>
+                    <option value="Gene_snRNA_snoRNA_HACA-box">Gene_snRNA_snoRNA_HACA-box</option>
+                    <option value="Gene_sRNA">Gene_sRNA</option>
+                    <option value="Gene_tRNA">Gene_tRNA</option>
+                    <option value="Intron">Intron</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+
+            <script>
+                var first_keywords = {};
+                //定义每个字母对应的第二个下拉框
+                first_keywords['Adu'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Aed'] = ["Cis-reg","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Apr'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Bva'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Car'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Cca'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Dod'] = ["Cis-reg_thermoregulator","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Gma'] = ["Cis-reg","Cis-reg_leader","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Gso'] = ["Cis-reg","Cis-reg_leader","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Lal'] = ["Cis-reg","Cis-reg_frameshift_element","Cis-reg_leader","Cis-reg_riboswitch","Cis-reg_thermoregulator","Gene","GenesnRNAsplicing","Gene_antisense","Gene_antitoxin","Gene_CRISPR","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron",];
+                first_keywords['Lan'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Laj'] = ["Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Mtr'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Pvu'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Ssu'] = ["Cis-reg","Cis-reg_leader","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Tpr'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Tsu'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_tRNA","Intron"];
+                first_keywords['Vra'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Sto'] = ["Cis-reg","Gene","GenesnRNAsplicing","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Aev'] = ["Cis-reg","Cis-reg_leade","Cis-reg_riboswitch","Gene","Gene_antisense","Gene_antitoxin","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","GenesnRNAsplicing","Intron"];
+                first_keywords['Amo'] = ["Cis-reg","Cis-reg_riboswitch","Gene","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA HACA-box","Gene_tRNA","GenesnRNAsplicing","Intron"];
+                first_keywords['Mal'] = ["Cis-reg","Cis-reg_riboswitch","Gene","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","GenesnRNAsplicing","Intron"];
+                first_keywords['Ahy'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_sRNA","Gene_tRNA","Intron"];
+                first_keywords['Aip'] = ["Cis-reg","Cis-reg_riboswitch","Gene","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_ribozyme","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_tRNA","Intron"];
+                first_keywords['Psa'] = ["Cis-reg","GenesnRNAsplicing","Gene_antisense","Gene_miRNA","Gene_rRNA","Gene_snRNA_snoRNA_CD-box","Gene_snRNA_snoRNA_HACA-box","Gene_tRNA","Intron"];
+                function Change_second_selectwords() {
+                    //根据id找到两个下拉框对象
+                    var target1 = document.getElementById("initials");
+                    var target2 = document.getElementById("top_domains");
+                    //得到第一个下拉框的内容
+                    var selected_initial = target1.options[target1.selectedIndex].value;
+
+                    //清空第二个下拉框
+                    while (target2.options.length) {
+                        target2.remove(0);
+                    }
+                    //根据第一个下拉框的内容找到对应的列表
+                    var initial_list = first_keywords[selected_initial];
+                    var value;
+                    if (initial_list) {
+                        for (var i = 0; i < initial_list.length; i++) {
+                            var item = new Option(initial_list[i], value=initial_list[i]);
+                            //将列表中的内容加入到第二个下拉框
+                            target2.options.add(item);
+                        }
+                    }
+                }
+            </script>
+
+            <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">
+        </div>
+    </form>
+
+
+
+{#    <form action="ncRNA_run" method="post" enctype="multipart/form-data" novalidate>#}
+{#        {% csrf_token %}#}
+{#        <div class="row">#}
+{#            <div class="col-md-6">#}
+{#                <label for="state" class="form-label">species database</label>#}
+{#                <select class="form-control" id="state" name="sp_data_1" required>#}
+{#                    <option value="Aev">Aeschynomene evenia</option>#}
+{#                    <option value="Adu">Arachis duranensis</option>#}
+{#                    <option value="Ahy">Arachis hypogaea</option>#}
+{#                    <option value="Aip">Arachis ipaensis</option>#}
+{#                    <option value="Amo">Arachis monticola</option>#}
+{#                    <option value="Aed">Amphicarpaea edgeworthii</option>#}
+{#                    <option value="Apr">Abrus precatorius</option>#}
+{#                    <option value="Bva">Bauhinia variegata</option>#}
+{#                    <option value="Car">Cicer arietinum</option>#}
+{#                    <option value="Cca">Cajanus cajan</option>#}
+{#                    <option value="Dod">Dalbergia odorifera</option>#}
+{#                    <option value="Gma">Glycine max</option>#}
+{#                    <option value="Gso">Glycine soja</option>#}
+{#                    <option value="Lal">Lupinus albus</option>#}
+{#                    <option value="Lan">Lupinus angustifolius</option>#}
+{#                    <option value="Lja">Lotus japonicus</option>#}
+{#                    <option value="Mal">Melilotus albus</option>#}
+{#                    <option value="Mtr">Medicago truncatula</option>#}
+{#                    <option value="Psa">Pisum sativum</option>#}
+{#                    <option value="Pvu">Phaseolus vulgaris</option>#}
+{#                    <option value="Ssu">Spatholobus suberectus</option>#}
+{#                    <option value="Sto">Senna tora</option>#}
+{#                    <option value="Tsu">Trifolium subterranum</option>#}
+{#                    <option value="Tpr">Trifolium pratense</option>#}
+{#                    <option value="Vra">Vigna radiata</option>#}
+{#                    <option value="Vvi">Vitis vinifera</option>#}
+{#                </select>#}
+{#                <div class="invalid-feedback">#}
+{#                    Please provide a valid state.#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-md-6">#}
+{#                <label for="state" class="form-label">species database</label>#}
+{#                <select class="form-control" id="state" name="sp_data_2" required>#}
+{#                    <option value="Cis-reg">Cis-reg</option>#}
+{#                    <option value="Cis-reg_riboswitch">Cis-reg_riboswitch</option>#}
+{#                    <option value="Gene">Gene</option>#}
+{#                    <option value="GenesnRNAsplicing">GenesnRNAsplicing</option>#}
+{#                    <option value="Gene_antisense">Gene_antisense</option>#}
+{#                    <option value="Gene_miRNA">Gene_miRNA</option>#}
+{#                    <option value="Gene_ribozyme">Gene_ribozyme</option>#}
+{#                    <option value="Gene_rRNA">Gene_rRNA</option>#}
+{#                    <option value="Gene_snRNA_snoRNA_CD-box">Gene_snRNA_snoRNA_CD-box</option>#}
+{#                    <option value="Gene_snRNA_snoRNA_HACA-box">Gene_snRNA_snoRNA_HACA-box</option>#}
+{#                    <option value="Gene_sRNA">Gene_sRNA</option>#}
+{#                    <option value="Gene_tRNA">Gene_tRNA</option>#}
+{#                    <option value="Intron">Intron</option>#}
+{#                </select>#}
+{#                <div class="invalid-feedback">#}
+{#                    Please provide a valid state.#}
+{#                </div>#}
+{#            </div>#}
+{#            <input class="w-100 btn btn-primary btn-lg" style="margin-top: 40px" type="submit" value="Search">#}
+{#        </div>#}
+{#    </form>#}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Aev_Aev Genome Synteny Viewer<i></i>
+                </h3>
+            </div>
+        </div>
+
+        <h2>BLAST Results</h2>
+        <table>
+            <thead>
+                <tr>
+                <th>Query</th>
+                <th>Hit</th>
+                <th>E-value</th>
+                <th>Score</th>
+                <th>Identity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.query }}</td>
+                    <td>{{ result.hit }}</td>
+                    <td>{{ result.evalue }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.identity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - AGRP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+    /* 强制地图容器显示和尺寸 */
+    #dituContent {
+        width: 697px !important;
+        height: 550px !important;
+        border: #ccc solid 1px !important;
+        margin-top: 20px;
+        border-radius: 4px;
+        overflow: hidden !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1 !important;
+        background-color: #f5f5f5 !important;
+    }
+
+    /* 确保地图脚本能正确执行 */
+    .contact-content {
+        width: 100%;
+        overflow: visible;
+    }
+
+    /* 清除可能影响地图的flex布局 */
+    .contact-content * {
+        box-sizing: border-box;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #dituContent {
+            width: 100% !important;
+            height: 400px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <div class="text-center">
+                    <h2 class="section-title">Contact</h2>
+                </div>
+
+        <div class="contact-content">
+            <p style="text-align: left;">
+                <span style="font-size: 16px;"><strong>Comments and suggestions are welcomed!</strong></span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 16px;"><strong><br></strong></span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 14px;">
+                    If you meet any troubles or find any bugs when you visit AGRP,
+                    please email to&nbsp;
+                    <a href="mailto:wangjinpeng@ncst.edu.cn" target="_self" textvalue="wangjinpeng@ncst.edu.cn">wangjinpeng@ncst.edu.cn</a>,
+                    <span style="font-size:14px;font-family:'Arial',sans-serif">
+                        pull requests in AGRP forum</a>
+                    </span>
+                </span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 14px;"><br></span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 14px;">
+                    Address info 21 Bohai Road, Caofeidian, Tangshan 063210, Hebei, China<br>
+                </span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 14px;"><br></span>
+            </p>
+            <p style="text-align: left;">
+                <span style="font-size: 14px;">
+                    <span style="font-size: 12px;"></span>Tel: +0315-8805607
+                </span>
+            </p>
+            <p><br></p>
+
+            <!-- 百度地图容器 -->
+            <!-- 添加一个包装div确保地图正确渲染 -->
+            <div style="width:100%; overflow:hidden; margin-top: 20px;">
+                <div style="width:697px; height:550px; border:#ccc solid 1px; margin: 0 auto;" id="dituContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="https://api.map.baidu.com/getscript?v=2.0&ak=UHv7UZoGAfr13HIyi2PWIXz3M5wGQyMi&services=&t=20220113143013"></script>
+<script type="text/javascript" >
+    // 确保DOM完全加载后再执行地图初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 延迟一小段时间确保容器完全渲染
+        setTimeout(function() {
+            initMap();
+        }, 100);
+    });
+
+    // 创建和初始化地图函数：
+    function initMap(){
+        // 首先检查地图容器是否存在且可见
+        var mapContainer = document.getElementById('dituContent');
+        if (!mapContainer) {
+            console.error('地图容器未找到');
+            return;
+        }
+
+        if (mapContainer.offsetWidth === 0 || mapContainer.offsetHeight === 0) {
+            console.error('地图容器尺寸为0');
+            // 尝试强制设置尺寸
+            mapContainer.style.width = '697px';
+            mapContainer.style.height = '550px';
+        }
+
+        // 检查BMap对象是否存在
+        if (typeof BMap === 'undefined') {
+            console.error('百度地图API未加载');
+            // 如果没有API，显示备用信息
+            mapContainer.innerHTML =
+                '<div style="padding:20px;text-align:center;color:#777;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;">' +
+                '<div>' +
+                '<h4>地图暂时无法加载</h4>' +
+                '<p>North China University of Science and Technology</p>' +
+                '<p>21 Bohai Road, Caofeidian, Tangshan 063210, Hebei, China</p>' +
+                '<p>Tel: +0315-8805607</p>' +
+                '</div></div>';
+            return;
+        }
+
+        // 如果一切正常，执行原来的地图代码
+        createMap();
+        setMapEvent();
+        addMapControl();
+        addMarker();
+        setTimeout(function(){
+        window.map.checkResize(); 
+    }, 500);
+    }
+
+    // 创建地图函数：
+    function createMap(){
+        try {
+            var map = new BMap.Map("dituContent");
+            var point = new BMap.Point(118.595191,39.205993);
+            map.centerAndZoom(point,17);
+            window.map = map;
+        } catch (e) {
+            console.error('创建地图失败:', e);
+        }
+    }
+
+    // 地图事件设置函数：
+    function setMapEvent(){
+        if (window.map) {
+            map.enableDragging();
+            map.enableScrollWheelZoom();
+            map.enableDoubleClickZoom();
+            map.enableKeyboard();
+        }
+    }
+
+    // 地图控件添加函数：
+    function addMapControl(){
+        if (!window.map) return;
+
+        // 向地图中添加缩放控件
+        var ctrl_nav = new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+            type: BMAP_NAVIGATION_CONTROL_LARGE
+        });
+        map.addControl(ctrl_nav);
+
+        // 向地图中添加比例尺控件
+        var ctrl_sca = new BMap.ScaleControl({
+            anchor: BMAP_ANCHOR_BOTTOM_LEFT
+        });
+        map.addControl(ctrl_sca);
+    }
+
+    // 标注点数组
+    var markerArr = [{
+        title: "North China University of Science and Technology,",
+        content: "Address info 21 Bohai Road, Caofeidian, Tangshan 063210, Hebei, China +0315-8805607",
+        point: "118.595191|39.205993",
+        isOpen: 1,
+        icon: {w:21, h:21, l:0, t:0, x:6, lb:5}
+    }];
+
+    // 创建marker
+    function addMarker(){
+        if (!window.map || !markerArr.length) return;
+
+        for(var i=0; i<markerArr.length; i++){
+            var json = markerArr[i];
+            var p0 = json.point.split("|")[0];
+            var p1 = json.point.split("|")[1];
+            var point = new BMap.Point(p0, p1);
+            var iconImg = createIcon(json.icon);
+            var marker = new BMap.Marker(point, {icon:iconImg});
+            var iw = createInfoWindow(i);
+            var label = new BMap.Label(json.title, {
+                "offset": new BMap.Size(json.icon.lb-json.icon.x+10, -20)
+            });
+            marker.setLabel(label);
+            map.addOverlay(marker);
+
+            label.setStyle({
+                borderColor: "#808080",
+                color: "#333",
+                cursor: "pointer"
+            });
+
+            (function(){
+                var index = i;
+                var _iw = createInfoWindow(i);
+                var _marker = marker;
+                _marker.addEventListener("click", function(){
+                    this.openInfoWindow(_iw);
+                });
+                _iw.addEventListener("open", function(){
+                    _marker.getLabel().hide();
+                });
+                _iw.addEventListener("close", function(){
+                    _marker.getLabel().show();
+                });
+                label.addEventListener("click", function(){
+                    _marker.openInfoWindow(_iw);
+                });
+                if(!!json.isOpen){
+                    label.hide();
+                    _marker.openInfoWindow(_iw);
+                }
+            })();
+        }
+    }
+
+    // 创建InfoWindow
+    function createInfoWindow(i){
+        var json = markerArr[i];
+        var iw = new BMap.InfoWindow(
+            "<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b>" +
+            "<div class='iw_poi_content'>" + json.content + "</div>"
+        );
+        return iw;
+    }
+
+    // 创建一个Icon
+    function createIcon(json){
+        var icon = new BMap.Icon(
+            "https://api.map.baidu.com/images/marker_red_sprite.png",
+            new BMap.Size(json.w, json.h),
+            {
+                imageOffset: new BMap.Size(-json.l, -json.t),
+                infoWindowOffset: new BMap.Size(json.lb+5, 1),
+                offset: new BMap.Size(json.x, json.h)
+            }
+        );
+        return icon;
+    }
+</script>
+{% endblock %}

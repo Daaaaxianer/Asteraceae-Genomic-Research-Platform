@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Species name: </b> Ammopiptanthus nanus</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; genistoids sensu lato; core genistoids; Sophoreae; Ammopiptanthus</p>
+                    <p><b>Abbr: </b> Ana</p>
+                    <p><b>Level: </b> Scaffold</p>
+                    <p><b>chromosome number: </b> 2n=2X=20</p>
+                    <p><b>GenomeSize: </b> 890Mb</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="../../static/image/Ana.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p><b>Introduction: </b> Evergreen shrub of ilex SPP. The crown is nearly rounded, the bark is yellow, and the stems and leaves are dense. Leaves simple, stipules very fine, conical; Petiole robust, leaf blade entire, broadly elliptic to ovate, apex obtuse, base broadly cuneate or obtuse, racemes short, terminal branch ends, flowers set; Pedicels slightly longer than calyx, bracts caducous, calyx campanulate, calyx teeth triangular, pod linear, fruit-necked, seeds larger. Distributed in Kashgar, western Xinjiang, China. It is also found in the western Tianshan Mountains. Grows on gravelly hillsides. Small sand Holly has xerophyte, cold resistance, soil barren resistance, love light.</p>
+
+                    <p><b>Native range: </b> Distributed in Inner Mongolia, Ningxia, Gansu, China. Born in dune, river beach platform, for good sand fixing plants. It is also found in southern Mongolia. Type specimens were collected from Alxa, Inner Mongolia.</p>
+
+                    <p><b>Article Title: </b> <a href="https://academic.oup.com/gigascience/article/7/7/giy074/5039704?login=false">Long-read sequencing and de novo genome assembly of Ammopiptanthus nanus, a desert shrub</a></p>
+                    <p><b>Data source: </b> Raw genomic sequence reads are available in the NCBI Sequence Read Archive under project number PRJNA413722.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

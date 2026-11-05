@@ -1,0 +1,215 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div style="max-width: 900px; margin: 0 auto; padding: 15px; background-color: rgba(255, 255, 255, 0.75); border-radius: 10px;">
+    <h2 class="text-center">Cell Wall and Cell Membrane</h2>
+</div>
+</header>
+    <div class="container"  style="padding-bottom: 30px; padding-top: 30px">
+<div class="heatmap-wrapper">
+    <div class="title">
+        <div class="color-scheme-selector">
+            <label for="colorscale">Select color：</label>
+            <select id="colorscale" onchange="updateColorscale()">
+                <option value="Plasma" selected>Plasma</option>
+                <option value="Viridis">Viridis</option>
+                <option value="Inferno">Inferno</option>
+                <option value="Magma">Magma</option>
+                <option value="Cividis">Cividis</option>
+                <option value="Rainbow">Rainbow</option>
+                <option value="Portland">Portland</option>
+                <option value="Jet">Jet</option>
+                <option value="Hot">Hot</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+    </div>
+    <div id="heatmap"></div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    // 数据准备
+    const species = [
+        "Artemisia annua", "Artemisia argyi", "Ambrosia artemisiifolia", "Ambrosia trifida", "Arctium lappa", "Arctium minus", "Artemisia tridentata", "Bidens alba", "Buxus sinica", "Carthamus tinctorius", "Cynara cardunculus", "Centaurea solstitialis", "Chrysanthemum lavandulifolium", "Chrysanthemum makinoi", "Chrysanthemum morifolium", "Chrysanthemum nankingense", "Cichorium intybus", "Cichorium endivia", "Chrysanthemum indicum", "Cosmos bipinnatus", "Centrapalus pauciflorus", "Dahlia pinnata", "Deinandra increscens", "Erigeron canadensis", "Erigeron breviscapus", "Euptelea pleiosperma", "Flaveria bidentis", "Flaveria brownii", "Flaveria floridana", "Flaveria linearis", "Flaveria ramosissima", "Flaveria robusta", "Flaveria sonorensis", "Flaveria trinervia", "Glebionis coronaria", "Helianthus annuus", "Helianthus tuberosus", "Helichrysum umbraculigerum", "Lactuca saligna", "Logfia minima", "Lactuca sativa", "Mikania micrantha", "Nelumbo nucifera", "Nymphoides indica", "Pulicaria dysenterica", "Pluchea indica", "Pseudognaphalium luteoalbum", "Saussurea involucrata", "Solidago caesia", "Senecio squalidus", "Smallanthus sonchifolius", "Solidago canadensis", "Stevia rebaudiana", "Tagetes erecta", "Taraxacum koksaghyz", "Taraxacum mongolicum", "Tetracentron sinense", "Vitis vinifera"
+    ];
+
+    const families = ["Cell Wall Biosynthesis" ,"COBRA" ,"Expansin" ,"Polysaccharide Lyase" ,"Xyloglucan Fucosyltransferase1"
+];
+
+    const data = [
+        [3, 12, 35, 32, 5],
+[12, 21, 78, 57, 8],
+[4, 8, 41, 53, 2],
+[3, 13, 53, 40, 3],
+[4, 21, 47, 27, 4],
+[2, 13, 44, 28, 5],
+[8, 11, 48, 35, 5],
+[5, 22, 98, 76, 9],
+[6, 23, 63, 22, 3],
+[2, 23, 50, 36, 8],
+[5, 12, 50, 26, 9],
+[2, 14, 41, 28, 3],
+[31, 10, 51, 46, 11],
+[25, 19, 65, 61, 5],
+[23, 50, 141, 146, 17],
+[12, 15, 49, 44, 4],
+[5, 16, 30, 29, 5],
+[1, 11, 25, 28, 2],
+[14, 16, 53, 49, 7],
+[4, 14, 65, 48, 5],
+[2, 6, 29, 21, 3],
+[14, 26, 104, 91, 14],
+[2, 9, 48, 32, 5],
+[2, 11, 41, 41, 9],
+[5, 15, 44, 33, 10],
+[4, 11, 37, 25, 3],
+[2, 6, 32, 26, 4],
+[4, 4, 27, 23, 5],
+[2, 6, 26, 27, 4],
+[1, 8, 43, 32, 3],
+[3, 12, 58, 36, 3],
+[3, 11, 51, 37, 4],
+[2, 12, 47, 37, 3],
+[0, 13, 37, 29, 3],
+[3, 14, 59, 48, 5],
+[5, 16, 79, 54, 6],
+[17, 51, 158, 134, 14],
+[2, 9, 32, 23, 6],
+[6, 17, 52, 31, 4],
+[4, 15, 53, 40, 10],
+[5, 11, 55, 30, 7],
+[1, 12, 44, 36, 3],
+[3, 5, 32, 24, 5],
+[2, 10, 40, 20, 3],
+[2, 10, 38, 24, 6],
+[2, 11, 39, 25, 4],
+[3, 13, 43, 31, 9],
+[2, 14, 38, 27, 6],
+[4, 13, 41, 37, 7],
+[2, 11, 51, 31, 6],
+[5, 25, 84, 79, 10],
+[2, 12, 59, 41, 2],
+[2, 13, 54, 46, 4],
+[3, 9, 29, 35, 4],
+[8, 18, 47, 39, 4],
+[1, 9, 31, 26, 4],
+[6, 18, 42, 25, 5],
+[4, 12, 33, 19, 4]
+
+    ];
+
+    // 初始化热图
+    function createHeatmap() {
+        const container = document.getElementById('heatmap');
+        const width = container.clientWidth;
+        const height = Math.min(width * 0.7, window.innerHeight * 0.7);
+
+        const heatmapData = {
+            z: data,
+            x: families,
+            y: species,
+            type: 'heatmap',
+            colorscale: document.getElementById('colorscale').value,
+            hoverongaps: false
+        };
+
+        const layout = {
+                margin: {
+                    l: 150,
+                    r: 50,
+                    b: 150,
+                    t: 50,
+                    pad: 4
+                },
+                width: width,
+                height: height,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+        Plotly.newPlot('heatmap', [heatmapData], layout, {displayModeBar: true})
+            .then(function(gd) {
+                gd.on('plotly_click', function(data) {
+                    if(data.points && data.points.length > 0) {
+                        const point = data.points[0];
+                        const url = "{% url 'TF_genes_index_url' %}?species=" +
+                                    encodeURIComponent(point.y) + "&family=" +
+                                    encodeURIComponent(point.x);
+                        window.location.href = url;
+                    }
+                });
+            });
+    }
+
+    // 更新颜色方案
+    function updateColorscale() {
+        Plotly.restyle('heatmap', {
+            colorscale: document.getElementById('colorscale').value
+        });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        createHeatmap();
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            Plotly.relayout('heatmap', {
+                width: document.getElementById('heatmap').clientWidth,
+                height: Math.min(document.getElementById('heatmap').clientWidth * 0.7,
+                          window.innerHeight * 0.7)
+            });
+        });
+    });
+</script>
+
+<style>
+    .heatmap-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    #heatmap {
+        width: 100%;
+        height: 600px;
+        background: transparent;
+    }
+
+    /* 确保Plotly生成的SVG没有边框 */
+    #heatmap svg {
+        border: none;
+        outline: none;
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .color-scheme-selector {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .color-scheme-selector select {
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    /* 针对小屏幕的调整 */
+    @media (max-width: 768px) {
+        #heatmap {
+            height: 400px;
+        }
+
+        .heatmap-wrapper {
+            padding: 10px;
+        }
+    }
+</style>
+    </div>
+{% endblock %}

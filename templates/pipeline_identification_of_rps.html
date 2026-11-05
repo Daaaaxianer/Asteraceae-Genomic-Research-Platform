@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AGRP - Identification of RPs Pipeline{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ==================== Global Style Overrides ==================== */
+    body {
+        background-color: #f4f6f9 !important;
+    }
+
+    /* ==================== Container Styles (页心效果) ==================== */
+    .section-container {
+        padding: 0;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    .content-box-wrapper {
+        background-color: #ffffff;
+        border: 1px solid rgba(230, 126, 34, 0.15);
+        border-radius: 16px;
+        padding: 60px 40px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        position: relative;
+    }
+
+    /* ==================== Pipeline Header Styles ==================== */
+    .pipeline-header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    
+    .pipeline-title {
+        font-family: "Georgia", "Times New Roman", serif;
+        font-weight: 800;
+        color: #d35400;
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+    }
+    
+    .pipeline-subtitle {
+        font-family: "Arial", sans-serif;
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-weight: 600;
+    }
+
+    .pipeline-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #e67e22, #f39c12);
+        margin: 25px auto;
+        border-radius: 2px;
+    }
+
+    /* ==================== Flowchart Styles ==================== */
+    .flow-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* 垂直连接线 */
+    .flow-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #f0f0f0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 0;
+    }
+
+    /* 箭头连接符 */
+    .flow-arrow {
+        font-size: 2.5rem;
+        color: #e67e22;
+        margin: 5px 0;
+        z-index: 2;
+        background: #ffffff;
+        padding: 5px 15px;
+        border-radius: 50%;
+    }
+
+    /* 单个步骤卡片包装 */
+    .step-wrapper {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s forwards;
+    }
+
+    /* 依次延迟动画 */
+    .step-wrapper:nth-child(1) { animation-delay: 0.1s; }
+    .step-wrapper:nth-child(3) { animation-delay: 0.2s; }
+
+    @keyframes fadeInUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 卡片主体 */
+    .step-card {
+        background: white;
+        width: 700px;
+        padding: 25px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        border-left: 6px solid #e67e22;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .step-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(230, 126, 34, 0.15);
+        border-color: rgba(230, 126, 34, 0.3);
+    }
+
+    /* 步骤序号图标 */
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-right: 25px;
+        flex-shrink: 0;
+        box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+    }
+
+    .step-content {
+        flex-grow: 1;
+    }
+
+    .step-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .step-desc {
+        font-size: 0.95rem;
+        color: #7f8c8d;
+        margin-bottom: 12px;
+        line-height: 1.5;
+    }
+
+    /* 跳转按钮样式 */
+    .tool-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        background-color: #fff5eb;
+        color: #e67e22;
+        border: 1px solid #ffdcb0;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+        background-color: #e67e22;
+        color: white;
+        border-color: #e67e22;
+        box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+    }
+    
+    .tool-btn i {
+        margin-left: 6px;
+        font-size: 1rem;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+        .content-box-wrapper {
+            padding: 30px 15px;
+        }
+        .step-card {
+            width: 100%;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        .step-number {
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+        .step-card {
+            border-left: 1px solid #eee;
+            border-top: 6px solid #e67e22;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section-container">
+    <div class="container">
+        <div class="content-box-wrapper" style="border-top: 3px solid #e67e22;">
+            
+            <div class="pipeline-header">
+                <h1 class="pipeline-title">Identification of RPs Pipeline</h1>
+                <div class="pipeline-divider"></div>
+                <p class="pipeline-subtitle">Systematic Identification of Regulatory Proteins</p>
+            </div>
+
+            <div class="flow-container">
+                
+                <div class="step-wrapper">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Data Standardization</h3>
+                            <p class="step-desc">Process protein data into a standard format using Deal_stars.</p>
+                            <a href="{% url 'deal_stars_url' %}" class="tool-btn" target="_blank">
+                                Run Deal_stars <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <i class="bi bi-arrow-down-circle-fill flow-arrow"></i>
+
+                <div class="step-wrapper">
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Annotation Regulatory Proteins</h3>
+                            <p class="step-desc">Identify and classify transcription factors and protein kinases using iTAK.</p>
+                            <a href="http://itak.feilab.net/cgi-bin/itak/online_itak.cgi" class="tool-btn" target="_blank">
+                                Visit iTAK Online <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

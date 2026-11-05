@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gmapping - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+         
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-label-fancy {
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label-fancy::before {
+            content: "★";
+            color: #e67e22;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .form-control:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+         
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+         
+        .download-link {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            text-decoration: none;
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .download-link:hover {
+            color: #d35400;
+            text-decoration: underline;
+        }
+        
+        .text-light-yellow {
+             color: #e67e22;
+             text-decoration: underline;
+        }
+
+         
+        .result-container {
+            margin-top: 40px;
+            text-align: center;
+            border: 1px dashed #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background: #fdfdfd;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">Draw gene structure</h2>
+            <p class="section-subtitle">Gene Structure Mapping</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-11">
+                <p style="text-align: justify; color: #5d4037; line-height: 1.8; font-size: 1.05rem; font-weight: 500;">
+                    &emsp;&emsp;Uploading files enables you to draw the structure diagram of genes. The structure of genes is mapped through chromosome numbers and the starting and ending positions of genes.
+                    <br>
+                    &emsp;&emsp;More detailed information can be found at <a href="{% url "software_tools_url" %}" target="_blank" class="text-light-yellow">Pipeline flow examples</a>.
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="custom-form-card">
+                    <form action="draw_gene_structure_run" method="post" enctype="multipart/form-data" id="gmappingForm">
+                        {% csrf_token %}
+                        
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="gffFile" class="form-label-fancy mb-0">Upload GFF File</label>
+                                    <a href="{% static 'example_file/gene_structure/GWHBCHF00000000.gff' %}" download="GWHBCHF00000000.gff" class="download-link">
+                                        <i class="bi bi-download me-1"></i> Example
+                                    </a>
+                                </div>
+                                <input class="form-control" type="file" id="gffFile" name="gff_file" required 
+                                       style="border-radius: 10px; padding: 10px; border: 1px solid #ced4da;"
+                                       onchange="scanGffFile()">
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="highlightFile" class="form-label-fancy mb-0">Upload Highlight File</label>
+                                    <a href="{% static 'example_file/gene_structure/gene_structure_highlight.txt' %}" download="gene_structure_highlight.txt" class="download-link">
+                                        <i class="bi bi-download me-1"></i> Example
+                                    </a>
+                                </div>
+                                <input class="form-control" type="file" id="highlightFile" name="highlight_file" required style="border-radius: 10px; padding: 10px; border: 1px solid #ced4da;">
+                                <div class="form-text text-muted ps-1">File containing gene IDs to highlight.</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <label for="chrPos" class="form-label-fancy mb-2">Chromosome Position</label>
+                                <input type="text" class="form-control" id="chrPos" name="chromosome_position" value="1" required 
+                                       style="height: 50px; border-radius: 10px;"
+                                       list="chrom_list" autocomplete="off" placeholder="Select or type...">
+                                
+                                <datalist id="chrom_list"></datalist>
+                                <small id="chromStatus" style="display:none; font-size: 0.8rem; margin-top: 5px; font-weight: bold; padding-left: 2px;"></small>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="startPos" class="form-label-fancy mb-2">Starting Position</label>
+                                <input type="text" class="form-control" id="startPos" name="start" value="1200" required style="height: 50px; border-radius: 10px;">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="endPos" class="form-label-fancy mb-2">Termination Position</label>
+                                <input type="text" class="form-control" id="endPos" name="termination" value="162713" required style="height: 50px; border-radius: 10px;">
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-search-gradient" type="button" onclick="go()" id="geneStructureSubmitButton">
+                                <i class="bi bi-palette me-2"></i> Draw Structure
+                            </button>
+
+                            <div class="mt-3">
+                                <span id="wait1" class="spinner-border spinner-border-sm text-warning" style="display:none"></span>
+                                <span id="wait2" style="display:none; color: #d35400; font-weight: 700; font-size: 0.9rem;"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% if png_content %}
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <hr class="section-divider">
+                <h4 class="text-center mb-4" style="color: #d35400; font-family: Georgia, serif;">Result Diagram</h4>
+                <div class="result-container" style="overflow: auto; max-height: 600px;">
+                    <img src="data:image/png;base64,{{ png_content }}" alt="Gene Structure Heatmap" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+
+        function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            var form = document.getElementById('gmappingForm');
+            var button = document.getElementById('geneStructureSubmitButton');
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            if (button) {
+                button.disabled = true;
+            }
+            
+            if (hh1 && hh2) {
+                hh1.style.display = "inline-block";
+                hh2.style.display = "inline-block";
+                hh2.innerHTML = "&nbsp;&nbsp;" + String.fromCharCode(
+                    71, 69, 78, 69, 82, 65, 84, 73, 78, 71, 32, 68, 73, 65, 71, 82, 65, 77, 44, 32,
+                    80, 76, 69, 65, 83, 69, 32, 87, 65, 73, 84, 46, 46, 46
+                );
+            }
+            
+            if (typeof form.requestSubmit === 'function') {
+                form.requestSubmit();
+            } else {
+                form.submit();
+            }
+        }
+
+
+        function scanGffFile() {
+            var fileInput = document.getElementById('gffFile');
+            var file = fileInput.files[0];
+            
+            if (!file) return;
+
+
+            var chromInput = document.getElementById('chrPos');
+            var statusText = document.getElementById('chromStatus');
+            var datalist = document.getElementById('chrom_list');
+            
+
+            chromInput.value = ''; 
+            chromInput.placeholder = "Scanning file...";
+            statusText.style.display = "block";
+            statusText.innerText = "Analyzing GFF file... ⏳";
+            statusText.style.color = "#e67e22";
+
+
+            var formData = new FormData();
+            formData.append('gff_file', file);
+            
+
+            var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+
+            fetch('{% url "extract_chromosomes_url" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+
+                    datalist.innerHTML = ''; 
+
+
+                    if (data.chromosomes.length > 0) {
+                        data.chromosomes.forEach(function(chrom) {
+                            var option = document.createElement('option');
+                            option.value = chrom;
+                            datalist.appendChild(option);
+                        });
+
+
+                        statusText.innerHTML = "<i class='bi bi-check-circle-fill'></i> IDs Loaded! Click input to select.";
+                        statusText.style.color = "#27ae60";
+                        chromInput.placeholder = "Click to select ID";
+                        chromInput.focus();
+                    } else {
+                        statusText.innerText = "No chromosomes found.";
+                        statusText.style.color = "#c0392b";
+                    }
+                } else {
+                    statusText.innerText = "Scan failed: " + (data.message || "Unknown error");
+                    statusText.style.color = "#c0392b";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusText.innerText = "Network Error.";
+                statusText.style.color = "#c0392b";
+            });
+        }
+    </script>
+{% endblock %}

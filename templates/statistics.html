@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Asteraceae Data Statistics{% endblock %}
+{% block content %}
+<div class="container my-4"><div class="bg-white border rounded p-4">
+<h2 style="color:#d35400">Asteraceae Data Statistics</h2>
+<p>Counts from the current Asteraceae database. Updated: {{ verified_at }} UTC.</p>
+<p class="text-muted">Sequence datasets are counted separately from species. Orthogroup membership and historical analysis versions are not interchangeable.</p>
+<div class="table-responsive"><table class="table table-striped">
+<thead><tr><th>Resource</th><th>Count</th><th>Scope</th></tr></thead><tbody>
+{% for metric in metrics %}<tr><td>{{ metric.label }}</td><td>{{ metric.count }}</td><td>{{ metric.scope }}</td></tr>{% endfor %}
+</tbody></table></div>
+<h3>Sequence datasets</h3>
+<div class="table-responsive"><table class="table table-striped"><thead><tr><th>Dataset</th><th>Sequence records</th></tr></thead><tbody>
+{% for dataset in sequence_datasets %}<tr><td>{{ dataset.code }}</td><td>{{ dataset.count }}</td></tr>{% endfor %}
+</tbody></table></div>
+<h3>Expression datasets</h3>
+<div class="table-responsive"><table class="table table-striped"><thead><tr><th>Dataset</th><th>Samples</th><th>Sample columns</th></tr></thead><tbody>
+{% for dataset in expression_datasets %}<tr><td>{{ dataset.code }}</td><td>{{ dataset.samples|length }}</td><td>{{ dataset.samples|join:', ' }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% if not verified_at %}<p>Current statistics are temporarily unavailable.</p>{% endif %}
+</div></div>
+{% endblock %}

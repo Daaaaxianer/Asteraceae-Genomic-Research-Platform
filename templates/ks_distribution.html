@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ks-Distriplot - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+         
+        @media (min-width: 1200px) { .container { max-width: 1320px !important; } }
+        
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 1100px;  
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border-top: 1px solid #e0e0e0;
+        }
+
+         
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #2980b9;  
+            display: flex;
+            align-items: center;
+        }
+
+         
+        .form-label { font-weight: 600; color: #34495e; margin-bottom: 5px;}
+        .form-control, .form-select { border-radius: 8px; padding: 10px 15px; }
+
+         
+        .btn-submit-custom {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            color: white;
+            padding: 12px 40px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-submit-custom:hover {
+            background-color: #1a5276;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+         
+        #chart-container {
+            width: 100%;
+            min-height: 600px;
+            margin-top: 30px;
+            text-align: center;
+            border: 1px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
+            position: relative;
+        }
+        .chart-img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">Ks-Distriplot Generator</h2>
+            <p class="section-subtitle">Visualizing Ks Distributions with Seaborn Ridge Plots</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-4 mb-4">
+                <div class="p-4" style="background-color: #fcfcfc; border-radius: 12px; border: 1px solid #eee;">
+                    <h3 class="tool-header">Settings</h3>
+
+                    <form id="ksForm" action="{% url 'ks_distriplot_url' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label for="input_file" class="form-label">Upload CSV File</label>
+                            <input type="file" class="form-control" id="input_file" name="input_file" required>
+                            <div class="form-text mt-2">
+                                <a href="#" onclick="downloadSample(); return false;" class="btn-example-tag">
+                                    <i class="bi bi-download me-1"></i> Example
+                                </a>
+                            </div>
+                            <div class="alert alert-light border mt-2 p-2" style="font-size: 0.85rem; color: #666;">
+                                <strong>Format:</strong> CSV file with fitting parameters.<br>
+                                Col 1: Species Name<br>
+                                Cols 2-4: Component 1 (Weight, Mean, Sigma)<br>
+                                Cols 5-7: Component 2 ...
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Seaborn Palette</label>
+                            <select class="form-select" name="color_theme">
+                                <option value="viridis" selected>Viridis (Sequential)</option>
+                                <option value="plasma">Plasma (Warm)</option>
+                                <option value="husl">HUSL (Rainbow)</option>
+                                <option value="tab10">Tab10 (Discrete)</option>
+                                <option value="Set2">Set2 (Pastel)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Ridge Overlap</label>
+                            <input type="range" class="form-range" name="overlap" min="0.1" max="2.0" step="0.1" value="0.8" oninput="document.getElementById('ovVal').innerText=this.value">
+                            <div class="text-end text-muted small">Overlap: <span id="ovVal">0.8</span></div>
+                        </div>
+
+                        <button class="btn btn-submit-custom" type="submit">
+                            <i class="bi bi-bar-chart-steps"></i> Plot Distribution
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="tool-header" style="border:none; padding:0; margin:0;">Visualization</h3>
+                    {% if chart_image %}
+                    <a href="data:image/png;base64,{{ chart_image }}" download="ks_distribution_ridge.png" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-download"></i> Save Image
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div id="chart-container">
+                    {% if chart_image %}
+                        <img src="data:image/png;base64,{{ chart_image }}" alt="Ks Distribution Plot" class="chart-img">
+                    {% else %}
+                        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%; min-height: 400px;">
+                            <i class="bi bi-images" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="mt-3 text-muted">Upload data to generate the ridge plot.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script data-cfasync="false">
+
+        window.downloadSample = function () {
+
+
+
+            const csvContent =
+`Species,a1,mu1,sig1,a2,mu2,sig2,a3,mu3,sig3
+Helianthus_annuus,0.6,0.2,0.1,0.5,1.25,0.35,0.1,2.0,0.5
+Lactuca_sativa,0.55,0.25,0.12,0.6,1.3,0.4,,,
+Cynara_cardunculus,0.7,0.18,0.08,0.4,1.15,0.3,0.15,1.9,0.4
+Artemisia_annua,0.5,0.3,0.15,0.5,1.4,0.35,,,
+Chrysanthemum_morifolium,0.65,0.22,0.1,0.45,1.28,0.32,0.1,2.1,0.5
+Bidens_alba,0.8,0.2,0.09,0.3,1.1,0.25,,,
+Carthamus_tinctorius,0.6,0.24,0.11,0.55,1.35,0.33,,,
+Taraxacum_mongolicum,0.5,0.28,0.13,0.5,1.38,0.35,,,`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Asteraceae_Ks_fitting_example.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        };
+    </script>
+{% endblock %}

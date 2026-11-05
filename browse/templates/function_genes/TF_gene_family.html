@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}KEGG-pathways - AGRP{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables CSS -->
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: 2px solid #e67e22;
+    }
+
+    .species-name {
+        font-weight: 700;
+        font-style: italic;
+        color: #2c3e50;
+    }
+
+    .btn-action {
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        margin-right: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-view {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border: 1px solid #bbdefb;
+    }
+
+    .btn-down {
+        background-color: #fbe9e7;
+        color: #d84315;
+        border: 1px solid #ffccbc;
+    }
+    #myTable td {
+        white-space: nowrap;
+    }
+    td.checkbox-cell {
+        text-align: center;  /* 水平居中 */
+        vertical-align: middle;  /* 垂直居中 */
+    }
+</style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Transcription Factors Browse By Family</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;We used <a style="color: green;" href="http://planttfdb.gao-lab.org/index.php" target="_blank"><b>PlantTFDB</b></a> to predict 60 transcription factor gene families in 25 Fabaceae and obtained detailed information of the corresponding sequences by pfam, and a total of <b>50,056</b> TF-related genes were obtained. More details can be viewed by clicking into.
+            <br>&emsp;&emsp;Transcription factor (TF), also known as trans-acting factor, is a DNA-binding protein that specifically interacts with cis-acting elements of eukaryotic genes and has an activating or inhibiting effect on gene transcription. The functional study of TF and its interacting factors is essential to understand their roles in the signaling cascade, providing a theoretical basis for basic research and production applications.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../../static/image/TF_gene_famliy.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th>Seq ID</th>
+                    <th>Gene_start</th>
+                    <th>Gene_end</th>
+                    <th>Pfam_ID</th>
+                    <th>Score</th>
+                    <th>E-value</th>
+                    <th>Pfam_name</th>
+                </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+		<div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

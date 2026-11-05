@@ -1,0 +1,235 @@
+{% extends 'index.html' %}
+
+
+{% block header %}
+    <ul class="nav navbar-nav">
+        <li><a href="{% url 'index_url' %}">Home</a></li>
+        <li class="active"><a href="{% url 'tools_url' %}">Tools</a></li>
+        <li><a href="{% url 'karyotype_url' %}">Karyotype</a></li>
+        <li><a href="{% url 'database_url' %}">Database</a></li>
+        <li><a href="http://39.105.114.57:8305/" target="_blank">Community</a></li>
+        <li><a href="{% url 'about_url' %}">Help</a></li>
+        <li><a href="{% url 'contact_url' %}">Contact</a></li>
+    </ul>
+{% endblock %}
+
+
+{% block body %}
+	<section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle">Tools</h2>
+                </div>
+            </div>
+        </div>
+	</section>
+
+
+	<section id="content">
+	    <div class="container">
+		    <div class="row">
+                <div class="col-lg-12">
+                    {% block form %}
+                    <ul class="portfolio-categ filter">
+                        <li class="all active"><a href="#">All</a></li>
+                        <li class="web"><a href="#" title="">File processing</a></li>
+                        <li class="icon"><a href="#" title="">Drawing graphics</a></li>
+                        <li class="graphic"><a href="#" title="">Format conversion</a></li>
+                    </ul>
+
+                    <div class="clearfix">
+                    </div>
+
+                    <div class="row">
+                        <section id="projects">
+                            <ul id="thumbs" class="portfolio">
+                                <!-- Karyotype -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-0" data-type="icon">
+                                    <div>
+                                        <a href="{% url 'karyotype_url' %}">
+                                            <img src="../static/img/works/dotplot.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Karyotype</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Collinearity -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-1" data-type="web">
+                                    <div>
+                                        <a href="{% url 'file_merge_url' %}">
+                                            <img src="../static/img/works/file_merge.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Collinearity</h4>
+                                    </div>
+                                </li>
+
+                                <!-- 查找替换 -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-2" data-type="web">
+                                    <div>
+                                        <a href="{% url 'find_replace_url' %}">
+                                            <img src="../static/img/works/find_replace.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Find alternative</h4>
+                                    </div>
+                                </li>
+
+                                <!-- 提取列信息 -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-0" data-type="web">
+                                    <div>
+                                        <a href="{% url 'extract_row_url' %}">
+                                            <img src="../static/img/works/extract_row.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Extract column</h4>
+                                    </div>
+                                </li>
+
+                                <!-- 格式转换 -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-4" data-type="graphic">
+                                    <div>
+                                        <a href="{% url 'formatTofasta_url' %}">
+                                            <img src="../static/img/works/formattofasta.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Format conversion</h4>
+                                    </div>
+                                </li>
+
+                                <!-- 删除重复 -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'quchong_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Duplicate removal</h4>
+                                    </div>
+                                </li>
+
+                                <!-- sequenceserver_blastp -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'blastp_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Blastp</h4>
+                                    </div>
+                                </li>
+
+                                <!-- blast -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'blast_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Blast</h4>
+                                    </div>
+                                </li>
+
+                                <!-- blast_match -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'blast_match_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Blast_match</h4>
+                                    </div>
+                                </li>
+
+                                <!-- synvisio_url -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'synvisio_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Synvisio</h4>
+                                    </div>
+                                </li>
+
+                                <!-- mcscanx -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'mcscanx_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">MCScanX</h4>
+                                    </div>
+                                </li>
+                                <!-- colinearscan -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'colinearscan_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">colinearscan</h4>
+                                    </div>
+                                </li>
+                                <!-- dupgen_finder -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'dupgen_finder_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">dupgen_finder</h4>
+                                    </div>
+                                </li>
+                                <!-- circos -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'circos_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Circos</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Jbrowse -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'jbrowse_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Jbrowse</h4>
+                                    </div>
+                                </li>
+
+                                <!-- wgdikaks.html -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'wgdikaks_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">WGDIkaks</h4>
+                                    </div>
+                                </li>
+
+                                <!-- wgdikaks -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'wgdikaks_dot_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">WGDIkaks_dot</h4>
+                                    </div>
+                                </li>
+
+                                <!-- wgdikaks -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="web">
+                                    <div>
+                                        <a href="{% url 'wgdimcs_url' %}">
+                                            <img src="../static/img/works/quchong.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">WGDImcs</h4>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </section>
+                    </div>
+                    {% endblock %}
+                </div>
+
+
+            </div>
+	    </div>
+	</section>
+
+{% endblock %}

@@ -1,0 +1,419 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../static/js/jquery-3.5.1.js"></script>
+    <script src="../static/js/jquery.dataTables.min.js"></script>
+    <link href="../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Genome</b><i></i>
+    </h3>
+
+
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Species_name</th>
+                <th>Abbr</th>
+                <th>chr_number</th>
+                <th>Genes_number</th>
+                <th>Data_link</th>
+                <th>CDS</th>
+                <th>PEP</th>
+                <th>GFF3</th>
+                <th>Reference_link</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td style="font-style: italic;">Abrus precatorius</td>
+                <td>Apr</td>
+                <td>20</td>
+                <td>24,155</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/935/025/GCF_003935025.1_Abrus_2018"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Apr.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Apr.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Apr.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.mdpi.com/2072-6651/11/12/691
+            " target="_blank">Hovde BT et al.(2019)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Aeschynomene evenia</td>
+                <td>Aev</td>
+                <td>20</td>
+                <td>30,827</td>
+                <td><a href="http://aeschynomenebase.fr/download" target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Aev.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Aev.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Aev.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41467-021-21094-7
+            " target="_blank">Johan Ql et al.(2021)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Amphicarpaea edgeworthii</td>
+                <td>Aed</td>
+                <td>22</td>
+                <td>27,699</td>
+                <td><a href="https://ftp.cngb.org/pub/CNSA/data2/CNP0001124/CNS0238766/CNA0014149/" target="_blank">Data_link</a>
+                </td>
+                <td><a href="../static/species_data/Aed.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Aed.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Aed.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.frontiersin.org/articles/10.3389/fpls.2021.770660/full
+            " target="_blank">Liu Y et al.(2020)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Arachis duranensis</td>
+                <td>Adu</td>
+                <td>20</td>
+                <td>33,238</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/817/695/GCF_000817695.2_Aradu1.1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Adu.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Adu.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Adu.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+            " target="_blank">Bertioli DJ et al.(2016)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Arachis hypogaea</td>
+                <td>Ahy</td>
+                <td>40</td>
+                <td>65,593</td>
+                <td>
+                    <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/086/295/GCF_003086295.2_arahy.Tifrunner.gnm1.KYV3"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Ahy.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Ahy.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Ahy.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41588-019-0405-z
+            " target="_blank">Bertioli DJ et al.(2019)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Arachis ipaensis</td>
+                <td>Aip</td>
+                <td>20</td>
+                <td>38,608</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/816/755/GCF_000816755.2_Araip1.1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Aip.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Aip.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Aip.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+            " target="_blank">Bertioli DJ et al.(2016)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Arachis monticola</td>
+                <td>Amo</td>
+                <td>40</td>
+                <td>69,883</td>
+                <td><a href="http://gigadb.org/dataset/100453" target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Amo.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Amo.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Amo.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://academic.oup.com/gigascience/article/7/6/giy066/5040258
+            " target="_blank">Yin D et al.(2018)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Cajanus cajan</td>
+                <td>Cca</td>
+                <td>22</td>
+                <td>28,222</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/331/145/GCF_000331145.1_ASM33114v1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Cca.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Cca.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Cca.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://academic.oup.com/dnaresearch/article/29/2/dsac012/6570587
+            " target="_blank">Parween S et al.(2015)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Cicer arietinum</td>
+                <td>Car</td>
+                <td>16</td>
+                <td>24,711</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/340/665/GCF_000340665.1_C.cajan_V1.0"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Car.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Car.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Car.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+            " target="_blank">Varshney et al.(2011)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Dalbergia odorifera</td>
+                <td>Dod</td>
+                <td>20</td>
+                <td>29,344</td>
+                <td><a href="http://gigadb.org/dataset/100760" target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Dod.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Dod.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Dod.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/srep12806
+            " target="_blank">Hong Z et al.(2020)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Glycine max</td>
+                <td>Gma</td>
+                <td>40</td>
+                <td>51,824</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Gma.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Gma.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Gma.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://academic.oup.com/gigascience/article/9/8/giaa084/5893771
+            " target="_blank">Shen Y et al.(2018)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Glycine soja</td>
+                <td>Gso</td>
+                <td>40</td>
+                <td>46,722</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/193/775/GCF_004193775.1_ASM419377v2"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Gso.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Gso.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Gso.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://academic.oup.com/g3journal/article/11/10/jkab272/6332009
+            " target="_blank">Xie M et al.(2019)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Lotus japonicus</td>
+                <td>Lja</td>
+                <td>12</td>
+                <td>26,152</td>
+                <td><a href="https://data.jgi.doe.gov/refine-download/phytozome?organism=Ljaponicus&expanded=571"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Lja.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Lja.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Lja.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41467-019-09142-9
+            " target="_blank">Li H et al.(2020)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Lupinus albus</td>
+                <td>Lal</td>
+                <td>50</td>
+                <td>41,277</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/261/695/GCA_010261695.1_La_Amiga3.1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Lal.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Lal.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Lal.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://academic.oup.com/dnaresearch/article/27/3/dsaa015/5870829
+            " target="_blank">Hufnagel B et al.(2020)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Lupinus angustifolius</td>
+                <td>Lan</td>
+                <td>40</td>
+                <td>29,986</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/865/875/GCF_001865875.1_LupAngTanjil_v1.0"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Lan.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Lan.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Lan.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41467-020-14891-z
+            " target="_blank">Hane JK et al.(2016)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Medicago truncatula</td>
+                <td>Mtr</td>
+                <td>16</td>
+                <td>31,727</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/473/485/GCF_003473485.1_MtrunA17r5.0-ANR"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Mtr.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Mtr.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Mtr.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://onlinelibrary.wiley.com/doi/10.1111/tpj.15100
+            " target="_blank">Tang H et al.(2014)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Melilotus albus</td>
+                <td>Mal</td>
+                <td>16</td>
+                <td>41,853</td>
+                <td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&q=PRJCA006363&page=1" target="_blank">Data_link</a>
+                </td>
+                <td><a href="../static/species_data/Mal.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Mal.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Mal.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/nature10625
+            " target="_blank">Wu F et al.(2021)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Phaseolus vulgaris</td>
+                <td>Pvu</td>
+                <td>22</td>
+                <td>27,996</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/499/845/GCF_000499845.1_PhaVulg1_0"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Pvu.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Pvu.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Pvu.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://onlinelibrary.wiley.com/doi/10.1111/pbi.13742
+            " target="_blank">Vlasova A et al.(2016)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Pisum sativum</td>
+                <td>Psa</td>
+                <td>14</td>
+                <td>38,312</td>
+                <td><a href="https://urgi.versailles.inra.fr/download/pea/" target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Psa.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Psa.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Psa.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0883-6
+            " target="_blank">Kreplak J et al.(2019)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Spatholobus suberectus</td>
+                <td>Ssu</td>
+                <td>18</td>
+                <td>29,597</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/329/165/GCA_004329165.1_ASM432916v1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Ssu.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Ssu.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Ssu.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41588-019-0480-1
+            " target="_blank">Qin S et al.(2019)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Trifolium pratense</td>
+                <td>Tpr</td>
+                <td>14</td>
+                <td>33,414</td>
+                <td><a href="https://zenodo.org/record/17232#.YPJwIROHfxo" target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Tpr.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Tpr.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Tpr.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41467-020-19681-1
+            " target="_blank">De Vega JJ et al.(2015)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Trifolium subterraneum</td>
+                <td>Tsu</td>
+                <td>16</td>
+                <td>36,691</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/742/945/GCA_001742945.1_TSUd_r1.1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Tsu.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Tsu.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Tsu.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.nature.com/articles/s41597-019-0110-x
+            " target="_blank">Hirakawa H et al.(2016)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Vigna radiata</td>
+                <td>Vra</td>
+                <td>22</td>
+                <td>22,158</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/741/045/GCF_000741045.1_Vradiata_ver6"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Vra.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Vra.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Vra.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://gigabytejournal.com/articles/42
+            " target="_blank">Kang et al.(2014)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Senna tora</td>
+                <td>Sto</td>
+                <td>26</td>
+                <td>44,405</td>
+                <td><a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/851/425/GCA_014851425.1_ASM1485142v1"
+                       target="_blank">Data_link</a></td>
+                <td><a href="../static/species_data/Sto.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Sto.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Sto.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://www.sciencedirect.com/science/article/pii/S2090123221002058?via%3Dihub
+            " target="_blank">Kang SH et al.(2020)</a></td>
+            </tr>
+
+            <tr>
+                <td style="font-style: italic;">Bauhinia variegata</td>
+                <td>Bva</td>
+                <td>28</td>
+                <td>37,886</td>
+                <td><a href="https://figshare.com/articles/dataset/Bauhinia_variegata_genome/19298582/1" target="_blank">Data_link</a>
+                </td>
+                <td><a href="../static/species_data/Bva.cds" target="_blank">CDS</a></td>
+                <td><a href="../static/species_data/Bva.pep" target="_blank">PPE</a></td>
+                <td><a href="../static/species_data/Bva.new.gff" target="_blank">GFF3</a></td>
+                <td><a href="https://acsess.onlinelibrary.wiley.com/doi/10.1002/tpg2.20121
+            " target="_blank">Zhong Y et al.(2022)</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

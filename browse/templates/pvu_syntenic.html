@@ -1,0 +1,173 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/syn_data/Pvu.json",
+                "deferRender": true,
+                "scrollX": true
+            });
+        });
+    </script>
+    <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Hierarchical alignments of <em>P. vulgaris</em></b> <i></i>
+    </h3>
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Inter-genomic and intra-genomic comparisons can help reveal the structural complexity of Fabaceae genomes. We used <em>V. vinifera</em> and <em>P. vulgaris</em> as references, respectively, and by comparing homologous gene locus maps and <em>Ks</em> values between <em>V. vinifera</em> and Fabaceae, <em>P. vulgaris</em> and other Fabaceae, we could separate orthologous and paralogous genes produced by different polyploidization in the species genomes. We created two hierarchical lists of homologous genes using <em>V. vinifera</em> and <em>P. vulgaris</em> as references, respectively. The way to establish a hierarchical list of homologous genes can be found in some previously published articles.
+            <br>
+            &emsp;&emsp;Homologous alignments of Papilionoideae, Caesalpinioideae and Cercidoideae genomes with V. vinifera as a reference. The <em>V. vinifera</em> chromosomes form the innermost circle, and their paralogous genes in collinearity are linked by curving lines and corresponds colored according to the 7 core-eudicot-common ancestral chromosomes inferred previously <a href="https://onlinelibrary.wiley.com/doi/10.1111/pbi.13017" target="_blank">(Jaillon, et al. 2007)</a>.The <em>V. vinifera</em> chromosome region had 1, 2 and 2 orthologous regions in Papilionoideae, Caesalpinioideae and Cercidoideae genomes, respectively, and displayed in 65 circles, each circle represents one subgenome. Short line between two circles show colinear genes, which corresponds colors of Ch# encoded. The color scheme is shown at the bottom.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match</b></a>
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/Pvu_circos_ps.jpg" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px">
+        <table id="example" class="display">
+            <thead>
+            <tr>
+                <th>Pvu1</th>
+                <th>Adu1</th>
+                <th>Aed1</th>
+                <th>Aev1</th>
+                <th>Ahy1</th>
+                <th>Aip1</th>
+                <th>Amo1</th>
+                <th>Apr1</th>
+                <th>Car1</th>
+                <th>Cca1</th>
+                <th>Dod1</th>
+                <th>Gma1</th>
+                <th>Gma1</th>
+                <th>Gso1</th>
+                <th>Gso1</th>
+                <th>Lal1</th>
+                <th>Lal1</th>
+                <th>Lal1</th>
+                <th>Lan1</th>
+                <th>Lan1</th>
+                <th>Lan1</th>
+                <th>Lja1</th>
+                <th>Mal1</th>
+                <th>Mtr1</th>
+                <th>Psa1</th>
+                <th>Ssu1</th>
+                <th>Tpr1</th>
+                <th>Tsu1</th>
+                <th>Vra1</th>
+                <th>Pvu2</th>
+                <th>Adu2</th>
+                <th>Aed2</th>
+                <th>Aev2</th>
+                <th>Ahy2</th>
+                <th>Aip2</th>
+                <th>Amo2</th>
+                <th>Apr2</th>
+                <th>Car2</th>
+                <th>Cca2</th>
+                <th>Dod2</th>
+                <th>Gma2</th>
+                <th>Gma2</th>
+                <th>Gso2</th>
+                <th>Gso2</th>
+                <th>Lal2</th>
+                <th>Lal2</th>
+                <th>Lal2</th>
+                <th>Lan2</th>
+                <th>Lan2</th>
+                <th>Lan2</th>
+                <th>Lja2</th>
+                <th>Mal2</th>
+                <th>Mtr2</th>
+                <th>Psa2</th>
+                <th>Ssu2</th>
+                <th>Tpr2</th>
+                <th>Tsu2</th>
+                <th>Vra2</th>
+                <th>Sto2</th>
+                <th>Sto2</th>
+                <th>Bva2</th>
+                <th>Bva2</th>
+            </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+        <div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Trifolium pratense</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; Hologalegina; IRL clade; Trifolieae; Trifolium</p>
+                    <p><b>Abbr: </b> Tpr</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=14</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Tpr.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Trifolium pratense, the red clover, is a herbaceous species of flowering plant in the bean family Fabaceae, native to Europe, Western Asia, and northwest Africa, but planted and naturalized in many other regions.
+
+Red clover is a herbaceous, short-lived perennial plant, variable in size, growing to 20–80 cm (8–31 in) tall. It has a deep taproot which makes it tolerant to drought and gives it a good soil structuring effect. The leaves are alternate, trifoliate (with three leaflets), each leaflet 15–30 mm (0.6–1.2 in) long and 8–15 mm (0.3–0.6 in) broad, green with a characteristic pale crescent in the outer half of the leaf; the petiole is 1–4 cm (0.4–1.6 in) long, with two basal stipules that are abruptly narrowed to a bristle-like point. The flowers are dark pink with a paler base, 12–15 mm (0.5–0.6 in) long, produced in a dense inflorescence, and are mostly visited by bumblebees.
+                    </p>
+                    <p><b>Distribution: </b> Afghanistan, Albania, Algeria, Altay, Austria, Azores, Baltic States, Belarus, Belgium, Bulgaria, Buryatiya, Canary Is., Central European Rus, Corse, Czechoslovakia, Denmark, East European Russia, East Himalaya, Finland, France, Føroyar, Germany, Great Britain, Greece, Hungary, India, Iran, Iraq, Ireland, Irkutsk, Italy, Kazakhstan, Kirgizstan, Krasnoyarsk, Krym, Madeira, Mongolia, Morocco, Nepal, Netherlands, North Caucasus, North European Russi, Northwest European R, Norway, Pakistan, Poland, Portugal, Romania, Sardegna, Sicilia, South European Russi, Spain, Sweden, Switzerland, Tadzhikistan, Transcaucasus, Tunisia, Turkey-in-Europe, Turkmenistan, Tuva, Ukraine, Uzbekistan, West Himalaya, West Siberia, Xinjiang, Yugoslavia</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://gigabytejournal.com/articles/42">Chromosome-scale assembly of the highly heterozygous genome of red clover (Trifolium pratense L.), an allogamous forage crop species</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> All sequence data used in the assembly, scaffolding, and analysis of ARS_RCv1.1 can be found in the Sequence Read Archive (SRA) of the National Center for Biotechnology Information (NCBI) under Bioproject accession number PRJNA754186.  Genome Accession for the ARS_RCv1.1 assembly is GCA_020283565.1.  Iso-seq reads are in the NCBI SRA with run accession number SRR15433788.  Iso-seq transcripts and other data are available via the Gigascience database, GigaDB.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

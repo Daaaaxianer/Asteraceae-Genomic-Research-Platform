@@ -1,0 +1,1682 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Genome Information - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    .page-wrapper {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #eaeaea;
+        min-height: 600px;
+    }
+
+    .page-title {
+        color: #d35400;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: 2px solid #e67e22;
+        white-space: nowrap; /* 强制表头不换行 */
+    }
+
+    .function-panel {
+        background: #fff8f0;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #ffeaa7;
+    }
+
+    .section-title {
+        color: #d35400;
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f39c12;
+    }
+
+    .btn-custom {
+        background-color: #e67e22;
+        border-color: #d35400;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-custom:hover {
+        background-color: #d35400;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.2);
+    }
+
+    .form-control:focus {
+        border-color: #e67e22;
+        box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+    }
+
+    .sequence-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .sequence-header {
+        background: #f8f9fa;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .sequence-content {
+        padding: 15px;
+        font-family: monospace;
+        background: #f8f9fa;
+        font-size: 0.9em;
+        line-height: 1.5;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .result-section {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+    }
+
+    .loading-spinner {
+        color: #e67e22;
+    }
+
+
+        /* ===================== Unified AGRP DataTable style ===================== */
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        .table-container {
+            background: #fff !important;
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            padding: 20px 20px 16px !important;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06) !important;
+            margin-bottom: 22px !important;
+            overflow: visible !important;
+        }
+
+        .table-responsive.table-container {
+            overflow-x: auto !important;
+        }
+
+        .action-bar,
+        .action-row,
+        .table-action-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .action-group,
+        .table-action-group {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+
+        .btn-custom,
+        .action-bar .btn,
+        .table-action-row .btn {
+            border-radius: 7px !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            padding: 8px 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
+            line-height: 1.2 !important;
+        }
+
+        .btn-select,
+        .action-bar .btn-primary,
+        .table-action-row .btn-primary,
+        .action-bar .btn-outline-primary {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border: 1px solid var(--dark-orange) !important;
+        }
+
+        .btn-select:hover,
+        .action-bar .btn-primary:hover,
+        .table-action-row .btn-primary:hover,
+        .action-bar .btn-outline-primary:hover {
+            color: #fff !important;
+            background: #b94a00 !important;
+            border-color: #b94a00 !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-download,
+        .action-bar .btn-success,
+        .table-action-row .btn-success {
+            color: var(--dark-orange) !important;
+            background: #fff !important;
+            border: 1px solid #efc89a !important;
+        }
+
+        .btn-download:hover,
+        .action-bar .btn-success:hover,
+        .table-action-row .btn-success:hover {
+            color: #b94a00 !important;
+            background: #fff8ef !important;
+            border-color: #e8b66f !important;
+        }
+
+        table.dataTable,
+        table.result-table,
+        table.genome-table {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        table.result-table thead th,
+        table.genome-table thead th,
+        .table-container table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        table.result-table td,
+        table.genome-table td,
+        .table-container table td {
+            padding: 10px 15px !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+            border-bottom: 1px solid #edf0f2 !important;
+        }
+
+        table.result-table tbody tr:nth-child(even),
+        table.genome-table tbody tr:nth-child(even),
+        .table-container table tbody tr:nth-child(even) {
+            background-color: #fffdf9 !important;
+        }
+
+        table.result-table tbody tr:hover,
+        table.genome-table tbody tr:hover,
+        .table-container table tbody tr:hover {
+            background-color: #fff6eb !important;
+        }
+
+        .checkbox-cell {
+            text-align: center !important;
+            width: 76px !important;
+            min-width: 76px !important;
+            padding-right: 15px !important;
+        }
+
+        table.dataTable thead th.checkbox-cell::before,
+        table.dataTable thead th.checkbox-cell::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .current-page-select {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            cursor: pointer !important;
+            user-select: none !important;
+        }
+
+        .current-page-select input {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50 !important;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center !important;
+            row-gap: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px !important;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px !important;
+            padding-top: 12px !important;
+            border-top: 1px solid #f0e4d8 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin: 0 !important;
+            color: #495057 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px !important;
+            border: 1px solid #d9e0e6 !important;
+            border-radius: 7px !important;
+            background-color: #fff !important;
+            color: #2c3e50 !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px !important;
+            margin: 0 !important;
+            padding: 4px 28px 4px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px !important;
+            margin: 0 !important;
+            padding: 6px 10px !important;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+            outline: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76 !important;
+            font-weight: 600 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin: 0 !important;
+        }
+
+        .dataTables_wrapper .pagination .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            min-width: 36px !important;
+            height: 36px !important;
+            padding: 0 10px !important;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4 !important;
+            background: #fff !important;
+            color: #44515c !important;
+            box-sizing: border-box !important;
+            box-shadow: none !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff !important;
+            background: var(--dark-orange) !important;
+            border-color: var(--dark-orange) !important;
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22) !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:not(.current):not(.disabled):hover {
+            color: var(--dark-orange) !important;
+            background: #fff8ef !important;
+            border-color: #efc89a !important;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: #b6c0c9 !important;
+            background: #f8fafb !important;
+            border-color: #e8edf1 !important;
+        }
+
+        .page-jump-control {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            color: #5f6b76 !important;
+            font-size: 0.92rem !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+        }
+
+        .page-jump-input {
+            width: 58px !important;
+            height: 36px !important;
+            padding: 0 8px !important;
+            border: 1px solid #d8dee4 !important;
+            border-radius: 7px !important;
+            color: #2c3e50 !important;
+            text-align: center !important;
+            font-weight: 700 !important;
+            outline: 0 !important;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange) !important;
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16) !important;
+        }
+
+        .page-jump-total {
+            color: #8a96a3 !important;
+        }
+
+        .page-jump-btn {
+            height: 36px !important;
+            padding: 0 12px !important;
+            border: 1px solid #efc89a !important;
+            border-radius: 7px !important;
+            background: #fff8ef !important;
+            color: var(--dark-orange) !important;
+            font-weight: 800 !important;
+            line-height: 1 !important;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df !important;
+            border-color: #e8b66f !important;
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                padding: 12px !important;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0 !important;
+                width: 100% !important;
+            }
+
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate,
+            .dataTables_wrapper .pagination {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+        }
+
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+
+        <h2 class="page-title mb-4">
+            <i class="bi bi-dna"></i> Genome Information
+        </h2>
+
+        <div class="alert alert-light border mb-4" style="color:#666;">
+            <strong>Note:</strong> Genome information of Asteraceae species collected in AGRP.
+        </div>
+
+        <div class="function-panel">
+            <h3 class="section-title">
+                <i class="bi bi-download"></i> Gene Download
+            </h3>
+
+            <form id="genome-query-form" action="genome" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label for="species" class="form-label">Species Database</label>
+                        <select class="form-select" id="species" name="sp_name" required data-initial-value="{{ selected_species|default:'' }}">
+                            <option value="">Select species...</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aary">Artemisia argyi</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ceso">Centaurea</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Dapi">Dahlia pinnata</option>
+                            <option value="Desu">Deinandra increscens subsp</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                            </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="chromosome" class="form-label" id="chromosomeLabel">Chromosome</label>
+                        <select class="form-select" id="chromosome" name="chromosome_number" required data-initial-value="{{ selected_chromosome|default:'' }}">
+                            <option value="">Select chromosome...</option>
+                            </select>
+                        <div id="chromosomeHelp" class="form-text text-muted"></div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="start" class="form-label">Start Position</label>
+                        <input type="number" class="form-control" id="start" name="start" value="{{ selected_start|default:'1000' }}" data-initial-value="{{ selected_start|default:'1000' }}" min="1" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="end" class="form-label">End Position</label>
+                        <input type="number" class="form-control" id="end" name="end" value="{{ selected_end|default:'400000' }}" data-initial-value="{{ selected_end|default:'400000' }}" min="1" required>
+                    </div>
+
+                    <div class="col-md-12 text-center mt-3">
+                        <button type="submit" class="btn btn-custom btn-lg px-5" onclick="showLoading()">
+                            <span id="submitText">Submit Query</span>
+                            <span id="loadingSpinner" class="spinner-border spinner-border-sm ms-2" style="display:none"></span>
+                        </button>
+                        <div id="loadingMessage" class="text-muted mt-2" style="display:none;">
+                            <i class="bi bi-hourglass-split"></i> Processing your request, please wait...
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if searched %}
+        <div class="result-section">
+            <h3 class="section-title">
+                <i class="bi bi-file-text"></i> Sequence Results
+            </h3>
+
+            {% if message %}
+            <div class="alert alert-warning mb-4" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
+
+            {% if result %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>CDS Sequences</h5>
+                        <button onclick="downloadContent_cds()" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-download"></i> Download All CDS
+                        </button>
+                    </div>
+
+                    {% for row in result %}
+                    <div class="sequence-card">
+                        <div class="sequence-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ row.0 }}</strong>
+                                <small class="text-muted ms-3">Length: {{ row.3 }} | GC: {{ row.5 }}</small>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary clip" data-clipboard-target="#cds_{{ row.0 }}">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                        </div>
+                        <div class="sequence-content" id="cds_{{ row.0 }}">
+                            &gt;{{ row.0 }}<br>{{ row.1 }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Protein Sequences</h5>
+                        <button onclick="downloadContent_pep()" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download"></i> Download All Protein
+                        </button>
+                    </div>
+
+                    {% for row in result %}
+                    <div class="sequence-card">
+                        <div class="sequence-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ row.0 }}</strong>
+                                <small class="text-muted ms-3">Length: {{ row.4 }}</small>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary clip" data-clipboard-target="#pep_{{ row.0 }}">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                        </div>
+                        <div class="sequence-content" id="pep_{{ row.0 }}">
+                            &gt;{{ row.0 }}<br>{{ row.2 }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="table-responsive mt-5 table-container">
+            <h3 class="section-title mb-3">
+                <i class="bi bi-table"></i> Genome Database
+            </h3>
+
+            <div class="action-bar">
+                <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+                <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="genome_selected_rows.txt"><i class="fas fa-download"></i> Download Selected</button>
+            </div>
+
+            <table id="genomeTable" class="table table-hover genome-table table-striped result-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Subfamily</th>
+                        <th>Tribes</th>
+                        <th>Genus</th>
+                        <th>Genome</th>
+                        <th>Genome size</th>
+                        <th>Number of Chromosomes</th>
+                        <th>Assembly level</th>
+                        <th>Use in our analysis</th>
+                        <th>cds</th>
+                        <th>lens</th>
+                        <th>gff</th>
+                        <th>pep</th>
+                        <th>Data source</th>
+                        <th>Sequencing platform/method</th>
+                        <th>Assembly method</th>
+                        <th>Date</th>
+                        <th>Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Asteroideae</td><td>Eupatorieae</td><td>Ageratina</td><td>Ageratina adenophora</td><td>3.8 Gb</td><td>2n=102</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042767725.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>Canu v. 1.9</td><td>2025</td><td><a href="https://doi.org/10.1038/s41597-025-04637-1" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>2</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia artemisiifolia</td><td>1.3 Gb</td><td>2n=36</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Amar&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amar&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amar&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amar&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024762085.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>Meraculous-2D v. 2.2.6</td><td>2022</td><td><a href="https://doi.org/10.1126/sciadv.abo5115" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>3</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia artemisiifolia</td><td>1.1 Gb</td><td>2n=36</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199755.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>Hifiasm v. 2023</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-37303-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>4</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia artemisiifolia</td><td>1.1 Gb</td><td>2n=36</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_032199705.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>Hifiasm v. 2023</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-37303-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>5</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia trifida</td><td>1.7 Gb</td><td>2n=24</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Amtr&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amtr&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amtr&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Amtr&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028751855.1/" target="_blank">NCBI</a></td><td>Hifi Reads</td><td>Hifiasm v. 0.16.1-r375</td><td>2024</td><td><a href="https://doi.org/10.1016/j.ijbiomac.2024.129232" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>6</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia x helenae</td><td>2 Gb</td><td>2n=24</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_030844895.1/" target="_blank">NCBI</a></td><td>PacBio Sequel; Oxford Nanopore MinION</td><td>CANU+HiC v. 2.2</td><td>2024</td><td><a href="https://doi.org/10.1002/tpg2.20442" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>7</td><td>Asteroideae</td><td>Heliantheae</td><td>Ambrosia</td><td>Ambrosia x helenae </td><td>1.1 Gb</td><td>2n=36</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030844885.1/" target="_blank">NCBI</a></td><td>Oxford Nanopore MinION; PacBio Sequel</td><td>CANU+HiC v. 2.2</td><td>2024</td><td><a href="https://doi.org/10.1002/tpg2.20442" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>8</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia annua</td><td>1.5 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Aann&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aann&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aann&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aann&amp;type=pep" target="_blank">Download</a></td><td><a href="http://www.gpgenome.com/species/92" target="_blank">GPGD</a></td><td>Illumina HiSeq</td><td>Canu v1.8</td><td>2022</td><td><a href="https://doi.org/10.1016/j.molp.2022.05.013" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>9</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia annua</td><td>1.8 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_014162995.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>MIRA v. 2.3</td><td>2020</td><td>NA</td></tr>
+                    <tr><td>10</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia annua</td><td>1.8 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_003112345.1/" target="_blank">NCBI</a></td><td>454; PacBio; Illumina</td><td>Newbler v. Oct-2014</td><td>2018</td><td><a href="https://doi.org/10.1016/j.molp.2018.03.015" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>11</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia annua </td><td>1.5 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038048965.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2024</td><td>2024</td><td>IRIDIAN GENOMES INC</td></tr>
+                    <tr><td>12</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia argyi</td><td>3.89 Gb</td><td>2n=34</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Aary&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aary&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aary&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Aary&amp;type=pep" target="_blank">Download</a></td><td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&amp;q=PRJCA010808" target="_blank">NGDC</a></td><td>PacBio 130.0;Illumina HiSeq 4000 110.0</td><td>Canu v2.2</td><td>2023</td><td><a href="https://doi.org/10.1016/j.xplc.2023.100516" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>13</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia argyi</td><td>8 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030686995.1/" target="_blank">NCBI</a></td><td>PacBio</td><td>HiFiasm v. 2022-04-21</td><td>2022</td><td><a href="https://doi.org/10.1111/pbi.13870" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>14</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia argyi</td><td>7.3 Gb</td><td>2n=34</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029874665.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>mecat2 v. 1.0</td><td>2023</td><td><a href="https://doi.org/10.3390/agronomy13020436" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>15</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia argyi</td><td>4.2 Gb</td><td>2n=34</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028659345.1/" target="_blank">NCBI</a></td><td>Oxford Nanopore PromethION</td><td>Canu v. 1.5; Wtdbg v. 2.0; Racon v. 1.0; Pilon v. 1.21</td><td>2024</td><td><a href="https://doi.org/10.3389/fpls.2024.1406592" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>16</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia ifranensis</td><td>504.1 Mb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040967555.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2024</td><td>2024</td><td>IRIDIAN GENOMES INC</td></tr>
+                    <tr><td>17</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia ludoviciana</td><td>1 Gb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_034509245.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2023</td><td>2023</td><td>IRIDIAN GENOMES INC</td></tr>
+                    <tr><td>18</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia princeps</td><td>591.2 Mb</td><td>2n=34</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035048425.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2023</td><td>2023</td><td><a href="https://doi.org/10.5281/zenodo.10116575" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>19</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia tridentata</td><td>3.9 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Artr&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Artr&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Artr&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Artr&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021014915.2/" target="_blank">NCBI</a></td><td>Illumina NovaSeq</td><td>reference-guided v. NA</td><td>2021</td><td><a href="https://doi.org/10.1002/ece3.8245" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>20</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia tridentata</td><td>4.2 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023558565.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina HiSeq</td><td>WTDBG2 v. 2.5; HiRise v. NA</td><td>2022</td><td><a href="https://doi.org/10.1093/g3journal/jkac122" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>21</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia tridentata</td><td>4.5 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021014915.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq</td><td>HipMCL v. 1.1-27-g69eb6141</td><td>2021</td><td><a href="https://doi.org/10.1002/ece3.8245" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>22</td><td>Asteroideae</td><td>Anthemideae</td><td>Artemisia</td><td>Artemisia tridentata</td><td>3.9 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037463035.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>reference-guided v. NA</td><td>2024</td><td><a href="https://doi.org/10.1002/ajb2.16353" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>23</td><td>Asteroideae</td><td>Coreopsideae</td><td>Bidens</td><td>Bidens alba</td><td>3.75 Gb</td><td>2n=48</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Bial&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Bial&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Bial&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Bial&amp;type=pep" target="_blank">Download</a></td><td><a href="https://zenodo.org/records/10160015" target="_blank">Zenodo</a></td><td>PacBio HiFi</td><td>Hifiasm v0.18.5</td><td>2024</td><td><a href="https://doi.org/10.1093/gigascience/giae032" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>24</td><td>Asteroideae</td><td>Coreopsideae</td><td>Bidens</td><td>Bidens hawaiensis</td><td>3.5 Gb</td><td>2n=6x=72</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521415.1/" target="_blank">NCBI</a></td><td>PacBio Sequel II CCS</td><td>Canu v. 2, HiCanu Fork</td><td>2022</td><td><a href="https://doi.org/10.1093/jhered/esab077" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>25</td><td>Asteroideae</td><td>Coreopsideae</td><td>Bidens</td><td>Bidens hawaiensis</td><td>2.9 Gb</td><td>2n=6x=72</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_021521975.1/" target="_blank">NCBI</a></td><td>PacBio Sequel II CCS</td><td>Canu v. 2, HiCanu Fork</td><td>2022</td><td><a href="https://doi.org/10.1093/jhered/esab077" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>26</td><td>Asteroideae</td><td>Calenduleae</td><td>Calendula</td><td>Calendula officinalis</td><td>1.2 Gb</td><td>2n=32</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963853835.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>27</td><td>Asteroideae</td><td>Calenduleae</td><td>Calendula</td><td>Calendula officinalis</td><td>328.4 Mb</td><td>2n=32</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963853825.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>28</td><td>Asteroideae</td><td>Calenduleae</td><td>Calendula</td><td>Calendula officinalis</td><td>486.8 Mb</td><td>2n=32</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_029618835.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq</td><td>CLC Genomics Workbench v. 20</td><td>2023</td><td>NA</td></tr>
+                    <tr><td>29</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum indicum</td><td>3.11 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Cind&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cind&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cind&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cind&amp;type=pep" target="_blank">Download</a></td><td><a href="https://doi.org/10.6084/m9.figshare.21463119.v1" target="_blank">FigShare</a></td><td>Illumina NovaSeq</td><td>NextGraph</td><td>2024</td><td><a href="https://doi.org/10.1016/j.celrep.2024.113725" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>30</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum indicum</td><td>6.18 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://figshare.com/projects/Chrysanthemum_indicum_genome_diploid/197683" target="_blank">FigShare</a></td><td>Illumina NovaSeq</td><td>Hifiasm v0.19.7</td><td>2024</td><td><a href="https://doi.org/10.1111/tpj.16854" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>31</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum lavandulifolium</td><td>2.7 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Chla&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chla&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chla&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chla&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_022545495.1/" target="_blank">NCBI</a></td><td>Oxford Nanopore PromethION; PacBio RSII</td><td>WTDBG v. 2.5</td><td>2022</td><td><a href="https://doi.org/10.1093/hr/uhab022" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>32</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum lavandulifolium</td><td>3 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_019973895.1/" target="_blank">NCBI</a></td><td>PacBio sequel; Hiseq X</td><td>Platanus_allee v. 2.2.2; Flye v. 2.5; HiRise</td><td>2021</td><td><a href="https://doi.org/10.1038/s42003-021-02704-y" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>33</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum lavandulifolium</td><td>2.7 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_004359105.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq2000; Illumina MiSeq</td><td>SOAPdenovo v. 2.0.4; SSPACE v. 2.0; GapCloser v. 1.10; GapFiller v1-10</td><td>2019</td><td><a href="https://doi.org/10.1093/dnares/dsy048" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>34</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum makinoi</td><td>3.19 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Chma&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chma&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chma&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chma&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_910596185.1" target="_blank">NCBI</a></td><td>ILLUMINA,OXFORD_NANOPORE,PACBIO_SMRT</td><td>Smartdenovo,Purge Haplotigs,ntEdit,DoveTail-Chicago/HiRise,AllMaps</td><td>2022</td><td><a href="https://doi.org/10.1093/g3journal/jkab358" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>35</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum morifolium</td><td>8.15 Gb</td><td>2n=54</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Chmo&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chmo&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chmo&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chmo&amp;type=pep" target="_blank">Download</a></td><td><a href="https://figshare.com/articles/dataset/A_chromosome-scale_genome_assembly_of_hexaploid_cultivated_chrysanthemum/21655364/2" target="_blank">FigShare</a></td><td>PacBio SMRT</td><td>FALCON</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-37730-3" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>36</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum nankingense</td><td>3.5 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Chna&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chna&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chna&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Chna&amp;type=pep" target="_blank">Download</a></td><td><a href="http://210.22.121.250:8880/asteraceae/download/downloadPage" target="_blank">CGD</a></td><td>PacBio Sequel（CLR）, Illumina HiSeq,10X Genomics , Hi-C</td><td>Falcon, Quiver, Pilon, Supernova, AllHiC</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-37730-3" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>37</td><td>Asteroideae</td><td>Anthemideae</td><td>Chrysanthemum</td><td>Chrysanthemum nankingense</td><td>5.7 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="http://210.22.121.250:8880/asteraceae/download/downloadPage" target="_blank">CGD</a></td><td>PacBio Sequel（CLR）, Illumina HiSeq,10X Genomics , Hi-C</td><td>Falcon, Quiver, Pilon, Supernova, AllHiC</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-37730-3" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>38</td><td>Asteroideae</td><td>Coreopsideae</td><td>Cosmos</td><td>Cosmos bipinnatus</td><td>1.02 Gb</td><td>2n=24</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Cobi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cobi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cobi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cobi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://zenodo.org/records/10160015" target="_blank">Zenodo</a></td><td>PacBio HiFi</td><td>Hifiasm v0.18.5</td><td>2024</td><td><a href="https://doi.org/10.1093/gigascience/giae032" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>39</td><td>Asteroideae</td><td>Coreopsideae</td><td>Dahlia</td><td>Dahlia pinnata</td><td>7.86 Gb</td><td>2n=64</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Dapi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Dapi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Dapi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Dapi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://zenodo.org/records/10160015" target="_blank">Zenodo</a></td><td>PacBio HiFi</td><td>Hifiasm v0.18.5</td><td>2024</td><td><a href="https://doi.org/10.1093/gigascience/giae032" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>40</td><td>Asteroideae</td><td>Madieae</td><td>Deinandra</td><td>Deinandra increscens subsp. villosa</td><td>1.7 Gb</td><td>NA</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Desu&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Desu&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Desu&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Desu&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039602395.1/" target="_blank">NCBI</a></td><td>Oxford Nanopore PromethION</td><td>Flye v. 2.9.1-b1780</td><td>2024</td><td><a href="https://doi.org/10.1093/g3journal/jkae117" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>41</td><td>Asteroideae</td><td>Inuleae</td><td>Dittrichia</td><td>Dittrichia graveolens</td><td>834.9 Mb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502395.1/" target="_blank">NCBI</a></td><td>PacBio Sequel II; NextSeq 550</td><td>Hifiasm, 3D-DNA v. 0.16.1-r375, 180922</td><td>2023</td><td><a href="https://doi.org/10.1093/jhered/esad033" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>42</td><td>Asteroideae</td><td>Inuleae</td><td>Dittrichia</td><td>Dittrichia graveolens</td><td>824.4 Mb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038502355.1/" target="_blank">NCBI</a></td><td>PacBio Sequel II; NextSeq 550</td><td>Hifiasm, 3D-DNA v. 0.16.1-r375, 180922</td><td>2023</td><td><a href="https://doi.org/10.1093/jhered/esad033" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>43</td><td>Asteroideae</td><td> Astereae</td><td>Erigeron</td><td>Erigeron breviscapus</td><td> 1.43 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Enbr&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Enbr&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Enbr&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Enbr&amp;type=pep" target="_blank">Download</a></td><td><a href="http://medicinalplants.ynau.edu.cn/genome/detail/68" target="_blank">MPOD</a></td><td>PacBio RSII; Illumina</td><td>wtdbg v. v1.1.006; LACHESIS v. Jul-2018</td><td>2021</td><td><a href="https://doi.org/10.1111/1755-0998.13257" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>44</td><td>Asteroideae</td><td> Astereae</td><td>Erigeron</td><td>Erigeron breviscapus</td><td>1.2 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://gigadb.org/dataset/100290" target="_blank">GICA</a></td><td>PacBio; Illumina</td><td>MaSuRCA v3.1.3, Platanus v1.2.1,DBG2OLC, Minimus2 (AMOS v3.1.0),Bowtie2 v2.1.0,SAMtools,Pilon</td><td>2017</td><td><a href="https://doi.org/10.1093/gigascience/gix028" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>45</td><td>Asteroideae</td><td> Astereae</td><td>Erigeron</td><td>Erigeron canadensis</td><td>426.2 Mb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Ecan&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ecan&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ecan&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ecan&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_010389155.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina; Hi-C</td><td>CANU v. 1.8; Proximo v. 2.0</td><td>2020</td><td><a href="https://doi.org/10.1002/ps.5753" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>46</td><td>Asteroideae</td><td> Astereae</td><td>Erigeron</td><td>Erigeron canadensis</td><td>326.2 Mb</td><td>2n=18</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000775935.1/" target="_blank">NCBI</a></td><td>454; Illumina HiSeq; PacBio</td><td>Newbler v. 2.6; SOAPdenovo v. 1; CLC NGS Cell v. Mar-2013</td><td>2014</td><td><a href="https://doi.org/10.1104/pp.114.247668" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>47</td><td>Asteroideae</td><td> Astereae</td><td>Erigeron</td><td>Erigeron philadelphicus</td><td>619.6 Mb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024320915.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2021</td><td>2022</td><td><a href="https://doi.org/10.56179/001c.38099" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>48</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Filago</td><td>Filago lutescens</td><td>648.4 Mb</td><td>2n=28</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964188195.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>49</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Filago</td><td>Filago lutescens</td><td>646.2 Mb</td><td>2n=28</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964187975.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>50</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria bidentis</td><td>1 Gb</td><td>2n=36</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Fbi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326385.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq 2000</td><td>MaSuRCA v. 2.0.1</td><td>2021</td><td><a href="https://doi.org/10.1002/tpg2.20095" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>51</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria brownii</td><td>924.1 Mb</td><td>2n=36</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Fbr&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbr&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbr&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fbr&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326445.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq 2000</td><td>MaSuRCA v. 3.2.4</td><td>2021</td><td><a href="https://doi.org/10.1002/tpg2.20095" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>52</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria floridana</td><td>1.6 Gb</td><td>2n=36</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Ffl&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ffl&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ffl&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ffl&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326465.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq 2000</td><td>MaSuRCA v. 3.2.4</td><td>2021</td><td><a href="https://doi.org/10.1002/tpg2.20095" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>53</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria linearis</td><td>1.7 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Fli&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fli&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fli&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fli&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_024085815.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina</td><td>Hera v. 1.0</td><td>2020</td><td><a href="https://doi.org/10.3389/fpls.2020.00935" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>54</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria ramosissima</td><td>1.3 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Fra&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fra&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fra&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fra&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025215565.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina</td><td>Pilon v. 2.10.4</td><td>2020</td><td><a href="https://doi.org/10.3389/fpls.2020.00935" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>55</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria robusta</td><td>551.5 Mb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Fro&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fro&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fro&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fro&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506415.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina HiSeq</td><td>Canu v. 01-JAN-2020</td><td>2020</td><td><a href="https://doi.org/10.3389/fpls.2020.00935" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>56</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria robusta</td><td>518.9 Mb</td><td>2n=36</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_018326485.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq 2000</td><td>MaSuRCA v. 2.0.1</td><td>2021</td><td><a href="https://doi.org/10.1002/tpg2.20095" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>57</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria sonorensis</td><td>1.2 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Fso&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fso&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fso&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Fso&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506505.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina HiSeq</td><td>Canu v. 01-JAN-2020</td><td>2020</td><td><a href="https://doi.org/10.3389/fpls.2020.00935" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>58</td><td>Asteroideae</td><td>Tageteae</td><td>Flaveria</td><td>Flaveria trinervia</td><td>1.8 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Ftr&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ftr&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ftr&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ftr&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_025506515.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina HiSeq</td><td>Canu v. 01-JAN-2020</td><td>2020</td><td><a href="https://doi.org/10.3389/fpls.2020.00935" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>59</td><td>Asteroideae</td><td>Anthemideae</td><td>Glebionis</td><td>Glebionis coronaria</td><td>6.8 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Glco&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Glco&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Glco&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Glco&amp;type=pep" target="_blank">Download</a></td><td><a href="https://figshare.com/articles/dataset/Annotated_reference_genome_of_Glebionis_coronaria/20294385" target="_blank">FigShare</a></td><td>PacBio Sequel</td><td>Hifiasm v. MAY-2022</td><td>2022</td><td><a href="https://doi.org/10.1093/dnares/dsac036" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>60</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Gnaphalium</td><td>Gnaphalium uliginosum</td><td>354.4 Mb</td><td>2n=14</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963930675.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>Hifiasm,purge_dups, YaHS,OATK,TreeVal</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>61</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Gnaphalium</td><td>Gnaphalium uliginosum</td><td>14.6 Mb</td><td>2n=14</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963930705.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>62</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3 Gb</td><td>2n=34</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Hean&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hean&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hean&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hean&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002127325.2/" target="_blank">NCBI</a></td><td>PacBio RSII</td><td>CANU v. 1.3; CANU v. 1.4; FALCON v. 0.7; Bionano-Solve v. 3.2.1_04122018</td><td>2020</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>63</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538245.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>64</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026538285.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>65</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3.2 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026652165.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>66</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3.2 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://sunflowergenome.org/assembly-data/" target="_blank">SGD</a></td><td>Illumina, Roche 454 GS FLX</td><td></td><td>2020</td><td><a href="https://doi.org/10.1038/s41586-020-2467-6" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>67</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus</td><td>3.01 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://ngdc.cncb.ac.cn/gwh/Assembly/83740/show" target="_blank">NGDC</a></td><td>PacBio 17.5</td><td>Hybrid Scaffolding (Optical map + PacBio Hifi) Bionano Hybrid Scaffold</td><td>2024</td><td><a href="https://doi.org/10.1007/s00122-024-04594-0" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>68</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus </td><td>3.1 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651665.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>69</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus </td><td>3.2 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651675.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>70</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus </td><td>3 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651695.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>71</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus </td><td>3 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651735.1/" target="_blank">NCBI</a></td><td>PacBio RSII</td><td>CANU v. 1.4</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>72</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus annuus </td><td>3.1 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026651805.1/" target="_blank">NCBI</a></td><td>PacBio Sequel</td><td>CANU v. 1.9</td><td>2023</td><td><a href="https://doi.org/10.1073/pnas.2205783119" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>73</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus anomalus</td><td>6.1 Gb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_047456115.1/" target="_blank">NCBI</a></td><td>10x, Dovetails</td><td>AllMaps v. 2020</td><td>2024</td><td><a href="https://doi.org/10.1007/s00122-024-04558-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>74</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus tuberosus</td><td>10.49 Gb</td><td>2n=6x=102</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Hetu&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hetu&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hetu&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Hetu&amp;type=pep" target="_blank">Download</a></td><td><a href="https://ngdc.cncb.ac.cn/gwh/Genome/158494/show" target="_blank">NGDC</a></td><td>PacBio 14.7</td><td>HiFiasm 0.16.1-r375</td><td>2024</td><td><a href="https://doi.org/10.1016/j.xplc.2023.100767" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>75</td><td>Asteroideae</td><td>Heliantheae</td><td>Helianthus</td><td>Helianthus tuberosus</td><td>21.6 Gb</td><td>2n=6x=102</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_030545235.1/" target="_blank">NCBI</a></td><td>PacBio Sequel II</td><td>HiFiasm v. 0.16.1-r375</td><td>2024</td><td><a href="https://doi.org/10.1016/j.xplc.2023.100767" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>76</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Helichrysum</td><td>Helichrysum umbraculigerum</td><td>1.3 Gb</td><td>NA</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Heub&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Heub&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Heub&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Heub&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949592205.1/" target="_blank">NCBI</a></td><td>PACBIO_SMRT,ILLUMINA</td><td>hifiasm</td><td>2023</td><td><a href="https://doi.org/10.1038/s41477-023-01402-3" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>77</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Logfia</td><td>Logfia minima</td><td>544.9 Mb</td><td>2n=30</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Lomi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lomi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lomi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lomi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963921325.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>Hifiasm,purge_dups, YaHS,OATK,TreeVal</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>78</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Logfia</td><td>Logfia minima</td><td>5.9 Mb</td><td>2n=30</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_963921315.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>79</td><td>Asteroideae</td><td>Anthemideae</td><td>Matricaria</td><td>Matricaria chamomilla</td><td>2.6 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964235185.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2025</td><td><a href="https://doi.org/10.1038/s41597-025-04688-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>80</td><td>Asteroideae</td><td>Anthemideae</td><td>Matricaria</td><td>Matricaria chamomilla</td><td>2.5 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964234995.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2025</td><td><a href="https://doi.org/10.1038/s41597-025-04688-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>81</td><td>Asteroideae</td><td>Anthemideae</td><td>Matricaria</td><td>Matricaria chamomilla var. recutita</td><td>2.8 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963920955.1/" target="_blank">NCBI</a></td><td>Illumina Novaseq 6000, PacBio Sequel II</td><td>TRITEX, hifiasm</td><td>2025</td><td><a href="https://doi.org/10.1038/s41597-025-04688-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>82</td><td>Asteroideae</td><td>Eupatorieae</td><td>Mikania</td><td>Mikania micrantha</td><td>1.8 Gb</td><td>2n=38</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Mimi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Mimi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Mimi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Mimi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_009363875.1/" target="_blank">NCBI</a></td><td>PacBio RSII; PacBio Sequel</td><td>Canu v. 1.6; FALCON v. 1.2.0; FALCON-Unzip v. 1.1.1</td><td>2020</td><td><a href="https://doi.org/10.1038/s41467-019-13926-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>83</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Omalotheca</td><td>Omalotheca supina</td><td>1.1 Gb</td><td>2n=28</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263845.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>84</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Omalotheca</td><td>Omalotheca supina</td><td>1.1 Gb</td><td>2n=28</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263965.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>85</td><td>Asteroideae</td><td>Inuleae</td><td>Pluchea</td><td>Pluchea indica</td><td>1.78 Gb</td><td>2n=40</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Pin&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pin&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pin&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pin&amp;type=pep" target="_blank">Download</a></td><td><a href="https://ngdc.cncb.ac.cn/gwh/Assembly/20674/show" target="_blank">NGDC</a></td><td>PacBio, PacBio SMRT sequencing; 10X, 10X Genomics; stLFR, single tube long fragment read; Hi-C, high-throughput chromosome conformation capture; Illumina, paired-end and mate-paired sequencing.</td><td>Quiver (SMRT Analysis v.2.3.0),Racon v.1.3.1</td><td>2022</td><td><a href="https://doi.org/10.1038/s41559-022-01744-9" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>86</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Pseudognaphalium</td><td>Pseudognaphalium luteoalbum</td><td>881.3 Mb</td><td>2n=14</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Pslu&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pslu&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pslu&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pslu&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422505.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>Hifiasm</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>87</td><td>Asteroideae</td><td>Gnaphalieae</td><td>Pseudognaphalium</td><td>Pseudognaphalium luteoalbum</td><td>6.7 Mb</td><td>2n=14</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422485.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>88</td><td>Asteroideae</td><td>Inuleae</td><td>Pulicaria</td><td>Pulicaria dysenterica</td><td>609.7 Mb</td><td>2n=18</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Pdy&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pdy&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pdy&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Pdy&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947179335.2/" target="_blank">NCBI</a></td><td>PacBio,Illumina,Arima2</td><td>various</td><td>2023</td><td><a href="https://doi.org/10.12688/wellcomeopenres.20003.1" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>89</td><td>Asteroideae</td><td>Inuleae</td><td>Pulicaria</td><td>Pulicaria dysenterica</td><td>833.2 Mb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947179395.2/" target="_blank">NCBI</a></td><td>PacBio,Illumina,Arima2</td><td>Hifiasm</td><td>2023</td><td><a href="https://doi.org/10.12688/wellcomeopenres.20003.1" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>90</td><td>Asteroideae</td><td>Heliantheae</td><td>Rudbeckia</td><td>Rudbeckia hirta</td><td>571.1 Mb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_028566315.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2022</td><td>2023</td><td>NA</td></tr>
+                    <tr><td>91</td><td>Asteroideae</td><td>Heliantheae</td><td>Scalesia</td><td>Scalesia atractyloides</td><td>3.2 Gb</td><td>2n=4x=68</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_947069175.1/" target="_blank">NCBI</a></td><td>Pacbio, Dovetail</td><td>wtdbg2, DoveTailHiRise</td><td>2022</td><td><a href="https://doi.org/10.1038/s41467-022-31280-w" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>92</td><td>Asteroideae</td><td>Senecioneae</td><td>Senecio</td><td>Senecio squalidus</td><td>652 Mb</td><td>2n=20</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Sesq&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sesq&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sesq&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sesq&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910822075.1/" target="_blank">NCBI</a></td><td>PacBio,Illumina,HiC</td><td>various</td><td>2023</td><td><a href="https://doi.org/10.12688/wellcomeopenres.18658.1" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>93</td><td>Asteroideae</td><td>Senecioneae</td><td>Senecio</td><td>Senecio squalidus</td><td>161.2 Mb</td><td>2n=20</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_910821995.1/" target="_blank">NCBI</a></td><td>PacBio,Illumina,HiC</td><td>various</td><td>2022</td><td><a href="https://www.sanger.ac.uk/programme/tree-of-life/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>94</td><td>Asteroideae</td><td>Heliantheae</td><td>Silphium</td><td>Silphium perfoliatum</td><td>121.7 Mb</td><td>2n=14</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900538075.1/" target="_blank">NCBI</a></td><td>Ion Proton Instrument</td><td>VSEARCH followed by POA</td><td>2019</td><td><a href="https://doi.org/10.1016/j.biombioe.2019.03.016" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>95</td><td>Asteroideae</td><td>Heliantheae</td><td>Silphium</td><td>Silphium perfoliatum</td><td>121.7 Mb</td><td>2n=14</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900538075.1/" target="_blank">NCBI</a></td><td>Ion Proton Instrument</td><td>VSEARCH followed by POA (Lee et al. 2002)</td><td>2019</td><td><a href="https://doi.org/10.1016/j.biombioe.2019.03.016" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>96</td><td>Asteroideae</td><td>Millerieae</td><td>Smallanthus</td><td>Smallanthus sonchifolius</td><td>2.72 Gb</td><td>2n=58</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Smso&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Smso&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Smso&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Smso&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525975.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>Hifiasm v. 0.14.2</td><td>2022</td><td><a href="https://doi.org/10.1111/1755-0998.13675" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>97</td><td>Asteroideae</td><td> Astereae</td><td>Solidago</td><td>Solidago azorica</td><td>479.4 Mb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040966195.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2024</td><td>2024</td><td>IRIDIAN GENOMES INC</td></tr>
+                    <tr><td>98</td><td>Asteroideae</td><td> Astereae</td><td>Solidago</td><td>Solidago caesia</td><td>473.7 Mb</td><td>2n=18</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Scae&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Scae&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Scae&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Scae&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_028566075.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2022</td><td>2023</td><td>IRIDIAN GENOMES INC</td></tr>
+                    <tr><td>99</td><td>Asteroideae</td><td> Astereae</td><td>Solidago</td><td>Solidago canadensis</td><td>855 Mb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Soca&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Soca&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Soca&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Soca&amp;type=pep" target="_blank">Download</a></td><td>Our study</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>100</td><td>Asteroideae</td><td>Eupatorieae</td><td>Stevia</td><td>Stevia rebaudiana</td><td>1405 Mb</td><td>2n=22</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Stre&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Stre&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Stre&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Stre&amp;type=pep" target="_blank">Download</a></td><td><a href="https://figshare.com/articles/dataset/Stevia_rebaudiana_genome_data/14169491/1" target="_blank">FigShare</a></td><td>Illumina, PacBio, Hi-C</td><td>WTDBG v1.2.8, FALCON v0.7, Canu v1.5</td><td>2021</td><td><a href="https://doi.org/10.1038/s41438-021-00565-4" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>101</td><td>Asteroideae</td><td>Eupatorieae</td><td>Stevia</td><td>Stevia rebaudiana</td><td>411.4 Mb</td><td>2n=22</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009936405.2/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2021</td><td>2020</td><td><a href="https://doi.org/10.12688/f1000research.24396.1" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>102</td><td>Asteroideae</td><td>Tageteae</td><td>Tagetes</td><td>Tagetes patula</td><td>434.6 Mb</td><td>2n=24</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026259685.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>SPAdes v. 2022</td><td>2022</td><td>NA</td></tr>
+                    <tr><td>103</td><td>Asteroideae</td><td>Tageteae</td><td>Tagetes</td><td>Tagetes erecta</td><td>778.9 Mb</td><td>2n=24</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Taer&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Taer&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Taer&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Taer&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030867185.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>Hifiasm v. 0.16.1 June-2023</td><td>2023</td><td><a href="https://doi.org/10.1101/2023.07.25.550479" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>104</td><td>Asteroideae</td><td>Tageteae</td><td>Tagetes</td><td>Tagetes erecta</td><td>621.2 Mb</td><td>2n=24</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_026213115.1/" target="_blank">NCBI</a></td><td>PacBio; Illumina NovaSeq; HiC</td><td>CANU v. 2.0</td><td>2023</td><td><a href="https://doi.org/10.1016/j.hpj.2023.04.001" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>105</td><td>Asteroideae</td><td>Anthemideae</td><td>Tanacetum</td><td>Tanacetum coccineum</td><td>9.5 Gb</td><td>2n=36</td><td>?Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_026074375.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq 6000; Illumina Miseq; PacBio Sequel II</td><td>SOAPdenovo v. 2.04-r240; SSPACE-longread v. 1-1; SSPACE-STANDARD v. 3.0</td><td>2022</td><td><a href="https://doi.org/10.3390/ijms23137039" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>106</td><td>Asteroideae</td><td>Anthemideae</td><td>Tanacetum</td><td>Tanacetum parthenium (feverfew)</td><td>2.1 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204775.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>107</td><td>Asteroideae</td><td>Anthemideae</td><td>Tanacetum</td><td>Tanacetum parthenium (feverfew)</td><td>2.1 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964204795.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>108</td><td>Asteroideae</td><td>Anthemideae</td><td>Tanacetum</td><td>Tanacetum vulgare (tansy)</td><td>4.6 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264315.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2024</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>109</td><td>Asteroideae</td><td>Anthemideae</td><td>Tanacetum</td><td>Tanacetum vulgare (tansy)</td><td>4.8 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264305.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2024</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>110</td><td>Carduoideae</td><td>Cardueae</td><td>Arctium</td><td>Arctium lappa</td><td>1.79 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Arla&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Arla&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Arla&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Arla&amp;type=pep" target="_blank">Download</a></td><td><a href="https://doi.org/10.6084/m9.figshare.11590983" target="_blank">FigShare</a></td><td>Illumina HiSeq;PacBio</td><td>FALCON</td><td>2022</td><td><a href="https://doi.org/10.1111/1755-0998.13547" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>111</td><td>Carduoideae</td><td>Cardueae</td><td>Arctium</td><td>Arctium lappa</td><td>1.73 Gb</td><td>2n=36</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525745.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>Hifiasm v. 0.14.2</td><td>2022</td><td><a href="https://doi.org/10.1111/1755-0998.13675" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>112</td><td>Carduoideae</td><td>Cardueae</td><td>Arctium</td><td>Arctium minus</td><td>1.9 Gb</td><td>2n=36</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Armi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Armi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Armi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Armi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954870635.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>Hifiasm</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>113</td><td>Carduoideae</td><td>Cardueae</td><td>Arctium</td><td>Arctium minus</td><td>465.4 Mb</td><td>2n=36</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_954871535.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>114</td><td>Carduoideae</td><td>Cardueae</td><td>Carduus</td><td>Carduus pycnocephalus</td><td>2.7 Gb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919605.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq; PacBio Sequel; Dovetail Omni-C</td><td>HiFiasm v. 0.19.5-r592; SALSA v. 2; YAGCloser v.</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>115</td><td>Carduoideae</td><td>Cardueae</td><td>Carduus</td><td>Carduus pycnocephalus</td><td>2.7 Gb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042919555.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq; PacBio Sequel; Dovetail Omni-C</td><td>HiFiasm v. 0.19.5-r592; SALSA v. 2; YAGCloser v.</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>116</td><td>Carduoideae</td><td>Cardueae</td><td>Carthamus</td><td>Carthamus tinctorius</td><td>1.06 Gb</td><td>2n=24</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Cati&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cati&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cati&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cati&amp;type=pep" target="_blank">Download</a></td><td><a href="http://safflower.scuec.edu.cn" target="_blank">safflower</a></td><td>PacBio;Illumina HiSeq 2500 sequencing</td><td>CANU v.1.3</td><td>2021</td><td><a href="https://doi.org/10.1111/pbi.13586" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>117</td><td>Carduoideae</td><td>Cardueae</td><td>Carthamus</td><td>Carthamus tinctorius</td><td>661.9 Mb</td><td>2n=24</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001633085.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>SOAPdenovo v. 2.01</td><td>2016</td><td><a href="https://doi.org/10.1534/g3.115.026690" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>118</td><td>Carduoideae</td><td>Cardueae</td><td>Carthamus</td><td>Carthamus tinctorius</td><td>1.17Gb</td><td>2n=24</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://ngdc.cncb.ac.cn/gwh/Assembly/25633/show" target="_blank">NGDC</a></td><td>nanopore 100.0</td><td>Canu 1.71</td><td>2023</td><td><a href="https://doi.org/10.1093/hr/uhad197" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>119</td><td>Carduoideae</td><td>Cardueae</td><td>Centaurea</td><td>Centaurea solstitialis</td><td>765.1 Mb</td><td>2n=16</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Ceso&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ceso&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ceso&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ceso&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030169165.1/" target="_blank">NCBI</a></td><td>PacBio Sequel; Illumina HiSeq</td><td>Wtdbg2 v. 2021; HiRise v. 2021</td><td>2024</td><td><a href="https://doi.org/10.1093/gbe/evae243" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>120</td><td>Carduoideae</td><td>Cardueae</td><td>Cynara</td><td>Cynara cardunculus</td><td>725 Mb</td><td>2n=34</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Ccar&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ccar&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ccar&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Ccar&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_001531365.2/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>AllPaths v. 41684</td><td>2016</td><td><a href="https://doi.org/10.1038/srep19427" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>121</td><td>Carduoideae</td><td>Cardueae</td><td>Cynara</td><td>Cynara cardunculus</td><td>859.1 Mb</td><td>2n=34</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228875.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq; PacBio Sequel; Dovetail Omni-C</td><td>HiFiasm v. 0.19.9-r616; SALSA v. 2; YAGCloser v.</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>122</td><td>Carduoideae</td><td>Cardueae</td><td>Cynara</td><td>Cynara cardunculus</td><td>858 Mb</td><td>2n=34</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043228895.1/" target="_blank">NCBI</a></td><td>Illumina NovaSeq; PacBio Sequel; Dovetail Omni-C</td><td>HiFiasm v. 0.19.9-r616; SALSA v. 2; YAGCloser v.</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>123</td><td>Carduoideae</td><td>Cardueae</td><td>Saussurea</td><td>Saussurea bogedaensis</td><td>2.2 Gb</td><td>2n=30</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041870115.1/" target="_blank">NCBI</a></td><td>PacBio</td><td>ABySS v. 2.0.2</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>124</td><td>Carduoideae</td><td>Cardueae</td><td>Saussurea</td><td>Saussurea involucrata</td><td>2.5 Gb</td><td>2n=32</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Sain&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sain&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sain&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Sain&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_033807775.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>HiFiasm v. 0.16.1</td><td>2023</td><td><a href="https://doi.org/10.1093/hr/uhad180" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>125</td><td>Carduoideae</td><td>Cardueae</td><td>Silybum</td><td>Silybum marianum</td><td>1.5 Gb</td><td>2n=34</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_001541825.1/" target="_blank">NCBI</a></td><td>Illumina Hiseq; PacBio</td><td>Celera Assembler v. MAY-2015</td><td>2017</td><td><a href="https://doi.org/10.1111/tpj.13736" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>126</td><td>Carduoideae</td><td>Cardueae</td><td>Silybum</td><td>Silybum marianum</td><td>694.4 Mb</td><td>2n=34</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036898165.1/" target="_blank">NCBI</a></td><td>Oxford Nanopore PromethION; Illumina NovaSeq</td><td>NextDenovo v. 2.5.0</td><td>2024</td><td><a href="https://doi.org/10.1038/s41597-024-03178-3" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>127</td><td>Cichorioideae</td><td>Cichorieae</td><td>Cichorium</td><td>Cichorium endivia</td><td>887  Mb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Cien&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cien&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cien&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cien&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023376185.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>Hifiasm v. 0.14.2</td><td>2022</td><td><a href="https://doi.org/10.1111/1755-0998.13675" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>128</td><td>Cichorioideae</td><td>Cichorieae</td><td>Cichorium</td><td>Cichorium endivia</td><td>641 Mb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://ngdc.cncb.ac.cn/gsa/search?searchTerm=CRA005068" target="_blank">NGDC</a></td><td>Illumina;ONT</td><td>NECAT;Racon</td><td>2022</td><td><a href="https://doi.org/10.1016/j.ygeno.2022.110400" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>129</td><td>Cichorioideae</td><td>Cichorieae</td><td>Cichorium</td><td>Cichorium intybus</td><td>926 Mb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Cich&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cich&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cich&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cich&amp;type=pep" target="_blank">Download</a></td><td><a href="https://bioinformatics.psb.ugent.be/gdb/Cichorium_intybus/" target="_blank">ORCAE</a></td><td>PacBio,Illumina HiSeq2500,NextSeq500</td><td>Medaka v0.11.2,Racon,BUSCO</td><td>2023</td><td><a href="https://doi.org/10.3389/fpls.2023.1181529" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>130</td><td>Cichorioideae</td><td>Cichorieae</td><td>Cichorium</td><td>Cichorium intybus</td><td>1.28 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_023525715.1/" target="_blank">NCBI</a></td><td>PacBio HiFi</td><td>Hifiasm v. 0.14.2</td><td>2023</td><td><a href="https://doi.org/10.1111/1755-0998.13675" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>131</td><td>Cichorioideae</td><td>Cichorieae</td><td>Cichorium</td><td>Cichorium intybus</td><td>1.8 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030463085.1/" target="_blank">NCBI</a></td><td>PacBio Sequel; BionanoGenomics Saphyr</td><td>Flye v. 2.5; Racon v. 1.3.3; Arrow v. 2.3.3; Bionano Solve v. 3.4.1; Bionano Access v. 1.4.3</td><td>2023</td><td><a href="https://doi.org/10.3389/fpls.2023.1111110" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>132</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa var. crispa</td><td>2.6 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041283435.1/" target="_blank">NCBI</a></td><td>PacBio</td><td>HiFiasm v. 0.19</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>133</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca saligna</td><td>2.2 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Laca&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Laca&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Laca&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Laca&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949927565.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>HiRise</td><td>2023</td><td><a href="https://doi.org/10.1111/tpj.16212" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>134</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa</td><td>1.1 Gb</td><td>2n=18</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_000227445.1/" target="_blank">NCBI</a></td><td>Illumina GAIIx</td><td>CLC Genomics Workbench v. 4.5.1</td><td>2011</td><td>The Compositae Genome Project</td></tr>
+                    <tr><td>135</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa</td><td>2 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900198505.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td></td><td>2018</td><td><a href="https://doi.org/10.1016/j.jbiotec.2017.12.021" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>136</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa</td><td>2.2 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_900243165.1/" target="_blank">NCBI</a></td><td>HiSeq 1500</td><td></td><td>2018</td><td><a href="https://doi.org/10.1016/j.jbiotec.2017.12.021" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>137</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa</td><td>2.59 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://figshare.com/s/f5f0e8068d5a236ea408" target="_blank">FigShare</a></td><td>HiFi,ONT,Hi-C</td><td></td><td>2024</td><td><a href="https://doi.org/10.1016/j.xplc.2024.101011" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>138</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa</td><td>2.6 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039583335.1/" target="_blank">NCBI</a></td><td>PacBio HiFi; Oxford Nanopore technology</td><td>Hifiasm v. 0.19.5; flye v. 2.9.2</td><td>NA</td><td>NA</td></tr>
+                    <tr><td>139</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa cv. Salinas</td><td>2.4 Gb</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Lssa&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lssa&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lssa&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Lssa&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_002870075.4/" target="_blank">NCBI</a></td><td>Illumina HiSeq</td><td>SOAPdenovo v. 2; Hi-Rise v. 1</td><td>2017</td><td><a href="https://doi.org/10.1038/ncomms14953" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>140</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca sativa var. angustana</td><td>2.59 Gb</td><td>2n=18</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://lettucegdb.com/genome" target="_blank">LettuceGDB</a></td><td>Illumina;PacBio</td><td>BioNano Solve;WTDBG2</td><td>2023</td><td><a href="https://doi.org/10.1038/s41467-023-40002-9" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>141</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca serriola</td><td>2.8 Gb</td><td>2n=18</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://lettucegdb.com/genome" target="_blank">LettuceGDB</a></td><td>NA</td><td>NA</td><td>2021</td><td><a href="https://doi.org/10.1038/s41588-021-00831-0" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>142</td><td>Cichorioideae</td><td>Cichorieae</td><td>Lactuca</td><td>Lactuca virosa</td><td>3.4 Gb</td><td>2n=18</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_928212115.1/" target="_blank">NCBI</a></td><td>Illumina</td><td>HiRise</td><td>2023</td><td><a href="https://doi.org/10.1093/g3journal/jkad204" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>143</td><td>Cichorioideae</td><td>Cichorieae</td><td>Pilosella</td><td>Pilosella piloselloides</td><td>3.3 Gb</td><td>NA</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040114295.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq; Oxford Nanopore MinION</td><td>MaSuRCA v. May-2019</td><td>2023</td><td><a href="https://doi.org/10.3389/fpls.2023.1239191" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>144</td><td>Cichorioideae</td><td>Cichorieae</td><td>Taraxacum</td><td>Taraxacum kok-saghyz</td><td>1.08 Gb</td><td>2n=16</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Tako&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tako&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tako&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tako&amp;type=pep" target="_blank">Download</a></td><td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&amp;q=PRJCA005187" target="_blank">NGDC</a></td><td>PacBio 100.0</td><td>CANU 2.0</td><td>2021</td><td><a href="https://doi.org/10.1007/s11427-021-2033-2" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>145</td><td>Cichorioideae</td><td>Cichorieae</td><td>Taraxacum</td><td>Taraxacum kok-saghyz</td><td>1.29 Gb</td><td>2n=16</td><td>Contig</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&amp;q=PRJCA000437" target="_blank">NGDC</a></td><td>PacBio;Illumina HiSeq</td><td>NA</td><td>2018</td><td><a href="https://doi.org/10.1093/nsr/nwx101" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>146</td><td>Cichorioideae</td><td>Cichorieae</td><td>Taraxacum</td><td>Taraxacum mongolicum</td><td>790Mb</td><td>3x=24</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Tamo&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tamo&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tamo&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tamo&amp;type=pep" target="_blank">Download</a></td><td><a href="https://ngdc.cncb.ac.cn/search/?dbId=gwh&amp;q=PRJCA005187" target="_blank">NGDC</a></td><td>PacBio 100.0</td><td>CANU 2.0</td><td>2021</td><td><a href="https://doi.org/10.1007/s11427-021-2033-2" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>147</td><td>Cichorioideae</td><td>Cichorieae</td><td>Tragopogon</td><td>Tragopogon pratensis</td><td>2.1 Gb</td><td>2n=12</td><td>Chromosome</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059535.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>148</td><td>Cichorioideae</td><td>Cichorieae</td><td>Tragopogon</td><td>Tragopogon pratensis</td><td>2 Gb</td><td>2n=12</td><td>Scaffold</td><td></td><td></td><td></td><td></td><td></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059265.1/" target="_blank">NCBI</a></td><td>PacBio,Arima2</td><td>various</td><td>2022</td><td><a href="https://www.darwintreeoflife.org/" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>149</td><td>Mutisioideae</td><td>Mutisiease</td><td>Gerbera</td><td>Gerbera hybrida</td><td>2.23G</td><td>2n=50</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Gehy&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Gehy&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Gehy&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Gehy&amp;type=pep" target="_blank">Download</a></td><td><a href="https://doi.org/10.6084/m9.figshare.29482379.v1." target="_blank">FigShare</a></td><td>PacBio</td><td>NA</td><td>2026</td><td><a href="https://doi.org/10.1093/hr/uhaf357" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>150</td><td>NA</td><td>NA</td><td>Buxus</td><td>Buxus sinica </td><td>764 Mb</td><td>2n=28</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Busi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Busi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Busi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Busi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://datadryad.org/dataset/doi:10.5061/dryad.cjsxksn6d" target="_blank">the Dryad Digital Repository</a></td><td>PacBio;Hi-C</td><td>MAKER</td><td>2022</td><td><a href="https://doi.org/10.1038/s41467-022-28312-w" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>151</td><td>NA</td><td>NA</td><td>Euptelea</td><td>Euptelea pleiosperma</td><td>613.4 Mb</td><td>2n=28</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Eupl&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Eupl&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Eupl&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Eupl&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035048495.1/" target="_blank">NCBI</a></td><td>PacBio</td><td>ARROW v. 2.3</td><td>2024</td><td><a href="https://doi.org/10.1007/s11427-023-2448-x" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>152</td><td>NA</td><td>NA</td><td>Nelumbo</td><td>Nelumbo nucifera</td><td>807.01 Mb</td><td>2n=16</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Nenu&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nenu&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nenu&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nenu&amp;type=pep" target="_blank">Download</a></td><td><a href="https://genomevolution.org/CoGe/GenomeInfo.pl?gid=60468" target="_blank">CoGe</a></td><td>Nanopore,Hi-C</td><td>3D-DNA</td><td>2022</td><td><a href="https://doi.org/10.1093/hr/uhac029" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>153</td><td>NA</td><td>NA</td><td>Nymphoides</td><td>Nymphoides indica</td><td>523.96 MB</td><td>2n=18</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Nin&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nin&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nin&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Nin&amp;type=pep" target="_blank">Download</a></td><td><a href="https://db.cngb.org/data_resources/assembly/CNA0046512" target="_blank">CNGBdb</a></td><td>PACBIO 227x</td><td>NextDenovo v2.1</td><td>2022</td><td><a href="https://doi.org/10.1093/dnares/dsac022" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>154</td><td>NA</td><td>NA</td><td>Tetracentron</td><td>Tetracentron sinense </td><td>908 Mb</td><td>2n=38</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Tesi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tesi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tesi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Tesi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://datadryad.org/dataset/doi:10.5061/dryad.cjsxksn6d" target="_blank">the Dryad Digital Repository</a></td><td>PacBio;Hi-C</td><td>MAKER</td><td>2022</td><td><a href="https://doi.org/10.1038/s41467-022-28312-w" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>155</td><td>NA</td><td>Viteae</td><td>Vitis</td><td>Vitis vinifera</td><td>487 Mb</td><td>2n=38</td><td>Chromosome</td><td>√</td><td><a href="/api/download/genome/?species=Vivi&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Vivi&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Vivi&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Vivi&amp;type=pep" target="_blank">Download</a></td><td><a href="https://phytozome-next.jgi.doe.gov/" target="_blank">JGI</a></td><td>Arachne</td><td>GAZE</td><td>2007</td><td><a href="https://doi.org/10.1038/nature06148" target="_blank"><i class="bi bi-link-45deg"></i> Link</a></td></tr>
+                    <tr><td>156</td><td>Vernonioideae</td><td>Vernonieae</td><td>Centrapalus</td><td>Centrapalus pauciflorus</td><td>1.4 Gb</td><td>2n=36</td><td>Scaffold</td><td>√</td><td><a href="/api/download/genome/?species=Cpa&amp;type=cds" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cpa&amp;type=lens" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cpa&amp;type=gff" target="_blank">Download</a></td><td><a href="/api/download/genome/?species=Cpa&amp;type=pep" target="_blank">Download</a></td><td><a href="https://www.ncbi.nlm.nih.gov/data-hub/genome/GCA_020465985.1/" target="_blank">NCBI</a></td><td>Illumina HiSeq; PacBio RSII; PacBio Sequel</td><td>MaSuRCA v. 3.2.8</td><td>2021</td><td>NA</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+// 显示加载状态
+function showLoading() {
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
+    document.getElementById('submitText').textContent = 'Processing...';
+    document.getElementById('loadingMessage').style.display = 'block';
+}
+
+// 初始化 DataTable
+function ensureGenomeSelectionColumn() {
+    var table = document.getElementById('genomeTable');
+    if (!table) {
+        return;
+    }
+
+    var headerRow = table.querySelector('thead tr');
+    if (headerRow && !headerRow.querySelector('.js-select-current-page')) {
+        var headerCell = document.createElement('th');
+        headerCell.className = 'checkbox-cell';
+        headerCell.innerHTML = '<label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label>';
+        headerRow.insertBefore(headerCell, headerRow.firstElementChild);
+    }
+
+    table.querySelectorAll('tbody tr').forEach(function (row) {
+        if (row.querySelector('.row-checkbox')) {
+            return;
+        }
+
+        var cell = document.createElement('td');
+        cell.className = 'checkbox-cell';
+        cell.innerHTML = '<input type="checkbox" class="row-checkbox form-check-input">';
+        row.insertBefore(cell, row.firstElementChild);
+    });
+}
+
+$(document).ready(function () {
+    ensureGenomeSelectionColumn();
+    $('#genomeTable').DataTable({
+        pageLength: 10,
+        lengthChange: true,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+        pagingType: 'simple_numbers',
+        scrollX: true,
+        autoWidth: false,
+        ordering: true,
+        searching: true,
+        info: true,
+        columnDefs: [
+            { orderable: false, targets: 0 }
+        ],
+        language: {
+            search: "Search:",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            paginate: {
+                previous: "Previous",
+                next: "Next"
+            }
+        }
+    });
+
+    // 初始化剪贴板
+    var clipboard = new ClipboardJS('.clip');
+
+    clipboard.on('success', function(e) {
+        var originalText = e.trigger.innerHTML;
+        e.trigger.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        e.trigger.classList.remove('btn-outline-secondary');
+        e.trigger.classList.add('btn-success');
+
+        setTimeout(function() {
+            e.trigger.innerHTML = originalText;
+            e.trigger.classList.remove('btn-success');
+            e.trigger.classList.add('btn-outline-secondary');
+        }, 2000);
+    });
+});
+
+// 下载 CDS 内容
+function downloadContent_cds() {
+    let content = "";
+    {% for row in result %}
+    content += ">{{ row.0 }}\n{{ row.1 }}\n";
+    {% endfor %}
+    var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "cds_sequences.fasta";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// 下载 Protein 内容
+function downloadContent_pep() {
+    let content = "";
+    {% for row in result %}
+    content += ">{{ row.0 }}\n{{ row.2 }}\n";
+    {% endfor %}
+    var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "protein_sequences.fasta";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+</script>
+    <script>
+// 定义每个物种的染色体信息（使用你的实际数据）
+const speciesChromosomes = {
+    'Aann': ['Aann01', 'Aann02', 'Aann03', 'Aann04', 'Aann05', 'Aann06', 'Aann07', 'Aann08', 'Aann09'],
+    'Aary': ['Aarg01', 'Aarg02', 'Aarg03', 'Aarg04', 'Aarg05', 'Aarg06', 'Aarg07', 'Aarg08', 'Aarg09', 'Aarg10', 'Aarg11', 'Aarg12', 'Aarg13', 'Aarg14', 'Aarg15', 'Aarg16', 'Aarg17'],
+    'Amar': ['Amar'],
+    'Arla': ['Arla01', 'Arla02', 'Arla03', 'Arla04', 'Arla05', 'Arla06', 'Arla07', 'Arla08', 'Arla09', 'Arla10', 'Arla11', 'Arla12', 'Arla13', 'Arla14', 'Arla15', 'Arla16', 'Arla17', 'Arla18'],
+    'Armi': ['Armi01', 'Armi02', 'Armi03', 'Armi04', 'Armi05', 'Armi06', 'Armi07', 'Armi08', 'Armi09', 'Armi10', 'Armi11', 'Armi12', 'Armi13', 'Armi14', 'Armi15', 'Armi16', 'Armi17', 'Armi18'],
+    'Amtr': ['Amtr01', 'Amtr02', 'Amtr03', 'Amtr04', 'Amtr05', 'Amtr06', 'Amtr07', 'Amtr08', 'Amtr09', 'Amtr10', 'Amtr11', 'Amtr12'],
+    'Artr': ['Artr01', 'Artr02', 'Artr03', 'Artr04', 'Artr05', 'Artr06', 'Artr07', 'Artr08', 'Artr09', ],
+    'Bial': ['Bial01', 'Bial02', 'Bial03', 'Bial04', 'Bial05', 'Bial06', 'Bial07', 'Bial08', 'Bial09', 'Bial10','Bial11', 'Bial12', 'Bial13', 'Bial14', 'Bial15', 'Bial16', 'Bial17', 'Bial18', 'Bial19', 'Bial20','Bial21', 'Bial22', 'Bial23', 'Bial24',],
+    'Busi': ['Busi01', 'Busi02', 'Busi03', 'Busi04', 'Busi05', 'Busi06', 'Busi07', 'Busi08', 'Busi09', 'Busi10','Busi11', 'Busi12', 'Busi13', 'Busi14',],
+    'Cobi': ['Cobi01', 'Cobi02', 'Cobi03', 'Cobi04', 'Cobi05', 'Cobi06', 'Cobi07', 'Cobi08', 'Cobi09'],
+    'Ccar': ['Ccar01', 'Ccar02', 'Ccar03', 'Ccar04', 'Ccar05', 'Ccar06', 'Ccar07', 'Ccar08', 'Ccar09', 'Ccar10','Ccar11', 'Ccar12', 'Ccar13', 'Ccar14', 'Ccar15', 'Ccar16', 'Ccar17'],
+    'Cien': ['Cien01', 'Cien02', 'Cien03', 'Cien04', 'Cien05', 'Cien06', 'Cien07', 'Cien08', 'Cien09'],
+    'Cind': ['Cind01', 'Cind02', 'Cind03', 'Cind04', 'Cind05', 'Cind06', 'Cind07', 'Cind08', 'Cind09'],
+    'Cich': ['Cich01', 'Cich02', 'Cich03', 'Cich04', 'Cich05', 'Cich06', 'Cich07', 'Cich08', 'Cich09',],
+    'Chla': ['Chla01', 'Chla02', 'Chla03', 'Chla04', 'Chla05', 'Chla06', 'Chla07', 'Chla08', 'Chla09'],
+    'Chma': ['Chma01', 'Chma02', 'Chma03', 'Chma04', 'Chma05', 'Chma06', 'Chma07', 'Chma08', 'Chma09'],
+    'Chmo': ['Chmo01', 'Chmo02', 'Chmo03', 'Chmo04', 'Chmo05', 'Chmo06', 'Chmo07', 'Chmo08', 'Chmo09', 'Chmo10','Chmo11', 'Chmo12', 'Chmo13', 'Chmo14', 'Chmo15', 'Chmo16', 'Chmo17', 'Chmo18', 'Chmo19', 'Chmo20','Chmo21', 'Chmo22', 'Chmo23', 'Chmo24', 'Chmo25', 'Chmo26', 'Chmo27'],
+    'Chna': ['Chna01', 'Chna02', 'Chna03', 'Chna04', 'Chna05', 'Chna06', 'Chna07', 'Chna08', 'Chna09'],
+    'Cpa': ['Cpa'],
+    'Ceso': ['Ceso01', 'Ceso02', 'Ceso03', 'Ceso04', 'Ceso05', 'Ceso06', 'Ceso07', 'Ceso08'],
+    'Cati': ['Cati01', 'Cati02', 'Cati03', 'Cati04', 'Cati05', 'Cati06', 'Cati07', 'Cati08', 'Cati09', 'Cati10', 'Cati11', 'Cati12'],
+    'Dapi': ['Dapi01','Dapi02','Dapi03','Dapi04','Dapi05','Dapi06','Dapi07','Dapi08','Dapi09','Dapi10','Dapi11','Dapi12','Dapi13','Dapi14','Dapi15','Dapi16','Dapi17','Dapi18','Dapi19','Dapi20','Dapi21','Dapi22','Dapi23','Dapi24','Dapi25','Dapi26','Dapi27','Dapi28','Dapi29','Dapi30','Dapi31','Dapi32',],
+    'Desu': ['Desu'],
+    'Ecan': ['Ecan01','Ecan02','Ecan03','Ecan04','Ecan05','Ecan06','Ecan07','Ecan08','Ecan09'],
+    'Enbr': ['Enbr01', 'Enbr02', 'Enbr03', 'Enbr04', 'Enbr05', 'Enbr06', 'Enbr07', 'Enbr08', 'Enbr09'],
+    'Eupl': ['Eupl01', 'Eupl02', 'Eupl03', 'Eupl04', 'Eupl05', 'Eupl06', 'Eupl07', 'Eupl08', 'Eupl09', 'Eupl10','Eupl11', 'Eupl12', 'Eupl13', 'Eupl14'],
+    'Fbi': ['Fbi'],
+    'Fbr': ['Fbr'],
+    'Ffl': ['Ffl'],
+    'Fli': ['Fli01', 'Fli02', 'Fli03', 'Fli04', 'Fli05', 'Fli06', 'Fli07', 'Fli08', 'Fli09', 'Fli10','Fli11', 'Fli12', 'Fli13', 'Fli14', 'Fli15', 'Fli16', 'Fli17', 'Fli18'],
+    'Fra': ['Fra01','Fra02','Fra03','Fra04','Fra05','Fra06','Fra07','Fra08','Fra09','Fra10','Fra11','Fra12','Fra13','Fra14','Fra15','Fra16','Fra17','Fra18'],
+    'Fro': ['Fro01','Fro02','Fro03','Fro04','Fro05','Fro06','Fro07','Fro08','Fro09','Fro10','Fro11','Fro12','Fro13','Fro14','Fro15','Fro16','Fro17','Fro18'],
+    'Fso': ['Fso01','Fso02','Fso03','Fso04','Fso05','Fso06','Fso07','Fso08','Fso09','Fso10','Fso11','Fso12','Fso13','Fso14','Fso15','Fso16','Fso17','Fso18'],
+    'Ftr': ['Ftr01','Ftr02','Ftr03','Ftr04','Ftr05','Ftr06','Ftr07','Ftr08','Ftr09','Ftr10','Ftr11','Ftr12','Ftr13','Ftr14','Ftr15','Ftr16','Ftr17','Ftr18'],
+    'Glco': ['Glco01', 'Glco02', 'Glco03', 'Glco04', 'Glco05', 'Glco06', 'Glco07', 'Glco08', 'Glco09'],
+    'Hean': ['Hean01','Hean02','Hean03','Hean04','Hean05','Hean06','Hean07','Hean08','Hean09','Hean10','Hean11','Hean12','Hean13','Hean14','Hean15','Hean16','Hean17'],
+    'Hetu': ['Hetu01','Hetu02','Hetu03','Hetu04','Hetu05','Hetu06','Hetu07','Hetu08','Hetu09','Hetu10','Hetu11','Hetu12','Hetu13','Hetu14','Hetu15','Hetu16','Hetu17','Hetu18','Hetu19','Hetu20','Hetu21','Hetu22','Hetu23','Hetu24','Hetu25','Hetu26','Hetu27','Hetu28','Hetu29','Hetu30','Hetu31','Hetu32','Hetu33','Hetu34','Hetu35','Hetu36','Hetu37','Hetu38','Hetu39','Hetu40','Hetu41','Hetu42','Hetu43','Hetu44','Hetu45','Hetu46','Hetu47','Hetu48','Hetu49','Hetu50','Hetu51',],
+    'Heub': ['Heub01', 'Heub02', 'Heub03', 'Heub04', 'Heub05', 'Heub06', 'Heub07'],
+    'Laca': ['Laca01', 'Laca02', 'Laca03', 'Laca04', 'Laca05', 'Laca06', 'Laca07', 'Laca08', 'Laca09'],
+    'Lomi': ['Lomi01', 'Lomi02', 'Lomi03', 'Lomi04', 'Lomi05', 'Lomi06', 'Lomi07', 'Lomi08', 'Lomi09', 'Lomi10','Lomi11', 'Lomi12', 'Lomi13', 'Lomi14', 'Lomi15'],
+    'Lssa': ['Lssa01', 'Lssa02', 'Lssa03', 'Lssa04', 'Lssa05', 'Lssa06', 'Lssa07', 'Lssa08', 'Lssa09'],
+    'Mimi': ['Mimi01','Mimi02','Mimi03','Mimi04','Mimi05','Mimi06','Mimi07','Mimi08','Mimi09','Mimi10','Mimi11','Mimi12','Mimi13','Mimi14','Mimi15','Mimi16','Mimi17','Mimi18','Mimi19'],
+    'Nenu': ['Nenu01', 'Nenu02', 'Nenu03', 'Nenu04', 'Nenu05', 'Nenu06', 'Nenu07', 'Nenu08'],
+    'Nin': ['Nin01', 'Nin02', 'Nin03', 'Nin04', 'Nin05', 'Nin06', 'Nin07', 'Nin08', 'Nin09'],
+    'Pdy': ['Pdy01', 'Pdy02', 'Pdy03', 'Pdy04', 'Pdy05', 'Pdy06', 'Pdy07', 'Pdy08', 'Pdy09'],
+    'Pin': ['Pin'],
+    'Pslu': ['Pslu01', 'Pslu02', 'Pslu03', 'Pslu04', 'Pslu05', 'Pslu06', 'Pslu07'],
+    'Scae': ['Scae'],
+    'Sain': ['Sain01','Sain02','Sain03','Sain04','Sain05','Sain06','Sain07','Sain08','Sain09','Sain10','Sain11','Sain12','Sain13','Sain14','Sain15','Sain16'],
+    'Soca': ['Soca01', 'Soca02', 'Soca03', 'Soca04', 'Soca05', 'Soca06', 'Soca07', 'Soca08', 'Soca09'],
+    'Stre': ['Stre01', 'Stre02', 'Stre03', 'Stre04', 'Stre05', 'Stre06', 'Stre07', 'Stre08', 'Stre09', 'Stre10','Stre11'],
+    'Smso': ['Smso01','Smso02','Smso03','Smso04','Smso05','Smso06','Smso07','Smso08','Smso09','Smso10','Smso11','Smso12','Smso13','Smso14','Smso15','Smso16','Smso17','Smso18','Smso19','Smso20','Smso21','Smso22','Smso23','Smso24','Smso25','Smso26','Smso27','Smso28','Smso29'],
+    'Sesq': ['Sesq'],
+    'Taer': ['Taer01', 'Taer02', 'Taer03', 'Taer04', 'Taer05', 'Taer06', 'Taer07', 'Taer08', 'Taer09', 'Taer10', 'Taer11', 'Taer12'],
+    'Tesi': ['Tesi01','Tesi02','Tesi03','Tesi04','Tesi05','Tesi06','Tesi07','Tesi08','Tesi09','Tesi10','Tesi11','Tesi12','Tesi13','Tesi14','Tesi15','Tesi16','Tesi17','Tesi18','Tesi19','Tesi20','Tesi21','Tesi22','Tesi23','Tesi24'],
+    'Tako': ['1', '2', '3', '4', '5', '6', '7', '8'],
+    'Tamo': ['Tamo01', 'Tamo02', 'Tamo03', 'Tamo04', 'Tamo05', 'Tamo06', 'Tamo07', 'Tamo08'],
+    'Vivi': ['Vivi01','Vivi02','Vivi03','Vivi04','Vivi05','Vivi06','Vivi07','Vivi08','Vivi09','Vivi10','Vivi11','Vivi12','Vivi13','Vivi14','Vivi15','Vivi16','Vivi17','Vivi18','Vivi19'],
+
+    // 你可以继续添加更多物种
+};
+
+// 更新查询区间默认值
+const scaffoldSpecies = new Set([
+    'Amar', 'Cpa', 'Desu', 'Fbi', 'Fbr', 'Ffl', 'Pin', 'Scae', 'Sesq'
+]);
+
+let scaffoldRequestToken = 0;
+
+function isScaffoldSpecies(selectedSpecies) {
+    return scaffoldSpecies.has(selectedSpecies);
+}
+
+function setChromosomeFieldMode(selectedSpecies) {
+    const chromosomeLabel = document.getElementById('chromosomeLabel');
+    if (chromosomeLabel) {
+        chromosomeLabel.textContent = isScaffoldSpecies(selectedSpecies) ? 'Scaffold' : 'Chromosome';
+    }
+}
+
+function setChromosomeHelp(message, isError = false) {
+    const chromosomeHelp = document.getElementById('chromosomeHelp');
+    if (!chromosomeHelp) {
+        return;
+    }
+
+    chromosomeHelp.textContent = message || '';
+    chromosomeHelp.classList.toggle('text-danger', Boolean(isError));
+    chromosomeHelp.classList.toggle('text-muted', !isError);
+}
+
+function setChromosomePlaceholder(chromosomeSelect, message) {
+    chromosomeSelect.innerHTML = '';
+
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = message;
+    chromosomeSelect.appendChild(option);
+}
+
+function formatChromosomeLabel(chromosome) {
+    const chrNum = chromosome.replace(/[a-zA-Z]/g, '');
+    return chrNum ? `Chromosome ${chrNum}` : chromosome;
+}
+
+function populateSelectOptions(chromosomeSelect, options, formatter, placeholderText, selectedValue = '') {
+    setChromosomePlaceholder(chromosomeSelect, placeholderText);
+
+    options.forEach(optionValue => {
+        const option = document.createElement('option');
+        option.value = optionValue;
+        option.textContent = formatter(optionValue);
+        chromosomeSelect.appendChild(option);
+    });
+
+    if (selectedValue) {
+        chromosomeSelect.value = selectedValue;
+    } else if (options.length === 1) {
+        chromosomeSelect.value = options[0];
+    }
+}
+
+function getScaffoldEndpoint(selectedSpecies) {
+    const basePath = window.location.pathname.replace(/\/$/, '');
+    const url = new URL(`${basePath}/scaffolds`, window.location.origin);
+    url.searchParams.set('sp_name', selectedSpecies);
+    return url.toString();
+}
+
+async function fetchScaffolds(selectedSpecies) {
+    const response = await fetch(getScaffoldEndpoint(selectedSpecies), {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to load scaffolds: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (!data || !Array.isArray(data.scaffolds)) {
+        throw new Error('Invalid scaffold response');
+    }
+
+    return data.scaffolds;
+}
+
+function updateCoordinateDefaults(selectedSpecies, preserveExisting = false) {
+    const startInput = document.getElementById('start');
+    const endInput = document.getElementById('end');
+
+    if (!startInput || !endInput) {
+        return;
+    }
+
+    if (preserveExisting) {
+        startInput.value = startInput.dataset.initialValue || startInput.value;
+        endInput.value = endInput.dataset.initialValue || endInput.value;
+        return;
+    }
+
+    if (isScaffoldSpecies(selectedSpecies)) {
+        startInput.value = 1;
+        endInput.value = 400000;
+    } else {
+        startInput.value = 1000;
+        endInput.value = 400000;
+    }
+}
+
+// 更新染色体下拉框
+async function updateChromosomes({ preserveSelection = false, preserveCoordinates = false } = {}) {
+    const speciesSelect = document.getElementById('species');
+    const chromosomeSelect = document.getElementById('chromosome');
+    if (!speciesSelect || !chromosomeSelect) {
+        return;
+    }
+
+    const selectedSpecies = speciesSelect.value;
+    const selectedChromosome = preserveSelection ? (chromosomeSelect.dataset.initialValue || '') : '';
+    const preserveExistingCoordinates = preserveCoordinates
+        && Boolean(speciesSelect.dataset.initialValue)
+        && Boolean(chromosomeSelect.dataset.initialValue);
+    const requestToken = ++scaffoldRequestToken;
+
+    setChromosomeFieldMode(selectedSpecies);
+    updateCoordinateDefaults(selectedSpecies, preserveExistingCoordinates);
+
+    if (!selectedSpecies) {
+        setChromosomePlaceholder(chromosomeSelect, 'Select chromosome...');
+        setChromosomeHelp('');
+        chromosomeSelect.disabled = true;
+        return;
+    }
+
+    chromosomeSelect.disabled = true;
+
+
+    // 清空现有选项
+    chromosomeSelect.innerHTML = '<option value="">Select chromosome...</option>';
+
+    if (selectedSpecies && speciesChromosomes[selectedSpecies]) {
+        const chromosomes = speciesChromosomes[selectedSpecies];
+
+        // 添加该物种的染色体选项
+        chromosomes.forEach(chromosome => {
+            const option = document.createElement('option');
+            option.value = chromosome;
+
+            // 格式化显示名称
+            if (chromosome === 'Amar') {
+                option.textContent = 'Chromosome (complete genome)';
+            } else {
+                // 提取数字部分，如从 "Aann01" 中提取 "01"
+                const chrNum = chromosome.replace(/[a-zA-Z]/g, '');
+                option.textContent = `Chromosome ${chrNum}`;
+            }
+
+            chromosomeSelect.appendChild(option);
+        });
+
+        // 启用染色体选择框
+        chromosomeSelect.disabled = false;
+
+        // 如果只有一个染色体（如 Amar），默认选中
+        if (chromosomes.length === 1) {
+            chromosomeSelect.value = chromosomes[0];
+        }
+    } else {
+        // 如果没有选择物种，禁用染色体选择框
+        chromosomeSelect.disabled = true;
+    }
+
+    updateCoordinateDefaults(selectedSpecies);
+}
+
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 为物种选择框添加事件监听器
+    const speciesSelect = document.getElementById('species');
+    if (speciesSelect) {
+        return;
+        updateCoordinateDefaults(speciesSelect.value);
+    }
+
+    // 初始化时禁用染色体选择框
+    const chromosomeSelect = document.getElementById('chromosome');
+    if (chromosomeSelect) {
+        chromosomeSelect.disabled = true;
+    }
+});
+
+// 表单验证
+function validateForm() {
+    const species = document.getElementById('species').value;
+    const chromosome = document.getElementById('chromosome').value;
+
+    if (!species) {
+        alert('Please select a species');
+        return false;
+    }
+
+    if (!chromosome) {
+        alert('Please select a chromosome');
+        return false;
+    }
+
+    return true;
+}
+
+// 如果需要在表单提交时添加验证
+if (false) document.querySelector('form').addEventListener('submit', function(e) {
+    if (!validateForm()) {
+        e.preventDefault();
+        return false;
+    }
+
+    // 显示加载状态
+    showLoading();
+    return true;
+});
+</script>
+<script>
+async function updateChromosomes({ preserveSelection = false, preserveCoordinates = false } = {}) {
+    const speciesSelect = document.getElementById('species');
+    const chromosomeSelect = document.getElementById('chromosome');
+
+    if (!speciesSelect || !chromosomeSelect) {
+        return;
+    }
+
+    const selectedSpecies = speciesSelect.value;
+    const selectedChromosome = preserveSelection ? (chromosomeSelect.dataset.initialValue || '') : '';
+    const preserveExistingCoordinates = preserveCoordinates
+        && Boolean(speciesSelect.dataset.initialValue)
+        && Boolean(chromosomeSelect.dataset.initialValue);
+    const requestToken = ++scaffoldRequestToken;
+
+    setChromosomeFieldMode(selectedSpecies);
+    updateCoordinateDefaults(selectedSpecies, preserveExistingCoordinates);
+
+    if (!selectedSpecies) {
+        setChromosomePlaceholder(chromosomeSelect, 'Select chromosome...');
+        setChromosomeHelp('');
+        chromosomeSelect.disabled = true;
+        return;
+    }
+
+    chromosomeSelect.disabled = true;
+
+    if (isScaffoldSpecies(selectedSpecies)) {
+        setChromosomePlaceholder(chromosomeSelect, 'Loading scaffolds...');
+        setChromosomeHelp('Loading scaffold list...');
+
+        try {
+            const scaffolds = await fetchScaffolds(selectedSpecies);
+            if (requestToken !== scaffoldRequestToken) {
+                return;
+            }
+
+            populateSelectOptions(
+                chromosomeSelect,
+                scaffolds,
+                scaffold => scaffold,
+                'Select scaffold...',
+                selectedChromosome
+            );
+            chromosomeSelect.disabled = false;
+            setChromosomeHelp(`${scaffolds.length} scaffolds loaded.`);
+        } catch (error) {
+            if (requestToken !== scaffoldRequestToken) {
+                return;
+            }
+
+            console.error(error);
+            setChromosomePlaceholder(chromosomeSelect, 'Unable to load scaffolds');
+            setChromosomeHelp('Scaffold list is unavailable until the genome scaffold endpoint is enabled.', true);
+            chromosomeSelect.disabled = true;
+        }
+
+        return;
+    }
+
+    if (speciesChromosomes[selectedSpecies]) {
+        populateSelectOptions(
+            chromosomeSelect,
+            speciesChromosomes[selectedSpecies],
+            formatChromosomeLabel,
+            'Select chromosome...',
+            selectedChromosome
+        );
+        chromosomeSelect.disabled = false;
+        setChromosomeHelp('');
+    } else {
+        setChromosomePlaceholder(chromosomeSelect, 'Select chromosome...');
+        setChromosomeHelp('');
+        chromosomeSelect.disabled = true;
+    }
+}
+
+function validateForm() {
+    const species = document.getElementById('species').value;
+    const chromosome = document.getElementById('chromosome').value;
+
+    if (!species) {
+        alert('Please select a species');
+        return false;
+    }
+
+    if (!chromosome) {
+        alert(isScaffoldSpecies(species) ? 'Please select a scaffold' : 'Please select a chromosome');
+        return false;
+    }
+
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const speciesSelect = document.getElementById('species');
+    const chromosomeSelect = document.getElementById('chromosome');
+    const genomeForm = document.getElementById('genome-query-form');
+
+    if (!speciesSelect || !chromosomeSelect) {
+        return;
+    }
+
+    if (speciesSelect.dataset.initialValue) {
+        speciesSelect.value = speciesSelect.dataset.initialValue;
+    }
+
+    speciesSelect.addEventListener('change', function() {
+        chromosomeSelect.dataset.initialValue = '';
+        updateChromosomes();
+    });
+
+    chromosomeSelect.disabled = true;
+
+    updateChromosomes({
+        preserveSelection: Boolean(chromosomeSelect.dataset.initialValue),
+        preserveCoordinates: true
+    });
+
+    if (genomeForm) {
+        genomeForm.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
+
+            showLoading();
+            return true;
+        });
+    }
+});
+</script>
+
+
+<script>
+/* Unified AGRP table behavior */
+(function () {
+    function hasJqueryDataTables() {
+        return typeof window.jQuery !== 'undefined' && jQuery.fn && jQuery.fn.DataTable;
+    }
+
+    function getDataTable(table) {
+        if (!hasJqueryDataTables() || !table || !table.id) {
+            return null;
+        }
+        var selector = '#' + table.id;
+        if (!jQuery.fn.dataTable.isDataTable(selector)) {
+            return null;
+        }
+        return jQuery(selector).DataTable();
+    }
+
+    function installPageJump(table) {
+        var dt = getDataTable(table);
+        if (!dt || table.dataset.pageJumpInstalled === '1') {
+            return;
+        }
+        table.dataset.pageJumpInstalled = '1';
+
+        function renderPageJump() {
+            var info = dt.page.info();
+            var wrapper = jQuery('#' + table.id + '_wrapper');
+            var paginate = wrapper.find('.dataTables_paginate');
+            paginate.find('.page-jump-control').remove();
+
+            if (!info || info.pages <= 1 || !paginate.length) {
+                return;
+            }
+
+            var inputId = table.id + '_page_jump';
+            var control = jQuery('<div class="page-jump-control" aria-label="Jump to page"></div>');
+            var input = jQuery('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                id: inputId,
+                min: 1,
+                max: info.pages,
+                value: info.page + 1,
+                'aria-label': 'Page number'
+            });
+            var total = jQuery('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+            var button = jQuery('<button type="button" class="page-jump-btn">Go</button>');
+
+            function jumpToPage() {
+                var requestedPage = parseInt(input.val(), 10);
+                if (isNaN(requestedPage)) {
+                    input.val(info.page + 1).focus();
+                    return;
+                }
+                requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                dt.page(requestedPage - 1).draw('page');
+            }
+
+            input.on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    jumpToPage();
+                }
+            });
+            button.on('click', jumpToPage);
+
+            control
+                .append(jQuery('<label></label>').attr('for', inputId).text('Page'))
+                .append(input)
+                .append(total)
+                .append(button);
+            paginate.append(control);
+        }
+
+        dt.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    function tableRows(table, selector) {
+        var dt = getDataTable(table);
+        if (dt) {
+            return jQuery(dt.rows(selector).nodes());
+        }
+        return jQuery(table).find('tbody tr');
+    }
+
+    function selectionTable() {
+        var box = document.querySelector('.row-checkbox');
+        return box ? box.closest('table') : null;
+    }
+
+    function allFilteredCheckboxes(table) {
+        return tableRows(table, {search: 'applied'}).find('.row-checkbox');
+    }
+
+    function currentPageCheckboxes(table) {
+        return tableRows(table, {page: 'current'}).find('.row-checkbox');
+    }
+
+    function updateSelectionControls() {
+        var table = selectionTable();
+        if (!table) {
+            return;
+        }
+
+        var allBoxes = allFilteredCheckboxes(table);
+        var checkedAllCount = allBoxes.filter(':checked').length;
+        var allSelected = allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+        var selectAllBtn = document.getElementById('selectAllBtn');
+        if (selectAllBtn) {
+            selectAllBtn.innerHTML = allSelected
+                ? '<i class="fas fa-square"></i> Clear Selection'
+                : '<i class="fas fa-check-square"></i> Select All';
+        }
+
+        var pageBoxes = currentPageCheckboxes(table);
+        var checkedPageCount = pageBoxes.filter(':checked').length;
+        jQuery('.js-select-current-page').each(function () {
+            this.checked = pageBoxes.length > 0 && checkedPageCount === pageBoxes.length;
+            this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+        });
+    }
+
+    function replaceButton(id) {
+        var button = document.getElementById(id);
+        if (!button) {
+            return null;
+        }
+        var clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+        return clone;
+    }
+
+    function downloadSelectedRows(table, downloadBtn) {
+        var rows = [];
+        var headers = [];
+        jQuery(table).find('thead th').each(function (index) {
+            var text = jQuery(this).text().trim();
+            if (index === 0 && jQuery(this).find('.js-select-current-page').length) {
+                return;
+            }
+            if (/^select$/i.test(text) || /^image$/i.test(text)) {
+                return;
+            }
+            headers.push(text);
+        });
+        if (headers.length) {
+            rows.push(headers.join('\t'));
+        }
+
+        tableRows(table, {search: 'applied'}).each(function () {
+            var row = this;
+            var checkbox = row.querySelector('.row-checkbox');
+            if (!checkbox || !checkbox.checked) {
+                return;
+            }
+            var data = [];
+            jQuery(row).find('td').each(function (index) {
+                var cell = jQuery(this);
+                var headerText = jQuery(table).find('thead th').eq(index).text().trim();
+                if (index === 0 || /^select$/i.test(headerText) || /^image$/i.test(headerText) || cell.find('img').length) {
+                    return;
+                }
+                data.push(cell.text().trim().replace(/\s+/g, ' '));
+            });
+            rows.push(data.join('\t'));
+        });
+
+        if (rows.length <= (headers.length ? 1 : 0)) {
+            alert('Please select at least one row.');
+            return;
+        }
+
+        var blob = new Blob([rows.join('\n')], {type: 'text/plain'});
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = (downloadBtn && downloadBtn.dataset.filename) || 'selected_rows.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (hasJqueryDataTables()) {
+            jQuery('table.dataTable, table[id]').each(function () {
+                installPageJump(this);
+                var dt = getDataTable(this);
+                if (dt) {
+                    dt.on('draw length.dt search.dt order.dt page.dt', updateSelectionControls);
+                }
+            });
+        }
+
+        var selectAllBtn = replaceButton('selectAllBtn');
+        var downloadBtn = replaceButton('download-btn');
+        var table = selectionTable();
+
+        if (selectAllBtn && table) {
+            selectAllBtn.addEventListener('click', function () {
+                var allBoxes = allFilteredCheckboxes(table);
+                var shouldSelect = allBoxes.filter(':checked').length !== allBoxes.length;
+                allBoxes.prop('checked', shouldSelect);
+                updateSelectionControls();
+            });
+        }
+
+        if (downloadBtn && table) {
+            downloadBtn.addEventListener('click', function () {
+                downloadSelectedRows(table, downloadBtn);
+            });
+        }
+
+        jQuery(document).on('click', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+        });
+
+        jQuery(document).on('change', '.js-select-current-page', function (event) {
+            event.stopPropagation();
+            var targetTable = selectionTable();
+            if (!targetTable) {
+                return;
+            }
+            currentPageCheckboxes(targetTable).prop('checked', this.checked);
+            updateSelectionControls();
+        });
+
+        jQuery(document).on('change', '.row-checkbox', updateSelectionControls);
+        updateSelectionControls();
+    });
+})();
+</script>
+
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'genomeTable',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: 'genome_selected_rows.txt'
+});
+</script>
+
+{% endblock %}

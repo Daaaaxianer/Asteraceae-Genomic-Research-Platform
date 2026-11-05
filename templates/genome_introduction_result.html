@@ -1,0 +1,175 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>LGRPv2 platform</title>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../static/vendor/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/vendor/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" href="../static/vendor/css/select.dataTables.min.css">
+    <script type="text/javascript" src="../static/vendor/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="../static/vendor/js/highcharts.js"></script>
+
+
+    <style>
+        table {
+        white-space: nowrap;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+
+        th {
+        background-color: #f2f2f2;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Introduction of species<i></i>
+    </h3>
+
+    <div class="container" style="padding-top: 10px; padding-bottom: 10px">
+        {% if species %}
+            {% for spec in species %}
+                <b><h3>{{ spec.5 }}</h3></b>
+                <table>
+                    <tr>
+                        <th>taxonid</th>
+                        <td>{{ spec.0 }}</td>
+                    </tr>
+                    <tr>
+                        <th>family</th>
+                        <td>{{ spec.1 }}</td>
+                    </tr>
+                    <tr>
+                        <th>genus</th>
+                        <td>{{ spec.2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>specificepithet</th>
+                        <td>{{ spec.3 }}</td>
+                    </tr>
+                    <tr>
+                        <th>infraspecificepithet</th>
+                        <td>{{ spec.4 }}</td>
+                    </tr>
+                    <tr>
+                        <th>scientfiicname</th>
+                        <td>{{ spec.5 }}</td>
+                    </tr>
+                    <tr>
+                        <th>scientfiicnameauthorship</th>
+                        <td>{{ spec.6 }}</td>
+                    </tr>
+                    <tr>
+                        <th>taxonrank</th>
+                        <td>{{ spec.7 }}</td>
+                    </tr>
+                    <tr>
+                        <th>taxonomicstatus</th>
+                        <td>{{ spec.8 }}</td>
+                    </tr>
+                    <tr>
+                        <th>f10</th>
+                        <td>{{ spec.9 }}</td>
+                    </tr>
+                    <tr>
+                        <th>parentnameusageid</th>
+                        <td>{{ spec.10 }}</td>
+                    </tr>
+                    <tr>
+                        <th>originalnameusageid</th>
+                        <td>{{ spec.11 }}</td>
+                    </tr>
+                    <tr>
+                        <th>namepublishedin</th>
+                        <td>{{ spec.12 }}</td>
+                    </tr>
+                    <tr>
+                        <th>nomenclaturalstatus</th>
+                        <td>{{ spec.13 }}</td>
+                    </tr>
+                    <tr>
+                        <th>taxonremarks</th>
+                        <td>{{ spec.14 }}</td>
+                    </tr>
+                    <tr>
+                        <th>scientificnameid</th>
+                        <td>{{ spec.15 }}</td>
+                    </tr>
+                    <tr>
+                        <th>powoid</th>
+                        <td>{{ spec.16 }}</td>
+                    </tr>
+                    <tr>
+                        <th>lifeform</th>
+                        <td>{{ spec.17 }}</td>
+                    </tr>
+                    <tr>
+                        <th>climate</th>
+                        <td>{{ spec.18 }}</td>
+                    </tr>
+                    <tr>
+                        <th>homotypicsynonym</th>
+                        <td>{{ spec.19 }}</td>
+                    </tr>
+                    <tr>
+                        <th>hybridformula</th>
+                        <td>{{ spec.20 }}</td>
+                    </tr>
+                    <tr>
+                        <th>reviewed</th>
+                        <td>{{ spec.21 }}</td>
+                    </tr>
+                    <tr>
+                        <th>references</th>
+                        <td><a href="{{ spec.22 | safe }}" target="_blank">{{ spec.22 }}</a></td>
+                    </tr>
+                </table>
+                <hr>  <!-- 添加分隔线以区分不同物种 -->
+            {% endfor %}
+        {% else %}
+            <p><h3 style="padding-top: 10px; padding-bottom: 10px; text-align: center;">No matching species found!</h3></p>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
+
+
+{% block switch %}
+
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+

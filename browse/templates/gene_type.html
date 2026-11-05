@@ -1,0 +1,391 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteraceae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/shuye.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>Duplication type</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5">
+            &emsp;&emsp;Gene duplication type classification analysis, using <a href="https://github.com/DXXDR/DupGen_finder">DupGen_finder</a>, can divide all genes into 5 categories according to the replication type, namely WGD: whole genome duplication, TD: tandem duplication (two adjacent duplication genes), PD: Proximal duplications (repeated genes within 10 genes apart), TRD: transposed duplications (duplicated genes consisting of ancestral and new loci), DSD: scattered duplications (duplicated genes that are neither adjacent nor collinear)
+            <br>&emsp;&emsp;Among them, <em>Glycine max</em> was the species with the most WGD genes, and <em>Medicago truncatula</em> was the species with the most PD gene replication type, while TD TRD DSD was the species with the most <em>Arachis maconticola</em> Gene replication type, which might be because <em>Arachis Maconticola</em> is polyploid.
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/gene_type_new.jpg" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <form action="gene_type" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-2"></div>
+                <div class="col-sm-8" style="padding-top: 20px">
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Query Sequence</label>
+                         <button type="button" class="" id="query_sequence">Example</button>
+                        <div class="input-group">
+                            <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" required style="height: 100px"></textarea>
+                        </div>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8" style="padding-top: 20px">
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Or, Gene/Genes ID</label>
+                     <button type="button" class="" id="exampleButton">Example</button>
+                    <div class="input-group">
+                        <textarea class="form-control" id="lastName" name="geneid" required style="height: 100px"></textarea>
+                    </div>
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <label for="state" class="form-label">query genome</label>
+                <select class="form-control" id="state" name="sp_data_1" required>
+                           <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Ceso">Centaurea</option>
+                            <option value="Chla">Chrysanthemum seticuspe</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata</option>
+                            <option value="Desu">Deinandra increscens subsp</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago caesia</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+            </div>
+
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <input class="w-100 btn btn-primary btn-lg col-md-12" style="margin-top: 10px" type="submit" value="Search">
+            </div>
+
+            {% if result %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Select</th>  <!-- 新增一列用于复选框 -->
+                                <th>Gene</th>
+                                <th>Chromosome</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Duplicated_type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in result %}
+                                <tr>
+                                    <td><input type="checkbox" class="row-checkbox"></td> <!-- 新增一个复选框 -->
+                                    <td><a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a></td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+
+                <script>
+                    var selectAllBtn = document.getElementById("selectAllBtn");
+                    selectAllBtn.addEventListener("click", function() {
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    // 获取下载按钮
+                    var downloadBtn = document.getElementById("download-btn");
+                    downloadBtn.addEventListener("click", function() {
+                        var selectedRows = [];
+                        var checkboxes = document.querySelectorAll(".row-checkbox");
+                        checkboxes.forEach(function(checkbox, index) {
+                            if (checkbox.checked) {
+                                var row = checkbox.closest("tr");
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(function(cell) {
+                                    rowData.push(cell.textContent);
+                                });
+                                selectedRows.push(rowData.join("\t"));
+                            }
+                        });
+                        downloadSelectedRows(selectedRows);
+                    });
+
+                    function downloadSelectedRows(rows) {
+                        var data = rows.join("\n");
+                        var blob = new Blob([data], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement("a");
+                        link.href = url;
+                        link.download = "gene_type_selected_rows.txt"; // 设置下载文件名
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                </script>
+            {% endif %}
+
+            {% if blast_results %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Blast results<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 justify-content-center" style="overflow-x: auto;">
+                    <table id="myTable2">
+                        <thead>
+                            <tr>
+                                <th>Query ID</th>
+                                <th>Subject ID</th>
+                                <th>Identity</th>
+                                <th>Length</th>
+                                <th>Mismatch</th>
+                                <th>Gapopen</th>
+                                <th>Qstart</th>
+                                <th>Qend</th>
+                                <th>Sstart</th>
+                                <th>Send</th>
+                                <th>evalue</th>
+                                <th>Bitscore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in blast_results %}
+                                <tr>
+                                    <td>{{ pair.0 }}</td>
+                                    <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                                    <td>{{ pair.2 }}</td>
+                                    <td>{{ pair.3 }}</td>
+                                    <td>{{ pair.4 }}</td>
+                                    <td>{{ pair.5 }}</td>
+                                    <td>{{ pair.6 }}</td>
+                                    <td>{{ pair.7 }}</td>
+                                    <td>{{ pair.8 }}</td>
+                                    <td>{{ pair.9 }}</td>
+                                    <td>{{ pair.10 }}</td>
+                                    <td>{{ pair.11 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            {% if not_found_geneids %}
+                <hr width="100%" style="border: dotted 2px">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-6 text-center" style="position: relative;">
+                        <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Not found genes<i></i></h4>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 justify-content-center" style="">
+                    <table id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pair in not_found_geneids %}
+                                <tr>
+                                    <td>{{ pair }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+
+    <script>
+        document.getElementById('exampleButton').addEventListener('click', function() {
+            var exampleText = `Aann1g0011
+Aann1g0017
+Aann1g0040
+Aann1g0048
+`;
+            document.getElementById('lastName').value = exampleText;
+        });
+    </script>
+
+    <script>
+        document.getElementById('query_sequence').addEventListener('click', function() {
+            var exampleText = `>ZPYcontig75_002250.1
+MGSLPLPLNQYSYPNARRDNSVVDDFHGITIPDPYRWLENPDAQEVKDFVHSQLQLTDSVLESCAARPNLRHKLTNLFDHPRYTVPFRRSHNTYFYFHNSGLQPHNVLYMQNGFHAGAQPHLLLDPNALSPDGSVSLTAVSVSQHADFLAYGLSSSGTDWVTINIMRIQDKHLLPHTLSWVKFSSISWTHDTKGFFYSRYPAPKEGQLVDAGTETNTNLYHELYYHFLGTDQSQDILCWRDPQNPEYRFRASVSDDGRYIIMYIEQGCDPVNKLYYCDMSELTNGLQGFGNKQEEEDPHAHATMLPFVKLVDTFDAQFQYVANDDTVFTFLTNKNAPKYKLVRVDLKEPINSWFDVIHESERDVLESACAVNGNQVIVSYLSDVKYVVQVRDLETGCLQHLLPIDIGTVNGISARRQDSIFFFGFSSFLSPGIVYQCDLGTQAPVIKIFREIVVPGFDRSQFHANQVFVASKDGTKIPMFIVARKDISLDGSHPCLLYGYGGFNASVTPCFSVSRIVLARHLGCVLSIANIRGGGEYGEEWHKAGSLAKKQNCFDDFISAAEYLVSVGYTQPAKLCIEGGSNGGLLVAACINQRPDLFGCALAHVGVMDMLRFHKFTIGHAWTSEFGCSEKEEEFHWLIKYSPLHNVRRPWEEFGGGSIQYPSTMLLTADHDDRVVPLHSLKLLATMQYVLSTSMKQSPQTNPIIARIECKAGHGAGRSMQKIIEEAADRYGFMAKVLEAHWIE
+>ZPYcontig73_002250.1
+MAVKRGVASAVVLCVLASVSVSLGEDPYRFFDWNVTYGDIYPLGVRQQGILINGQFPGPDIHSVTNDNLIINVFNSLDQPFLLSWNGVQQRRNSYEDGVFGTTCPIPPGKNFTYILQVKDQIGSFYYFPSLAFHKAAGGFGGIRILSRPRIPVPFPDPAGDYTVLIGDWYKANHTDLQRQLDSGRKLALPDGILINGRGENGASFNVEQGKSYRLRISNVGLENSLNFRIQNHKMTLVEVEGTHTLQTTYSSLDVHVGQSYSVLVTADQPPRDYYIVVSTRFTTTVLTTTGILRYSNSAGPVQGPPPGGPTTQIDWSLNQARSIRTNLTASGPRPNPQGSYHYGLINLTRTIVVSSSAGQVNGKQRYAINSVSYVAPDTPLKVADFFKIPGVFRVGSISDRPSGSAIYLDTSVMQTDYRTFVEIVFQNDEDIIQTYHLDGYSFFVVGMDGGTWTAGSRNEYNLRDAVSRCTTQVYPKSWTAIYVALDNVGMWNLRSEFWARQYLGQQFYMRVYTTSTSLRDEYPIPKNALLCGKASGRHTRPL
+`;
+            document.getElementById('lastName_query_sequence').value = exampleText;
+        });
+    </script>
+
+
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+    </form>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

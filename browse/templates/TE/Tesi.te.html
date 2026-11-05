@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../../static/vendor/css/style.css" rel="stylesheet">
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../static/vendor/css/home.css" type="text/css">
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <script src="../../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/slick-theme.css"/>
+    <link href="../../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../../static/css/style.css" rel="stylesheet"/>
+    <link href="../../../static/css/responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" class="init">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+{% block switch %}
+{# 不放置任何内容，以清空父模板中的block内容 #}
+{% endblock %}
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Transposable elements - Tesi<i></i>
+    </h3>
+    <div class="row" style="">
+        <h5 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Transposable elements (TEs): also known as jumTesig genes, are DNA sequences that can change their position in a cell. There are two types of transposons: type I transposons (Retrotransposon) and type II transposons (DNA transposons).
+        <br>
+    &emsp;&emsp;Type I transposons: DNA is used as a template and is transcribed into mRNA, which is then reverse transcribed into cDNA and inserted into a new position in the genome by the action of integrase. Type II transposon: The mechanism of transposition of type II transposon is called "cut-and-paste". The transposase cuts the TE Tesim its original position in the genome and pastes it into other regions of the genome. The gaps formed by the cut are repaired by DNA.
+        </h5>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../../static/image/TE_img.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+
+    <!-- ClassI -->
+    <table class="table table-striped">
+        <tbody>
+            <h5><b style="color: #b7ab25">ClassI</b></h5>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI" %}"><b>ClassI</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_LTR" %}"><b>LTR</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_LTR_Copia" %}"><b>LTR_Copia</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_LTR_Gypsy" %}"><b>LTR_Gypsy</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_nLTR_LINE_L1" %}"><b>nLTR_LINE_L1</b></a></td>
+            </tr>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_nLTR_LINE_I" %}"><b>ClassI_nLTR_LINE_I</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_nLTR_DIRS" %}"><b>nLTR_DIRS</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_nLTR_PLE" %}"><b>nLTR_PLE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassI_nLTR_SINE_tRNA" %}"><b>nLTR_SINE_tRNA</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- ClassII -->
+    <table class="table table-striped">
+        <tbody>
+            <h5><b style="color: #b7ab25">ClassII</b></h5>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII" %}"><b>ClassII</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_CACTA_MITE" %}"><b>DNA_CACTA_MITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_CACTA_nMITE" %}"><b>DNA_CACTA_nMITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_Harbinger_MITE" %}"><b>DNA_Harbinger_MITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_Harbinger_nMITE" %}"><b>DNA_Harbinger_nMITE</b></a></td>
+            </tr>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_hAT_MITE" %}"><b>DNA_hAT_MITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_hAT_nMITE" %}"><b>DNA_hAT_nMITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_hAT_unknown" %}"><b>DNA_hAT_unknown</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_Mutator_MITE" %}"><b>DNA_Mutator_MITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_Mutator_nMITE" %}"><b>DNA_Mutator_nMITE</b></a></td>
+            </tr>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_Mutator_nMITE" %}"><b>DNA_Mutator_nMITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_TcMar_MITE" %}"><b>DNA_TcMar_MITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_TcMar_nMITE" %}"><b>DNA_TcMar_nMITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_DNA_TcMar_unknown" %}"><b>DNA_TcMar_unknown</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_MITE" %}"><b>MITE</b></a></td>
+            </tr>
+        <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassII_nMITE" %}"><b>nMITE</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- ClassIII -->
+    <table class="table table-striped">
+        <tbody>
+            <h5><b style="color: #b7ab25">ClassIII</b></h5>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "ClassIII_Helitron" %}"><b>Helitron</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+        </tbody>
+    </table>
+    <!-- Other -->
+    <table class="table table-striped">
+        <tbody>
+            <h5><b style="color: #b7ab25">Other</b></h5>
+            <tr>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "Low_complexity" %}"><b>Low_complexity</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "Simple_repeat" %}"><b>Simple_repeat</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="{% url "TE_type" "Tesi" "unknown" %}"><b>unknown</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+<td style="text-align: center"><a target="_blank" style="color: green;" href="#"><b>---</b></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

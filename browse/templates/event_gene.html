@@ -1,0 +1,434 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aster-Evogenes - AGRP{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* ===================== 全局布局 ===================== */
+.page-wrapper {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin: 40px auto;
+}
+
+/* ===================== 标题区 ===================== */
+.page-title {
+    color: #d35400;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.title-line {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    margin: 15px auto 30px;
+    border-radius: 3px;
+}
+
+/* ===================== 说明卡片 ===================== */
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+}
+
+/* ===================== 表单区域 ===================== */
+.form-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+textarea.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+textarea.form-control:focus,
+select.form-control:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 0 0.15rem rgba(230,126,34,0.25);
+}
+
+.example-btn {
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid #e67e22;
+    background: #fff;
+    color: #e67e22;
+}
+
+/* ===================== 搜索按钮 ===================== */
+.search-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ===================== 结果区 ===================== */
+.result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e67e22;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* ===================== 表格 ===================== */
+table thead th {
+    background: #fff3e6;
+    color: #d35400;
+    font-weight: 600;
+    border-bottom: 2px solid #e67e22;
+    white-space: nowrap;
+}
+
+table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.checkbox-cell {
+    text-align: center;
+}
+
+.action-bar {
+    margin-bottom: 15px;
+}
+
+/* ===================== 分隔线 ===================== */
+.section-divider {
+    border-top: 2px dashed #e67e22;
+    margin: 40px 0;
+}
+.desc-card {
+    background: #fff8f2;
+    border-left: 6px solid #e67e22;
+    padding: 20px 25px;
+    border-radius: 10px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 35px;
+
+    text-align: justify;        /* 👈 两端对齐 */
+    text-justify: inter-word;  /* 👈 英文更好看 */
+}
+#myTable th,
+#myTable td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#myTable th:first-child,
+#myTable td:first-child {
+    width: 76px;
+    min-width: 76px;
+    text-align: center;
+}
+
+#myTable th:first-child::before,
+#myTable th:first-child::after {
+    content: none !important;
+    display: none !important;
+}
+{% include 'includes/ancestral_table_theme.html' %}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="page-wrapper">
+
+    <h2 class="page-title">Aster-Evogenes</h2>
+    <div class="title-line"></div>
+
+    <div class="desc-card">
+        Based on orthologous and paralogous regions identified within and between genomes, we isolated sets of orthologous and paralogous lineages resulting from species divergence and polyploidy events. We also isolated conserved single-copy genes within the genome for analysis of trait-related gene conservation. We offered <strong>593,521</strong> WGDs-associated paralogs and <strong>1,215,139</strong> speciation-associated orthologs across <strong>43</strong> Asteraceae species and <strong>6</strong> outgroups, <strong>290,921</strong> single-copy genes across <strong>53</strong> Asteraceae species and <strong>6</strong> outgroups.
+    </div>
+
+    <form action="event_gene" method="post" enctype="multipart/form-data" novalidate>
+
+    {% csrf_token %}
+    <div class="form-card">
+            <div class="mb-4">
+                <label class="form-label">
+                    Query Sequence
+                    <button type="button" class="example-btn" id="query_sequence">Example</button>
+                </label>
+                <textarea class="form-control" id="lastName_query_sequence" name="query_sequence" rows="5"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Or, Gene / Genes ID
+                    <button type="button" class="example-btn" id="exampleButton">Example</button>
+                </label>
+                <textarea class="form-control" id="lastName" name="geneid" rows="5"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Query Genome</label>
+                <select class="form-control" id="state" name="sp_data_1">
+                    <option value="ALL_SPECIES" {% if selected_sp_data_1 == "ALL_SPECIES" or sp_data_1 == "ALL_SPECIES" %}selected{% endif %}>All species</option>
+                    <option value="Aann" {% if selected_sp_data_1 == "Aann" or sp_data_1 == "Aann" or not selected_sp_data_1 and not sp_data_1 %}selected{% endif %}>Artemisia annua</option>
+                    <option value="Aarg">Artemisia argyi</option>
+                    <option value="Amar">Ambrosia artemisiifolia</option>
+                    <option value="Amtr">Ambrosia trifida</option>
+                    <option value="Arla">ArCatium lappa</option>
+                    <option value="Armi">ArCatium minus</option>
+                    <option value="Artr">Artemisia tridentata</option>
+                    <option value="Bial">Bidens alba</option>
+                    <option value="Busi">Buxus sinica</option>
+                    <option value="Cati">Carthamus tinctorius</option>
+                    <option value="Ccarr">Cynara cardunculus</option>
+                    <option value="Ceso">Cientaurea solstitialis</option>
+                    <option value="Chla">Chrysanthemum lavandulifolium</option>
+                    <option value="Chma">Chrysanthemum makinoi</option>
+                    <option value="Chmo">Chrysanthemum morifolium</option>
+                    <option value="Chna">Chrysanthemum nankingense</option>
+                    <option value="Cich">Cichorium intybus</option>
+                    <option value="Cien">Cichorium endivia</option>
+                    <option value="Cichd">Chrysanthemum indicum</option>
+                    <option value="Cobi">Cosmos bipinnata</option>
+                    <option value="Cpa">Cientrapalus pauciflorus</option>
+                    <option value="Dapi">Dahlia pinnata.nucleus</option>
+                    <option value="Desu">Deinandra incresCiens subsp. villosa</option>
+                    <option value="Ecan">Erigeron canadensis</option>
+                    <option value="Enbr">Erigeron breviscapus</option>
+                    <option value="Eupl">Euptelea pleiosperma</option>
+                    <option value="Fbi">Flaveria bidentis</option>
+                    <option value="Fbr">Flaveria brownii</option>
+                    <option value="Ffl">Flaveria floridana</option>
+                    <option value="Fli">Flaveria linearis</option>
+                    <option value="Fra">Flaveria ramosissima</option>
+                    <option value="Fro">Flaveria robusta</option>
+                    <option value="Fso">Flaveria sonorensis</option>
+                    <option value="Ftr">Flaveria trinervia</option>
+                    <option value="Glco">Glebionis coronaria</option>
+                    <option value="Hean">Helianthus annuus</option>
+                    <option value="Hetu">Helianthus tuberosus</option>
+                    <option value="Heub">Helichrysum umbraculigerum</option>
+                    <option value="Laca">Lactuca saligna</option>
+                    <option value="Lomi">Logfia minima</option>
+                    <option value="Lssa">Lactuca sativa</option>
+                    <option value="Mimi">Mikania micrantha</option>
+                    <option value="Nenu">Nelumbo nucifera</option>
+                    <option value="Nin">Nymphoides indica</option>
+                    <option value="Pdy">Pulicaria dysenTaerica</option>
+                    <option value="Pin">Psluchea indica</option>
+                    <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                    <option value="Sain">Saussurea involucrata</option>
+                    <option value="Scae">Solidago caesia</option>
+                    <option value="Sesq">Senecio squalidus</option>
+                    <option value="Smso">Smallanthus sonchifolius</option>
+                    <option value="Soca">Solidago canadensis</option>
+                    <option value="Stre">Stevia rebaudiana</option>
+                    <option value="Taer">Tagetes erecta</option>
+                    <option value="Tako">Taraxacum koksaghyz</option>
+                    <option value="Tamo">Taraxacum mongolicum</option>
+                    <option value="Tesi">TetraCientron sinense</option>
+                    <option value="Vivi">Vitis vinifera</option>
+                </select>
+            </div>
+
+            <input class="w-100 btn btn-lg search-btn" type="submit" value="Search">
+        </div>
+
+        {% if has_searched and not result %}
+        <div class="alert alert-info text-center mt-4" role="alert">
+            {{ info_message|default:"No event genes were found for the current query." }}
+        </div>
+        {% endif %}
+
+        {% if result %}
+        <div class="section-divider"></div>
+
+        <div class="result-title">
+            <img src="../../static/image/logo.png" style="height:32px;margin-right:10px;">
+            Results
+        </div>
+
+        <div class="action-bar">
+            <button type="button" id="selectAllBtn" class="btn-custom btn-select"><i class="fas fa-check-square"></i> Select All</button>
+            <button type="button" id="download-btn" class="btn-custom btn-download" data-filename="event_gene_selected_rows.txt"><i class="fas fa-download"></i> Download Selected</button>
+        </div>
+
+        <div class="table-responsive table-container">
+            <table id="myTable" class="table table-bordered table-hover result-table align-middle">
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell"><label class="current-page-select"><input type="checkbox" class="js-select-current-page form-check-input"><span>Select</span></label></th>
+                        <th>Gene_1</th>
+                        <th>Gene_2</th>
+                        <th>Event_name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pair in result %}
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox" class="row-checkbox form-check-input"></td> <!-- 新增一个复选框 -->
+                            <td><a href="{% url 'gene_detail' geneid=pair.1 %}">{{ pair.1 }}</a></td>
+                            <td><a href="{% url 'gene_detail' geneid=pair.2 %}">{{ pair.2 }}</a></td>
+                            <td>{{ pair.3 }}</td>
+                        </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    </form>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    if ($('#myTable').length) {
+        $('#myTable').DataTable({
+            paging: true,
+            info: true,
+            searching: true,
+            lengthChange: true,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            pagingType: 'simple_numbers',
+            scrollX: true,
+            autoWidth: false,
+            columnDefs: [
+                { orderable: false, targets: 0 }
+            ]
+        });
+    }
+});
+</script>
+
+<script>
+document.getElementById('exampleButton').onclick = function() {
+    document.getElementById('lastName').value =
+`Aann1g00025
+Aann1g00082
+Aann1g00092
+Aann1g00141`;
+};
+
+document.getElementById('query_sequence').onclick = function() {
+    document.getElementById('lastName_query_sequence').value =
+`>sequence1
+MSKALVGVLKAVEAKVKKSHTFAKKRAISICTTMSVAHVDDEVCGGDLEVFHTEKIFSNGDIYIGQWGMDYPHGNGKYLWSDGCMYFGDWYMGKICGKGKFSWPSGATYEGQFKNGYMDGDGTFTSSLNDTYRGYWVMNRKQGKGTKSFVNGDQYEGEWKRGYHEGQGRYHWHNGHQYIGQWKNGKMNGNGTMIWANGNRYDGCWEDGLPKGNGTFHWQDGSFYAGVWSRDRREQSGKFYPSTSINPHDDWDPHQLFSVEMGECLICEGEEITIFPSDKVFVWSNNEEKPPLRKNSRGMRMSVDRKLNNGDYLTADGNTGGLYGRPLKIKLQPAKRQGVTICKGHKNYELMLNLQLGIRHSVGRPAPTKSLKLKPTAFDTKQKLWTKFPPEGSKHTPPHQSCEFKWKDYCPLVFRTLRKLFNVDPADYMLSICGNDALRELSSPGKSGSFFYLTHDDKYMIKTMKKSEVKVLKRMLPAYFEHCKSFENTLVTKFFGLHCVKLSGPIQKKVRFVIMGNLLCTEVPIHRRFDLKGSSHGRITDKPETEIDANTTLKDLDLKFIFRLQKDWFQEFCSQVNKDCDFLEQERIMDYSLLVGISFQESNREAAEGKAGCDSTGSTPRVSTNGDAPLNAARWTCVRLGINMPSRVEFTVRSHETQIVGEPTGEMCDVILFFGIIDILQDYDISKKLEHAYKSFQYDSTSISAVDPRLYSKRFKDFLFRVFTDDT`;
+};
+</script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    var selectAllBtn = document.getElementById("selectAllBtn");
+    var downloadBtn = document.getElementById("download-btn");
+
+    function updateSelectAllState() {
+        if (!selectAllBtn) {
+            return;
+        }
+
+        var checkboxes = document.querySelectorAll(".row-checkbox");
+        var allSelected = checkboxes.length > 0 && Array.from(checkboxes).every(function (cb) {
+            return cb.checked;
+        });
+
+        selectAllBtn.textContent = allSelected ? "Clear Selection" : "Select All";
+    }
+
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener("click", function () {
+            var checkboxes = document.querySelectorAll(".row-checkbox");
+            var shouldSelect = Array.from(checkboxes).some(function (cb) {
+                return !cb.checked;
+            });
+
+            checkboxes.forEach(function (cb) {
+                cb.checked = shouldSelect;
+            });
+
+            updateSelectAllState();
+        });
+    }
+
+    document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+        cb.addEventListener("change", updateSelectAllState);
+    });
+
+    if (downloadBtn) {
+        downloadBtn.addEventListener("click", function () {
+            var rows = [];
+
+            document.querySelectorAll(".row-checkbox").forEach(function (cb) {
+                if (cb.checked) {
+                    var row = cb.closest("tr");
+                    var data = [];
+                    row.querySelectorAll("td").forEach(function (td) {
+                        data.push(td.textContent.trim());
+                    });
+                    rows.push(data.join("\t"));
+                }
+            });
+
+            if (rows.length === 0) {
+                alert("Please select at least one row.");
+                return;
+            }
+
+            var blob = new Blob([rows.join("\n")], {type: "text/plain"});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "gene_type_selected_rows.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+
+    updateSelectAllState();
+
+});
+</script>
+
+{% include 'includes/agrp_table_behavior.html' %}
+<script>
+AGRPTable.bind({
+    tableId: 'myTable',
+    selectAllButtonId: 'selectAllBtn',
+    downloadButtonId: 'download-btn',
+    filename: 'event_gene_selected_rows.txt'
+});
+</script>
+
+{% endblock %}

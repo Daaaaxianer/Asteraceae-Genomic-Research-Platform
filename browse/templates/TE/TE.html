@@ -1,0 +1,491 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}TE - {{ sp_name }} - {{ type }} | Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+<style>
+    .te-content-section {
+        background-color: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        margin: 0 0 30px;
+        width: 100%;
+    }
+
+    .te-intro-text {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #5d4037;
+        text-align: justify;
+        margin-bottom: 20px;
+    }
+
+    .te-image-container {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(230, 126, 34, 0.2);
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .te-image-container img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .te-image-container:hover img {
+        transform: scale(1.02);
+    }
+
+    .divider-dotted {
+        height: 1px;
+        background: repeating-linear-gradient(
+            to right,
+            transparent,
+            transparent 10px,
+            #e0d0b0 10px,
+            #e0d0b0 20px
+        );
+        margin: 30px 0;
+    }
+
+    /* DataTables 表格样式增强 */
+    .dataTables_wrapper {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #example {
+        width: 100% !important;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+        min-width: 1200px;
+    }
+
+    #example thead th {
+        background: linear-gradient(135deg, #f9f3e9 0%, #f5e9d5 100%);
+        border-bottom: 2px solid #e67e22;
+        color: #d35400;
+        font-weight: 700;
+        padding: 15px 10px;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+    #example tbody td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #f1f1f1;
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    #example tbody tr:hover {
+        background-color: #fffaf0;
+    }
+
+    #example tbody tr:nth-child(even) {
+        background-color: #fcfcfc;
+    }
+
+    #example tbody tr:nth-child(even):hover {
+        background-color: #fffaf0;
+    }
+
+    /* 表格内部加载/空数据提示 */
+    #example td.dataTables_empty {
+        text-align: center;
+        padding: 28px 10px;
+        background: #fffdf5;
+        color: #d35400;
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    .te-table-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #d35400;
+        font-weight: 600;
+    }
+
+    .te-table-loading i {
+        color: #e67e22;
+    }
+
+    /* 下载按钮样式 */
+    .te-download-btn {
+        background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-weight: 700;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 20px 0;
+        font-size: 1.05rem;
+    }
+
+    .te-download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(230, 126, 34, 0.4);
+        color: white;
+    }
+
+    .te-download-btn:active {
+        transform: translateY(0);
+    }
+
+    /* 确保表格容器宽度正确 */
+    .table-responsive-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .te-header-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+        border-bottom: 1px dashed #e0d0b0;
+    }
+
+    .te-logo {
+        height: 38px;
+        width: auto;
+        margin-right: 15px;
+    }
+
+    .te-page-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #d35400;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    /* 描述文本容器 */
+    .te-description-box {
+        font-family: 'Arial', sans-serif;
+        color: #4a4a4a;
+        font-size: 1rem;
+        line-height: 1.8;
+        text-align: justify;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .te-description-box p {
+        margin-bottom: 15px;
+        text-indent: 2em;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .te-page-title {
+            font-size: 1.3rem;
+        }
+
+        .te-logo {
+            height: 28px;
+        }
+
+        .te-description-box {
+            padding: 0 10px;
+        }
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 1400px) {
+        .te-content-section {
+            padding: 25px;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .te-title {
+            font-size: 2.2rem;
+        }
+
+        .te-content-section {
+            padding: 20px;
+        }
+
+        #example {
+            min-width: 1000px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .te-header-section {
+            padding: 25px 20px;
+            margin: 15px 0 25px;
+        }
+
+        .te-content-section {
+            padding: 20px 15px;
+        }
+
+        .te-title {
+            font-size: 2rem;
+        }
+
+        .te-intro-text {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .te-header-section {
+            padding: 20px 15px;
+            margin: 10px 0 20px;
+        }
+
+        .te-content-section {
+            padding: 15px 10px;
+        }
+
+        .te-title {
+            font-size: 1.8rem;
+        }
+
+        .te-download-btn {
+            padding: 10px 25px;
+            font-size: 1rem;
+        }
+
+        .dataTables_wrapper {
+            padding: 15px 10px;
+        }
+
+        #example {
+            min-width: 800px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .te-header-section {
+            padding: 15px 12px;
+        }
+
+        .te-content-section {
+            padding: 12px 8px;
+        }
+
+        .te-title {
+            font-size: 1.6rem;
+        }
+
+        .te-download-btn {
+            padding: 8px 20px;
+            font-size: 0.95rem;
+        }
+
+        #example td.dataTables_empty {
+            padding: 20px 8px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <div class="te-content-section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="te-header-wrapper">
+                        <img src="{% static 'image/logo.png' %}" alt="Logo" class="te-logo">
+                        <h2 class="te-page-title">
+                            TE - {{ sp_name }} - {{ type }}
+                        </h2>
+                    </div>
+
+                    <div class="te-description-box">
+                        <p>
+                            Non-coding RNA (ncRNA) refers to a variety of RNA molecules that are not translated into proteins. In the past, such RNAs were also called small ribonucleic acids (sRNAs). However, some ncRNA molecules are actually quite large. Other lesser used synonyms are non-messenger RNA (nmRNA), small non-messenger RNA (snmRNA), or functional RNA (fRNA).
+                        </p>
+                        <p>
+                            The part of the DNA sequence that is transcribed exclusively into non-coding RNA is called an RNA gene or a non-coding RNA gene. Non-coding RNA genes are used to produce tRNA (transfer RNA) and rRNA (ribosomal RNA), as well as some small RNAs such as snoRNAs, microRNAs, siRNAs and piRNAs; the larger ones are Xist, Evf, Air, CTN and #80C680.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider-dotted"></div>
+
+            <!-- 数据表格区域 -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive-container">
+                        <div class="dataTables_wrapper">
+                            <table id="example" class="display">
+                                <thead>
+                                    <tr>
+                                        <th>Seq_ID</th>
+                                        <th>Class/family</th>
+                                        <th>Matching</th>
+                                        <th>Start</th>
+                                        <th>End</th>
+                                        <th>TE length (bp)</th>
+                                        <th>Strand</th>
+                                        <th>Score</th>
+                                        <th>Div</th>
+                                        <th>Del</th>
+                                        <th>Ins</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 下载按钮 -->
+                    <div class="text-center">
+                        <button class="te-download-btn" onclick="downloadCSV()">
+                            <i class="bi bi-download"></i> Download CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script>
+    let teDataTable = null;
+
+    $(document).ready(function () {
+        const loadingMessage = `
+            <div class="te-table-loading">
+                <i class="bi bi-hourglass-split"></i>
+                <b>Loading data... It may take a while to load large datasets.</b>
+            </div>
+        `;
+
+        const emptyMessage = "No records available";
+        const zeroMessage = "No matching records found";
+
+        teDataTable = $('#example')
+            .on('preXhr.dt', function (e, settings) {
+                /*
+                 * Ajax 开始请求时：
+                 * 把 DataTables 表格内部的空数据提示改成 Loading，
+                 * 这样不会再提前显示 No matching records found。
+                 */
+                settings.oLanguage.sEmptyTable = loadingMessage;
+                settings.oLanguage.sZeroRecords = loadingMessage;
+                settings.oLanguage.sLoadingRecords = loadingMessage;
+            })
+            .on('xhr.dt', function (e, settings) {
+                /*
+                 * Ajax 请求完成后：
+                 * 恢复正常提示。
+                 * 无数据：No records available
+                 * 搜索无结果：No matching records found
+                 */
+                settings.oLanguage.sEmptyTable = emptyMessage;
+                settings.oLanguage.sZeroRecords = zeroMessage;
+            })
+            .DataTable({
+                "ajax": {
+                    url: "{% static 'TE_json/' %}{{ sp_name }}/{{ type }}.json",
+                    dataSrc: function(payload) {
+                        const records = Array.isArray(payload) ? payload : payload.data;
+                        return records.map(function(record) {
+                            const row = record.slice(0, 11);
+                            row[5] = Number(row[4]) - Number(row[3]) + 1;
+                            return row;
+                        });
+                    }
+                },
+                "scrollX": true,
+                "deferRender": true,
+                "processing": false,
+                "pageLength": 10,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                "language": {
+                    "loadingRecords": loadingMessage,
+                    "emptyTable": loadingMessage,
+                    "zeroRecords": loadingMessage,
+                    "lengthMenu": "Show _MENU_ entries",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "search": "Search:",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": '<i class="bi bi-chevron-right"></i>',
+                        "previous": '<i class="bi bi-chevron-left"></i>'
+                    }
+                },
+                "initComplete": function (settings) {
+                    /*
+                     * 保险处理：
+                     * 初始化完成后再次恢复正常空数据提示，
+                     * 防止后续搜索仍显示 Loading。
+                     */
+                    settings.oLanguage.sEmptyTable = emptyMessage;
+                    settings.oLanguage.sZeroRecords = zeroMessage;
+
+                    $('.dataTables_wrapper').css('overflow-x', 'auto');
+                },
+                "drawCallback": function () {
+                    $('.dataTables_wrapper').css('overflow-x', 'auto');
+                }
+            });
+    });
+
+    function downloadCSV() {
+        if (!teDataTable) {
+            return;
+        }
+
+        var data = teDataTable.data().toArray();
+        var headers = teDataTable.columns().header().toArray().map(th => th.innerText);
+
+        var csv = headers.join(',') + '\n';
+
+        data.forEach(row => {
+            csv += row.join(',') + '\n';
+        });
+
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+
+        link.setAttribute("href", url);
+        link.setAttribute("download", "TE_{{ sp_name }}_{{ type }}.csv");
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+{% endblock %}

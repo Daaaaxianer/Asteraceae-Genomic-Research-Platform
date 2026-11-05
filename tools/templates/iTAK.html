@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}iTAK Analysis - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-label-fancy {
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label-fancy::before {
+            content: "★";
+            color: #e67e22;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .form-control:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .text-light-yellow {
+             color: #e67e22;
+             text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">iTAK</h2>
+            <p class="section-subtitle">Genome Browsing and Annotation</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-11">
+                <p style="text-align: justify; color: #5d4037; line-height: 1.8; font-size: 1.05rem; font-weight: 500;">
+                    &emsp;&emsp;Regulatory protein (RKs) prediction, invoked by iTak software, enables predictive transcription factors (TFs), transcription regulatory factors (TRs), and protein kinases (PKs). Please upload your target sequences in FASTA format to begin the analysis.
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8"> 
+                <div class="custom-form-card">
+                    <form action="iTAK_run" method="post" class="needs-validation" enctype="multipart/form-data" novalidate id="itakForm">
+                        {% csrf_token %}
+                        
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="formFile" class="form-label-fancy mb-0">Upload Target File (FASTA)</label>
+                                    <a href="{% static 'example_file/sequence_alignment/Aann.pep' %}" download="Aann.pep" class="btn-example-tag">
+                                        <i class="bi bi-download me-1"></i> Example File
+                                    </a>
+                                </div>
+                                <input class="form-control form-control-lg" type="file" id="formFile" name="file" multiple required style="border-radius: 10px; border: 1px solid #ced4da; padding: 10px;">
+                                <div class="invalid-feedback">
+                                    File not uploaded
+                                </div>
+                                <div class="form-text text-muted ps-1">Supported format: .fasta, .fa, .pep</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-search-gradient" type="button" onclick="go()" id="itakSubmitButton">
+                                <i class="bi bi-play-circle me-2"></i> Submit Analysis
+                            </button>
+
+                            <div class="mt-3">
+                                <span id="wait1" class="spinner-border spinner-border-sm text-warning" style="display:none"></span>
+                                <span id="wait2" style="display:none; color: #d35400; font-weight: 700; font-size: 0.9rem;">
+                                    &nbsp;&nbsp;It is running, please wait a moment!
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            var form = document.getElementById('itakForm');
+
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+            
+            if (hh1 && hh2) {
+                hh1.style.display = "inline-block";
+                hh2.style.display = "inline-block";
+            }
+            
+            form.submit();
+        }
+
+        function getDownloadFilename(response, fallbackName) {
+            var disposition = response.headers.get('Content-Disposition') || '';
+            var utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+            if (utf8Match && utf8Match[1]) {
+                return decodeURIComponent(utf8Match[1]);
+            }
+
+            var asciiMatch = disposition.match(/filename="?([^";]+)"?/i);
+            if (asciiMatch && asciiMatch[1]) {
+                return asciiMatch[1];
+            }
+
+            return fallbackName;
+        }
+
+        async function go() {
+            var hh1 = document.getElementById("wait1");
+            var hh2 = document.getElementById("wait2");
+            var form = document.getElementById('itakForm');
+            var button = document.getElementById('itakSubmitButton');
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+
+            if (button) {
+                button.disabled = true;
+            }
+
+            if (hh1 && hh2) {
+                hh1.style.display = "inline-block";
+                hh2.style.display = "inline-block";
+            }
+
+            try {
+                var response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    credentials: 'same-origin'
+                });
+
+                var contentType = response.headers.get('Content-Type') || '';
+                if (!response.ok || contentType.indexOf('application/zip') === -1) {
+                    var errorText = await response.text();
+                    document.open();
+                    document.write(errorText);
+                    document.close();
+                    return;
+                }
+
+                var blob = await response.blob();
+                var downloadUrl = window.URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = getDownloadFilename(response, 'iTAK_result.zip');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(downloadUrl);
+            } catch (error) {
+                document.open();
+                document.write(error.message);
+                document.close();
+                return;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                }
+
+                if (hh1 && hh2) {
+                    hh1.style.display = "none";
+                    hh2.style.display = "none";
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../../static/vendor/css/style.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../../static/m6a_json/{{name}}.json"
+            });
+        });
+    </script>
+    <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>N6-methyladenosine(m6A) - Wirters</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;m6A (N6-methyladenosine) is the most common post-transcriptional modification of eukaryotic mRNAs, accounting for 80% of RNA methylation modifications. As early as the 1970s, m6A modifications have been identified in eukaryotic mRNA and lncRNA. The m6A genes consist of three groups, including writers, readers (IYT521-B homolog [YTH]) and erasers (alkylation repair protein-B [AlkB]).
+            <br>&emsp;&emsp;Wirters has four gene families, including MTA70, WTAP, HAKAI(0) and VIRILIZER, which are identified by accession numbers
+            <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF05063/"><b>'PF05063'</b></a>, <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF17098/"><b>'PF17098'</b></a>, <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF18408/"><b>'PF18408'</b></a> and <a href="https://www.ebi.ac.uk/interpro/entry/pfam/PF15912/"><b>'PF15912'</b></a>, respectively. We identified a total of <b>157</b> writers. We did not detect HAKAI genes in 25 genomes of the Fabaceae family.
+            <br>&emsp;&emsp;The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-5">
+            <img style="width: 100%" src="../../../static/image/gene_function.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th>Seq ID</th>
+                    <th>Gene_start</th>
+                    <th>Gene_end</th>
+                    <th>Pfam_ID</th>
+                    <th>Score</th>
+                    <th>E-value</th>
+                    <th>Pfam_name</th>
+                </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+		<div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

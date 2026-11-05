@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene Expression Search - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+         
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-label-fancy {
+            font-weight: 700;
+            color: #444;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-label-fancy::before {
+            content: "★";
+            color: #e67e22;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+         
+        .btn-search-gradient {
+            padding: 12px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-search-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+            color: white;
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+         
+        .table-responsive { border-radius: 8px; overflow: hidden; }
+        th { background-color: #fff8f0 !important; color: #d35400 !important; border-bottom: 2px solid #ffe8d6 !important; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <h2 class="section-title">AGRP-toolkit</h2>
+                </div>
+
+                <p><b>Purpose of using docker technology</b></p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using docker technology we can create the analysis process of the tools we build to be used locally. And this is system independent and can be run on many platforms. Whether it's a physical machine, a virtual machine, a public cloud, a private cloud, or a laptop, the results are all consistent.
+                </p>
+                <p>
+                    <b>How to install docker on different systems</b>
+                </p>
+                <pre>
+1.# Ubuntu Docker Installation
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+2.# Debian Docker Installation
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+3.# CentOS Docker Installation
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+4.# MacOS Docker Installation
+# For macOS, we can use Homebrew to install Docker.
+# Homebrew's Cask already supports Docker for Mac, so it is easy to install it using Homebrew Cask.
+$ brew install --cask --appdir=/Applications docker
+==> Creating Caskroom at /usr/local/Caskroom
+==> We'll set permissions properly so we won't need sudo in the future
+Password:          # Enter macOS password
+==> Satisfying dependencies
+==> Downloading https://download.docker.com/mac/stable/21090/Docker.dmg
+######################################################################## 100.0%
+==> Verifying checksum for Cask docker
+==> Installing Cask docker
+==> Moving App 'Docker.app' to '/Applications/Docker.app'.
+&#x1f37a;  docker was successfully installed!
+
+5.# Windows Docker Installation
+# Install Hyper-V
+# Turn on Hyper-V
+# Install Docker Desktop for Windows
+# Click <a href="https://hub.docker.com/?overlay=onboarding">Get started with Docker Desktop</a> and download the version for Windows, if you are not already logged in, you will be asked to register for a login at
+# Run the installation file
+# Double-click the downloaded Docker for Windows Installer installation file, go all the way to Next, and click Finish to complete the installation.
+# When the installation is complete, Docker will start automatically. A small whale icon will appear on the notification bar, which indicates that Docker is running.
+# Three icons will also appear on the desktop, as shown in the following image.
+# We can execute docker version at the command line to see the version number and docker run hello-world to load a test image for testing.
+# If it doesn't start, you can start it by searching for Docker in Windows at
+# Once installed, you can open PowerShell and run the following command to check if it ran successfully.
+docker run hello-world
+# After a successful run, the following message should appear.
+                </pre>
+
+                <p>
+                    <b>How to use docker's AGRP-toolkit</b>
+                </p>
+                <pre>
+1.# Search 1457634627/fgbp mirror
+docker search 1457634627/fgbp
+2.# Get 1457634627/fgbp mirrors
+docker pull 1457634627/fgbp
+3.# View Installed Mirrors
+docker images 1457634627/fgbp
+4.# View all your containers
+docker ps -a 1457634627/fgbp
+5.# Run docker 1457634627/fgbp mirror
+docker run 1457634627/fgbp python3.6 manage.py runserver
+6.# Go to the container again
+docker exec -it 1457634627/fgbp python3.6 manage.py runserver
+7.# Stop the 1457634627/fgbp container
+docker stop 1457634627/fgbp
+or
+docker container kill 1457634627/fgbp
+                </pre>
+
+                <p>
+                    <b>AGRP-toolkit Docker link <a href="https://hub.docker.com/r/1457634627/fgbp">https://hub.docker.com/r/1457634627/fgbp</a></b>
+                </p>
+
+                <p>
+                    <b>More information about docker can be found in <a href="https://www.docker.com/">https://www.docker.com/</a> or in
+                    <a href="{% url "software_tools_url" %}">Document</a>.</b>
+                </p>
+
+                <p><b>Six advantages of docker</b></p>
+                <ol>
+                    <li>More efficient use of system resources.</li>
+                    <li>Faster startup time.</li>
+                    <li>Consistent runtime environment.</li>
+                    <li>Continuous payment and deployment.</li>
+                    <li>Easier migration.</li>
+                    <li>Easier maintenance and expansion.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

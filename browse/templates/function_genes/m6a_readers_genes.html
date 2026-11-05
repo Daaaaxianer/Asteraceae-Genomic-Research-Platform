@@ -1,0 +1,288 @@
+{% extends 'Browse_index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../../static/vendor/css/style.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+        <script type="text/javascript">
+        const proData = {
+            "writers": ["MTA70", "WTAP", "HAKAI", "VIRILIZER"],
+            "readers": ["YTH"],
+            "erasers": ["AlkB"]
+        };
+        window.onload = function () {
+            const oSelectPro = document.getElementById('model');
+            const oSelectCity = document.getElementById('list');
+            oSelectPro.onchange = function () {
+                const aRrayCity = proData[this.value];
+                oSelectCity.options.length=0;
+                for (let i=0; i<aRrayCity.length; i++){
+                    const oOption = document.createElement('option');
+                    oOption.innerHTML = aRrayCity[i];
+                    oOption.value = aRrayCity[i];
+                    oSelectCity.appendChild(oOption)
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+{% endblock %}
+
+
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;"><b>N6-methyladenosine(m6A) - Readers</b><i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify;line-height: 1.5;">
+            &emsp;&emsp;The m6A genes comprised three groups, including writers, readers (YTH), and erasers (AlkB). Writers had four gene families, including MTA70, WTAP, HAKAI, and VIRILIZER, which were identified by the accession numbers ‘PF05063’, ‘PF17098’, ‘PF18408’, and ‘PF15912’, respectively. The YTH genes of readers were detected by the accession number ‘PF04146’, and AlkB genes of erasers were detected by the accession number ‘PF13532 of the Pfam annotation.
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/TF_gene_famliy.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">N6-methyladenosine(m6A) - Readers<i></i></h3>
+                <form action="m6A_gene" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">Query Genome</label>
+                            <select class="btn-default choice form-control" name="query_genome" required>
+                            <option value="Aann">Artemisia annua</option>
+                            <option value="Aarg">Artemisia argyi</option>
+                            <option value="Amar">Ambrosia artemisiifolia</option>
+                            <option value="Amtr">Ambrosia trifida</option>
+                            <option value="Arla">Arctium lappa</option>
+                            <option value="Armi">Arctium minus</option>
+                            <option value="Artr">Artemisia tridentata</option>
+                            <option value="Bial">Bidens alba</option>
+                            <option value="Busi">Buxus sinica</option>
+                            <option value="Cati">Carthamus tinctorius</option>
+                            <option value="Ccar">Cynara cardunculus</option>
+                            <option value="Ceso">Centaurea solstitialis</option>
+                            <option value="Chla">Chrysanthemum lavandulifolium</option>
+                            <option value="Chma">Chrysanthemum makinoi</option>
+                            <option value="Chmo">Chrysanthemum morifolium</option>
+                            <option value="Chna">Chrysanthemum nankingense</option>
+                            <option value="Cich">Cichorium intybus</option>
+                            <option value="Cien">Cichorium endivia</option>
+                            <option value="Cind">Chrysanthemum indicum</option>
+                            <option value="Cobi">Cosmos bipinnata</option>
+                            <option value="Cpa">Centrapalus pauciflorus</option>
+                            <option value="Dapi">Dahlia pinnata</option>
+                            <option value="Desu">Deinandra increscens subsp</option>
+                            <option value="Ecan">Erigeron canadensis</option>
+                            <option value="Enbr">Erigeron breviscapus</option>
+                            <option value="Eupl">Euptelea pleiosperma</option>
+                            <option value="Fbi">Flaveria bidentis</option>
+                            <option value="Fbr">Flaveria brownii</option>
+                            <option value="Ffl">Flaveria floridana</option>
+                            <option value="Fli">Flaveria linearis</option>
+                            <option value="Fra">Flaveria ramosissima</option>
+                            <option value="Fro">Flaveria robusta</option>
+                            <option value="Fso">Flaveria sonorensis</option>
+                            <option value="Ftr">Flaveria trinervia</option>
+                            <option value="Glco">Glebionis coronaria</option>
+                            <option value="Hean">Helianthus annuus</option>
+                            <option value="Hetu">Helianthus tuberosus</option>
+                            <option value="Heub">Helichrysum umbraculigerum</option>
+                            <option value="Laca">Lactuca saligna</option>
+                            <option value="Lomi">Logfia minima</option>
+                            <option value="Lssa">Lactuca sativa</option>
+                            <option value="Mimi">Mikania micrantha</option>
+                            <option value="Nenu">Nelumbo nucifera</option>
+                            <option value="Nin">Nymphoides indica</option>
+                            <option value="Pdy">Pulicaria dysenterica</option>
+                            <option value="Pin">Pluchea indica</option>
+                            <option value="Pslu">Pseudognaphalium luteoalbum</option>
+                            <option value="Sain">Saussurea involucrata</option>
+                            <option value="Scae">Solidago caesia</option>
+                            <option value="Sesq">Senecio squalidus</option>
+                            <option value="Smso">Smallanthus sonchifolius</option>
+                            <option value="Soca">Solidago caesia</option>
+                            <option value="Soca">Solidago canadensis</option>
+                            <option value="Stre">Stevia rebaudiana</option>
+                            <option value="Taer">Tagetes erecta</option>
+                            <option value="Tako">Taraxacum koksaghyz</option>
+                            <option value="Tamo">Taraxacum mongolicum</option>
+                            <option value="Tesi">Tetracentron sinense</option>
+                            <option value="Vivi">Vitis vinifera</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">Regulatory Factors</label>
+                            <select class="col-md-12 btn-default form-control" id="model" name="first_class" >
+                                <option value="readers">readers</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">Family</label>
+                            <select class="form-control" id="list" name="second_class" required>
+                                <option value="YTH">YTH</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <input class="w-100 btn btn-primary btn-lg" type="submit" value="Search" onclick="go()">
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+
+                    {% if m6A_result %}
+                        <hr width="100%" style="border: dotted 2px">
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <div class="col-md-6 text-center" style="position: relative;">
+                                <h4 class="h3_1 h3_6" style="font-family:'Arial',sans-serif;color:black; position: relative; z-index: 1;padding-left: 0px; padding-bottom: 10px">Results<i></i></h4>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <table id="myTable">
+                                <thead><tr><th>Select</th><th>Gene</th><th>Species</th><th>First class</th><th>HMM family</th><th>Start</th><th>End</th><th>Pfam ID</th><th>Second class</th><th>E-value</th><th>Clan</th></tr></thead>
+                                <tbody>
+                                    {% for pair in m6A_result %}
+                                        <tr><td><input type="checkbox" class="row-checkbox"></td><td><a href="{% url 'gene_detail' geneid=pair.0 %}">{{ pair.0 }}</a></td><td>{{ pair.1 }}</td><td>{{ pair.2 }}</td><td>{{ pair.3 }}</td><td>{{ pair.4 }}</td><td>{{ pair.5 }}</td><td>{{ pair.6 }}</td><td>{{ pair.7 }}</td><td>{{ pair.8 }}</td><td>{{ pair.9 }}</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+        {#                <div class="col-md-2"></div>#}
+
+                        &nbsp;&nbsp;&nbsp; <button type="button" id="selectAllBtn" class="btn btn-primary">Select All</button>&nbsp;&nbsp;&nbsp; <!-- 新增全选按钮 -->
+                        <button type="button" id="download-btn" class="btn btn-success">Download Selected Rows</button> <!-- 新增下载按钮 -->
+
+                        <script>
+                            var selectAllBtn = document.getElementById("selectAllBtn");
+                            selectAllBtn.addEventListener("click", function() {
+                                var checkboxes = document.querySelectorAll(".row-checkbox");
+                                checkboxes.forEach(function(checkbox) {
+                                    checkbox.checked = true;
+                                });
+                            });
+
+                            // 获取下载按钮
+                            var downloadBtn = document.getElementById("download-btn");
+                            downloadBtn.addEventListener("click", function() {
+                                var selectedRows = [];
+                                var checkboxes = document.querySelectorAll(".row-checkbox");
+                                checkboxes.forEach(function(checkbox, index) {
+                                    if (checkbox.checked) {
+                                        var row = checkbox.closest("tr");
+                                        var rowData = [];
+                                        row.querySelectorAll("td").forEach(function(cell) {
+                                            rowData.push(cell.textContent);
+                                        });
+                                        selectedRows.push(rowData.join("\t"));
+                                    }
+                                });
+                                downloadSelectedRows(selectedRows);
+                            });
+
+                            function downloadSelectedRows(rows) {
+                                var data = rows.join("\n");
+                                var blob = new Blob([data], { type: "text/plain" });
+                                var url = window.URL.createObjectURL(blob);
+                                var link = document.createElement("a");
+                                link.href = url;
+                                link.download = "m6A_selected_rows.txt"; // 设置下载文件名
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
+                        </script>
+                    {% endif %}
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            $('#myTable').DataTable();
+                        });
+                    </script>
+
+
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+
+
+

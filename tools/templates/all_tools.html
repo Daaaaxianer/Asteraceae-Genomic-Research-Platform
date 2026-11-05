@@ -1,0 +1,380 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Selected Analysis Tools - AGRP{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'vendor/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+         
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+         
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+         
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+         
+        .custom-form-card {
+            background: #fff;
+            border: 1px solid #f0e6d2;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            overflow-x: auto;  
+        }
+
+        .fancy-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 0;
+        }
+
+        .fancy-table thead th {
+            background-color: #fff9f0;
+            color: #d35400;
+            font-weight: 700;
+            padding: 15px;
+            border-bottom: 2px solid #e67e22;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .fancy-table tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+         
+        .fancy-table tbody td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #e67e22;
+            width: 80px;
+        }
+
+         
+        .fancy-table tbody td:nth-child(2) {
+            font-weight: 600;
+            width: 250px;
+        }
+
+         
+        .tool-link {
+            color: #2c3e50;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .tool-link:hover {
+            color: #e67e22;
+            transform: translateX(5px);
+        }
+
+         
+        .fancy-table tbody tr:hover {
+            background-color: rgba(230, 126, 34, 0.03);
+        }
+
+        .fancy-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+         
+        .desc-text {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .tools-table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .usage-hint {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .sortable-th {
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .sortable-th:hover {
+            background-color: #fff3df;
+        }
+
+        .sort-indicator {
+            margin-left: 6px;
+            color: #e67e22;
+            font-size: 0.85rem;
+        }
+
+        .tool-name-cell {
+            min-width: 250px;
+        }
+
+        .usage-count-cell {
+            text-align: center;
+            width: 150px;
+            white-space: nowrap;
+        }
+
+        .usage-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 58px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #fff4e6;
+            color: #d35400;
+            font-weight: 700;
+            border: 1px solid #f3d0a6;
+        }
+
+        .hot-flame {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1rem;
+            filter: drop-shadow(0 2px 2px rgba(230, 126, 34, 0.18));
+        }
+
+        .hot-row {
+            background: linear-gradient(90deg, rgba(255, 247, 230, 0.75), rgba(255, 255, 255, 0));
+        }
+
+        .hot-row .tool-link {
+            color: #c0392b;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">All Web-Based Tools</h2>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="custom-form-card">
+                    <div class="tools-table-toolbar">
+                        <p class="usage-hint">🔥 Top 10 most-used tools are highlighted and shown first. Click <strong>Tool Name</strong> to sort alphabetically.</p>
+                    </div>
+                    <table id="tools-table" class="fancy-table" data-record-url="{% url 'tool_usage_record_url' %}">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th id="sort-tool-name" class="sortable-th" style="text-align: left; padding-left: 20px;" data-sort-direction="none" aria-sort="none">
+                                    Tool Name <span class="sort-indicator">↕</span>
+                                </th>
+                                <th id="sort-usage-count" class="sortable-th usage-count-cell" data-sort-direction="desc" aria-sort="descending">
+                                    Usage Count <span class="sort-indicator">↓</span>
+                                </th>
+                                <th style="text-align: left;">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tool in tools %}
+                            <tr class="{% if tool.is_hot %}hot-row{% endif %}"
+                                data-tool-name="{{ tool.name|lower }}"
+                                data-usage-count="{{ tool.usage_count }}"
+                                data-original-no="{{ tool.original_no }}">
+                                <td class="row-number">{{ forloop.counter }}</td>
+                                <td class="tool-name-cell">
+                                    <a class="tool-link" href="{% url tool.url_name %}" target="_blank" data-tool-key="{{ tool.key }}">
+                                        {{ tool.name }}{% if tool.is_hot %}<span class="hot-flame" title="Top {{ tool.hot_rank }} most-used tool">🔥</span>{% endif %}
+                                    </a>
+                                </td>
+                                <td class="usage-count-cell"><span class="usage-badge">{{ tool.usage_count }}</span></td>
+                                <td class="desc-text">{{ tool.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-cfasync="false">
+(function () {
+    if (window.__agrpToolUsageScriptLoaded) {
+        return;
+    }
+    window.__agrpToolUsageScriptLoaded = true;
+
+    function updateRowNumbers(tbody) {
+        Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function (row, index) {
+            var numberCell = row.querySelector('.row-number');
+            if (numberCell) {
+                numberCell.textContent = index + 1;
+            }
+        });
+    }
+
+    function setSortIndicator(header, direction) {
+        if (!header) {
+            return;
+        }
+        var indicator = header.querySelector('.sort-indicator');
+        header.setAttribute('data-sort-direction', direction);
+        header.setAttribute('aria-sort', direction === 'asc' ? 'ascending' : (direction === 'desc' ? 'descending' : 'none'));
+        if (indicator) {
+            indicator.textContent = direction === 'asc' ? '↑' : (direction === 'desc' ? '↓' : '↕');
+        }
+    }
+
+    function sortRows(tbody, compareFn) {
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        rows.sort(compareFn);
+        rows.forEach(function (row) {
+            tbody.appendChild(row);
+        });
+        updateRowNumbers(tbody);
+    }
+
+    function postToolUsage(recordUrl, toolKey) {
+        var payload = JSON.stringify({tool_key: toolKey});
+        if (navigator.sendBeacon) {
+            var blob = new Blob([payload], {type: 'application/json'});
+            navigator.sendBeacon(recordUrl, blob);
+            return;
+        }
+
+        fetch(recordUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: payload,
+            keepalive: true,
+            credentials: 'same-origin'
+        }).catch(function () {});
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var table = document.getElementById('tools-table');
+        if (!table || table.getAttribute('data-tool-usage-bound') === '1') {
+            return;
+        }
+        table.setAttribute('data-tool-usage-bound', '1');
+
+        var tbody = table.querySelector('tbody');
+        var nameHeader = document.getElementById('sort-tool-name');
+        var usageHeader = document.getElementById('sort-usage-count');
+        var nameSortAsc = true;
+
+        if (nameHeader) {
+            nameHeader.addEventListener('click', function () {
+                var direction = nameSortAsc ? 'asc' : 'desc';
+                sortRows(tbody, function (rowA, rowB) {
+                    var nameA = rowA.getAttribute('data-tool-name') || '';
+                    var nameB = rowB.getAttribute('data-tool-name') || '';
+                    var result = nameA.localeCompare(nameB, undefined, {sensitivity: 'base'});
+                    return direction === 'asc' ? result : -result;
+                });
+                setSortIndicator(nameHeader, direction);
+                setSortIndicator(usageHeader, 'none');
+                nameSortAsc = !nameSortAsc;
+            });
+        }
+
+        if (usageHeader) {
+            usageHeader.addEventListener('click', function () {
+                sortRows(tbody, function (rowA, rowB) {
+                    var countA = parseInt(rowA.getAttribute('data-usage-count') || '0', 10);
+                    var countB = parseInt(rowB.getAttribute('data-usage-count') || '0', 10);
+                    if (countA !== countB) {
+                        return countB - countA;
+                    }
+                    return parseInt(rowA.getAttribute('data-original-no') || '0', 10) - parseInt(rowB.getAttribute('data-original-no') || '0', 10);
+                });
+                setSortIndicator(usageHeader, 'desc');
+                setSortIndicator(nameHeader, 'none');
+                nameSortAsc = true;
+            });
+        }
+
+        Array.prototype.forEach.call(table.querySelectorAll('.tool-link[data-tool-key]'), function (link) {
+            link.addEventListener('click', function () {
+                if (link.getAttribute('data-usage-recorded') === '1') {
+                    return;
+                }
+                link.setAttribute('data-usage-recorded', '1');
+
+                var recordUrl = table.getAttribute('data-record-url');
+                var toolKey = link.getAttribute('data-tool-key');
+                if (!recordUrl || !toolKey) {
+                    return;
+                }
+                postToolUsage(recordUrl, toolKey);
+            });
+        });
+    });
+})();
+</script>
+{% endblock %}

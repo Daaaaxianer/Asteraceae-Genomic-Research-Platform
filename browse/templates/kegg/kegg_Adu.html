@@ -1,0 +1,120 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leguminosae platform</title>
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../static/vendor/css/home.css" type="text/css">
+
+    <script src="../../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../../static/vendor/css/style.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../../static/kegg_json/{{sp_name}}_kegg.json"
+            });
+        });
+    </script>
+    <style>
+        #downloadButton {
+            background-color: #80C680;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #ff4841;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body_index %}
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Pathway<i></i>
+    </h3>
+
+    <div class="row">
+        <h6 class="col-md-7" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;KEGG PATHWAY is a collection of manually drawn pathway maps representing our knowledge of the molecular interaction, reaction and relation networks for:
+    1. <a href="https://www.genome.jp/kegg/pathway.html#metabolism">Metabolism</a>
+    2. <a href="https://www.genome.jp/kegg/pathway.html#genetic">Genetic Information Processing</a>
+    3. <a href="https://www.genome.jp/kegg/pathway.html#environmental">Environmental Information Processing</a>
+    4. <a href="https://www.genome.jp/kegg/pathway.html#cellular">Cellular Processes</a>
+    5. <a href="https://www.genome.jp/kegg/pathway.html#organismal">Organismal Systems</a>
+    6. <a href="https://www.genome.jp/kegg/pathway.html#disease">Human Diseases</a>
+    7. <a href="https://www.genome.jp/kegg/pathway.html#drug">Drug Development</a>.
+            <br>&emsp;&emsp; Pathway annotation of 25 Fabaceae genomes were performed using <a href="https://www.kegg.jp/ghostkoala/"><b>GhostKoala</b></a>, respectively, it is being a tool provided by the Kyoto Encyclopedia of Genes and Genomes (<a
+                href="http://www.genome.jp/kegg/"><b>http://www.genome.jp/kegg</b></a>).
+            <br>&emsp;&emsp;Select a legume and click Submit to see the results of the gene annotation for the changed species. The relevant gene ids can be obtained from the Fabaceae blast and match under the Tools module.This link is <a href="{% url "blast_match_url" %}"><b>Fabaceae blast and match.</b></a>
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 90%" src="../../../static/image/map03040.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+
+    <div class="container" style="padding-top: 40px;">
+        <table id="example" class="display container">
+            <thead>
+                <tr>
+                    <th>Seq id</th>
+                    <th>KO</th>
+                    <th>Definition</th>
+                    <th>Second KO</th>
+                    <th>KEGG Genes ID</th>
+                    <th>GHOSTX Score</th>
+                </tr>
+            </thead>
+        </table>
+        <div style="text-align:center;">
+            <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
+        </div>
+        <script>
+            function downloadCSV() {
+                var table = document.getElementById("example");
+                var rows = table.getElementsByTagName("tr");
+                var csv = "";
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    for (var j = 0; j < cells.length; j++) {
+                        csv += cells[j].innerText + ",";
+                    }
+                    csv += "\n";
+                }
+                var link = document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                link.setAttribute("download", "data.csv");
+                link.click();
+            }
+        </script>
+        <div style="padding-top: 20px">
+            <h6 style="text-align: center"><b>It may take a while to load.</b></h6>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_js %}
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -1,0 +1,335 @@
+{% extends 'index.html' %}
+
+
+
+{% block header %}
+    <ul class="nav navbar-nav">
+        <li><a href="{% url 'index_url' %}">Home</a></li>
+        <li><a href="{% url 'tools_url' %}">Tools</a></li>
+        <li class="active"><a href="{% url 'gfca_url' %}">Karyotype</a></li>
+        <li><a href="{% url 'database_url' %}">Database</a></li>
+        <li><a href="http://39.105.114.57:8305/" target="_blank">Community</a></li>
+        <li><a href="{% url 'about_url' %}">Help</a></li>
+        <li><a href="{% url 'contact_url' %}">Contact</a></li>
+    </ul>
+{% endblock %}
+
+
+
+{% block body %}
+	<section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle">GFCA</h2>
+                </div>
+            </div>
+        </div>
+	</section>
+
+
+	<section id="content">
+	    <div class="container">
+		    <div class="row">
+                <div class="col-lg-12">
+                    <ul class="portfolio-categ filter">
+                        <li class="all active"><a href="#">All</a></li>
+                        <li class="identify"><a href="#" title="">Identify</a></li>
+                        <li class="structure"><a href="#" title="">structure</a></li>
+                        <li class="function"><a href="#" title="">Function</a></li>
+                        <li class="Collinearity"><a href="#" title="">Collinearity</a></li>
+                        <li class="Homologous"><a href="#" title="">Homologous</a></li>
+                        <li class="Ka_ks"><a href="#" title="">Ka_ks</a></li>
+                        <li class="figure"><a href="#" title="">Figure</a></li>
+                        <li class="tree"><a href="#" title="">Phylogenetic tree</a></li>
+                    </ul>
+
+                    <div class="clearfix">
+                    </div>
+
+                    <div class="row">
+                        <section id="projects">
+                            <ul id="thumbs" class="portfolio">
+                                <!-- blast -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-0" data-type="identify">
+                                    <!-- 图片放大显示 - js <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Portfolio name" href="../static/img/works/1.png">
+                                        <span class="overlay-img"></span>
+                                        <span class="overlay-img-thumb"><i class="icon-info-blocks fa fa-search"></i></span>
+                                    </a>-->
+                                    <div>
+                                        <a href="{% url 'blast_url' %}">
+                                            <img src="../static/img/works/blast.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">BLAST</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Diamond -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-1" data-type="identify">
+                                    <div>
+                                        <a href="{% url 'diamond_url' %}">
+                                            <img src="../static/img/works/diamond.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">DIAMOND</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Sequence screening -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-2" data-type="identify">
+                                    <div>
+                                        <a href="{% url 'sequence_screening_url' %}">
+                                            <img src="../static/img/works/sequence.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Sequence screening</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Hmmer -->
+                                <li class="item-thumbs col-lg-3 design" data-id="id-0" data-type="identify">
+                                    <div>
+                                        <a href="{% url 'hmmer_url' %}">
+                                            <img src="../static/img/works/hmmer.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">HMMER</h4>
+                                    </div>
+                                </li>
+
+                                <!-- pfam -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-4" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'pfam_url' %}">
+                                            <img src="../static/img/works/pfam.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">PFAM</h4>
+                                    </div>
+                                </li>
+
+                                <!-- MEME -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'meme_suit_url' %}">
+                                            <img src="../static/img/works/meme.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">MEME_Suit</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Codonw -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'codonw_url' %}">
+                                            <img src="../static/img/works/codonw.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Codonw</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Cpgfinder -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'cpgfinder_url' %}">
+                                            <img src="../static/img/works/cpgfinder.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Cpgfinder</h4>
+                                    </div>
+                                </li>
+
+                                <!-- GSDS -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'gsds_url' %}">
+                                            <img src="../static/img/works/gsds.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">GSDS</h4>
+                                    </div>
+                                </li>
+
+                                <!-- sequenceserver -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'sequenceserver_url' %}">
+                                            <img src="../static/img/works/sequenceserver.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">sequenceserver</h4>
+                                    </div>
+                                </li>
+
+                                <!-- dupgen_finder -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="structure">
+                                    <div>
+                                        <a href="{% url 'dupgen_finder_url' %}">
+                                            <img src="../static/img/works/dupgen_finder.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Dupgen_finder</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Cd-hit -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="function">
+                                    <div>
+                                        <a href="{% url 'cd_hit_url' %}">
+                                            <img src="../static/img/works/cd_hit.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Cd-hit</h4>
+                                    </div>
+                                </li>
+
+                                <!-- String -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="function">
+                                    <div>
+                                        <a href="{% url 'string_url' %}">
+                                            <img src="../static/img/works/string.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">String</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Heatmap -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="function">
+                                    <div>
+                                        <a href="{% url 'heatmap_url' %}">
+                                            <img src="../static/img/works/heat_maps.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Heatmap</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Sequence Alignment -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="function">
+                                    <div>
+                                        <a href="{% url 'sequence_alignment_url' %}">
+                                            <img src="../static/img/works/multiple_sequence_alignment.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Sequence Alignment</h4>
+                                    </div>
+                                </li>
+
+                                <!-- MCScanX -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Collinearity">
+                                    <div>
+                                        <a href="{% url 'mcscanx_url' %}">
+                                            <img src="../static/img/works/mcscanx.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">MCScanX</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Colinearscan -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Collinearity">
+                                    <div>
+                                        <a href="{% url 'colinearscan_url' %}">
+                                            <img src="../static/img/works/colinearscan.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Colinearscan</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Orthomcl -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Homologous">
+                                    <div>
+                                        <a href="{% url 'orthomcl_url' %}">
+                                            <img src="../static/img/works/orthomcl.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Orthomcl</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Orthofinder -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Homologous">
+                                    <div>
+                                        <a href="{% url 'orthofinder_url' %}">
+                                            <img src="../static/img/works/orthofinder.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Orthofinder</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Shinycircos -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="figure">
+                                    <div>
+                                        <a href="{% url 'shinycircos_url' %}">
+                                            <img src="../static/img/works/shinycircos.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Shinycircos</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Circos -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="figure">
+                                    <div>
+                                        <a href="{% url 'circos_url' %}">
+                                            <img src="../static/img/works/circos.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Circos</h4>
+                                    </div>
+                                </li>
+
+                                <!-- ParaAT -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Ka_ks">
+                                    <div>
+                                        <a href="{% url 'paraat_url' %}">
+                                            <img src="../static/img/works/paraat.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">ParaAT</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Kaks_calculator -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="Ka_ks">
+                                    <div>
+                                        <a href="{% url 'kaks_calculator_url' %}">
+                                            <img src="../static/img/works/kaks_calculator.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Kaks_calculator</h4>
+                                    </div>
+                                </li>
+
+                                <!-- FastTree -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="tree">
+                                    <div>
+                                        <a href="{% url 'fasttree_url' %}">
+                                            <img src="../static/img/works/fasttree.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">FastTree</h4>
+                                    </div>
+                                </li>
+
+                                <!-- IQ-Tree -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="tree">
+                                    <div>
+                                        <a href="{% url 'iq_tree_url' %}">
+                                            <img src="../static/img/works/iqtree.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">IQ-Tree</h4>
+                                    </div>
+                                </li>
+
+                                <!-- Phyml -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="tree">
+                                    <div>
+                                        <a href="{% url 'phyml_url' %}">
+                                            <img src="../static/img/works/phyml.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">Phyml</h4>
+                                    </div>
+                                </li>
+
+                                <!-- PAML -->
+                                <li class="item-thumbs col-lg-3 photography" data-id="id-5" data-type="tree">
+                                    <div>
+                                        <a href="{% url 'paml_url' %}">
+                                            <img src="../static/img/works/paml.png" alt="">
+                                        </a>
+                                        <h4 style="text-align: center">PAML</h4>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+	    </div>
+	</section>
+
+{% endblock %}

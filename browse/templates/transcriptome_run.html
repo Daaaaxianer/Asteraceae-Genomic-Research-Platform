@@ -1,0 +1,725 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gene Expression Search - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+
+    <style>
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1320px !important;
+            }
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin: 40px auto 50px;
+            min-height: 560px;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: var(--dark-orange);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .section-divider {
+            margin: 1.5rem auto 2.5rem auto;
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            opacity: 1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 34px 0 20px;
+            position: relative;
+        }
+
+        .section-header::before,
+        .section-header::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px dotted var(--primary-orange);
+            margin: 0 20px;
+            opacity: 0.5;
+        }
+
+        .section-title-box {
+            background: #fff;
+            padding: 0 15px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .section-title-text {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.35rem;
+            margin: 0;
+        }
+
+        .leaf-icon {
+            color: var(--primary-orange);
+            font-size: 1.1rem;
+            margin: 0 auto 5px;
+            display: block;
+        }
+
+        .intro-text {
+            text-align: justify;
+            color: #5d4037;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: #fff;
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            padding: 20px 20px 16px;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin-bottom: 22px;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-download {
+            color: var(--dark-orange);
+            background: #fff;
+            border: 1px solid #efc89a;
+        }
+
+        .btn-download:hover {
+            color: #b94a00;
+            background: #fff8ef;
+            border-color: #e8b66f;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        .result-table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        .result-table td {
+            padding: 10px 15px !important;
+            vertical-align: middle;
+            white-space: nowrap;
+            border-bottom: 1px solid #edf0f2;
+        }
+
+        .result-table tbody tr:nth-child(even) {
+            background-color: #fffdf9;
+        }
+
+        .result-table tbody tr:hover {
+            background-color: #fff6eb;
+        }
+
+        #example th:nth-child(1),
+        #example td:nth-child(1) {
+            min-width: 170px;
+        }
+
+        #example th:nth-child(4),
+        #example td:nth-child(4) {
+            min-width: 180px;
+        }
+
+        #example th:nth-child(7),
+        #example td:nth-child(7) {
+            min-width: 130px;
+        }
+
+        #example th:nth-child(8),
+        #example td:nth-child(8),
+        #example th:nth-child(9),
+        #example td:nth-child(9) {
+            min-width: 120px;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center;
+            row-gap: 12px;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #f0e4d8;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px;
+            border: 1px solid #d9e0e6;
+            border-radius: 7px;
+            background-color: #fff;
+            color: #2c3e50;
+            box-shadow: none;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px;
+            margin: 0;
+            padding: 4px 28px 4px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px;
+            margin: 0;
+            padding: 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+            outline: 0;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .dataTables_wrapper .pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4;
+            background: #fff;
+            color: #44515c;
+            box-sizing: border-box;
+            box-shadow: none;
+            font-weight: 700;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link {
+            color: #fff;
+            background: var(--dark-orange);
+            border-color: var(--dark-orange);
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+            color: var(--dark-orange);
+            background: #fff8ef;
+            border-color: #efc89a;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link {
+            color: #b6c0c9;
+            background: #f8fafb;
+            border-color: #e8edf1;
+        }
+
+        .page-jump-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5f6b76;
+            font-size: 0.92rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .page-jump-input {
+            width: 58px;
+            height: 36px;
+            padding: 0 8px;
+            border: 1px solid #d8dee4;
+            border-radius: 7px;
+            color: #2c3e50;
+            text-align: center;
+            font-weight: 700;
+            outline: 0;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+        }
+
+        .page-jump-total {
+            color: #8a96a3;
+        }
+
+        .page-jump-btn {
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #efc89a;
+            border-radius: 7px;
+            background: #fff8ef;
+            color: var(--dark-orange);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df;
+            border-color: #e8b66f;
+        }
+
+        .export-note {
+            color: #5f6b76;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-box-wrapper {
+                padding: 28px 18px;
+            }
+
+            .section-header::before,
+            .section-header::after {
+                margin: 0 10px;
+            }
+
+            .action-row {
+                align-items: stretch;
+            }
+
+            .action-group,
+            .btn-custom {
+                width: 100%;
+            }
+
+            .btn-custom {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                text-align: center;
+            }
+
+            .dataTables_wrapper .pagination,
+            .dataTables_wrapper .dataTables_paginate {
+                justify-content: center;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+        <div class="text-center">
+            <h2 class="section-title">Gene Expression Search</h2>
+            <p class="section-subtitle">Integrated processing of Asteraceae multi-omics expression data</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-11">
+                <p class="intro-text">
+                    &emsp;&emsp;Our research institute utilizes transcriptomic data sourced from the SRA database. Through our processing pipeline, we analyze the raw data to derive gene expression data. Users have the ability to input their own sequences and obtain expression data for the gene ID most closely matching the species in our platform, achieved through optimal blast alignment. Additionally, we offer visual representation of the data through heatmaps, facilitating users in comprehending the data more conveniently and efficiently.
+                </p>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title-box">
+                <i class="fas fa-seedling leaf-icon" aria-hidden="true"></i>
+                <h3 class="section-title-text">Transcriptome Samples</h3>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="action-row">
+                <div class="action-group">
+                    <button type="button" id="downloadButton" class="btn-custom btn-download">
+                        <i class="fas fa-download"></i> Export CSV
+                    </button>
+                </div>
+                <div id="recordCount" class="text-muted fw-semibold">Loading samples...</div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="example" class="table table-hover result-table align-middle" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Species</th>
+                            <th>PRJNA</th>
+                            <th>SRR</th>
+                            <th>SampleName</th>
+                            <th>Bases</th>
+                            <th>Bytes</th>
+                            <th>ReleaseDate</th>
+                            <th>Tissue</th>
+                            <th>Treatment</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'vendor/js/jquery-3.5.1.js' %}"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    var jsonUrl = "{% url 'transcriptome_run_data_url' %}?sp_name={{ sp_name|default_if_none:''|urlencode }}&type={{ type|default_if_none:''|urlencode }}";
+    var transcriptomeTable = null;
+
+    function installPageJump(table, tableSelector) {
+        var wrapper = $(table.table().container());
+        var paginate = wrapper.find('.dataTables_paginate');
+        var tableId = $(tableSelector).attr('id') || 'transcriptomeTable';
+        var inputId = tableId + '_page_jump';
+
+        function renderPageJump() {
+            var info = table.page.info();
+            var control = wrapper.find('.page-jump-control');
+
+            if (info.pages <= 1) {
+                control.remove();
+                return;
+            }
+
+            if (!control.length) {
+                control = $('<div class="page-jump-control"></div>');
+                var input = $('<input type="number" min="1" class="page-jump-input">')
+                    .attr('id', inputId)
+                    .attr('aria-label', 'Jump to page');
+                var total = $('<span class="page-jump-total"></span>');
+                var button = $('<button type="button" class="page-jump-btn">Go</button>');
+
+                function jumpToPage() {
+                    var requestedPage = parseInt(input.val(), 10);
+                    if (isNaN(requestedPage)) {
+                        return;
+                    }
+                    requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                    table.page(requestedPage - 1).draw('page');
+                }
+
+                input.on('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        jumpToPage();
+                    }
+                });
+                button.on('click', jumpToPage);
+
+                control
+                    .append($('<label></label>').attr('for', inputId).text('Page'))
+                    .append(input)
+                    .append(total)
+                    .append(button);
+                paginate.append(control);
+            }
+
+            control.find('.page-jump-input')
+                .attr('max', info.pages)
+                .val(info.page + 1);
+            control.find('.page-jump-total').text('/ ' + info.pages);
+        }
+
+        table.on('draw', renderPageJump);
+        renderPageJump();
+    }
+
+    function updateRecordCount() {
+        if (!transcriptomeTable) {
+            return;
+        }
+        var info = transcriptomeTable.page.info();
+        var text = info.recordsDisplay + ' matching samples';
+        if (info.recordsTotal !== info.recordsDisplay) {
+            text += ' / ' + info.recordsTotal + ' total';
+        }
+        $('#recordCount').text(text);
+    }
+
+    function stripHtml(value) {
+        return $('<div>').html(value == null ? '' : String(value)).text().trim();
+    }
+
+    function csvEscape(value) {
+        value = value == null ? '' : String(value);
+        if (/[",\n\r]/.test(value)) {
+            value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value;
+    }
+
+    function downloadCSV() {
+        if (!transcriptomeTable) {
+            return;
+        }
+
+        var headers = ["Species", "PRJNA", "SRR", "SampleName", "Bases", "Bytes", "ReleaseDate", "Tissue", "Treatment", "Link"];
+        var keys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        var rows = [headers.map(csvEscape).join(",")];
+
+        transcriptomeTable.rows({ search: 'applied' }).every(function() {
+            var rowData = this.data() || {};
+            var row = keys.map(function(key) {
+                return csvEscape(stripHtml(rowData[key]));
+            });
+            rows.push(row.join(","));
+        });
+
+        if (rows.length === 1) {
+            alert("No data to export.");
+            return;
+        }
+
+        var blob = new Blob([rows.join("\n")], {type: "text/csv;charset=utf-8"});
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "Transcriptome_samples_filtered.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
+    transcriptomeTable = $('#example').DataTable({
+        ajax: {
+            url: jsonUrl,
+            dataSrc: "data"
+        },
+        columns: [
+            {
+                data: "0",
+                title: "Species",
+                render: function(data) {
+                    return data || '';
+                }
+            },
+            { data: "1", title: "PRJNA" },
+            { data: "2", title: "SRR" },
+            { data: "3", title: "SampleName" },
+            { data: "4", title: "Bases" },
+            { data: "5", title: "Bytes" },
+            { data: "6", title: "ReleaseDate" },
+            { data: "7", title: "Tissue" },
+            { data: "8", title: "Treatment" },
+            {
+                data: "9",
+                title: "Link",
+                render: function(data) {
+                    if (data && String(data).trim() !== '') {
+                        return data;
+                    }
+                    return '';
+                }
+            }
+        ],
+        paging: true,
+        info: true,
+        searching: true,
+        lengthChange: true,
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        pagingType: 'simple_numbers',
+        scrollX: true,
+        autoWidth: false,
+        order: [[0, 'asc']],
+        language: {
+            search: "Search:",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "Showing 0 to 0 of 0 entries",
+            zeroRecords: "No matching records found",
+            loadingRecords: "Loading data from server..."
+        }
+    });
+
+    transcriptomeTable.on('draw xhr', updateRecordCount);
+    installPageJump(transcriptomeTable, '#example');
+
+    $('#downloadButton').on('click', downloadCSV);
+    updateRecordCount();
+});
+</script>
+{% endblock %}

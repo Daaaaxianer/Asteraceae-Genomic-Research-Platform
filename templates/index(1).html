@@ -1,0 +1,1034 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+    /* ==================== 1. 全局背景优化 ==================== */
+    body {
+        background-color: #f4f6f9 !important;
+        overflow-x: hidden;
+    }
+
+    /* ==================== 2. 轮播图与视频样式 ==================== */
+    :root { --carousel-height: 500px; }
+    .carouselfig { padding-top: 15px !important; padding-bottom: 5px !important; /* Reduced bottom padding */ }
+    .carousel-inner {
+        border-radius: 0; background: transparent; overflow: hidden;
+        height: var(--carousel-height); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .carousel-item { height: var(--carousel-height); transition: transform 0.4s ease-in-out; }
+    .carousel-item > img.fixed-height-img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+    .carousel-mode-video { pointer-events: none !important; }
+    .carousel-mode-video .carousel-control-prev,
+    .carousel-mode-video .carousel-control-next,
+    .carousel-mode-video .carousel-indicators { display: none !important; }
+    .video-container {
+        position: relative; width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        background: #000; z-index: 50;
+    }
+    .carousel-mode-video .video-container { pointer-events: auto !important; z-index: 10000 !important; }
+    #video-cover-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 60; }
+    .play-btn-wrapper { position: absolute; z-index: 70; cursor: pointer; transition: transform 0.2s ease; }
+    .play-btn { width: 90px; height: 90px; background: rgba(230, 126, 34, 0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); }
+    .play-btn:hover { transform: scale(1.1); background: #e67e22; }
+    .play-icon { width: 0; height: 0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-left: 28px solid white; margin-left: 8px; }
+    .stop-btn-wrapper { position: absolute; top: 25px; right: 25px; z-index: 10001; cursor: pointer; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s; }
+    .stop-btn-wrapper.show-controls { opacity: 1; visibility: visible; }
+    .stop-btn { width: 45px; height: 45px; background-color: rgba(0, 0, 0, 0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background-color 0.3s; backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3); }
+    .stop-btn:hover { transform: rotate(90deg); background-color: #e67e22; border-color: #e67e22; }
+    .stop-icon { position: relative; width: 22px; height: 22px; }
+    .stop-icon::before, .stop-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 2.5px; background-color: #fff; border-radius: 2px; }
+    .stop-icon::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .stop-icon::after { transform: translate(-50%, -50%) rotate(-45deg); }
+    #inline-video { width: 100%; height: 100%; display: none; object-fit: contain; position: relative; }
+    .carousel-control-prev, .carousel-control-next { width: 10%; z-index: 100; opacity: 0.7; transition: opacity 0.3s; }
+    .carousel-control-prev:hover, .carousel-control-next:hover { opacity: 1; }
+    .carousel-control-prev-icon, .carousel-control-next-icon { width: 4rem; height: 4rem; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
+    .carousel-text { color: black !important; }
+
+    /* ==================== 3. Platform Datas 通用容器 ==================== */
+    /* 调整了间距，使其更加紧凑 */
+    .section-container { padding: 20px 0 20px 0; margin-top: 10px; }
+
+    .content-box-wrapper {
+        background-color: #ffffff;
+        border: 1px solid #eaeff2;
+        border-radius: 16px;
+        padding: 30px 30px; /* Reduced padding slightly */
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        position: relative;
+    }
+    .section-title { font-family: "Georgia", "Times New Roman", serif; font-weight: 700; color: #d35400; font-size: 2.2rem; margin-bottom: 0.5rem; position: relative; display: inline-block; }
+    .section-subtitle { font-family: "Arial", sans-serif; color: #7f8c8d; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0; max-width: 800px; margin-left: auto; margin-right: auto; }
+    .section-divider { margin: 1.5rem auto 2.5rem auto; border: 0; border-top: 1px solid #e0e0e0; width: 100%; opacity: 1; }
+
+    /* ==================== 4. Platform Datas 样式 ==================== */
+    .stat-card {
+        border: 1px solid #e1e4e8;
+        border-radius: 12px;
+        padding: 15px 5px;
+        height: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #fcfcfc;
+    }
+    .col:nth-child(4n+1) .stat-card { background-color: #fffbf0; border-color: #fcebd0; }
+    .col:nth-child(4n+2) .stat-card { background-color: #f0f7ff; border-color: #d0e4ff; }
+    .col:nth-child(4n+3) .stat-card { background-color: #f0fff4; border-color: #d0f0d8; }
+    .col:nth-child(4n+4) .stat-card { background-color: #fff5f5; border-color: #f0d0d0; }
+    .stat-card:hover { transform: translateY(-4px); background-color: #ffffff !important; border-color: #d0d0d0; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); }
+    .stat-icon { font-size: 1.1rem; color: #e67e22; opacity: 0.7; margin-bottom: 4px; transition: transform 0.3s; }
+    .stat-card:hover .stat-icon { transform: scale(1.2); opacity: 1; }
+    .stat-number { font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; font-family: 'Arial Black', 'Arial', sans-serif; color: #e67e22; white-space: nowrap; letter-spacing: -0.5px; line-height: 1; }
+    .stat-label-link { display: inline-block; font-size: 1.25rem; color: #000000; font-weight: 700; text-transform: capitalize; line-height: 1.2; text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s ease; }
+    .stat-label-link:hover { color: #d35400; border-bottom: 2px solid rgba(211, 84, 0, 0.3); }
+
+    /* ==================== 5. Web Tools - Card Layout ==================== */
+    .flower-tools-section {
+        padding: 20px 0 30px 0; /* Reduced vertical padding */
+        margin-top: 10px; /* Reduced top margin */
+    }
+    .flower-stage-wrapper {
+        position: relative;
+        width: 100%;
+        height: 1100px; /* Fixed height to control exact spacing */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+    }
+
+    /* Connecting Lines Layer */
+    .flower-connector-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .flower-connector-lines line {
+        stroke: #e67e22;
+        stroke-width: 3px;
+        stroke-opacity: 0.25;
+        stroke-dasharray: 8, 4;
+    }
+
+    /* Central Core - Design Updated */
+    .flower-center-core {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 200px; height: 200px;
+        background: radial-gradient(circle at 30% 30%, #fff, #ffe0b2);
+        border: 6px solid #e67e22;
+        box-shadow: 0 0 40px rgba(230, 126, 34, 0.25), inset 0 0 20px rgba(255, 255, 255, 0.8);
+        border-radius: 50%; z-index: 20;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        text-align: center; padding: 20px;
+    }
+    .flower-center-title {
+        font-family: 'Muyao Softbrush', cursive; /* Handwritten font applied */
+        font-size: 3.2rem; /* Increased size */
+        font-weight: normal;
+        color: #d35400;
+        margin-bottom: 0px;
+        line-height: 0.9;
+        text-shadow: 2px 2px 0px rgba(255,255,255,0.8);
+    }
+    .flower-center-subtitle {
+        font-family: "Arial", sans-serif;
+        font-size: 1.4rem;
+        color: #555;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    /* Petal (Card) Common Styles */
+    .flower-petal {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        z-index: 10;
+        overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.05);
+        background-color: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 420px; /* Default Width */
+    }
+
+    .flower-petal:hover {
+        z-index: 30;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Header & Body Styles */
+    .petal-header {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 55px;
+        flex-shrink: 0; /* Header size is fixed */
+    }
+    .petal-header h4 {
+        margin: 0;
+        font-family: "Arial", sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.3;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .petal-body {
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        /* Key property for distributing tools evenly vertically */
+        align-content: space-evenly;
+        gap: 8px; /* Horizontal gap */
+        flex-grow: 1; /* Fill remaining height */
+        background-color: #fdfdfd;
+        height: 100%; /* Ensure it takes full height */
+    }
+
+    /* Tool Buttons Styling */
+    .tool-btn {
+        display: inline-block;
+        font-size: 0.8rem; font-weight: 700; color: #444;
+        background: rgba(255,255,255,0.9);
+        border: 1px solid rgba(0,0,0,0.1);
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .tool-btn:hover {
+        background: #fff; color: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* === Positioning & Sizing for Equal Spacing === */
+    /* Container Height: 1100px */
+
+    /* 1. TOP CENTER */
+    .petal-1 {
+        top: 0; left: 50%; transform: translateX(-50%);
+        width: 550px;
+        height: 300px; /* Fixed Height */
+    }
+    .petal-1 .petal-header { background: linear-gradient(135deg, #1565C0, #1E88E5); }
+    .petal-1 .petal-body { background-color: #e3f2fd; }
+    .petal-1 .tool-btn:hover { color: #1565C0; border-color: #1565C0; }
+
+    /* 2. MIDDLE ROW (Absolute Center Vertical) */
+    .petal-middle-row {
+        top: 50%;
+        transform: translateY(-50%);
+        height: 350px; /* Fixed Height */
+    }
+
+    .petal-5 { left: 2%; } /* Left Middle */
+    .petal-5 .petal-header { background: linear-gradient(135deg, #EF6C00, #F57C00); }
+    .petal-5 .petal-body { background-color: #fff3e0; }
+    .petal-5 .tool-btn:hover { color: #EF6C00; border-color: #EF6C00; }
+
+    .petal-2 { right: 2%; } /* Right Middle */
+    .petal-2 .petal-header { background: linear-gradient(135deg, #2E7D32, #43A047); }
+    .petal-2 .petal-body { background-color: #e8f5e9; }
+    .petal-2 .tool-btn:hover { color: #2E7D32; border-color: #2E7D32; }
+
+    /* 3. BOTTOM ROW */
+    .petal-bottom-row {
+        bottom: 0;
+        height: 300px; /* Fixed Height */
+    }
+
+    .petal-4 { left: 10%; } /* Bottom Left */
+    .petal-4 .petal-header { background: linear-gradient(135deg, #00838F, #00ACC1); }
+    .petal-4 .petal-body { background-color: #e0f7fa; }
+    .petal-4 .tool-btn:hover { color: #00838F; border-color: #00838F; }
+
+    .petal-3 { right: 10%; } /* Bottom Right */
+    .petal-3 .petal-header { background: linear-gradient(135deg, #C62828, #E53935); }
+    .petal-3 .petal-body { background-color: #ffebee; }
+    .petal-3 .tool-btn:hover { color: #C62828; border-color: #C62828; }
+
+
+    @media (max-width: 1200px) {
+        .flower-stage-wrapper { height: 1200px; }
+        .petal-5 { left: 0; }
+        .petal-2 { right: 0; }
+        .petal-3 { right: 0; }
+        .petal-4 { left: 0; }
+    }
+
+    @media (max-width: 991px) {
+        .flower-stage-wrapper { height: auto; flex-direction: column; padding: 20px 0; }
+        .flower-connector-lines { display: none; }
+        .flower-center-core { position: relative; top: auto; left: auto; transform: none; margin-bottom: 30px; }
+        .flower-petal { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: 100%; max-width: 600px; height: auto; margin-bottom: 20px; }
+        .petal-middle-row, .petal-bottom-row { height: auto; transform: none; }
+    }
+
+    /* ==================== 6. Asteraceae Genome Hub Section ==================== */
+    /* 缩小间距 */
+    .genome-list-section { margin-top: 10px; margin-bottom: 20px; }
+
+    /* Added borders to table as requested */
+    .genome-table { width: 100%; border-collapse: collapse; }
+    .genome-table th, .genome-table td { border: 1px solid #dee2e6; }
+
+    .genome-table thead th {
+        background-color: #fff8f0;
+        color: #d35400;
+        font-weight: 800;
+        padding: 12px;
+        font-size: 0.95rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+    .genome-table tbody td {
+        padding: 10px 12px;
+        color: #555;
+        font-size: 0.9rem;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .genome-table tbody tr:hover { background-color: #fffdf5; }
+
+    .scientific-name { font-style: italic; color: #2c3e50; font-weight: 700; font-size: 0.95rem; }
+    .data-link-btn {
+        color: #fff; background-color: #e67e22; padding: 5px 12px;
+        border-radius: 4px; text-decoration: none; font-size: 0.8rem; transition: background 0.2s;
+    }
+    .data-link-btn:hover { background-color: #d35400; color: #fff; }
+
+    /* Pagination - Center Alignment */
+    .pagination-container { display: flex; justify-content: center; padding: 20px 0 0 0; }
+    .custom-pagination .page-item .page-link { color: #555; border: 1px solid #dee2e6; margin: 0 3px; border-radius: 4px; font-weight: 600; }
+    .custom-pagination .page-item.active .page-link { background-color: #e67e22; color: #fff; border-color: #e67e22; }
+    .custom-pagination .page-item .page-link:hover { background-color: #ffe0b2; color: #d35400; border-color: #ffe0b2; }
+
+    /* ==================== 7. Horizontal Timeline ==================== */
+    .timeline-section-wrapper { margin-top: 20px; margin-bottom: 30px; }
+    .timeline-scroll-container { overflow-x: auto; overflow-y: visible; padding: 120px 0; position: relative; scrollbar-width: thin; scrollbar-color: #e67e22 #f0f0f0; }
+    .timeline-scroll-container::-webkit-scrollbar { height: 6px; }
+    .timeline-scroll-container::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+    .timeline-scroll-container::-webkit-scrollbar-thumb { background: rgba(230, 126, 34, 0.5); border-radius: 3px; }
+    .timeline-inner-wrapper { display: flex; align-items: center; position: relative; width: max-content; min-width: 100%; padding: 0 40px; }
+    .timeline-axis { position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #e67e22; border-radius: 2px; z-index: 0; transform: translateY(-50%); margin: 0 40px; }
+    .timeline-axis::after { content: ''; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 14px solid #e67e22; }
+
+    .timeline-year-separator { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 20px; flex-shrink: 0; z-index: 1; height: 100px; }
+    .year-dashed-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed #ddd; z-index: 0; }
+    .year-label {
+        background: #fff; border: 3px solid #e67e22; color: #e67e22; font-weight: 900;
+        padding: 8px 20px; border-radius: 30px; font-size: 1.5rem; z-index: 2;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+    }
+
+    .timeline-node { display: inline-block; position: relative; width: 130px; height: 20px; flex-shrink: 0; text-align: center; }
+    .t-dot { width: 16px; height: 16px; background-color: #fff; border: 4px solid #e67e22; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; transition: all 0.3s ease; cursor: pointer; }
+    .timeline-node:hover .t-dot { transform: translate(-50%, -50%) scale(1.4); background-color: #e67e22; border-color: #fff; box-shadow: 0 0 15px rgba(230, 126, 34, 0.6); }
+    .t-date { position: absolute; width: 100px; left: 50%; transform: translateX(-50%); font-family: 'Arial', sans-serif; font-weight: 800; font-size: 1.15rem; color: #888; transition: color 0.3s; }
+    .timeline-node:hover .t-date { color: #d35400; }
+    .timeline-node:nth-child(odd) .t-date { bottom: 28px; }
+    .timeline-node:nth-child(even) .t-date { top: 28px; }
+    .t-content { position: absolute; width: 280px; background: #fff; border: 1px solid #e67e22; padding: 15px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: left; white-space: normal; left: 50%; transform: translateX(-50%) scale(0.95); pointer-events: none; }
+    .t-content::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); border-width: 8px; border-style: solid; }
+    .t-header { font-size: 1.05rem; color: #777; margin-bottom: 5px; font-weight: 700; }
+    .t-body { font-size: 1.1rem; color: #333; line-height: 1.5; }
+    .timeline-node:nth-child(odd) .t-content { top: 35px; }
+    .timeline-node:nth-child(odd):hover .t-content { opacity: 1; visibility: visible; top: 50px; transform: translateX(-50%) scale(1); }
+    .timeline-node:nth-child(odd) .t-content::after { top: -16px; border-color: transparent transparent #e67e22 transparent; }
+    .timeline-node:nth-child(even) .t-content { bottom: 35px; }
+    .timeline-node:nth-child(even):hover .t-content { opacity: 1; visibility: visible; bottom: 50px; transform: translateX(-50%) scale(1); }
+    .timeline-node:nth-child(even) .t-content::after { bottom: -16px; border-color: #e67e22 transparent transparent transparent; }
+    .timeline-end-spacer { width: 50px; flex-shrink: 0; }
+
+    /* ==================== 8. How to Cite & Ref ==================== */
+    .cite-section-container { margin-bottom: 30px; }
+    .cite-card-body { padding: 30px; background: #fff; }
+    .custom-cite-list { list-style: none; padding: 0; margin: 0; }
+    .custom-cite-item { display: flex; align-items: flex-start; margin-bottom: 20px; }
+    .custom-cite-item:last-child { margin-bottom: 0; }
+    .cite-icon-wrapper { flex-shrink: 0; width: 30px; height: 30px; background-color: #fff5eb; color: #d35400; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; margin-top: 2px; }
+    .cite-text-block { flex: 1; background-color: #f8f9fa; border-left: 4px solid #e67e22; padding: 12px 15px; border-radius: 0 6px 6px 0; font-family: "Georgia", serif; font-style: italic; color: #4a4a4a; line-height: 1.6; font-size: 1rem; }
+    .contact-footer { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #eee; text-align: right; }
+    .contact-link { color: #2e7d32; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+    .contact-link:hover { color: #1b5e20; text-decoration: underline; }
+    .agrp-card { border: 1px solid #eaeaea; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); background: #fff; overflow: hidden; }
+    .agrp-card-header { background: linear-gradient(to right, rgba(230, 126, 34, 0.1), #fff); border-bottom: 2px solid #e67e22; padding: 15px 20px; border-radius: 12px 12px 0 0; }
+    .agrp-card-header h5 { color: #d35400 !important; font-weight: 800 !important; font-family: "Segoe UI", "Arial", sans-serif; margin: 0; letter-spacing: 0.5px; display: flex; align-items: center; }
+
+    .reference-section-container { margin-bottom: 40px; }
+    .reference-scroll-mask { height: 240px; overflow: hidden; position: relative; background: #fcfcfc; padding: 20px; }
+    .reference-footer-note { padding: 12px 20px; background-color: #f8f9fa; border-top: 1px solid #eee; font-size: 0.85rem; color: #7f8c8d; font-style: italic; text-align: right; }
+    .reference-scroll-wrapper { animation: scroll-vertical 150s linear infinite; }
+    .reference-scroll-mask:hover .reference-scroll-wrapper { animation-play-state: paused; }
+    @keyframes scroll-vertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+    .reference-list { list-style: none; padding: 0; margin: 0; }
+    .reference-item { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed #eee; font-family: "Georgia", serif; font-size: 0.9rem; color: #666; line-height: 1.5; }
+    .reference-spacer { height: 3rem; width: 100%; }
+
+    /* Welcome Title Hand-writing Style */
+    .welcome-title {
+        font-family: 'Muyao Softbrush', cursive;
+        font-size: 2.8rem;
+        font-weight: normal;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .welcome-title span[style*="e67e22"] {
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(230, 126, 34, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block welcome_section %}
+<div class="welcome-box">
+    <h2 class="text-center welcome-title">
+        <span>Welcome to</span> <span style="color: #e67e22;">AGRP</span>!
+    </h2>
+    <p style="text-align: justify; margin-bottom: 0.5rem; color: #34495e; font-size: 1.15rem;">
+        Asteraceae is the largest angiosperm family, with more than <strong>1,700</strong> genera and <strong>25,000</strong> species. Asteraceae have a strong adaptability to the environment and are widely distributed in almost all parts of the world. It contains a large number of edible, medicinal and ornamental plants, which are of great value to human life.
+    </p>
+    <p style="text-align: justify; margin-bottom: 0; color: #34495e; font-size: 1.15rem;">
+        AGRP integrates <strong>164</strong> genomes, including <strong>157</strong> published genomes from the Asteraceae family, the newly sequenced Solidago canadensis genome, and <strong>6</strong> outgroup species. The platform provides annotation information for <strong>183,430,746</strong> transposable elements (TEs) across Asteraceae genomes, annotation details for <strong>18,050,760</strong> protein-coding genes along with their duplication types, resources for synteny analysis, ancestral genome resources, multi-omics resources, specialized floral fragrance metabolite resources, and an encyclopedic database of Asteraceae plants. Interfaces like gene family include tools such as Ortho-Tree, Fami-Tree, and Fami-Circos to support gene evolutionary analysis. It integrates <strong>62</strong> window-based operational tools (<strong>34</strong> of which are self-developed) and <strong>70</strong> downloadable tools. Beyond providing intuitive query, analysis, and visualization tools, it features a data submission portal, statistical charts, and user manuals to ensure accessibility for all users. AGRP also established AGRP-Switch to support one-stop searching across all AGRP resources.
+    </p>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container carouselfig">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators" id="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" id="slide-video-item">
+                    <div class="video-container" id="video-interaction-area">
+                        <div class="play-btn-wrapper" id="start-video-btn"><div class="play-btn"><div class="play-icon"></div></div></div>
+                        <div class="stop-btn-wrapper" id="stop-video-btn" title="Close Video"><div class="stop-btn"><div class="stop-icon"></div></div></div>
+                        <img src="{% static 'image/carouselFig01.png' %}" id="video-cover-img" alt="Video Cover">
+                        <video id="inline-video" preload="metadata"><source src="{% static 'videos/AGRP_introV1.mp4' %}" type="video/mp4"></video>
+                    </div>
+                    <div class="carousel-caption d-none d-md-block" id="video-caption-container">
+                        <h4 class="carousel-text" style="color: black !important; text-shadow: 0px 0px 0px rgba(0,0,0,0.6);">Introduction to AGRP Platform</h4>
+                        <p class="carousel-text" style="color: #2F4F4F !important; text-shadow: 0px 0px 0px rgba(0,0,0,0.6);">Click the button to watch the intro video.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig02.png' %}" class="fixed-height-img d-block w-100" alt="Resources">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="carousel-text" style="color: white !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">Asteraceae Genomics Resources</h5>
+                        <p class="carousel-text" style="color: #f0f0f0 !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Comprehensive visualization tools for researchers.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig03.png' %}" class="fixed-height-img d-block w-100" alt="Tools">
+                    <div class="carousel-caption d-none d-md-block"><h5 class="carousel-text" style="color: white !important;">Advanced Bioinformatics Tools</h5><p class="carousel-text" style="color: #f0f0f0 !important;">Processing complex genomic data with efficiency.</p></div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig04.png' %}" class="fixed-height-img d-block w-100" alt="Tools">
+                    <div class="carousel-caption d-none d-md-block"><h5 class="carousel-text" style="color: white !important;">Advanced Bioinformatics Tools</h5><p class="carousel-text" style="color: #f0f0f0 !important;">Processing complex genomic data with efficiency.</p></div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'image/carouselFig05.png' %}" class="fixed-height-img d-block w-100" alt="Tools">
+                    <div class="carousel-caption d-none d-md-block"><h5 class="carousel-text" style="color: white !important;">Advanced Bioinformatics Tools</h5><p class="carousel-text" style="color: #f0f0f0 !important;">Processing complex genomic data with efficiency.</p></div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button>
+        </div>
+    </div>
+
+    <section class="section-container">
+        <div class="container">
+            <div class="content-box-wrapper">
+                <div class="text-center">
+                    <h2 class="section-title">Platform Datas</h2>
+                    <p class="section-subtitle">Integrated collection and advanced processing of Asteraceae multi-omics data</p>
+                </div>
+                <hr class="section-divider">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 justify-content-center">
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-columns-gap"></i></div><div class="stat-number counter" data-target="164">0</div><a href="#" class="stat-label-link">Genomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-bookmarks"></i></div><div class="stat-number counter" data-target="15783602">0</div><a href="#" class="stat-label-link">GO annotations</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-diagram-2"></i></div><div class="stat-number counter" data-target="910531">0</div><a href="#" class="stat-label-link">KEGG annotations</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-check2-square"></i></div><div class="stat-number counter" data-target="261982">0</div><a href="#" class="stat-label-link">iTAK</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-virus"></i></div><div class="stat-number counter" data-target="183430746">0</div><a href="#" class="stat-label-link">TE</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-files"></i></div><div class="stat-number counter" data-target="5422641">0</div><a href="#" class="stat-label-link">Gene Duplication</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-droplet"></i></div><div class="stat-number counter" data-target="2106">0</div><a href="#" class="stat-label-link">N6-methyladenosine</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-bricks"></i></div><div class="stat-number counter" data-target="29045780">0</div><a href="#" class="stat-label-link">Syntenic Blocks</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-grid-3x3"></i></div><div class="stat-number counter" data-target="3246">0</div><a href="#" class="stat-label-link">Synteny Dotplots</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-list-columns"></i></div><div class="stat-number counter" data-target="1422268">0</div><a href="#" class="stat-label-link">Multi-Alignments</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-clock-history"></i></div><div class="stat-number counter" data-target="2302629">0</div><a href="#" class="stat-label-link">Evogenes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-film"></i></div><div class="stat-number counter" data-target="158">0</div><a href="#" class="stat-label-link">Karyotype Anim.</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-tree"></i></div><div class="stat-number counter" data-target="29">0</div><a href="#" class="stat-label-link">Ancestral Genome</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-collection"></i></div><div class="stat-number counter" data-target="116294">0</div><a href="#" class="stat-label-link">Orthogroups</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-people"></i></div><div class="stat-number counter" data-target="180">0</div><a href="#" class="stat-label-link">Gene Families</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-eraser"></i></div><div class="stat-number counter" data-target="4995">0</div><a href="#" class="stat-label-link">Rubber Genes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-flower1"></i></div><div class="stat-number counter" data-target="1065">0</div><a href="#" class="stat-label-link">Inulin Genes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-info-circle"></i></div><div class="stat-number counter" data-target="87">0</div><a href="#" class="stat-label-link">Species Info</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-activity"></i></div><div class="stat-number counter" data-target="6712">0</div><a href="#" class="stat-label-link">Transcriptomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-bezier2"></i></div><div class="stat-number counter" data-target="16207">0</div><a href="#" class="stat-label-link">Metabolomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-wind"></i></div><div class="stat-number counter" data-target="812">0</div><a href="#" class="stat-label-link">Floral Volatiles</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-globe"></i></div><div class="stat-number counter" data-target="952">0</div><a href="#" class="stat-label-link">Pan-Genomes</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-server"></i></div><div class="stat-number counter" data-target="56">0</div><a href="#" class="stat-label-link">Ext. Databases</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-journal-text"></i></div><div class="stat-number counter" data-target="30416">0</div><a href="#" class="stat-label-link">Literatures</a></div></div>
+                    <div class="col"><div class="stat-card"><div class="stat-icon"><i class="bi bi-tools"></i></div><div class="stat-number counter" data-target="62">0</div><a href="#" class="stat-label-link">Tools</a></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flower-tools-section">
+        <div class="container">
+            <div class="content-box-wrapper">
+                <div class="text-center">
+                    <h2 class="section-title">Web Tools</h2>
+                    <p class="section-subtitle">Comprehensive Analysis & Visualization Toolkit</p>
+                </div>
+                <hr class="section-divider">
+
+                <div class="flower-stage-wrapper">
+
+                    <svg class="flower-connector-lines">
+                        <line x1="50%" y1="50%" x2="50%" y2="14%" />
+                        <line x1="50%" y1="50%" x2="85%" y2="50%" />
+                        <line x1="50%" y1="50%" x2="75%" y2="86%" />
+                        <line x1="50%" y1="50%" x2="25%" y2="86%" />
+                        <line x1="50%" y1="50%" x2="15%" y2="50%" />
+                    </svg>
+
+                    <div class="flower-center-core">
+                        <h3 class="flower-center-title">AGRP</h3>
+                        <h4 class="flower-center-subtitle">Web Tools</h4>
+                    </div>
+
+                    <div class="flower-petal petal-1">
+                        <div class="petal-header">
+                            <h4>Sequence similarity comparison and homology visualization</h4>
+                        </div>
+                        <div class="petal-body">
+                            <a href="#" class="tool-btn">Syntenic-visualization</a>
+                            <a href="#" class="tool-btn">BB-Dotter</a>
+                            <a href="#" class="tool-btn">B-Dotter</a>
+                            <a href="#" class="tool-btn">BK-Dotter</a>
+                            <a href="#" class="tool-btn">ShinyCircos</a>
+                            <a href="#" class="tool-btn">Ks-Distriplot</a>
+                            <a href="#" class="tool-btn">JBrowse</a>
+                            <a href="#" class="tool-btn">Ks dotplot</a>
+                            <a href="#" class="tool-btn">Blast</a>
+                            <a href="#" class="tool-btn">Collinearity generator</a>
+                            <a href="#" class="tool-btn">Seq-alignment</a>
+                            <a href="#" class="tool-btn">Blast dotplot</a>
+                            <a href="#" class="tool-btn">Diamond</a>
+                            <a href="#" class="tool-btn">CDS2geno-Dotplotting</a>
+                            <a href="#" class="tool-btn">ParaAT</a>
+                        </div>
+                    </div>
+
+                    <div class="flower-petal petal-2 petal-middle-row">
+                        <div class="petal-header">
+                            <h4>Inference and statistical analysis of gene synteny</h4>
+                        </div>
+                        <div class="petal-body">
+                            <a href="#" class="tool-btn">MGA-circos</a>
+                            <a href="#" class="tool-btn">Paleo-gene_RI</a>
+                            <a href="#" class="tool-btn">Paleo-gene_RII</a>
+                            <a href="#" class="tool-btn">Paleo-gene identifier</a>
+                            <a href="#" class="tool-btn">Correspondence</a>
+                            <a href="#" class="tool-btn">KaKs calculate</a>
+                            <a href="#" class="tool-btn">GC-calculation</a>
+                            <a href="#" class="tool-btn">P-index-calculator</a>
+                            <a href="#" class="tool-btn">Block_info</a>
+                            <a href="#" class="tool-btn">ColinearScan</a>
+                            <a href="#" class="tool-btn">Block_run</a>
+                            <a href="#" class="tool-btn">NG-KaKs-Cal</a>
+                            <a href="#" class="tool-btn">MCScanX</a>
+                            <a href="#" class="tool-btn">KaKs calculator</a>
+                            <a href="#" class="tool-btn">Genome Mount Rate Calculator</a>
+                        </div>
+                    </div>
+
+                    <div class="flower-petal petal-5 petal-middle-row">
+                        <div class="petal-header">
+                            <h4>Calculation Tools</h4>
+                        </div>
+                        <div class="petal-body">
+                            <a href="#" class="tool-btn">BDI-finder</a>
+                            <a href="#" class="tool-btn">BDI-extractor</a>
+                            <a href="#" class="tool-btn">BDI-combiner</a>
+                            <a href="#" class="tool-btn">BDI-deduplicator</a>
+                            <a href="#" class="tool-btn">SS-extractor</a>
+                            <a href="#" class="tool-btn">SAF-converter</a>
+                            <a href="#" class="tool-btn">BBM-extraction</a>
+                            <a href="#" class="tool-btn">Deal_stars</a>
+                            <a href="#" class="tool-btn">Block number count</a>
+                            <a href="#" class="tool-btn">Gene_cds_exon_counter</a>
+                            <a href="#" class="tool-btn">Blast match</a>
+                            <a href="#" class="tool-btn">Chromosome length extractor</a>
+                        </div>
+                    </div>
+
+                    <div class="flower-petal petal-3 petal-bottom-row">
+                        <div class="petal-header">
+                            <h4>Gene structure analysis and visualization</h4>
+                        </div>
+                        <div class="petal-body">
+                            <a href="#" class="tool-btn">Hmmer</a>
+                            <a href="#" class="tool-btn">InterProScan</a>
+                            <a href="#" class="tool-btn">MEME Suite</a>
+                            <a href="#" class="tool-btn">Cpgfinder</a>
+                            <a href="#" class="tool-btn">Gene structure</a>
+                            <a href="#" class="tool-btn">Pfam</a>
+                            <a href="#" class="tool-btn">GSDS</a>
+                            <a href="#" class="tool-btn">CodonW</a>
+                            <a href="#" class="tool-btn">GF-Circos</a>
+                            <a href="#" class="tool-btn">Sequence-fetch</a>
+                            <a href="#" class="tool-btn">Dup_gen finder</a>
+                            <a href="#" class="tool-btn">TransFam identifier</a>
+                            <a href="#" class="tool-btn">SequenceServer</a>
+                        </div>
+                    </div>
+
+                    <div class="flower-petal petal-4 petal-bottom-row">
+                        <div class="petal-header">
+                            <h4>Phylogenetic and expression analysis of genes</h4>
+                        </div>
+                        <div class="petal-body">
+                            <a href="#" class="tool-btn">Lollipop</a>
+                            <a href="#" class="tool-btn">Heatmap</a>
+                            <a href="#" class="tool-btn">IQ-Tree</a>
+                            <a href="#" class="tool-btn">FastTree</a>
+                            <a href="#" class="tool-btn">Draw_list_trees</a>
+                            <a href="#" class="tool-btn">Subtree-extrator</a>
+                            <a href="#" class="tool-btn">Species classification</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="genome-list-section">
+        <div class="container">
+            <div class="content-box-wrapper">
+                <div class="text-center">
+                    <h2 class="section-title">Asteraceae Genome Hub</h2>
+                    <p class="section-subtitle">Comprehensive list of 164 published genomes and annotations</p>
+                </div>
+                <hr class="section-divider">
+
+                <div class="table-responsive">
+                    <table class="genome-table table-bordered" id="genomeTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Scientific Name</th>
+                                <th>Genome (Mb)</th>
+                                <th>Genes</th>
+                                <th>N50 (Mb)</th>
+                                <th>Chr</th>
+                                <th>Assembly Level</th>
+                                <th>Release Date</th>
+                                <th>Data Access</th>
+                            </tr>
+                        </thead>
+                        <tbody id="genomeTableBody">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <nav aria-label="Genome Table Pagination">
+                        <ul class="pagination custom-pagination" id="genomePagination">
+                            </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container timeline-section-wrapper">
+        <div class="agrp-card">
+            <div class="agrp-card-header"><h5><span class="header-icon">✨</span> Platform Update Log</h5></div>
+            <div class="card-body p-0">
+                <div class="timeline-scroll-container">
+                    <div class="timeline-inner-wrapper">
+                        <div class="timeline-axis"></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2020</div></div>
+                        <div class="timeline-node"><div class="t-date">2020.03</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Mar 01, 2020</div><div class="t-body">Project <strong>AGRP</strong> initiated at NCST Wang Lab.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2020.12</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Dec 05, 2020</div><div class="t-body">Platform Alpha version released for internal testing.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2021</div></div>
+                        <div class="timeline-node"><div class="t-date">2021.03</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Mar 22, 2021</div><div class="t-body">First batch of Asteraceae genomes (<i>Lactuca</i> & <i>Helianthus</i>) uploaded.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2021.10</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Oct 10, 2021</div><div class="t-body">Basic <strong>BLAST</strong> server online for homology search.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2022</div></div>
+                        <div class="timeline-node"><div class="t-date">2022.05</div><div class="t-dot"></div><div class="t-content"><div class="t-header">May 15, 2022</div><div class="t-body">Released <strong>Aster-Orthologous</strong> search for comparative genomics.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2022.11</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Nov 30, 2022</div><div class="t-body">Added <strong>Transposable Elements (TE)</strong> annotation browser.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2023</div></div>
+                        <div class="timeline-node"><div class="t-date">2023.02</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Feb 18, 2023</div><div class="t-body">AGRP Beta launched with enhanced gene family identification.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2023.05</div><div class="t-dot"></div><div class="t-content"><div class="t-header">May 15, 2023</div><div class="t-body">Integrated <strong>WGD (Whole Genome Duplication)</strong> analysis pipeline.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2023.09</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Sep 12, 2023</div><div class="t-body">Published tools for <strong>Heat Shock Response</strong> and ancestral genome reshuffling analysis.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2024</div></div>
+                        <div class="timeline-node"><div class="t-date">2024.01</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jan 20, 2024</div><div class="t-body">Added <strong>Floral Scent</strong> volatile compound database for ornamental species.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2024.06</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jun 05, 2024</div><div class="t-body">Major UI overhaul and JBrowse 2 integration for smoother visualization.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2024.11</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Nov 10, 2024</div><div class="t-body">Optimized <strong>Synteny Analysis</strong> tools for faster block detection.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2025</div></div>
+                        <div class="timeline-node"><div class="t-date">2025.04</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Apr 20, 2025</div><div class="t-body">Genomics update: Total number of hosted genomes exceeded 160.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2025.08</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Aug 15, 2025</div><div class="t-body">Database expansion: Added <strong>m6A modification</strong> sites for major crops like <i>H. annuus</i>.</div></div></div>
+                        <div class="timeline-node"><div class="t-date">2025.12</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Dec 01, 2025</div><div class="t-body"><span class="badge bg-primary me-1">New</span><strong>Multi-Omics</strong> module released, integrating metabolome data for 15 species.</div></div></div>
+                        <div class="timeline-year-separator"><div class="year-dashed-line"></div><div class="year-label">2026</div></div>
+                        <div class="timeline-node"><div class="t-date">2026.01</div><div class="t-dot"></div><div class="t-content"><div class="t-header">Jan 10, 2026</div><div class="t-body"><span class="badge bg-danger me-1">Hot</span>Added <strong>SequenceServer</strong> for online BLAST alignment.</div></div></div>
+                        <div class="timeline-end-spacer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container cite-section-container">
+        <div class="agrp-card">
+            <div class="agrp-card-header"><h5><span class="header-icon">📝</span> How to Cite</h5></div>
+            <div class="cite-card-body">
+                <p class="fw-bold mb-4" style="color: #555;">If you use AGRP in your research, please cite the following papers:</p>
+                <ul class="custom-cite-list">
+                    <li class="custom-cite-item">
+                        <div class="cite-icon-wrapper"><i class="bi bi-pen"></i></div>
+                        <div class="cite-text-block">Kong X M, Zhang Y, Wang Z Y, et al. Two-step model of paleohexaploidy, ancestral genome reshuffling and plasticity of heat shock response in Asteraceae. <strong>Horticulture Research</strong>, 2023, 10(6): uhad073.</div>
+                    </li>
+                    <li class="custom-cite-item">
+                        <div class="cite-icon-wrapper"><i class="bi bi-journal-bookmark"></i></div>
+                        <div class="cite-text-block">AGRP: A comprehensive genomic research platform for Asteraceae evolution and multi-omics integration. (2026). [unpublished].</div>
+                    </li>
+                </ul>
+                <div class="contact-footer"><span class="small text-muted me-2">Have questions or feedback?</span><a href="mailto:wangjinpeng@ncst.edu.cn" class="contact-link"><i class="bi bi-envelope"></i> wangjinpeng@ncst.edu.cn</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container reference-section-container">
+        <div class="agrp-card">
+            <div class="agrp-card-header"><h5><span class="header-icon">📚</span> Reference Literature</h5></div>
+            <div class="reference-scroll-mask">
+                <div class="reference-scroll-wrapper">
+                    <ul class="reference-list">
+                        <li class="reference-item">1. Song C, Liu Y, Song A et al. The chrysanthemum nankingense genome provides insights into the evolution and diversification of chrysanthemum flowers and medicinal traits. Mol Plant.2018;11:1482–91.</li>
+                        <li class="reference-item">2. Badouin H, Gouzy J, Grassa CJ et al. The sunflower genome provides insights into oil metabolism, flowering and Asterid evolution. Nature. 2017;546:148–52.</li>
+                        <li class="reference-item">3. Hirakawa H, Sumitomo K, Hisamatsu T et al. De novo whole genome assembly in chrysanthemum seticuspe, a model species of chrysanthemums, and its application to genetic and gene discovery analysis. DNA research: an international journal for rapid publication of reports on genes and genomes. 2019;26:195–203.</li>
+                        <li class="reference-item">4. Reyes-Chin-Wo S, Wang Z, Yang X et al. Genome assembly with in vitro proximity ligation data and whole-genome triplication in lettuce. Nat Commun. 2017;8:14953.</li>
+                        <li class="reference-item">5. Xu X, Yuan H, Yu X et al. The chromosome-level stevia genome provides insights into steviol glycoside biosynthesis. Hortic Res. 2021;8:129.</li>
+                        <li class="reference-item">6. LinT,XuX,RuanJ et al. Genome analysis of Taraxacum kok-saghyz Rodin provides new insights into rubber biosynthesis. Natl Sci Rev. 2018;5:78–87.</li>
+                        <li class="reference-item">7. Shen Q, Zhang L, Liao Z et al. The genome of Artemisia annua provides insight into the evolution of Asteraceae Family and artemisinin biosynthesis. Mol Plant. 2018;11:776–88.</li>
+                        <li class="reference-item">8. Yang Y, Li S, Xing Y et al. The first high-quality chromosomal genome assembly of a medicinal and edible plant Arctium lappa. Mol Ecol Resour. 2022;22:1493–507.</li>
+                        <li class="reference-item">9. Wu Z, Liu H, Zhan W et al. The chromosome-scale reference genome of safflower (Carthamus tinctorius) provides insights into linoleic acid and flavonoid biosynthesis. Plant Biotechnol J. 2021;19:1725–42.</li>
+                        <li class="reference-item">10. Laforest M, Martin SL, Bisaillon K et al. A chromosome-scale draft sequence of the Canada fleabane genome. Pest Manag Sci. 2020;76:2158–69.</li>
+                        <li class="reference-item">11. Liu B, Yan J, Li W et al. Mikania micrantha genome provides insights into the molecular mechanism of rapid growth. Nat Commun.2020;11:340.</li>
+                        <li class="reference-item">12. Segraves KA, Anneberg TJ. Species interactions and plant poly ploidy. Am J Bot. 2016;103:1326–35.</li>
+                        <li class="reference-item">13. Sattler MC, Carvalho CR, Clarindo WR. The polyploidy and its key role in plant breeding. Planta. 2016;243:281–96.</li>
+                        <li class="reference-item">14. Adams KL, Wendel JF. Polyploidy and genome evolution in plants. Curr Opin Plant Biol. 2005;8:135–41.</li>
+                        <li class="reference-item">15. WendelJF. The wondrous cycles of polyploidy in plants. Am J Bot. 2015;102:1753–6.</li>
+                        <li class="reference-item">16. Wang J, Sun P, Li Y et al. An overlooked Paleotetraploidization in Cucurbitaceae. Mol Biol Evol. 2018;35:16–26.</li>
+                        <li class="reference-item">17. Wang Z-H, Wang X-F, Lu T et al. Reshuffling of the ancestral core-eudicot genome shaped chromatin topology and epigenetic modification in Panax. Nat Commun. 2022;13:1902.</li>
+                        <li class="reference-item">18. Jaillon O, Aury J-M, Noel B et al. The grapevine genome sequence suggests ancestral hexaploidization in major angiosperm phyla. Nature. 2007;449:463–7.</li>
+                        <li class="reference-item">19. Jiao Y, Leebens-Mack J, Ayyampalayam S et al. A genome triplication associated with early diversification of the core eudicots. Genome Biol. 2012;13:R3.</li>
+                        <li class="reference-item">20. Barker MS, Kane NC, Matvienko M et al. Multiple paleopolyploidizations during the evolution of the Compositae reveal parallel patterns of duplicate gene retention after millions of years. Mol Biol Evol. 2008;25:2445–55.</li>
+                        <li class="reference-item">21. Barker MS, Li Z, Kidder TI et al. Most Compositae (Asteraceae) are descendants of a paleohexaploid and all share a paleotetraploid ancestor with the Calyceraceae. Am J Bot. 2016;103:1203–11.</li>
+                        <li class="reference-item">22. Mota L, Torices R, Loureiro J. The evolution of haploid chromosome numbers in the sunflower family. Genome biology and evolution. 2016;8:3516–28.</li>
+                        <li class="reference-item">23. Otto SP. The evolutionary consequences of polyploidy. Cell. 2007;131:452–62.</li>
+                        <li class="reference-item">24. Selmecki AM, Maruvka YE, Richmond PA et al. Polyploidy can drive rapid adaptation in yeast. Nature. 2015;519:349–52.</li>
+                        <li class="reference-item">25. Tayalé A, Parisod C. Natural pathways to polyploidy in plants and consequences for genome reorganization. Cytogenetic and genome research. 2013;140:79–96.</li>
+                        <li class="reference-item">26. Wang Y, Jha AK, Chen R et al. Polyploidy-associated genomic instability in Arabidopsis thaliana. Genesis (New York, NY: 2000). 2010;48:254–63.</li>
+                        <li class="reference-item">27. Hittinger CT, Carroll SB. Gene duplication and the adaptive evolution of a classic genetic switch. Nature. 2007;449:677–81.</li>
+                        <li class="reference-item">28. Paterson AH, Bowers JE, Feltus FA et al. Comparative genomics of grasses promises a bountiful harvest. Plant Physiol. 2009;149:125–31.</li>
+                        <li class="reference-item">29. Lyons E, Pedersen B, Kane J et al. The value of nonmodel genomes and an example using SynMap within CoGe to dissect the Hexaploidy that predates the Rosids. Trop Plant Biol. 2008;1:181–90.</li>
+                        <li class="reference-item">30. Wang X, Wang H, Wang J et al. The genome of the mesopolyploid crop species Brassica rapa. Nat Genet. 2011;43:1035–9.</li>
+                        <li class="reference-item">31. Xu W, Zhang Q, Yuan W et al. The genome evolution and low-phosphorus adaptation in white lupin. Nat Commun. 2020;11:1069.</li>
+                        <li class="reference-item">32. Qin L, Hu Y, Wang J et al. Insights into angiosperm evolution, floral development and chemical biosynthesis from the Aristolochia fimbriata genome. Nature Plants. 2021;7:1239–53.</li>
+                        <li class="reference-item">33. Fox DT, Soltis DE, Soltis PS et al. Polyploidy: a biological force from cells to ecosystems. Trends Cell Biol. 2020;30:688–94.</li>
+                        <li class="reference-item">34. Peer YVD,Ashman T-L,Soltis PS et al. Polyploidy: an evolutionary and ecological force in stressful times. Plant Cell. 2021;33:11–26.</li>
+                        <li class="reference-item">35. Schubert I, Lysak MA. Interpretation of karyotype evolution should consider chromosome structural constraints. Trends in genetics: TIG. 2011;27:207–16.</li>
+                        <li class="reference-item">36. Wang Z, Wang J, Pan Y et al. Reconstruction of evolutionary trajectories of chromosomes unraveled independent genomic repatterning between Triticeae and Brachypodium. BMC Genomics. 2019;20:180.</li>
+                        <li class="reference-item">37. Wendel JF, Jackson SA, Meyers BC et al. Evolution of plant genome architecture. Genome Biol. 2016;17:37.</li>
+                        <li class="reference-item">38. Zhao Q, Meng Y, Wang P et al. Reconstruction of ancestral karyotype illuminates chromosome evolution in the genus Cucumis. The Plant journal: for cell and molecular biology. 2021;107:1243–59.</li>
+                        <li class="reference-item">39. Wang X, Jin D, Wang Z et al. Telomere-centric genome repatterning determines recurring chromosome number reductions during the evolution of eukaryotes. The Newphytologist.2015;205:378–89.</li>
+                        <li class="reference-item">40. Zhang B, Wang Z, Han X et al. The chromosome-scale assembly of endive (Cichorium endivia) genome provides insights into the sesquiterpenoid biosynthesis. Genomics. 2022;114:110400.</li>
+                        <li class="reference-item">41. Freeling M, Scanlon MJ, Fowler JE. Fractionation and subfunctionalization following genome duplications: mechanisms thatdrive gene content and their consequences. Curr Opin Genet Dev. 2015;35:110–8.</li>
+                        <li class="reference-item">42. Wang J, Qin J, Sun P et al. Polyploidy index and its implications for the evolution of Polyploids. Front Genet. 2019;10:807.</li>
+                        <li class="reference-item">43. Tang H, Woodhouse MR, Cheng F et al. Altered patterns of fractionation and exon deletions in Brassica rapa support a two-step model of paleohexaploidy. Genetics. 2012;190:1563–74.</li>
+                        <li class="reference-item">44. Scharf K-D, Berberich T, Ebersberger I et al. The plant heat stress transcription factor (Hsf) family: structure, function and evolution. Biochim Biophys Acta. 2012;1819:104–19.</li>
+                        <li class="reference-item">45. Pei Q, Yu T, Wu T et al. Comprehensive identification and analyses of the Hsf gene family in the whole-genome of three Apiaceae species. Horticultural Plant Journal. 2021;7:457–68.</li>
+                        <li class="reference-item">46. Jiao Y, Wickett NJ, Ayyampalayam S et al. Ancestral polyploidy in seed plants and angiosperms. Nature. 2011;473:97–100.</li>
+                        <li class="reference-item">47. Soltis DE, Albert VA, Leebens-Mack J et al. Polyploidy and angiosperm diversification. Am J Bot. 2009;96:336–48.</li>
+                        <li class="reference-item">48. Wang J, Yuan M, Feng Y et al. A common whole-genome paleotetraploidization in Cucurbitales. Plant Physiol. 2022;190:2430–48.</li>
+                        <li class="reference-item">49. Wu S, Han B, Jiao Y. Genetic contribution of Paleopolyploidy to adaptive evolution in angiosperms. Mol Plant. 2020;13:59–71.</li>
+                        <li class="reference-item">50. Murat F, Armero A, Pont C et al. Reconstructing the genome of the most recent common ancestor of flowering plants. Nat Genet. 2017;49:490–6.</li>
+                        <li class="reference-item">51. Zhang C, Huang C-H, Liu M et al. Phylotranscriptomic insights into Asteraceae diversity, polyploidy, and morphological innovation. J Integr Plant Biol. 2021;63:1273–93.</li>
+                        <li class="reference-item">52. Magallón S, Gómez-Acevedo S, Sánchez-Reyes LL et al. A metacalibrated time-tree documents the early rise of flowering plant phylogenetic diversity. The New phytologist. 2015;207:437–53.</li>
+                        <li class="reference-item">53. Soltis PS, Marchant DB, Peer YVD et al. Polyploidy and genome evolution in plants. Curr Opin Genet Dev. 2015;35:119–25.</li>
+                        <li class="reference-item">54. Cai X, Chang L, Zhang T et al. Impacts of allopolyploidization and structural variation on intraspecific diversification in Brassica rapa. Genome Biol. 2021;22:166.</li>
+                        <li class="reference-item">55. Cheng F, Wu J, Cai X et al. Gene retention, fractionation and subgenome differences in polyploid plants. Nature plants.2018;4:258–68.</li>
+                        <li class="reference-item">56. Li Q, Qiao X, Yin H et al. Unbiased subgenome evolution following a recent whole-genome duplication in pear (Pyrus bretschneideri Rehd.). Hortic Res. 2019;6:34.</li>
+                        <li class="reference-item">57. Meng F, Pan Y, Wang J et al. Cotton duplicated genes produced by polyploidy show significantly elevated and unbalanced evolutionary rates, overwhelmingly perturbing gene tree topology. Front Genet. 2020;11:239.</li>
+                        <li class="reference-item">58. Doyle JJ, Flagel LE, Paterson AH et al. Evolutionary genetics of genome merger and doubling in plants. Annu Rev Genet.2008;42:443–61.</li>
+                        <li class="reference-item">59. McCarthy EW, Landis JB, Kurti A et al. Early consequences of allopolyploidy alter floral evolution in Nicotiana (Solanaceae).BMC Plant Biol. 2019;19:162.</li>
+                        <li class="reference-item">60. Doyle JJ, Egan AN. Dating the origins of polyploidy events. The New phytologist. 2010;186:73–85.</li>
+                        <li class="reference-item">61. Woodhouse MR, Schnable JC, Pedersen BS et al. Following tetraploidy in maize, a short deletion mechanism removed genes preferentially from one of the two homologs. PLoS Biol. 2010;8:e1000409.</li>
+                        <li class="reference-item">62. Ren R, Wang H, Guo C et al. Wide spread whole genome duplications contribute to genome complexity and species diversity in angiosperms. Mol Plant. 2018;11:414–28.</li>
+                        <li class="reference-item">63. Zeng L, Zhang Q, Sun R et al. Resolution of deep angiosperm phylogeny using conserved nuclear genes and estimates of early divergence times. Nat Commun. 2014;5:4956.</li>
+                        <li class="reference-item">64. Guo M, Liu J-H, Ma X et al. The plant heat stress transcription factors (HSFs): structure, regulation, and function in response to abiotic stresses. Front Plant Sci. 2016;7:114.</li>
+                        <li class="reference-item">65. Liu G, Chai F, Wang Y et al. Genome-wide identification and classification of HSF family in grape, and their transcriptional analysis under heat acclimation and heat stress. Horticultural Plant Journal. 2018;4:133–43.</li>
+                        <li class="reference-item">66. Li X-T, Feng X-Y, Zeng Z et al. Comparative analysis of HSF genes from Secale cereale and its Triticeae relatives reveal ancient and recent gene expansions. Front Genet. 2021;12:801218.</li>
+                        <li class="reference-item">67. Harada AE, Burton RS. Consequences of HSF knockdown on gene expression during the heat shock response in Tigriopus californicus. J Exp Biol. 2020;223:jeb208611.</li>
+                        <li class="reference-item">68. Dubcovsky J, Dvorak J. Genome plasticity a key factor in the success of polyploid wheat under domestication. Science (New York, NY). 2007;316:1862–6.</li>
+                        <li class="reference-item">69. Leitch AR, Leitch IJ. Genomic plasticity and the diversity of polyploid plants. Science (New York, NY). 2008;320:481–3.</li>
+                        <li class="reference-item">70. Altschul SF, Gish W, Miller W et al. Basic local alignment search tool. J Mol Biol. 1990;215:403–10.</li>
+                        <li class="reference-item">71. Wang X, Shi X, Hao B et al. Duplication and DNA segmental loss in the rice genome: implications for diploidization. The New phytologist. 2005;165:937–46.</li>
+                        <li class="reference-item">72. Wang J, Yuan J, Yu J et al. Recursive Paleohexaploidization shaped the durian genome. Plant Physiol. 2019;179:209–19.</li>
+                        <li class="reference-item">73. Nei M, Gojobori T. Simple methods for estimating the numbers of synonymous and nonsynonymous nucleotide substitutions. Mol Biol Evol. 1986;3:418–26.</li>
+                        <li class="reference-item">74. Cichosz SL, Jensen MH, Larsen TK et al. A Matlab tool for organizing and analyzing NHANES data. Studies in health technology and informatics. 2020;270:1179–80.</li>
+                        <li class="reference-item">75. Cui L, Wall PK, Leebens-Mack JH et al. Widespread genome duplications throughout the history of flowering plants. Genome Res. 2006;16:738–49.</li>
+                        <li class="reference-item">76. Wang J, Sun P, Li Y et al. Hierarchically aligning 10 legume genomes establishes a family-level genomics platform. Plant Physiol. 2017;174:284–300.</li>
+                        <li class="reference-item">77. Schnable JC, Springer NM, Freeling M. Differentiation of the maize subgenomes by genome dominance and both ancient and ongoing gene loss. Proc Natl Acad Sci U S A. 2011;108:4069–74.</li>
+                        <li class="reference-item">78. Jacob A, Lancaster J, Buhler J et al. Mercury BLASTP: accelerating protein sequence alignment. ACM transactions on reconfigurable technology and systems. 2008;1:9.</li>
+                        <li class="reference-item">79. Kumar S, Stecher G, Li M et al. MEGA X: molecular evolutionary genetics analysis across computing platforms. Mol Biol Evol. 2018;35:1547–9.</li>
+                        <li class="reference-item">80. Chen C, Chen H, Zhang Y et al. TBtools: an integrative toolkit developed for interactive analyses of big biological data. Mol Plant. 2020;13:1194–202.</li>
+                        <li class="reference-item">81. Saux M, Ponnaiah M, Langlade N et al. A multiscale approach reveals regulatory players of water stress responses in seeds during germination. Plant Cell Environ. 2020;43:1300–13.</li>
+                        <li class="reference-item">82. Park S, Shi A, Mou B. Genome-wide identification and expression analysis of the CBF/DREB1 gene family in lettuce. Sci Rep. 2020;10:5733.</li>
+                        <li class="reference-item">83. Bolger AM, Lohse M, Usadel B. Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics. 2014;30:2114–20.</li>
+                        <li class="reference-item">84. Kim D, Langmead B, Salzberg SL. HISAT: a fast spliced aligner with low memory requirements. Nat Methods. 2015;12:357–60.</li>
+                        <li class="reference-item">85. Kovaka S, Zimin AV, Pertea GM et al. Transcriptome assembly from long-read RNA-seq alignments with StringTie2. Genome Biol. 2019;20:278.</li>
+                    </ul>
+                    <div class="reference-spacer"></div>
+                    <ul class="reference-list">
+                        <li class="reference-item">1. Song C, Liu Y, Song A et al. The chrysanthemum nankingense genome provides insights into the evolution and diversification of chrysanthemum flowers and medicinal traits. Mol Plant.2018;11:1482–91.</li>
+                        <li class="reference-item">85. Kovaka S, Zimin AV, Pertea GM et al. Transcriptome assembly from long-read RNA-seq alignments with StringTie2. Genome Biol. 2019;20:278.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="reference-footer-note">Note: Cited papers related to the AGRP platform and Asteraceae research.</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... (Existing Video/Carousel Logic) ...
+        const carouselEl = document.getElementById('carouselExampleCaptions');
+        const carousel = new bootstrap.Carousel(carouselEl, { interval: 5000, pause: 'hover' });
+        const startBtn = document.getElementById('start-video-btn');
+        const stopBtnWrapper = document.getElementById('stop-video-btn');
+        const videoElem = document.getElementById('inline-video');
+        const coverImg = document.getElementById('video-cover-img');
+        const captionContainer = document.getElementById('video-caption-container');
+        const videoItem = document.getElementById('slide-video-item');
+        const interactionArea = document.getElementById('video-interaction-area');
+        let idleTimer = null;
+
+        function enterVideoMode() {
+            carousel.pause();
+            carouselEl.classList.add('carousel-mode-video');
+            videoItem.classList.add('video-active-lock');
+            if(startBtn) startBtn.style.display = 'none';
+            if(coverImg) coverImg.style.display = 'none';
+            if(captionContainer) captionContainer.style.display = 'none';
+            if(videoElem) { videoElem.style.display = 'block'; videoElem.play(); }
+            showVideoControls();
+            if(interactionArea) interactionArea.addEventListener('mousemove', handleUserActivity);
+            handleUserActivity();
+        }
+
+        function exitVideoMode() {
+            if (videoElem && !videoElem.paused) videoElem.pause();
+            if (videoElem) videoElem.currentTime = 0;
+            if(videoElem) videoElem.style.display = 'none';
+            hideVideoControls();
+            if(startBtn) startBtn.style.display = 'flex';
+            if(coverImg) coverImg.style.display = 'block';
+            if(captionContainer) captionContainer.style.display = 'block';
+            carouselEl.classList.remove('carousel-mode-video');
+            videoItem.classList.remove('video-active-lock');
+            if (idleTimer) clearTimeout(idleTimer);
+            if(interactionArea) interactionArea.removeEventListener('mousemove', handleUserActivity);
+        }
+
+        function showVideoControls() {
+            if(videoElem && !videoElem.hasAttribute('controls')) {
+                videoElem.setAttribute('controls', 'controls');
+            }
+            if(stopBtnWrapper) stopBtnWrapper.classList.add('show-controls');
+        }
+
+        function hideVideoControls() {
+            if(videoElem) videoElem.removeAttribute('controls');
+            if(stopBtnWrapper) stopBtnWrapper.classList.remove('show-controls');
+        }
+
+        function handleUserActivity() {
+            showVideoControls();
+            if (idleTimer) clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
+                if (videoElem && !videoElem.paused) {
+                    hideVideoControls();
+                }
+            }, 3000);
+        }
+
+        if (startBtn && videoElem) startBtn.addEventListener('click', enterVideoMode);
+        if (stopBtnWrapper) stopBtnWrapper.addEventListener('click', function(e) { e.stopPropagation(); exitVideoMode(); carousel.cycle(); });
+        carouselEl.addEventListener('slide.bs.carousel', function (e) { if (videoElem && videoElem.style.display === 'block') { e.preventDefault(); carousel.pause(); } });
+        if (videoElem) videoElem.addEventListener('ended', function() { exitVideoMode(); carousel.cycle(); });
+
+        if (videoElem) {
+            ['mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchmove', 'touchend', 'click', 'pointerdown', 'pointerup', 'pointermove'].forEach(function(eventName) {
+                videoElem.addEventListener(eventName, function(e) {
+                    e.stopPropagation();
+                    handleUserActivity();
+                });
+            });
+        }
+
+        // Genome Table Logic
+        const tableBody = document.getElementById('genomeTableBody');
+        const paginationList = document.getElementById('genomePagination');
+
+        // Mock Data (Expanded to 30 items for 3 pages)
+        const dummyData = [
+            {sci: 'Lactuca sativa', genome: '2500.5', genes: '45,000', n50: '3.5', chr: '9', level: 'Chromosome', date: '2021-05'},
+            {sci: 'Helianthus annuus', genome: '3000.2', genes: '52,100', n50: '10.2', chr: '17', level: 'Chromosome', date: '2022-01'},
+            {sci: 'Chrysanthemum seticuspe', genome: '2800.0', genes: '60,000', n50: '5.1', chr: '9', level: 'Scaffold', date: '2019-11'},
+            {sci: 'Cynara cardunculus', genome: '1050.4', genes: '32,500', n50: '2.8', chr: '17', level: 'Chromosome', date: '2020-03'},
+            {sci: 'Cichorium intybus', genome: '1200.8', genes: '38,200', n50: '4.0', chr: '9', level: 'Chromosome', date: '2021-09'},
+            {sci: 'Bellis perennis', genome: '980.5', genes: '28,900', n50: '1.5', chr: '9', level: 'Contig', date: '2023-02'},
+            {sci: 'Tagetes erecta', genome: '1450.2', genes: '41,000', n50: '6.5', chr: '12', level: 'Chromosome', date: '2022-07'},
+            {sci: 'Gerbera hybrida', genome: '1600.3', genes: '44,500', n50: '7.2', chr: '25', level: 'Chromosome', date: '2021-12'},
+            {sci: 'Taraxacum officinale', genome: '850.6', genes: '26,700', n50: '2.1', chr: '8', level: 'Chromosome', date: '2020-08'},
+            {sci: 'Carthamus tinctorius', genome: '1100.9', genes: '35,400', n50: '3.9', chr: '12', level: 'Chromosome', date: '2023-04'},
+            {sci: 'Artemisia annua', genome: '1750.1', genes: '63,200', n50: '8.5', chr: '9', level: 'Chromosome', date: '2022-11'},
+            {sci: 'Zinnia elegans', genome: '1300.4', genes: '39,800', n50: '5.6', chr: '12', level: 'Chromosome', date: '2021-06'},
+            {sci: 'Stevia rebaudiana', genome: '1400.7', genes: '42,100', n50: '6.8', chr: '11', level: 'Scaffold', date: '2020-12'},
+            {sci: 'Ambrosia artemisiifolia', genome: '1150.2', genes: '34,600', n50: '4.2', chr: '18', level: 'Chromosome', date: '2022-05'},
+            {sci: 'Cirsium arvense', genome: '1250.8', genes: '37,900', n50: '5.3', chr: '17', level: 'Chromosome', date: '2023-01'},
+            {sci: 'Conyza canadensis', genome: '900.5', genes: '25,600', n50: '2.5', chr: '9', level: 'Contig', date: '2021-03'},
+            {sci: 'Ageratum conyzoides', genome: '1020.3', genes: '30,100', n50: '3.1', chr: '10', level: 'Scaffold', date: '2022-09'},
+            {sci: 'Echinacea purpurea', genome: '1550.6', genes: '43,200', n50: '7.5', chr: '11', level: 'Chromosome', date: '2023-06'},
+            {sci: 'Rudbeckia hirta', genome: '1380.2', genes: '39,500', n50: '5.8', chr: '19', level: 'Chromosome', date: '2020-05'},
+            {sci: 'Calendula officinalis', genome: '1120.9', genes: '33,800', n50: '4.5', chr: '15', level: 'Chromosome', date: '2021-08'},
+            {sci: 'Coreopsis tinctoria', genome: '1250.1', genes: '36,900', n50: '6.1', chr: '12', level: 'Chromosome', date: '2022-04'},
+            {sci: 'Gaillardia aristata', genome: '1180.7', genes: '34,200', n50: '4.9', chr: '18', level: 'Scaffold', date: '2023-08'},
+            {sci: 'Matricaria chamomilla', genome: '1450.3', genes: '40,500', n50: '6.7', chr: '9', level: 'Chromosome', date: '2021-11'},
+            {sci: 'Tanacetum cinerariifolium', genome: '1600.8', genes: '46,100', n50: '8.2', chr: '9', level: 'Chromosome', date: '2020-10'},
+            {sci: 'Achillea millefolium', genome: '1320.4', genes: '38,700', n50: '5.5', chr: '9', level: 'Chromosome', date: '2022-02'},
+            {sci: 'Leontopodium nivale', genome: '980.6', genes: '29,400', n50: '3.3', chr: '13', level: 'Contig', date: '2023-05'},
+            {sci: 'Gnaphalium affine', genome: '1050.2', genes: '31,800', n50: '3.8', chr: '7', level: 'Scaffold', date: '2021-06'},
+            {sci: 'Senecio vulgaris', genome: '1420.5', genes: '41,300', n50: '6.9', chr: '20', level: 'Chromosome', date: '2020-09'},
+            {sci: 'Ligularia fischeri', genome: '1500.9', genes: '44,600', n50: '7.8', chr: '30', level: 'Chromosome', date: '2022-12'},
+            {sci: 'Tussilago farfara', genome: '1280.1', genes: '37,200', n50: '5.2', chr: '30', level: 'Chromosome', date: '2023-03'}
+        ];
+
+        const rowsPerPage = 10;
+        let currentPage = 1;
+
+        function displayTable(page) {
+            tableBody.innerHTML = '';
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedItems = dummyData.slice(start, end);
+
+            paginatedItems.forEach((item, index) => {
+                const globalIndex = start + index + 1;
+                const row = `<tr>
+                    <td>${globalIndex}</td>
+                    <td class="scientific-name"><i>${item.sci}</i></td>
+                    <td>${item.genome}</td>
+                    <td>${item.genes}</td>
+                    <td>${item.n50}</td>
+                    <td>${item.chr}</td>
+                    <td>${item.level}</td>
+                    <td>${item.date}</td>
+                    <td><a href="#" class="data-link-btn"><i class="bi bi-download"></i></a></td>
+                </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        function setupPagination() {
+            paginationList.innerHTML = '';
+            const pageCount = Math.ceil(dummyData.length / rowsPerPage);
+
+            for (let i = 1; i <= pageCount; i++) {
+                const li = document.createElement('li');
+                li.classList.add('page-item');
+                if (i === currentPage) li.classList.add('active');
+
+                const a = document.createElement('a');
+                a.classList.add('page-link');
+                a.href = '#';
+                a.innerText = i;
+
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    currentPage = i;
+                    displayTable(currentPage);
+                    setupPagination(); // Update active state
+                });
+
+                li.appendChild(a);
+                paginationList.appendChild(li);
+            }
+        }
+
+        displayTable(currentPage);
+        setupPagination();
+
+        // 3. 数字滚动动画
+        const animationDuration = 2000;
+        function easeOutQuart(x) { return 1 - Math.pow(1 - x, 4); }
+        function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+        function animateCounter(el) {
+            const target = +el.getAttribute('data-target');
+            if (!target) return;
+            const startTime = performance.now();
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / animationDuration, 1);
+                const easedProgress = easeOutQuart(progress);
+                const currentVal = Math.floor(easedProgress * target);
+                el.innerText = formatNumber(currentVal);
+                if (progress < 1) requestAnimationFrame(update); else el.innerText = formatNumber(target);
+            }
+            requestAnimationFrame(update);
+        }
+        const observer = new IntersectionObserver((entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { animateCounter(entry.target); observer.unobserve(entry.target); } }); }, { root: null, rootMargin: '0px', threshold: 0.2 });
+        document.querySelectorAll('.counter').forEach(counter => observer.observe(counter));
+    });
+</script>
+{% endblock %}

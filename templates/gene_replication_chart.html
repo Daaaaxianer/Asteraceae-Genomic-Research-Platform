@@ -1,0 +1,114 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Gene duplication type</b><i></i></h3>
+
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+    <div id="container" style="height: 900px">
+    </div>
+
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+          renderer: 'canvas',
+          useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
+        },
+        legend: {},
+        grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+        },
+        xAxis: {
+        type: 'value'
+        },
+        yAxis: {
+        type: 'category',
+        data: ["Artemisia annua","Artemisia argyi","Ambrosia artemisiifolia","Ambrosia trifida","Arctium lappa","Arctium minus","Artemisia tridentata","Bidens alba","Buxus sinica","Carthamus tinctorius","Cynara cardunculus","Centaurea solstitialis","Chrysanthemum lavandulifolium","Chrysanthemum makinoi","Chrysanthemum morifolium","Chrysanthemum nankingense","Cichorium intybus","Cichorium endivia","Chrysanthemum indicum","Cosmos bipinnatus","Centrapalus pauciflorus","Dahlia pinnata","Deinandra increscens","Erigeron canadensis","Erigeron breviscapus","Euptelea pleiosperma","Flaveria bidentis","Flaveria brownii","Flaveria floridana","Flaveria linearis","Flaveria ramosissima","Flaveria robusta ","Flaveria sonorensis","Flaveria trinervia","Gerbera hybrida","Glebionis coronaria","Helianthus annuus ","Helianthus tuberosus","Helichrysum umbraculigerum","Lactuca saligna","Logfia minima","Lactuca sativa ","Mikania micrantha","Nelumbo nucifera","Nymphoides indica","Pulicaria dysenterica","Pluchea indica","Pseudognaphalium luteoalbum","Saussurea involucrata","Solidago caesia","Senecio squalidus ","Smallanthus sonchifolius","Solidago canadensis","Stevia rebaudiana ","Tagetes erecta","Taraxacum kok-saghyz ","Taraxacum mongolicum","Tetracentron sinense","Vitis vinifera"]
+        },
+        series: [
+        {
+          name: 'WGD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [4306,40259,833,46636,7607,58608,23582,78102,5589,4517,4984,65942,8018,13448,116609,4852,5211,5233,4734,38094,1450,79028,6908,7524,1564,5008,0,0,0,36994,47930,36697,163299,244784,60073,16640,11826,160398,5324,4608,57103,7444,21690,5339,4783,66998,5864,143938,49596,4886,45140,78709,10704,13445,16057,3947,14383,12387,2342]
+        },
+        {
+          name: 'TD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [3580,7026,1988,2867,2133,2231,3793,8543,2363,12991,1090,3686,6006,7957,14216,5349,2511,2432,5595,3386,1291,6661,2880,8598,2769,1380,303,336,309,1112,2074,2045,1484,1189,3714,5663,4532,11082,2501,2645,2201,3369,2396,2004,3455,2046,1639,4632,2378,2422,3110,5138,16226,3077,2907,1441,1636,3145,2288]
+        },
+        {
+          name: 'PD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [3691,3711,2190,3023,1209,2027,6098,4830,3180,2044,560,2321,8114,13477,13108,2770,2073,1450,4690,1895,459,3535,2270,1032,2768,945,30,36,50,1781,1163,1165,1835,1540,4276,5378,5369,9882,798,1745,1002,2654,2586,944,1782,1674,2165,5681,2131,1363,3067,3409,2601,3098,1828,2028,1811,1360,1325]
+        },
+        {
+          name: 'TRD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [9224,10314,4854,22636,7500,7960,66373,23507,5679,7586,5450,5963,18878,19778,39582,10505,11124,6433,13758,8977,6050,14122,10017,6244,10152,5527,0,0,0,10576,7859,6986,9357,8431,54592,27426,20136,64853,5172,12467,5270,16363,12017,6982,5383,7814,72489,36014,9190,29313,10850,14132,9947,9942,8262,12420,10472,5506,3982]
+        },
+        {
+          name: 'DSD',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [26229,47624,19409,61596,19389,37723,101784,63276,17882,31319,13476,25725,49702,71427,113522,28303,24902,18079,38094,29261,14726,61366,24003,23994,29071,13851,14986,50923,64257,29263,25276,23120,35411,39686,42462,55619,47905,149486,15404,26244,27408,34265,30537,17353,17058,25799,64733,107832,36018,55732,33893,58278,40865,28438,22889,26405,25947,20371,12658]
+        }
+        ]
+        };
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+{% endblock %}

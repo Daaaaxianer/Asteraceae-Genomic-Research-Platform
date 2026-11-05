@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+
+{% block head_link %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Leguminosae platform</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/vendor/index.css">
+{% endblock %}
+
+
+{% block body_index %}
+
+
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Overview<i></i>
+    </h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div>
+                <input type="text" id="txt_seach" placeholder="Enter search content"> <button id="openAll">Expand</button><button id="closeAll">Pack up</button>
+            </div>
+            <div id="container">
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><b>Specie: </b> Phaseolus vulgaris</p>
+                    <p><b>Taxonomy: </b> Fabaceae; Papilionoideae; 50 kb inversion clade; NPAAA clade; indigoferoid/millettioid clade; Phaseoleae; Phaseolus</p>
+                    <p><b>Abbr: </b> Pvu</p>
+                    <p><b>Level: </b> Chromosome</p>
+                    <p><b>chromosome number: </b> 2n=2X=22</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="../../static/image/Pvu.png" style="height: 280px;width: 356px" alt="">
+                </div>
+
+                <div class="col-lg-12">
+                    <p style="text-align: justify"><b>Introduction: </b> Phaseolus vulgaris, the common bean, is a herbaceous annual plant grown worldwide for its edible dry seeds or green, unripe pods.  Its leaf is also occasionally used as a vegetable and the straw as fodder.  Its botanical classification, along with other Phaseolus species, is as a member of the legume family Fabaceae.  Like most members of this family, common beans acquire the nitrogen they require through an association with rhizobia, which are nitrogen-fixing bacteria.
+
+The common bean has a long history of cultivation.  All wild members of the species have a climbing habit, but many cultivars are classified either as bush beans or climbing beans, depending on their style of growth.  Best-known cultivar groups include the kidney bean, the navy bean, the pinto bean, and the wax bean.  The other major types of commercially grown beans are the runner bean (Phaseolus coccineus) and the broad bean (Vicia faba).  Beans are grown on every continent except Antarctica.  Worldwide, 27 million tonnes of dried and 24 million tonnes of green beans were grown in 2016.  In 2016, Myanmar was the largest producer of dried beans, while China produced 79% of the world's total of green beans.
+
+The wild P. vulgaris is native to the Americas.  It was originally believed that it had been domesticated separately in Mesoamerica and in the southern Andes region, giving the domesticated bean two gene pools.  However, recent genetic analyses show that it was actually domesticated in Mesoamerica first, and traveled south, probably along with squash and maize (corn).  The three Mesoamerican crops constitute the "Three Sisters" central to indigenous North American agriculture.
+                    </p>
+                    <p><b>Distribution: </b> Costa Rica, Guatemala, Honduras, Mexico Central, Mexico Gulf, Mexico Northeast, Mexico Northwest, Mexico Southeast, Mexico Southwest, Nicaragua, Panamá</p>
+
+                    <p style="text-align: justify"><b>Article Title: </b> <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0883-6">Genome and transcriptome analysis of the Mesoamerican common bean and the role of gene duplications in establishing tissue and temporal specialization of genes</a></p>
+
+                    <p style="text-align: justify"><b>Data source: </b> Raw sequence reads and quality scores were deposited in the Sequence Read Archive (SRA) of the National Center for Biotechnology Information (NCBI).  Primary accession numbers: PRJNA221782 (BioProject ID);  SRS488731 (genomic 454, SOLiD and HiSeq reads);  SRS488023, SRS488025, SRS489191-255 (GBS HiSeq reads);  and SRS498664, SRS498673-76, SRS498904-933 (RNA-Seq HiSeq reads).  The P. vulgaris BAT93 genome assembly is available at NCBI Whole Genome Shotgun database under accession number LPQZ00000000.  Additionally, unmasked sequence data and annotations are available at the CoGe database (<a href="https://genomevolution.org/CoGe/SearchResults.pl?s=20365">https://genomevolution.org/CoGe/SearchResults.pl?s=20365</a>) under Genome ID 20365.  The BAT93 genome and transcriptome can be accessed and browsed at <a href="http://denovo.cnag.cat/genomes/bean">http://denovo.cnag.cat/genomes/bean</a>.  The entire set of the linkage groups with anchored markers can be viewed at <a href="http://phasibeam.crg.eu/wiki/LinkageGroups">http://phasibeam.crg.eu/wiki/LinkageGroups</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../static/js/jquery-1.11.2.js"></script>
+    <script src="../../static/vendor/index.js"></script>
+    <script src="../../static/js/index.js"></script>
+
+{% endblock %}

@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}MGA-circos - Asteraceae Platform{% endblock %}
+
+{% block extra_css %}
+    <style>
+        @media (min-width: 1200px) { .container { max-width: 1320px !important; } }
+
+        .content-box-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #eaeff2;
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+            margin-bottom: 50px;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-weight: 700;
+            color: #d35400;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            font-family: "Arial", sans-serif;
+            color: #7f8c8d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .section-divider {
+            margin: 1.5rem auto 3rem auto;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .tool-header {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label { font-weight: 600; color: #34495e; margin-bottom: 5px;}
+        .form-control { border-radius: 8px; padding: 10px 15px; }
+
+        .btn-submit-custom {
+            background-color: #2c3e50;
+            border-color: #2c3e50;
+            color: white;
+            padding: 12px 40px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-submit-custom:hover {
+            background-color: #1a252f;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-example-tag {
+            background: rgba(230, 126, 34, 0.08);
+            color: #d35400;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .btn-example-tag:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        #chart-container {
+            width: 100%;
+            min-height: 900px;
+            margin-top: 30px;
+            text-align: center;
+            border: 1px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content-box-wrapper">
+
+        <div class="text-center">
+            <h2 class="section-title">MGA-circos</h2>
+            <p class="section-subtitle">Multi-Genome Analysis: Synteny Visualization</p>
+        </div>
+        <hr class="section-divider">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-4 mb-4">
+                <div class="p-4" style="background-color: #fcfcfc; border-radius: 12px; border: 1px solid #eee;">
+                    <h3 class="tool-header">Input Data</h3>
+
+                    <form id="circosForm" action="{% url 'mga_circos_url' %}" method="post" enctype="multipart/form-data" onsubmit="return window.go ? window.go() : true;">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">1. Chromosome Length (.lens)</label>
+                            <input type="file" class="form-control" name="lens_file" required>
+                            <div class="form-text">Example: <code>1 23000000</code></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">2. Synteny Links (.txt)</label>
+                            <input type="file" class="form-control" name="synteny_file" required>
+                            <div class="form-text">
+                                Format:<br>
+                                <code>Chr1 Pos1 Chr2 Pos2 Ancestor(Color)</code>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 text-center">
+                             <a href="#" onclick="downloadSample(); return false;" class="btn-example-tag">
+                                <i class="bi bi-download me-1"></i> Example
+                            </a>
+                        </div>
+
+                        <button class="btn btn-submit-custom" type="submit">
+                            <i class="bi bi-bullseye"></i> Generate Circos
+                        </button>
+
+                        <div class="text-center mt-3" id="loadingArea" style="display:none;">
+                            <div class="spinner-border text-dark" role="status"></div>
+                            <div class="text-muted small mt-1">Drawing Circos...</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="tool-header" style="border:none; padding:0; margin:0;">Visualization</h3>
+                    {% if chart_image %}
+                    <a href="data:image/png;base64,{{ chart_image }}" download="mga_circos_result.png" class="btn btn-sm btn-outline-dark">
+                        <i class="bi bi-download"></i> Save Image
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div id="chart-container">
+                    {% if chart_image %}
+                        <img src="data:image/png;base64,{{ chart_image }}" alt="Circos Plot" class="chart-img">
+                    {% else %}
+                        <div class="text-center text-muted">
+                            <i class="bi bi-diagram-3" style="font-size: 4rem; opacity: 0.3;"></i>
+                            <p class="mt-3">Upload files to view gene synteny relationships.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script data-cfasync="false">
+        window.go = function () {
+            var loading = document.getElementById("loadingArea");
+            var form = document.getElementById('circosForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+            loading.style.display = "block";
+            return true;
+        };
+
+        function downloadFile(content, fileName) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Updated Sample Data Generator
+        window.downloadSample = function () {
+            // 1. Lens File (Vitis vinifera mock - 19 chromosomes)
+            let lensData = "";
+            const chrCount = 19;
+            const chrLengths = [];
+            for (let i = 1; i <= chrCount; i++) {
+                let len = Math.floor(Math.random() * 10000000) + 15000000; // 15M-25M
+                chrLengths.push(len);
+                lensData += `${i}\t${len}\n`;
+            }
+
+            // 2. Synteny File
+            let syntenyData = "";
+            const ancestors = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
+
+            // Generate dense synteny blocks (more points for better line effect)
+            for (let k = 0; k < 1200; k++) {
+                let chrA = Math.floor(Math.random() * chrCount) + 1;
+                let chrB = Math.floor(Math.random() * chrCount) + 1;
+
+                if (chrA === chrB && Math.random() > 0.1) chrB = (chrA % chrCount) + 1;
+
+                let posA = Math.floor(Math.random() * chrLengths[chrA-1]);
+                let posB = Math.floor(Math.random() * chrLengths[chrB-1]);
+
+                // Assign ancestor based on position to create coherent blocks
+                let blockIdx = Math.floor((posA / chrLengths[chrA-1]) * 7) % 7;
+                let anc = ancestors[blockIdx];
+
+                if(Math.random() > 0.85) anc = ancestors[Math.floor(Math.random() * 7)];
+
+                syntenyData += `${chrA}\t${posA}\t${chrB}\t${posB}\t${anc}\n`;
+            }
+
+            downloadFile(lensData, 'vivi_genome.lens');
+            setTimeout(() => downloadFile(syntenyData, 'vivi_synteny.txt'), 500);
+        };
+    </script>
+{% endblock %}

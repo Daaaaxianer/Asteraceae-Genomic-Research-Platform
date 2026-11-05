@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+{#    <script src="https://d3js.org/d3.v5.min.js"></script>#}
+</head>
+<body>
+    <canvas id="canvas1" width="400" height="200" style="text-align: center"></canvas>
+
+    <script>
+        function plotLine(context, x1, y1, x2, y2, lineWidth, color, alpha) {
+            context.beginPath();
+            context.moveTo(x1, y1);
+            context.lineTo(x2, y2);
+            context.strokeStyle = color;
+            context.lineWidth = lineWidth;
+            context.globalAlpha = alpha;
+            context.stroke();
+            context.globalAlpha = 1; // Reset alpha to 1
+        }
+
+        function drawText(context, text, x, y, color, fontSize, rotation, align) {
+            context.fillStyle = color;
+            context.font = fontSize + "px sans-serif";
+            context.translate(x, y);
+            context.rotate(rotation * (Math.PI / 180));
+            context.textAlign = align;
+            context.fillText(text, 0, 0);
+            context.setTransform(1, 0, 0, 1, 0, 0); // Reset transformation
+        }
+
+        function plotChr1(canvasId, lens, gl, gl2, step, mark, name, align) {
+            const canvas = document.getElementById(canvasId);
+            const context = canvas.getContext('2d');
+            const gl_start = 11 / 12;
+            let n = 0;
+            const start_x = 1 / 12;
+            const mark_y = 17 / 240;
+            for (const key in lens) {
+                n += lens[key];
+                const mark_new = mark + key;
+                const x = gl_start - n * step;
+                const mark_x = x + 0.5 * lens[key] * step;
+                plotLine(context, start_x, x, start_x + gl2, x, 0.25, 'black', 1);
+                drawText(context, mark_new, mark_y, mark_x, 'black', 14, 0, align);
+            }
+            plotLine(context, start_x, gl_start, start_x + gl2, gl_start, 0.25, 'black', 1);
+            drawText(context, name, mark_y - 0.03, 0.5 * (2 * gl_start - gl), 'black', 18, 90, align);
+        }
+
+        function plotChr2(canvasId, lens, gl, gl2, step, mark, name, align) {
+            const canvas = document.getElementById(canvasId);
+            const context = canvas.getContext('2d');
+
+            const gl_start = 1 / 12;
+            let n = 0;
+            const start_x = 11 / 12;
+            const mark_y = 223 / 240;
+
+            for (const key in lens) {
+                n += lens[key];
+                const mark_new = mark + key;
+                const x = gl_start + n * step;
+                const mark_x = x - 0.5 * lens[key] * step;
+                plotLine(context, x, start_x, x, start_x - gl2, 0.25, 'black', 1);
+                drawText(context, mark_new, mark_x, mark_y, 'black', 14, 0, align);
+            }
+
+            plotLine(context, gl_start, start_x, gl_start, start_x - gl2, 0.25, 'black', 1);
+            drawText(context, name, 0.5 * (2 * gl_start + gl), mark_y + 0.03, 'black', 18, 0, align);
+        }
+
+        // Example usage:
+        const lens1 = { A: 100, B: 50, C: 75 };
+        plotChr1('canvas1', lens1, 0.1, 0.2, 0.02, 'M', 'Chromosome 1', 'center');
+        const lens2 = { X: 80, Y: 60, Z: 120 };
+        plotChr2('canvas1', lens2, 0.1, 0.2, 0.02, 'N', 'Chromosome 2', 'center');
+
+
+    </script>
+</body>
+</html>

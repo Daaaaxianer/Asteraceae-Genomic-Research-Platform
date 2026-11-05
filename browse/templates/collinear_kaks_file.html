@@ -1,0 +1,93 @@
+{% extends 'index.html' %}
+
+{% block head_link %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGRPv2</title>
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/vendor/css/modern-business.css" rel="stylesheet">
+    <link rel="icon" href="../../static/image/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../static/vendor/css/home.css" type="text/css">
+    <script src="../../static/js/jquery-3.5.1.js"></script>
+    <script src="../../static/js/jquery.dataTables.min.js"></script>
+    <link href="../../static/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/slick-theme.css"/>
+    <!-- font awesome style -->
+    <link href="../../static/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../../static/css/responsive.css" rel="stylesheet"/>
+    <link href="../../static/vendor/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            $('#example').DataTable({#}
+{#                "ajax": "../../static/collinear_kaks_mc/colinearscan_kaks.json",#}
+{#                // "deferRender": true,#}
+{#                // "scrollX": true#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "ajax": "../../static/collinear_kaks_mc/colinearscan_kaks.json",
+
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block body_index %}
+    <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Collinear and KaKs files<i></i>
+    </h3>
+
+    <div class="row" style="">
+        <h6 class="col-md-8" style="font-family:'Arial',sans-serif;color:black;text-align:justify">
+            &emsp;&emsp;Annotated genes were used as input to compare chromosomes within a genome or across genomes. First, we performed a mutual search of protein sequences for potential homologous genes by <a href="https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/"><b>BLASTP</b></a> software. And we set stringent parameters e values <1e-5 and scores >100. Some uncertainties could be excluded by the set stringent parameters. Next, information on homologous genes was used as input and collinearity of homologous gene pairs was located by using
+            <a href=""><b>ColinearScan</b></a> and <a href=""><b>McScanX</b></a> software. The Ks of collinear gene pairs was calculated by the Nei–Gojobori approach  implementing the Bioperl statistical module (<a
+                href="https://bioperl.org/">https://bioperl.org</a>).
+
+        </h6>
+        <div class="col-md-4">
+            <img style="width: 100%" src="../../static/image/gognxianxing.png" alt="">
+        </div>
+        <hr width="100%" style="border: dotted 2px">
+    </div>
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px">
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="text-align: center">Species1</th>
+                    <th rowspan="2" style="text-align: center">Species2</th>
+                    <th colspan="2" style="text-align: center">MCScanX</th>
+                    <th colspan="2" style="text-align: center">KaKs</th>
+                </tr>
+                <tr>
+                    <th>Blocks</th>
+                    <th><em>KaKs</em></th>
+                    <th>Blocks</th>
+                    <th><em>KaKs</em></th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+{#                <tr>#}
+{#                    <td><em></em></td>#}
+{#                    <td><em></em></td>#}
+{#                </tr>#}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+
+
+{% block list_js %}
+    <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

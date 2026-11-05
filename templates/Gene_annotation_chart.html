@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+
+{% block body_index %}
+<div>
+    <h3 class="h3_1" style="background-image:url(../static/image/shuye.png)"><b>Gene function annotation</b><i></i></h3>
+
+    <div id="plot" style="width:100%;height:100%;"></div>
+    <script src="../static/js/plotly-latest.min.js"></script>
+    <script>
+        var data = [{"labels": ["AntiFam","CDD","Coils","Gene3D","Hamap","MobiDBLite","PANTHER","Pfam","PIRSF","PRINTS","ProSitePatterns","ProSiteProfiles","SFLD","SMART","SUPERFAMILY","TIGRFAM"], "values": [198,363255,217241,1063887,25990,1145430,1792312,1204224,45999,601177,221690,610846,12152,549342,785239,174915], "type": "pie", "marker": {"colors": ['#B2BEC3', '#8395A7', '#DADFE1', '#A4B0BD', '#CACFD2', '#E5E8E8', '#F5B7B1', '#D7DBDD', '#FADBD8', '#E8DAEF', '#D2B4DE', '#A9CCE3', '#A3E4D7', '#A2D9CE', '#ABEBC6', '#F9E79F']}}];
+        var layout = {"showlegend": false, "hole": 1, "title": {"text": "Gene function annotation"}, "annotations": [{"font": {"size": 1}, "showarrow": false, "text": "", "x": 0, "y": 0}]};
+        Plotly.newPlot("plot", data, layout);
+    </script>
+</div>
+{% endblock %}
+

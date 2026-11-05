@@ -1,0 +1,162 @@
+{% extends 'tools_index.html' %}
+
+
+
+{% block body_index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Karyotype<i></i>
+                </h3>
+
+                <ul class="list-group mb-3">
+                    <a href="{% url 'f_blast_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blast</h6>
+                                <small>Sequence alignment between arbitrary species</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'colinearscan_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">ColinearScan</h6>
+                                <small>Syntenic matching tool</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_blast_dotplot_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blastp dotplot</h6>
+                                <small>Plotting blastp dotplot diagrams</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_block_dotplot_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Block dotplot</h6>
+                                <small>Drawing block dotplot function</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'zu_correspondence_mc_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Correspondence_mc</h6>
+                                <small>Inter- and intra-genomic comparisons</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'karyotype_url' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Fabaceae karyotype</h6>
+                                <small>Ancestral genome of Fabaceae</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'sequenceserver_url' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Blast visualization</h6>
+                                <small>Matching visualization</small>
+                            </div>
+                        </li>
+                    </a>
+
+                    <a href="{% url 'synvisio_url_html' %}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="text-success">
+                                    <h6 class="my-0">Syntenic visualization</h6>
+                                <small>Syntenic matching tool</small>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <h3 class="h3_1 h3_6" style="background-image:url(../../static/image/shuye.png); font-family:'Arial',sans-serif;color:black;">Blast_dotplot<i></i>
+                </h3>
+
+                <form action="zu_blast_dotplot_run" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="exampleInputFile">Upload BLAST file:</label>
+                            <input class="form-control" type="file" id="formFile" name="blast" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 1 lens file:</label>
+                            <input class="form-control" type="file" id="formFile" name="heng_len" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 2 lens file:</label>
+                            <input class="form-control" type="file" id="formFile" name="shu_len" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 1 gff file:</label>
+                            <input class="form-control" type="file" id="formFile" name="heng_gff" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 2 gff file:</label>
+                            <input class="form-control" type="file" id="formFile" name="shu_gff" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 1 Name:</label>
+                            <input type="text" class="form-control" name="heng_species" value="AT" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Species 2 Name:</label>
+                            <input type="text" class="form-control" name="shu_species" value="AT" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="email" class="form-label">Email <span class="text-muted"></span></label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                                                <input class="w-100 btn btn-primary btn-lg" type="submit" value="submit" onclick="go()">
+                    <center>
+                        <span id="wait1" class="spinner-border spinner-border-sm" style="display:none"></span>
+                        <span id="wait2" style="display:none;padding-top: 30px">&nbsp;&nbsp;It is running, please wait a moment!</span>
+                    </center>
+                    <script>
+                        function go() {
+                            var hh1 = document.getElementById("wait1");
+                            var hh2 = document.getElementById("wait2");
+                            if (hh1.style.display === "none" && hh2.style.display === "none") {
+                                hh1.style.display = "inline-block";
+                                hh2.style.display = "inline-block"
+                            }
+                            document.getElementById('go').submit()
+                        }
+                    </script>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
