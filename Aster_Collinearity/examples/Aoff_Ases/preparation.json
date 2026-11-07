@@ -1,0 +1,40 @@
+{
+  "purpose": "Selected precomputed plotting demonstration; not an end-to-end calculation benchmark.",
+  "source_collection": "User-provided collinearity tutorial example_file collection.",
+  "pipeline_git_commit": "2afcfa077de74c37038f52d177f6df8f51d92be8",
+  "gene_annotations": {
+    "Aoff": {
+      "genes": 24907,
+      "chromosomes": 10
+    },
+    "Ases": {
+      "genes": 23712,
+      "chromosomes": 19
+    }
+  },
+  "selection": "Six largest complete blocks whose pairs occur in the supplied BLAST, Ks and both annotations; original order retained.",
+  "block_lengths": [
+    56,
+    43,
+    55,
+    47,
+    64,
+    50
+  ],
+  "block_gene_pair_records": 315,
+  "unique_block_gene_pairs": 315,
+  "blast_records": 2240,
+  "ks_records": 315,
+  "ks_preparation": "Select block pairs and remove exactly duplicated source records; rates are unchanged.",
+  "blast_selection": "Keep the selected blocks' query genes and annotated subject genes; retain source record order and numeric values.",
+  "lens_preparation": "Regenerate two-column counts from annotation column 7; omit Ases chromosome 20, which has no annotation records in this source collection.",
+  "source_sha256": {
+    "Aoff.new.gff": "b2696eec6d755454ae3b6cebbbbe12c5c5298fc4e65497f5758c49a1995c6d74",
+    "Aoff.lens": "89fd7ce461bf5abaf8433a80879a06b13a62c541b2c1f5983664ceb13b8481ed",
+    "Ases.new.gff": "9d066fe659707143aa9a05aca86749484032ed5edf21ec1d53fca05e5110dfe3",
+    "Ases.lens": "4a314a984f6a93919b0ed093c8c737ca5ba13a565dea225a5855e2eeb0d382ca",
+    "blast/Aoff_Ases.blast": "07d614d1c4907b165cffca66cc078bf14c9083e3ae5e497ee89b114150afe812",
+    "block/Aoff_Ases.block.rr.txt": "e6dd62afd47a0189606af752dff41ebd5d34933c2c8564a1fdde95c83cc6505f",
+    "ks/Aoff_Ases.ks.txt": "b47daee13e9c947eca24e9466783c41997bfec3e8fadaffd490a371f9e67cb3e"
+  }
+}
