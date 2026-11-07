@@ -1,0 +1,644 @@
+{
+  "source_file": "browse/views.py",
+  "source_sha256": "b5755d2dd5ab26a039d5e068358a2dbd55bd61c6995f461d4d4cbddb5bfa9a71",
+  "method": "Extract complete dependency closures. Function bodies and constants are unchanged. Standalone CLI adapters and settings namespace are new.",
+  "modules": {
+    "ancestral_candidate_search": {
+      "functions_and_constants": [
+        {
+          "name": "ANCESTRAL_DATASETS",
+          "line": 100,
+          "end_line": 106,
+          "sha256": "b70046c35854e89984186b0d53c1cb2a15db10d71f79b7ab1e04e4cf20900a8f"
+        },
+        {
+          "name": "ANCESTRAL_DISPLAY_LABELS",
+          "line": 134,
+          "end_line": 164,
+          "sha256": "64beabe3401c5b6184f264665f0f4b1282f56f72875890528c436b59f611b53c"
+        },
+        {
+          "name": "INTERPROSCAN_SPECIES",
+          "line": 53,
+          "end_line": 61,
+          "sha256": "02fd4ce008ad45f2ed134ac9427efa7c95d6c9567d5e6067b6685acfc63ee2f3"
+        },
+        {
+          "name": "SEQUENCE_TYPE_NUCLEOTIDE",
+          "line": 117,
+          "end_line": 117,
+          "sha256": "723d8da780800c7c5528964742cb626009bad3cc638c17fb369f2de36fd80bbe"
+        },
+        {
+          "name": "SEQUENCE_TYPE_PROTEIN",
+          "line": 116,
+          "end_line": 116,
+          "sha256": "11e978f60ed53b76d664d524f62f85841af250c51a1a34d62b3bec0d4620ead6"
+        },
+        {
+          "name": "_ancestor_label",
+          "line": 171,
+          "end_line": 173,
+          "sha256": "a77a6dc421bd6285b0ddfa6531a666cf39b5e964402417d8e4a598649313a3bf"
+        },
+        {
+          "name": "_append_ancestral_blast_log",
+          "line": 6160,
+          "end_line": 6177,
+          "sha256": "afc3ab9243913497fae0aa4179f237b66ee41e7697485d2569dec43ad4ec3dea"
+        },
+        {
+          "name": "_blast_db_exists",
+          "line": 226,
+          "end_line": 237,
+          "sha256": "4cd3d44d6f1daee764faeac0f53dd33145f6b0ae9200ccd8c3dfe6e28ecbdd95"
+        },
+        {
+          "name": "_blast_outfmt_with_title",
+          "line": 6105,
+          "end_line": 6106,
+          "sha256": "ad264086102a5f9df286e48d6eafc0e194ac900191806a5adaf93ce95cbd71ab"
+        },
+        {
+          "name": "_blast_row_passes_filters",
+          "line": 4213,
+          "end_line": 4224,
+          "sha256": "9b3871caf0ca0615d97f1a299f5f233ae8fab5059b19e2032029dc18e0c0a41c"
+        },
+        {
+          "name": "_extract_gene_id_from_text",
+          "line": 6281,
+          "end_line": 6291,
+          "sha256": "5d851bc37d3ba80b7923d6d4880421291ff18c1aaaa0a0468eece5e806a49e8b"
+        },
+        {
+          "name": "_format_blast_row",
+          "line": 4227,
+          "end_line": 4244,
+          "sha256": "29cfe03085085c08b8473ec3506e7f9216b6f9a61a590a0970b893d9a334cd51"
+        },
+        {
+          "name": "_gene_id_prefix_pattern",
+          "line": 6267,
+          "end_line": 6269,
+          "sha256": "4ba180a345cdafdbda74af1775c3578e691dd6c6887a20613fcb84f444145d66"
+        },
+        {
+          "name": "_ncbi_blast_binary",
+          "line": 6143,
+          "end_line": 6157,
+          "sha256": "183f3e73dd2709c14b4abda406dd242a36d3ccabef4468bbc5d6c53b194af46a"
+        },
+        {
+          "name": "_normalize_ancestor_code",
+          "line": 167,
+          "end_line": 168,
+          "sha256": "7d881b0c853c4903fa81e4574d2012c92a7d819a064f0be8dd19a7bb1a72dee4"
+        },
+        {
+          "name": "_normalize_gene_id_for_lookup",
+          "line": 6272,
+          "end_line": 6278,
+          "sha256": "c5d8d958cd9d0cb3f12788ee10b13bd840ab502dc1e1c1aa3e51e1dc42908109"
+        },
+        {
+          "name": "_read_fasta_sequence_letters",
+          "line": 6241,
+          "end_line": 6249,
+          "sha256": "e48be5ff3e55ee022fc2d117b1613c0faf4878b0654fd2819c0a521b38300ba5"
+        },
+        {
+          "name": "_subject_gene_id_from_blast_fields",
+          "line": 6310,
+          "end_line": 6316,
+          "sha256": "2c1900825e01cd8f6086e5151d55197bad22e4885f22e20f828c0c2b60b47cdc"
+        },
+        {
+          "name": "_validate_sequence_type_for_search",
+          "line": 6252,
+          "end_line": 6264,
+          "sha256": "169d22ec0c97ea0d9a999ac248c9a6e8a4a25d6ff46c30b1aa1ec41bbf6c8e96"
+        },
+        {
+          "name": "build_ancestral_alignment_payload",
+          "line": 4318,
+          "end_line": 4392,
+          "sha256": "1d292e3c420913a7e684c45861d825549a5e6c3c05b9b2f20860b6d077df2af3"
+        },
+        {
+          "name": "get_ancestral_db_prefix",
+          "line": 6097,
+          "end_line": 6098,
+          "sha256": "20cc69375464bbd96428bc883e5697771d3e7d91d1cd00b560804bf8a26d5eb6"
+        },
+        {
+          "name": "get_ancestral_nucl_db_prefix",
+          "line": 6101,
+          "end_line": 6102,
+          "sha256": "6cd6a78c7f7928c9b2c97b9a5564826a5f1121aaaa71cdc8e190ac95b4f803e6"
+        },
+        {
+          "name": "get_diamond_binary",
+          "line": 6088,
+          "end_line": 6094,
+          "sha256": "2b68f0b4a3f17853384557251345cf7936274ca0716f19377a5fd55fc68a9193"
+        },
+        {
+          "name": "parse_blastp_result",
+          "line": 4282,
+          "end_line": 4315,
+          "sha256": "cefe482234e168cd21cd70f56ea846751ffda1c54d987e3799c7764c29d2b053"
+        },
+        {
+          "name": "path_get",
+          "line": 51,
+          "end_line": 51,
+          "sha256": "8ef422a65bf7e0a486d5731405419b4b0b8636fa4fab77d09d009ea6150ab6e1"
+        },
+        {
+          "name": "run_diamond",
+          "line": 6109,
+          "end_line": 6140,
+          "sha256": "81cb309220348d15fe790b0d395bbbadeae3940cdab1b279553217bfdc409a4e"
+        },
+        {
+          "name": "run_ncbi_blast",
+          "line": 6180,
+          "end_line": 6238,
+          "sha256": "48631f5433ff53eb1b97afebaaf254ee04b5de951d1642a6af1e2e1e6c3a6b6e"
+        },
+        {
+          "name": "write_filtered_blast_result_file",
+          "line": 4247,
+          "end_line": 4279,
+          "sha256": "1bf7d19fe54ae0f74c15b55dc9eba663a2bb909b4e7242597aa3057959f176af"
+        }
+      ]
+    },
+    "ancestral_gene_tracing": {
+      "functions_and_constants": [
+        {
+          "name": "ANCESTRAL_DATASETS",
+          "line": 100,
+          "end_line": 106,
+          "sha256": "b70046c35854e89984186b0d53c1cb2a15db10d71f79b7ab1e04e4cf20900a8f"
+        },
+        {
+          "name": "ANCESTRAL_DISPLAY_LABELS",
+          "line": 134,
+          "end_line": 164,
+          "sha256": "64beabe3401c5b6184f264665f0f4b1282f56f72875890528c436b59f611b53c"
+        },
+        {
+          "name": "COMBINED_TRACE_TABLES",
+          "line": 119,
+          "end_line": 123,
+          "sha256": "588667e125ea8b94cce1dccb3d836ea62a516b54779e3197b77805a781a8c637"
+        },
+        {
+          "name": "INTERPROSCAN_SPECIES",
+          "line": 53,
+          "end_line": 61,
+          "sha256": "02fd4ce008ad45f2ed134ac9427efa7c95d6c9567d5e6067b6685acfc63ee2f3"
+        },
+        {
+          "name": "SEQUENCE_TYPE_NUCLEOTIDE",
+          "line": 117,
+          "end_line": 117,
+          "sha256": "723d8da780800c7c5528964742cb626009bad3cc638c17fb369f2de36fd80bbe"
+        },
+        {
+          "name": "SEQUENCE_TYPE_PROTEIN",
+          "line": 116,
+          "end_line": 116,
+          "sha256": "11e978f60ed53b76d664d524f62f85841af250c51a1a34d62b3bec0d4620ead6"
+        },
+        {
+          "name": "TRACEABLE_EXTANT_SPECIES",
+          "line": 125,
+          "end_line": 125,
+          "sha256": "3d00dc8fac6ab083fd0ea33b23cfacb0483e78cc9bb7787343bb759c7b201141"
+        },
+        {
+          "name": "_ANCESTRAL_GFF_CACHE",
+          "line": 6743,
+          "end_line": 6746,
+          "sha256": "d367bd9d8f386f69bd0bda171b3b21d4952cb9248ab45d62d569aecd2eee4810"
+        },
+        {
+          "name": "_COMBINED_TRACE_INDEX_CACHE",
+          "line": 128,
+          "end_line": 132,
+          "sha256": "8147a6930c0caf8edc219f4b1f56577cb8215e7c10f8ddca1cae2f1ab5ca1bfc"
+        },
+        {
+          "name": "_SPECIES_GFF_CACHE",
+          "line": 6869,
+          "end_line": 6872,
+          "sha256": "089044dd7295c4116ef57fd79d2efeed6798ff13b48f0f968c79b0582f6df67f"
+        },
+        {
+          "name": "_ancestor_code_from_gene_id",
+          "line": 6319,
+          "end_line": 6326,
+          "sha256": "3f559baf429323b7912a432660f1b12be6aaf2909437a4144812019b27e211a9"
+        },
+        {
+          "name": "_ancestor_genes_for_trace_row",
+          "line": 6661,
+          "end_line": 6677,
+          "sha256": "711dc4e978ea6646ebc4c16c35f68c722a8c323d2f10ac179ae0c9e152465a90"
+        },
+        {
+          "name": "_ancestor_label",
+          "line": 171,
+          "end_line": 173,
+          "sha256": "a77a6dc421bd6285b0ddfa6531a666cf39b5e964402417d8e4a598649313a3bf"
+        },
+        {
+          "name": "_ancestor_sort_key",
+          "line": 6329,
+          "end_line": 6333,
+          "sha256": "219225ef6a0c8fd64cb49501e2f226cc742ac994a5a459326cce95a237035d60"
+        },
+        {
+          "name": "_ancestral_gff_path",
+          "line": 6749,
+          "end_line": 6760,
+          "sha256": "660859a6fba21e12db942a8c309a08ca80014fbee0d8d914bbd56de284d61cbd"
+        },
+        {
+          "name": "_append_ancestral_blast_log",
+          "line": 6160,
+          "end_line": 6177,
+          "sha256": "afc3ab9243913497fae0aa4179f237b66ee41e7697485d2569dec43ad4ec3dea"
+        },
+        {
+          "name": "_balanced_trace_window_bounds",
+          "line": 7311,
+          "end_line": 7335,
+          "sha256": "80234e816d43482987323964d9b72d05d96e7163ebd32a749a98cd13937b2231"
+        },
+        {
+          "name": "_best_hit_sort_key",
+          "line": 6564,
+          "end_line": 6565,
+          "sha256": "c0ecff477172b31dc565a5df92286c00a391dbacc9301a69395c936630407585"
+        },
+        {
+          "name": "_blast_db_exists",
+          "line": 226,
+          "end_line": 237,
+          "sha256": "4cd3d44d6f1daee764faeac0f53dd33145f6b0ae9200ccd8c3dfe6e28ecbdd95"
+        },
+        {
+          "name": "_blast_outfmt_with_title",
+          "line": 6105,
+          "end_line": 6106,
+          "sha256": "ad264086102a5f9df286e48d6eafc0e194ac900191806a5adaf93ce95cbd71ab"
+        },
+        {
+          "name": "_blast_row_passes_filters",
+          "line": 4213,
+          "end_line": 4224,
+          "sha256": "9b3871caf0ca0615d97f1a299f5f233ae8fab5059b19e2032029dc18e0c0a41c"
+        },
+        {
+          "name": "_blast_row_to_dict",
+          "line": 6547,
+          "end_line": 6561,
+          "sha256": "cc72ccc59e7f371de9db4ddf10e6dd7ec4dfdb043a80ce093cd316f38047d242"
+        },
+        {
+          "name": "_build_combined_trace_matrix_row",
+          "line": 7180,
+          "end_line": 7232,
+          "sha256": "4cadf05eb84c65a6110101089e5191860bba9d062e34818642616224ef93de76"
+        },
+        {
+          "name": "_classify_combined_trace_columns",
+          "line": 6396,
+          "end_line": 6480,
+          "sha256": "00573faf127201fd387bdbc8f1507526673241e67470809226b976b880793c3d"
+        },
+        {
+          "name": "_combined_cell_gene_ids",
+          "line": 7050,
+          "end_line": 7066,
+          "sha256": "77b6ca5798f03929886a21049eba750a3216d4ab149982b2f9bb6deb90fa9c14"
+        },
+        {
+          "name": "_combined_display_column_indices",
+          "line": 7122,
+          "end_line": 7135,
+          "sha256": "fbc7aa3cc32041944efa69ab9e33d6bf91e63d8d96f2b44db8d64b566b90bfb5"
+        },
+        {
+          "name": "_combined_gene_record",
+          "line": 7077,
+          "end_line": 7109,
+          "sha256": "d98669242fc1a42d7e7b436bffb43da2dd66bfe6a68b9427d165646b98ee425a"
+        },
+        {
+          "name": "_combined_row_cell_value",
+          "line": 7069,
+          "end_line": 7074,
+          "sha256": "fe0ad4c1aa6fa8b1922e7286b2364e0e8ee275f932991414d1b9f896f9ae8ca1"
+        },
+        {
+          "name": "_combined_trace_ancestor_cells",
+          "line": 7235,
+          "end_line": 7265,
+          "sha256": "b9b299fb06d3d5e89e2b5123bda7827c50bf7980e750bf26f9990f29003d07ed"
+        },
+        {
+          "name": "_combined_trace_cell_payload",
+          "line": 7138,
+          "end_line": 7162,
+          "sha256": "7b61806a2ea1c8338ae3dd83534ca0362de72f52a1ecd4b4356a01013c8b7a79"
+        },
+        {
+          "name": "_combined_trace_gene_keys",
+          "line": 7035,
+          "end_line": 7041,
+          "sha256": "f18cda9ed7838fd02f1cdfb27e15dd20df06fc6f5be8f2a46130ca0c4b584b2d"
+        },
+        {
+          "name": "_combined_trace_genes_match",
+          "line": 7044,
+          "end_line": 7047,
+          "sha256": "5b5ccbd52fb596d713f88c37c2f55805244917043d86ba687692e03f286af23e"
+        },
+        {
+          "name": "_combined_trace_signature",
+          "line": 6373,
+          "end_line": 6381,
+          "sha256": "8e9a8df4097df246ba5c3f9d0038005b71e27885804dde49340c33a88cc1358b"
+        },
+        {
+          "name": "_combined_trace_species_cell",
+          "line": 7165,
+          "end_line": 7177,
+          "sha256": "eca70a7741ecd60d5e8f0b99af9761837bd04364937de2f2cff7c31ca1cad323"
+        },
+        {
+          "name": "_combined_trace_table_dir",
+          "line": 6361,
+          "end_line": 6362,
+          "sha256": "47bced81339b9635a32867b5ce6798491ff6fd4c437add9ae230232d11d76778"
+        },
+        {
+          "name": "_combined_trace_table_paths",
+          "line": 6365,
+          "end_line": 6370,
+          "sha256": "ef69707171d40d75e40f0afc23f7a697892e0a247a6a51ff6a9269fe6ecfc48a"
+        },
+        {
+          "name": "_counted_majority",
+          "line": 6384,
+          "end_line": 6387,
+          "sha256": "8fc7d2cca9a71f222345f98879c3b4653425a69d6551ea389b0ab0cfcd6562d9"
+        },
+        {
+          "name": "_dedupe_preserve_order",
+          "line": 7023,
+          "end_line": 7032,
+          "sha256": "bc89ff89259f3eea3ecae3920ebd0991ae89ef512b61a7f7077ed1ac6df92084"
+        },
+        {
+          "name": "_extract_ancestor_genes_from_row",
+          "line": 6336,
+          "end_line": 6349,
+          "sha256": "cd41045da602add60c1a7d41b285fc5dd5fa76386f1ec5f41f2076fa411f9bbc"
+        },
+        {
+          "name": "_extract_gene_id_from_gff_attributes",
+          "line": 6777,
+          "end_line": 6789,
+          "sha256": "42f65fd51799b7a8096160c9c6c8b313722902d026d68a05a6f6cc6f04f8891c"
+        },
+        {
+          "name": "_extract_gene_id_from_text",
+          "line": 6281,
+          "end_line": 6291,
+          "sha256": "5d851bc37d3ba80b7923d6d4880421291ff18c1aaaa0a0468eece5e806a49e8b"
+        },
+        {
+          "name": "_find_combined_row_for_trace_result",
+          "line": 7268,
+          "end_line": 7287,
+          "sha256": "ba5e54a0c6801df76086f70bd9885987f98733068264cf75069b25c79305c586"
+        },
+        {
+          "name": "_find_combined_target_species_column",
+          "line": 7290,
+          "end_line": 7308,
+          "sha256": "65765af1a6e1c7d94102d9d9b98cd83747310fb34ef945f5324f070bfe92905c"
+        },
+        {
+          "name": "_format_ancestor_gene_summary",
+          "line": 6352,
+          "end_line": 6358,
+          "sha256": "d1561a71392fac94dc2111f0e8f68e625dca41004f55ce917db23ce94a71b17d"
+        },
+        {
+          "name": "_gene_id_prefix_pattern",
+          "line": 6267,
+          "end_line": 6269,
+          "sha256": "4ba180a345cdafdbda74af1775c3578e691dd6c6887a20613fcb84f444145d66"
+        },
+        {
+          "name": "_gene_lookup_candidates",
+          "line": 6294,
+          "end_line": 6307,
+          "sha256": "8279d200aeae4918eb8884d12dc9919582486fff5db670e4071cb0d2c5b5c35a"
+        },
+        {
+          "name": "_increment_count",
+          "line": 6390,
+          "end_line": 6393,
+          "sha256": "df108436f71dd6bee5802aaf0c4056c6784491a74bd0be230f4917429448389a"
+        },
+        {
+          "name": "_load_ancestral_gff_records",
+          "line": 6842,
+          "end_line": 6866,
+          "sha256": "22f5fd8aed92c49fa2b1d5d37853389d0066b0f80159d961a31777d811cd91b4"
+        },
+        {
+          "name": "_load_combined_trace_index",
+          "line": 6483,
+          "end_line": 6539,
+          "sha256": "3de1e392c0e7a01d0877baf9ac05a8c4adcb1f26944f993da6934438b8f5768d"
+        },
+        {
+          "name": "_load_combined_trace_tables",
+          "line": 6542,
+          "end_line": 6544,
+          "sha256": "d33843b6ce5a2a7980672f6e98d73e4dc597baaf6e9725c8f85cbd1d7ed462ae"
+        },
+        {
+          "name": "_load_species_gff_records",
+          "line": 6891,
+          "end_line": 6915,
+          "sha256": "622d49672c115fddc2525b30627a42cbc73f88e7c0e97376050ece521d2b22c6"
+        },
+        {
+          "name": "_merge_trace_meta_list",
+          "line": 6918,
+          "end_line": 6925,
+          "sha256": "62a7fa852c586cfeb4d71cd84baf6262e70e9da9a610bca14d01548849339972"
+        },
+        {
+          "name": "_ncbi_blast_binary",
+          "line": 6143,
+          "end_line": 6157,
+          "sha256": "183f3e73dd2709c14b4abda406dd242a36d3ccabef4468bbc5d6c53b194af46a"
+        },
+        {
+          "name": "_normalize_ancestor_code",
+          "line": 167,
+          "end_line": 168,
+          "sha256": "7d881b0c853c4903fa81e4574d2012c92a7d819a064f0be8dd19a7bb1a72dee4"
+        },
+        {
+          "name": "_normalize_gene_id_for_lookup",
+          "line": 6272,
+          "end_line": 6278,
+          "sha256": "c5d8d958cd9d0cb3f12788ee10b13bd840ab502dc1e1c1aa3e51e1dc42908109"
+        },
+        {
+          "name": "_parse_ancestral_gff_row",
+          "line": 6792,
+          "end_line": 6839,
+          "sha256": "2e5fea637996247a7621dc1579a3fe9adb202ca17010cc046d8e40d3666fc2da"
+        },
+        {
+          "name": "_parse_gff_float",
+          "line": 6763,
+          "end_line": 6767,
+          "sha256": "c2f8318550dc136e903f6d84374c05c4bb4f58d28c0abfb75abf08f63179c40e"
+        },
+        {
+          "name": "_parse_gff_int",
+          "line": 6770,
+          "end_line": 6774,
+          "sha256": "71afb54bc4459e6820ccffd119ba4da89fac513172eade1d8a4f5269f1fcab63"
+        },
+        {
+          "name": "_read_fasta_sequence_letters",
+          "line": 6241,
+          "end_line": 6249,
+          "sha256": "e48be5ff3e55ee022fc2d117b1613c0faf4878b0654fd2819c0a521b38300ba5"
+        },
+        {
+          "name": "_resolve_gene_species",
+          "line": 206,
+          "end_line": 210,
+          "sha256": "0f065a10f779bddee148fafadc4a8543ebbc4847bd51f0317e3989a07271a47e"
+        },
+        {
+          "name": "_safe_float",
+          "line": 6654,
+          "end_line": 6658,
+          "sha256": "93b7aa0cf85015aed25a21661d068929273069e85a15ae8f68de6188fefbe7b0"
+        },
+        {
+          "name": "_select_best_hits",
+          "line": 6568,
+          "end_line": 6590,
+          "sha256": "41a147f2b3791110c10eb99a89e0a323077dd1680d1e32790a1e954a9e72e117"
+        },
+        {
+          "name": "_species_gff_path",
+          "line": 6875,
+          "end_line": 6888,
+          "sha256": "17d1792a6f66ed13aad9879801fce9bb7ea326e103fc141fcae55beedbf3b669"
+        },
+        {
+          "name": "_subject_gene_id_from_blast_fields",
+          "line": 6310,
+          "end_line": 6316,
+          "sha256": "2c1900825e01cd8f6086e5151d55197bad22e4885f22e20f828c0c2b60b47cdc"
+        },
+        {
+          "name": "_trace_best_hits_to_ancestors",
+          "line": 6593,
+          "end_line": 6651,
+          "sha256": "eaedd02f000a9206415ba22d6423dda9d4a9390300b32aa776727e619b84623f"
+        },
+        {
+          "name": "_traceable_species_db_paths",
+          "line": 257,
+          "end_line": 271,
+          "sha256": "c2dd64219aaffae4b5a54e74b1a2e00a9eb22b5f23ffe125c85a1864ca11c98e"
+        },
+        {
+          "name": "_validate_sequence_type_for_search",
+          "line": 6252,
+          "end_line": 6264,
+          "sha256": "169d22ec0c97ea0d9a999ac248c9a6e8a4a25d6ff46c30b1aa1ec41bbf6c8e96"
+        },
+        {
+          "name": "build_ancestral_trace_payload",
+          "line": 6680,
+          "end_line": 6739,
+          "sha256": "ae46a1a00eb86f91fe2bdef2d29cc6f38f022ea1f7652ca34895f736a991aa00"
+        },
+        {
+          "name": "build_trace_decobrowse_payload",
+          "line": 7338,
+          "end_line": 7497,
+          "sha256": "14b78596999c8c44988361cf4c9ad69d513f427194b021f30f99f39c4d868764"
+        },
+        {
+          "name": "path_get",
+          "line": 51,
+          "end_line": 51,
+          "sha256": "8ef422a65bf7e0a486d5731405419b4b0b8636fa4fab77d09d009ea6150ab6e1"
+        },
+        {
+          "name": "run_ncbi_blast",
+          "line": 6180,
+          "end_line": 6238,
+          "sha256": "48631f5433ff53eb1b97afebaaf254ee04b5de951d1642a6af1e2e1e6c3a6b6e"
+        }
+      ]
+    }
+  },
+  "archive_sha256": "9792346283785c862f9f01b65c60534f7fc5333a1ea6187ace2ee5c88c2c8f7a",
+  "archive_files": {
+    "AAKI.cds": "978563af6d4d0c93ea8e880156f52b851ff969f83703e04c3009b30b23fce181",
+    "AAKI.lens": "7ef10dd32c0d84c3d2602edc4445b177db91a9146b9c71c3f308a98688411f46",
+    "AAKI.lens.txt": "38448c3bcfaea3e381a129a140dc50c13a8d1e0581322e95861730635afbe6e4",
+    "AAKI.new.gff": "6911838242914abae50f8abd3a823cbcbe208d100fc0994f7657c6524cef92a2",
+    "AAKI.pep": "be6406a25ccbb21ff25e0ddb08112c0fdc6bf132c6356256d36ccc2cf61871a1",
+    "ancestral_cds_pep_extract.py": "49407e13c8682f7fb8fec1ec287a4babb91d76d1dd4879b824af2a4f6a31f3b5",
+    "ancestral_gene_extract.py": "e546eda1482d022c9c3557b0a8227b8395d5ec07fd7db458adedbd79bb2fca5b",
+    "ancestral_gff_extract.py": "cb71b272ff1f9fde453f95bd156ec1e3be982058a76fc14ec3e39000ab379525"
+  },
+  "reference_tables": {
+    "ancestral_gene_tracing/reference_data/static/ancestral_combined/Arla_all_with_combined.txt": "df218ed51d45749f8501ca57cc34ec8abf14c9cffd5dde7637e6d37fe8ec0ea4",
+    "ancestral_gene_tracing/reference_data/static/ancestral_combined/Fli_all_with_combined.txt": "0b389d19c16e42547c55d606ea42aa94c6189430eea59fea536d6d1bf43072f1",
+    "ancestral_gene_tracing/reference_data/static/ancestral_combined/Gehy_all_with_combined.txt": "47383b2ff29f091cf479bdbb1e5e0841cf29e8b0daa407819757fe25e8b2a54e"
+  },
+  "web_page_source": "browse/templates/ancestral_chromosome.html",
+  "web_page_sha256": "4d2c65ed9ef1818c11d1cfa42765a31b3932576fd7a336f870619bd87ca3d48e",
+  "web_result_source": "browse/templates/ancestral_chromosome_run.html",
+  "web_result_sha256": "07de86f5b276bbe2a7458eff126cccc36c8260f7eb01162e1fead238c05c8c3e",
+  "distribution": {
+    "per_file_limit_bytes_exclusive": 25000000,
+    "source_package_sha256": "8f1d1f37a8e8d462f7c8ad1f2cb766c079c85218ee67eb40617da3fdb5938cf7",
+    "compressed_files": [
+      {
+        "original_path": "ancestral_genome_extraction/AAKI.cds",
+        "stored_path": "ancestral_genome_extraction/AAKI.cds.gz",
+        "encoding": "gzip",
+        "original_bytes": 30375640,
+        "stored_bytes": 9130913,
+        "uncompressed_sha256": "978563af6d4d0c93ea8e880156f52b851ff969f83703e04c3009b30b23fce181",
+        "stored_sha256": "bf86cd3407791b204fef593de8637fabd47023c9cf58373244613b3d52487263"
+      }
+    ]
+  }
+}
