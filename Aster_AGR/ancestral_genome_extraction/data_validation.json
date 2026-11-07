@@ -1,0 +1,25 @@
+{
+  "cds": {
+    "records": 22382,
+    "unique_ids": 16211,
+    "duplicated_id_groups": 5386,
+    "extra_records_with_repeated_ids": 6171,
+    "max_copies_per_id": 4
+  },
+  "pep": {
+    "records": 22382,
+    "unique_ids": 16211,
+    "duplicated_id_groups": 5386,
+    "extra_records_with_repeated_ids": 6171,
+    "max_copies_per_id": 4
+  },
+  "gff": {
+    "records": 22382,
+    "unique_ids": 16211,
+    "duplicated_id_groups": 5386,
+    "extra_records_with_repeated_ids": 6171,
+    "max_copies_per_id": 4
+  },
+  "id_sets_equal": true,
+  "same_id_multiplicities": true
+}
