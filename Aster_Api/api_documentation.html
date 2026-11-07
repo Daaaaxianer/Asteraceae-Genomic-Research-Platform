@@ -64,11 +64,14 @@
     }
 
     .api-subtitle {
-        max-width: 940px;
+        width: 100%;
         color: #4f5866;
         line-height: 1.72;
         font-size: 1.01rem;
         margin: 0;
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
     }
 
     .api-meta-row {
@@ -229,6 +232,8 @@
         font-size: 0.98rem;
         line-height: 1.78;
         margin: 0 0 14px;
+        text-align: justify;
+        text-justify: inter-word;
     }
 
     .api-small-text {
@@ -490,7 +495,6 @@
         .api-meta-pill { white-space: normal; }
     }
 </style>
-
 {% endblock %}
 
 {% block content %}
@@ -500,8 +504,8 @@
             <p class="api-kicker">AGRP Public API</p>
             <h1 class="api-title">API Documentation</h1>
             <p class="api-subtitle">
-                This page describes the public read-only APIs of the AGRP / Asteraceae Genomic Research Platform.
-                Use these endpoints to download genome resources and retrieve public genomics, comparative genomics, and multi-omics data through scripts, browsers, or bioinformatics workflows.
+                The Asteraceae Genomic Research Platform (AGRP) provides APIs to programmatically access and batch-download data across the platform.<br style="display: block; margin-top: 6px;">
+                Users can retrieve genome resources, comparative genomics data, and multi-omics datasets directly through custom scripts, browsers, or bioinformatics workflows.
             </p>
             <div class="api-meta-row">
                 <span class="api-meta-pill">Base URL: <span class="inline-code">https://asteraceae.cgrpoee.top/api/</span></span>
@@ -547,20 +551,20 @@
                 <section id="sec_1" class="api-section">
                     <h2 class="api-h2">1. Overview</h2>
                     <p class="api-text">
-                        The AGRP public API provides structured access to selected platform resources. It can be used to list available datasets, check file availability, download genome-related files, and query public data tables or JSON resources.
+                        The Asteraceae Genomic Research Platform (AGRP) provides RESTful APIs to programmatically access and download data across the platform. These endpoints allow you to retrieve and download datasets across our three core hubs: Genomics (genome resources and functional annotations), Geno-Syn (ancestral genomes and comparative genomics), and Multi-Omics (transcriptomes, pan-genomes, and metabolomics datasets) via standard HTTP requests or bioinformatics workflows.
                     </p>
                     <div class="api-grid">
                         <div class="api-summary-card">
-                            <strong>Genome resources</strong>
-                            <span>Species lists, genome file checks, and genome file downloads.</span>
+                            <strong>Genomics Portal</strong>
+                            <span>Species lists, genome file checks, CDS/PEP/GFF downloads, and functional annotations (KEGG, InterProScan, m6A, TE).</span>
                         </div>
                         <div class="api-summary-card">
-                            <strong>Geno-Syn resources</strong>
-                            <span>Ancestral genome files, collinearity records, dotplots, blocks, hierarchical data, and gene sets.</span>
+                            <strong>Geno-Syn Portal</strong>
+                            <span>Ancestral genome files, collinearity records, dotplots, syntenic blocks, hierarchical alignments, and core gene sets.</span>
                         </div>
                         <div class="api-summary-card">
-                            <strong>Multi-Omics resources</strong>
-                            <span>Pan-genome, transcriptome, expression, plant metabolomics, and scent metabolomics data.</span>
+                            <strong>Multi-Omics Portal</strong>
+                            <span>Pan-genome tables, transcriptome sample JSONs, gene expression values (TPM), and plant/scent metabolomics records.</span>
                         </div>
                     </div>
                     <div class="api-callout info">
@@ -574,7 +578,7 @@
                     <pre class="code-block"><code>https://asteraceae.cgrpoee.top/api/</code></pre>
 
                     <div class="api-callout info">
-                        All command-line examples in this page use <span class="inline-code">curl -4</span> to prefer IPv4. This is especially important when checking an IP address for whitelist applications, because browsers and some networks may prefer IPv6.
+                        Most command-line examples on this page use ordinary <span class="inline-code">curl</span>. Use <span class="inline-code">curl -4</span> only when checking or using an IPv4-based IP whitelist. API key requests do not require <span class="inline-code">-4</span>.
                     </div>
 
                     <ol class="step-list">
@@ -587,14 +591,14 @@
                     <h3 class="api-h3">Example: check and download a genome file</h3>
                     <p class="api-text">For file downloads, it is recommended to check the file first and then download it.</p>
                     <pre class="code-block"><code># 1. Check whether the file exists
-curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
+curl -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
 
 # 2. Download the file
-curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+curl -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
 
                     <h3 class="api-h3">Example: query data with a limit</h3>
                     <p class="api-text">For large query endpoints, use <span class="inline-code">limit</span> to return a manageable number of records. The default limit is 20 records. For public access, the maximum allowed limit is 100 records per request; authorized API-key users may have higher limit caps.</p>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"</code></pre>
                 </section>
 
                 <section id="sec_3" class="api-section">
@@ -605,7 +609,7 @@ curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?spec
                                 <tr><th>Item</th><th>Rule</th><th>Example</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>HTTP method</td><td>All current endpoints use <span class="inline-code">GET</span>.</td><td><span class="inline-code">curl -4 -i "URL"</span></td></tr>
+                                <tr><td>HTTP method</td><td>All current endpoints use <span class="inline-code">GET</span>.</td><td><span class="inline-code">curl -i "URL"</span></td></tr>
                                 <tr><td>Response format</td><td>Most endpoints return JSON. Download endpoints return file streams when the requested file exists.</td><td><span class="inline-code">application/json</span> or attachment download</td></tr>
                                 <tr><td>Required parameters</td><td>Some endpoints require parameters such as <span class="inline-code">species</span>, <span class="inline-code">type</span>, <span class="inline-code">dataset</span>, <span class="inline-code">query_genome</span>, or <span class="inline-code">filename</span>.</td><td><span class="inline-code">?species=Aann&amp;type=cds</span></td></tr>
                                 <tr><td>Pagination</td><td>List endpoints usually support <span class="inline-code">limit</span> and <span class="inline-code">offset</span>. The default limit is 20. For public access, the maximum returned records per request is 100; authorized API-key users may have higher limit caps.</td><td><span class="inline-code">?limit=20&amp;offset=40</span></td></tr>
@@ -625,7 +629,7 @@ curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?spec
                         <div class="endpoint-line"><span class="api-badge">GET</span><span class="endpoint-path">/api/ping/</span></div>
                         <p class="api-text">Use this endpoint to check whether the AGRP API service is running.</p>
                         <h4 class="api-h4">Request</h4>
-                        <pre class="code-block"><code>curl -4 -H "Accept: application/json" "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
+                        <pre class="code-block"><code>curl -H "Accept: application/json" "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
                         <h4 class="api-h4">Response example</h4>
                         <pre class="code-block"><code>{
   "status": "ok",
@@ -637,7 +641,7 @@ curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?spec
 
                     <div class="api-card">
                         <div class="endpoint-line"><span class="api-badge">GET</span><span class="endpoint-path">/api/whoami/</span></div>
-                        <p class="api-text">Use this endpoint to check the public client IP address detected by the AGRP API service. For IP whitelist applications, use the IPv4 command below and send the returned IPv4 address to the AGRP team.</p>
+                        <p class="api-text">Use this endpoint to check the public client IP address detected by the AGRP API service. For IPv4 whitelist applications, use the IPv4 command below from the actual server or computer that will access AGRP, and send the returned IPv4 address to the AGRP team.</p>
                         <h4 class="api-h4">Request: check the detected IPv4 address</h4>
                         <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
                         <h4 class="api-h4">Response example</h4>
@@ -649,7 +653,7 @@ curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?spec
   "message": "This is the client IP address detected by the AGRP API for this request."
 }</code></pre>
                         <div class="api-callout info">
-                            If this endpoint is opened directly in a browser, the detected address may be IPv6 because many networks prefer IPv6 automatically. For whitelist applications, please use <span class="inline-code">curl -4</span> from the actual server or computer that will access AGRP. A detected public IP address does not necessarily mean it is suitable for whitelist access. Campus networks, dormitory networks, public Wi-Fi, mobile hotspots, and personal broadband connections may use shared, dynamic, or temporary addresses. In these environments, please request an API key instead of IP whitelist access.
+                            If this endpoint is opened directly in a browser, the detected address may be IPv6 because many networks prefer IPv6 automatically. For IPv4 whitelist applications, please use <span class="inline-code">curl -4</span> from the actual server or computer that will access AGRP. If AGRP adds your IPv4 address to the whitelist, your later curl-based high-throughput requests should also use <span class="inline-code">-4</span> when the network might otherwise choose IPv6. A detected public IP address does not necessarily mean it is suitable for whitelist access. Campus networks, dormitory networks, public Wi-Fi, mobile hotspots, and personal broadband connections may use shared, dynamic, or temporary addresses. In these environments, please request an API key instead of IP whitelist access.
                         </div>
                     </div>
                 </section>
@@ -673,9 +677,9 @@ curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?spec
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=lens"
-curl -4 -L -o Aann.lens "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=lens"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
+curl -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=lens"
+curl -L -o Aann.lens "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=lens"</code></pre>
                     </div>
 
                     <div id="sec_5_2" class="api-card">
@@ -693,11 +697,11 @@ curl -4 -L -o Aann.lens "https://asteraceae.cgrpoee.top/api/download/genome/?spe
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/regulatory-proteins/?species=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/m6a/?species=Aann&amp;first_class=readers&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/duplication-types/?species=Aann&amp;limit=5"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/regulatory-proteins/?species=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/m6a/?species=Aann&amp;first_class=readers&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/duplication-types/?species=Aann&amp;limit=5"</code></pre>
                     </div>
 
                     <div id="sec_5_3" class="api-card">
@@ -712,8 +716,8 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/duplication-types/?speci
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/species/"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/?species=Artemisia_annua&amp;limit=5"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/species/"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/?species=Artemisia_annua&amp;limit=5"</code></pre>
                     </div>
                 </section>
 
@@ -735,9 +739,9 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/transposable-elements/?s
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/ancestral-genomes/"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/files/ancestral/?dataset=AAKI&amp;type=cds"
-curl -4 -L -o AAKI.cds "https://asteraceae.cgrpoee.top/api/download/ancestral/?dataset=AAKI&amp;type=cds"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/ancestral-genomes/"
+curl -i "https://asteraceae.cgrpoee.top/api/files/ancestral/?dataset=AAKI&amp;type=cds"
+curl -L -o AAKI.cds "https://asteraceae.cgrpoee.top/api/download/ancestral/?dataset=AAKI&amp;type=cds"</code></pre>
                     </div>
 
                     <div id="sec_6_2" class="api-card">
@@ -752,8 +756,8 @@ curl -4 -L -o AAKI.cds "https://asteraceae.cgrpoee.top/api/download/ancestral/?d
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/collinear-kaks/?q=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/dotplots/?q=Hean&amp;limit=5"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/collinear-kaks/?q=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/dotplots/?q=Hean&amp;limit=5"</code></pre>
                     </div>
 
                     <div id="sec_6_3" class="api-card">
@@ -776,15 +780,15 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/dotplots/?q=Hean&amp;limi
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-alignments/?reference=Hean&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/evogenes/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/orthologous/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/gene-families/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/rubber-genes/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/inulin-genes/?limit=5"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-alignments/?reference=Hean&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/evogenes/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/orthologous/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/gene-families/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/rubber-genes/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/inulin-genes/?limit=5"</code></pre>
                     </div>
                 </section>
 
@@ -805,12 +809,12 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/inulin-genes/?limit=5"</c
                                 </tbody>
                             </table>
                         </div>
-                        <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/expression/?species=Aann&amp;expression_index=TPM&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/scent/?limit=5"</code></pre>
+                        <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/expression/?species=Aann&amp;expression_index=TPM&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/scent/?limit=5"</code></pre>
                     </div>
                 </section>
 
@@ -870,7 +874,7 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/scent/?li
                                 <tbody>
                                     <tr>
                                         <td>Registered IP address</td>
-                                        <td>The collaborator provides a fixed server IPv4 address or stable institutional server network range, and AGRP grants higher quota for requests from that address. Personal computers on campus networks, dormitory networks, public Wi-Fi, mobile hotspots, or dynamic home broadband are generally not suitable for IP whitelist access.</td>
+                                        <td>The collaborator provides a fixed server IPv4 address or stable institutional server network range, and AGRP grants higher quota for requests from that address. If an IPv4 address is registered, requests must actually be sent through that IPv4 address; curl users can use <span class="inline-code">-4</span>. Personal computers on campus networks, dormitory networks, public Wi-Fi, mobile hotspots, or dynamic home broadband are generally not suitable for IP whitelist access.</td>
                                         <td>Laboratory servers, institutional servers, or stable computing clusters.</td>
                                     </tr>
                                     <tr>
@@ -890,27 +894,41 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/scent/?li
 
                     <h3 class="api-h3">Checking the IP address for whitelist applications</h3>
                     <p class="api-text">
-                        Before requesting IP whitelist access, run the following command from the actual fixed server that will access AGRP. This command forces IPv4 and avoids accidentally submitting an IPv6 address returned by a browser request.
+                        Before requesting IPv4 whitelist access, run the following command from the actual fixed server that will access AGRP. This command forces IPv4 and avoids accidentally submitting an IPv6 address returned by a browser request.
                     </p>
                     <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
                     <div class="api-callout info">
                         The returned <span class="inline-code">detected_ip</span> is the client IP detected by AGRP for that request. However, a detected public IP is not always suitable for whitelist access. If the request comes from a campus network, dormitory network, public Wi-Fi, mobile hotspot, or personal dynamic broadband connection, use an AGRP API key instead.
                     </div>
 
+                    <h3 class="api-h3">Using an approved IPv4 whitelist</h3>
+                    <p class="api-text">
+                        If AGRP has approved and registered your IPv4 address, make sure your automated requests are sent through that same IPv4 address. For <span class="inline-code">curl</span>, add <span class="inline-code">-4</span> to high-throughput query or download commands when your network may otherwise prefer IPv6.
+                    </p>
+                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=1000"
+
+curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+                    <div class="api-callout info">
+                        This requirement applies to IPv4 whitelist access only. If you are using an AGRP API key, use the <span class="inline-code">X-AGRP-API-Key</span> header; <span class="inline-code">-4</span> is not required unless your own network policy needs it.
+                    </div>
+
                     <h3 class="api-h3">Using an API key</h3>
                     <p class="api-text">
                         If the AGRP team provides an API key, include it in the HTTP request header named <span class="inline-code">X-AGRP-API-Key</span>. Do not include the key in a URL parameter, browser address bar, or shared link.
                     </p>
-                    <pre class="code-block"><code>curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
+                    <pre class="code-block"><code>curl -H "X-AGRP-API-Key: agrp_your_api_key_here" \
   "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=1000"
 
-curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
+curl -H "X-AGRP-API-Key: agrp_your_api_key_here" \
   -L -o Aann.cds \
   "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
 
                     <div class="api-callout info">
                         If a request exceeds the current rate limit, the API returns <span class="inline-code">429 Too Many Requests</span>. Please wait briefly and retry with a lower request frequency. For repeated batch downloads or large automated workflows, contact the AGRP team for high-throughput access instead of sending high-frequency public requests.
                     </div>
+                    <p class="api-text">
+                        Public queries return at most 100 records per page; partner and trusted access allow up to 1,000 and 2,000, subject to resource-specific limits. The values <span class="inline-code">limit=all</span>, <span class="inline-code">none</span>, and <span class="inline-code">0</span> use the applicable page limit. JSON resources and the files selected for one TE query are limited to 16 MiB; larger requests return <span class="inline-code">413</span>. Use the public HTTPS endpoint and retain the <span class="inline-code">X-Request-ID</span> response header when reporting a failed request.
+                    </p>
 
                     <h3 class="api-h3">Recommended access pattern</h3>
                     <ul class="api-list">
@@ -938,16 +956,16 @@ curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
                     </div>
 
                     <h3 class="api-h3">9.1 Missing required parameter</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?limit=5"</code></pre>
                     <pre class="code-block"><code>{
   "status": "error",
   "message": "Missing required parameter: query_genome"
 }</code></pre>
                     <p class="api-text">Correct request:</p>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"</code></pre>
 
                     <h3 class="api-h3">9.2 Invalid file type</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=abc"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=abc"</code></pre>
                     <pre class="code-block"><code>{
   "status": "error",
   "message": "Invalid type parameter.",
@@ -956,7 +974,7 @@ curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
 }</code></pre>
 
                     <h3 class="api-h3">9.3 File not found</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=NotExist&amp;type=cds"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=NotExist&amp;type=cds"</code></pre>
                     <pre class="code-block"><code>{
   "status": "error",
   "message": "File not found.",
@@ -966,7 +984,7 @@ curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
 }</code></pre>
 
                     <h3 class="api-h3">9.4 Invalid species parameter</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=../../etc/passwd&amp;type=cds"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/download/genome/?species=../../etc/passwd&amp;type=cds"</code></pre>
                     <pre class="code-block"><code>{
   "status": "error",
   "message": "Invalid species parameter. Only letters, numbers, underscores, hyphens and dots are allowed.",
@@ -992,32 +1010,32 @@ curl -4 -H "X-AGRP-API-Key: agrp_your_api_key_here" \
                     <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</code></pre>
 
                     <h3 class="api-h3">10.2 Check whether the API is available</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/ping/"</code></pre>
 
                     <h3 class="api-h3">10.3 List genome resources and download a file</h3>
                     <pre class="code-block"><code># List species with available genome files
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/species/"
 
 # Check whether a specific file exists
-curl -4 -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
+curl -i "https://asteraceae.cgrpoee.top/api/files/genome/?species=Aann&amp;type=cds"
 
 # Download the file
-curl -4 -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
+curl -L -o Aann.cds "https://asteraceae.cgrpoee.top/api/download/genome/?species=Aann&amp;type=cds"</code></pre>
 
                     <h3 class="api-h3">10.4 Query annotation records</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genomics/kegg/?species=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genomics/interproscan/?species=Aann&amp;database=Pfam&amp;limit=5"</code></pre>
 
                     <h3 class="api-h3">10.5 Query Geno-Syn records</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/genosyn/blocks/?query_genome=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/block-details/?query_genome=Aann&amp;limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/genosyn/hierarchical-genes/?reference=Hean&amp;limit=5"</code></pre>
 
                     <h3 class="api-h3">10.6 Query Multi-Omics records</h3>
-                    <pre class="code-block"><code>curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
-curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"</code></pre>
+                    <pre class="code-block"><code>curl -i "https://asteraceae.cgrpoee.top/api/multiomics/pangenome/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/samples/?limit=5"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/transcriptome/sample/?filename=Dapi_white%20petal.json"
+curl -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?limit=5"</code></pre>
                 </section>
 
                 <section id="sec_11" class="api-section">
@@ -1027,7 +1045,8 @@ curl -4 -i "https://asteraceae.cgrpoee.top/api/multiomics/metabolomics/plant/?li
                         <li>Download endpoints return file streams only when the requested file exists. For scripts, check file availability before downloading large files.</li>
                         <li>API requests may be rate-limited by IP address or authorized access level to maintain stable public service.</li>
                         <li>Authorized collaborators may receive higher quotas through registered fixed server IPv4 addresses or the <span class="inline-code">X-AGRP-API-Key</span> request header.</li>
-                        <li>Use <span class="inline-code">curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</span> to check the IPv4 address detected by AGRP before requesting IP whitelist access.</li>
+                        <li>Use <span class="inline-code">curl -4 -i "https://asteraceae.cgrpoee.top/api/whoami/"</span> to check the IPv4 address detected by AGRP before requesting IPv4 whitelist access.</li>
+                        <li>If your approved whitelist address is IPv4, make sure later curl-based high-throughput requests also use <span class="inline-code">-4</span> when the network may otherwise prefer IPv6.</li>
                         <li>Use <span class="inline-code">limit</span> and <span class="inline-code">offset</span> when querying large tables or JSON resources. The default limit is 20. For public access, the maximum allowed limit is 100; authorized API-key users may have higher limit caps.</li>
                         <li>URL-encode filenames or query values that contain spaces, for example <span class="inline-code">Dapi_white%20petal.json</span>.</li>
                         <li>A successful response with an empty <span class="inline-code">data</span> list means the request was valid but no matching records were found.</li>
