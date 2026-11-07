@@ -1,0 +1,52 @@
+{
+  "query_name": "existing_search_results",
+  "selected_ancestors": [
+    "AAKI"
+  ],
+  "summaries": {
+    "AAKI": {
+      "code": "AAKI",
+      "label": "AAK-I",
+      "selected": true,
+      "hit_count": 2,
+      "top_hits": [
+        {
+          "query": "AAKI3g00001",
+          "subject": "AAKI3g00001",
+          "identity": 100.0,
+          "length": 681,
+          "qstart": 1,
+          "qend": 681,
+          "sstart": 1,
+          "send": 681,
+          "evalue": "0.00e+00",
+          "bit_score": "1.26e+03"
+        },
+        {
+          "query": "AAKI3g00003",
+          "subject": "AAKI3g00003",
+          "identity": 100.0,
+          "length": 513,
+          "qstart": 1,
+          "qend": 513,
+          "sstart": 1,
+          "send": 513,
+          "evalue": "0.00e+00",
+          "bit_score": "9.48e+02"
+        }
+      ],
+      "best_hit": {
+        "query": "AAKI3g00001",
+        "subject": "AAKI3g00001",
+        "identity": 100.0,
+        "length": 681,
+        "qstart": 1,
+        "qend": 681,
+        "sstart": 1,
+        "send": 681,
+        "evalue": "0.00e+00",
+        "bit_score": "1.26e+03"
+      }
+    }
+  }
+}

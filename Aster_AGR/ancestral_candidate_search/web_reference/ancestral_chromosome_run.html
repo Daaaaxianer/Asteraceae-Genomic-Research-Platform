@@ -1,0 +1,3323 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ancestral Chromosome Results - AGRP{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-orange: #e67e22;
+            --dark-orange: #d35400;
+            --light-bg: #fffbf7;
+            --soft-border: #eee;
+            --muted-text: #6c757d;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .page-wrapper {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin: 40px auto;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            min-height: 560px;
+        }
+
+        .main-title {
+            color: var(--dark-orange);
+            font-weight: 800;
+            margin-bottom: 34px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 34px 0 20px;
+            position: relative;
+        }
+
+        .section-header::before,
+        .section-header::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px dotted var(--primary-orange);
+            margin: 0 20px;
+            opacity: 0.5;
+        }
+
+        .section-header.section-header-line-only::before {
+            margin: 0;
+        }
+
+        .section-header.section-header-line-only::after {
+            content: none;
+        }
+
+        .section-title-box {
+            background: #fff;
+            padding: 0 15px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .section-title-text {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.35rem;
+            margin: 0;
+        }
+
+        .leaf-icon {
+            color: var(--primary-orange);
+            font-size: 1.1rem;
+            margin: 0 auto 5px;
+            display: block;
+        }
+
+        .table-container {
+            background: #fff;
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            padding: 20px 20px 16px;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin-bottom: 22px;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-select {
+            color: #fff;
+            background: var(--dark-orange);
+            border: 1px solid var(--dark-orange);
+        }
+
+        .btn-select:hover {
+            color: #fff;
+            background: #b94a00;
+            border-color: #b94a00;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            color: var(--dark-orange);
+            background: #fff;
+            border: 1px solid #efc89a;
+        }
+
+        .btn-download:hover {
+            color: #b94a00;
+            background: #fff8ef;
+            border-color: #e8b66f;
+        }
+
+        .btn-secondary-link {
+            color: #495057;
+            background: #fff;
+            border: 1px solid #d8dee4;
+        }
+
+        .btn-secondary-link:hover {
+            color: #2c3e50;
+            background: #f6f8fa;
+            border-color: #c9d1d9;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            margin: 0 !important;
+        }
+
+        table.dataTable thead th,
+        .result-table thead th {
+            background-color: var(--light-bg) !important;
+            color: var(--dark-orange) !important;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-orange) !important;
+            padding: 12px 34px 12px 15px !important;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background-position: right 10px center !important;
+            background-repeat: no-repeat !important;
+        }
+
+        table.dataTable thead > tr > th.sorting::before,
+        table.dataTable thead > tr > th.sorting::after,
+        table.dataTable thead > tr > th.sorting_asc::before,
+        table.dataTable thead > tr > th.sorting_asc::after,
+        table.dataTable thead > tr > th.sorting_desc::before,
+        table.dataTable thead > tr > th.sorting_desc::after,
+        table.dataTable thead > tr > th.sorting_asc_disabled::before,
+        table.dataTable thead > tr > th.sorting_asc_disabled::after,
+        table.dataTable thead > tr > th.sorting_desc_disabled::before,
+        table.dataTable thead > tr > th.sorting_desc_disabled::after {
+            right: 10px !important;
+        }
+
+        .result-table td {
+            padding: 10px 15px !important;
+            vertical-align: middle;
+            white-space: nowrap;
+            border-bottom: 1px solid #edf0f2;
+        }
+
+        .result-table tbody tr:nth-child(even) {
+            background-color: #fffdf9;
+        }
+
+        .result-table tbody tr:hover {
+            background-color: #fff6eb;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+            width: 76px !important;
+            min-width: 76px;
+            padding-right: 15px !important;
+        }
+
+        table.dataTable thead th.checkbox-cell::before,
+        table.dataTable thead th.checkbox-cell::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        #ancestralBlastTable th:nth-child(2),
+        #ancestralBlastTable td:nth-child(2) {
+            min-width: 170px;
+        }
+
+        #ancestralBlastTable th:nth-child(3),
+        #ancestralBlastTable td:nth-child(3) {
+            min-width: 130px;
+        }
+
+        #ancestralBlastTable th:nth-child(4),
+        #ancestralBlastTable td:nth-child(4) {
+            min-width: 110px;
+        }
+
+        #ancestralBlastTable th:nth-child(5),
+        #ancestralBlastTable td:nth-child(5),
+        #ancestralBlastTable th:nth-child(6),
+        #ancestralBlastTable td:nth-child(6),
+        #ancestralBlastTable th:nth-child(7),
+        #ancestralBlastTable td:nth-child(7),
+        #ancestralBlastTable th:nth-child(8),
+        #ancestralBlastTable td:nth-child(8),
+        #ancestralBlastTable th:nth-child(13),
+        #ancestralBlastTable td:nth-child(13),
+        #ancestralBlastTable th:nth-child(14),
+        #ancestralBlastTable td:nth-child(14) {
+            min-width: 100px;
+        }
+
+        .current-page-select {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .current-page-select input {
+            margin: 0;
+        }
+
+        .dataTables_wrapper {
+            color: #2c3e50;
+        }
+
+        .dataTables_wrapper > .row {
+            align-items: center;
+            row-gap: 12px;
+        }
+
+        .dataTables_wrapper > .row:first-child {
+            margin-bottom: 12px;
+        }
+
+        .dataTables_wrapper > .row:last-child {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #f0e4d8;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin: 0;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 36px;
+            border: 1px solid #d9e0e6;
+            border-radius: 7px;
+            background-color: #fff;
+            color: #2c3e50;
+            box-shadow: none;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 76px;
+            margin: 0;
+            padding: 4px 28px 4px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            min-width: 220px;
+            margin: 0;
+            padding: 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+            outline: 0;
+        }
+
+        .dataTables_wrapper .dataTables_scroll {
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dataTables_wrapper .dataTables_scrollBody {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding: 0 !important;
+            color: #5f6b76;
+            font-weight: 600;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button,
+        .dataTables_wrapper .dataTables_paginate .page-item {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .dataTables_wrapper .pagination {
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .dataTables_wrapper .pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 7px !important;
+            border: 1px solid #d8dee4;
+            background: #fff;
+            color: #44515c;
+            box-sizing: border-box;
+            box-shadow: none;
+            font-weight: 700;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dataTables_wrapper .pagination .page-item.active .page-link {
+            color: #fff;
+            background: var(--dark-orange);
+            border-color: var(--dark-orange);
+            box-shadow: 0 6px 14px rgba(211, 84, 0, 0.22);
+        }
+
+        .dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+            color: var(--dark-orange);
+            background: #fff8ef;
+            border-color: #efc89a;
+        }
+
+        .dataTables_wrapper .pagination .page-item.disabled .page-link {
+            color: #b6c0c9;
+            background: #f8fafb;
+            border-color: #e8edf1;
+        }
+
+        .page-jump-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5f6b76;
+            font-size: 0.92rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .page-jump-input {
+            width: 58px;
+            height: 36px;
+            padding: 0 8px;
+            border: 1px solid #d8dee4;
+            border-radius: 7px;
+            color: #2c3e50;
+            text-align: center;
+            font-weight: 700;
+            outline: 0;
+        }
+
+        .page-jump-input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+        }
+
+        .page-jump-total {
+            color: #8a96a3;
+        }
+
+        .page-jump-btn {
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #efc89a;
+            border-radius: 7px;
+            background: #fff8ef;
+            color: var(--dark-orange);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .page-jump-btn:hover {
+            background: #fff3df;
+            border-color: #e8b66f;
+        }
+
+        .empty-state {
+            max-width: 760px;
+            margin: 8px auto 28px;
+            padding: 38px 24px 34px;
+            text-align: center;
+            border-top: 1px solid #f2d4ad;
+            border-bottom: 1px solid #f2d4ad;
+            background: linear-gradient(180deg, #fffdf9 0%, #fff8ef 100%);
+        }
+
+        .empty-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-orange);
+            background: #fff3df;
+            border: 1px solid #f4cf9f;
+            border-radius: 50%;
+            font-size: 1.25rem;
+        }
+
+        .empty-title {
+            margin: 0 0 10px;
+            color: #2c3e50;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .empty-message {
+            max-width: 620px;
+            margin: 0 auto 18px;
+            color: #7a4b18;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        .karyotype-panel {
+            position: relative;
+            border: 1px solid #eadfd3;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin-bottom: 26px;
+            overflow: hidden;
+        }
+
+        .karyotype-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 18px 0;
+        }
+
+        .karyotype-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 32px;
+            padding: 6px 10px;
+            border: 1px solid #ecd8bf;
+            border-radius: 7px;
+            background: #fffaf3;
+            color: #62401b;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .karyotype-scroll {
+            overflow-x: auto;
+            padding: 8px 16px 18px;
+        }
+
+        .karyotype-svg {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            height: auto;
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #fff;
+        }
+
+        .karyotype-branch {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .karyotype-leaf-label {
+            font-size: 18px;
+            font-style: italic;
+            dominant-baseline: middle;
+            text-anchor: end;
+            font-weight: 700;
+        }
+
+        .karyotype-node-label {
+            cursor: pointer;
+            font-size: 22px;
+            fill: #1f1f1f;
+            paint-order: stroke;
+            stroke: rgba(255, 255, 255, 0.88);
+            stroke-width: 4px;
+            stroke-linejoin: round;
+            pointer-events: none;
+            transition: fill 0.16s ease, transform 0.16s ease;
+        }
+
+        .karyotype-node-hotspot {
+            cursor: pointer;
+            fill: transparent;
+            stroke: transparent;
+            pointer-events: all;
+        }
+
+        .karyotype-node-marker {
+            cursor: pointer;
+            fill: transparent;
+            stroke: transparent;
+            stroke-width: 0;
+            pointer-events: none;
+            transition: fill 0.16s ease, stroke-width 0.16s ease, transform 0.16s ease;
+        }
+
+        .karyotype-node-group.is-hit .karyotype-node-marker {
+            fill: transparent;
+        }
+
+        .karyotype-node-group.is-active .karyotype-node-marker,
+        .karyotype-node-group:hover .karyotype-node-marker {
+            fill: transparent;
+            stroke-width: 0;
+        }
+
+        .karyotype-node-group.is-active .karyotype-node-label,
+        .karyotype-node-group:hover .karyotype-node-label {
+            fill: var(--dark-orange);
+        }
+
+        .karyotype-node-group.is-muted {
+            opacity: 0.45;
+        }
+
+        .karyotype-node-group:focus,
+        .karyotype-node-group:focus-visible,
+        .karyotype-node-hotspot:focus,
+        .karyotype-node-hotspot:focus-visible {
+            outline: none;
+        }
+
+        .karyotype-legend-label {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            font-size: 18px;
+            fill: #242424;
+        }
+
+        .karyotype-event {
+            pointer-events: none;
+        }
+
+        .karyotype-tooltip {
+            position: absolute;
+            z-index: 5;
+            width: min(360px, calc(100% - 32px));
+            padding: 14px 16px;
+            border: 1px solid #e7c79c;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 16px 36px rgba(44, 62, 80, 0.2);
+            color: #2c3e50;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.12s ease, transform 0.12s ease;
+        }
+
+        .karyotype-tooltip.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .karyotype-tooltip-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            color: var(--dark-orange);
+            font-weight: 800;
+        }
+
+        .karyotype-tooltip-title strong {
+            font-size: 1.05rem;
+        }
+
+        .karyotype-tooltip-count {
+            color: #68727d;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .karyotype-tooltip-row {
+            display: grid;
+            grid-template-columns: 86px 1fr;
+            gap: 8px;
+            padding: 3px 0;
+            font-size: 0.88rem;
+            line-height: 1.35;
+        }
+
+        .karyotype-tooltip-key {
+            color: #79828b;
+            font-weight: 700;
+        }
+
+        .karyotype-tooltip-value {
+            color: #27313b;
+            word-break: break-word;
+        }
+
+        .karyotype-tooltip-list {
+            margin: 9px 0 0;
+            padding-top: 9px;
+            border-top: 1px solid #f0ddc4;
+        }
+
+        .karyotype-tooltip-hit {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 3px 0;
+            font-size: 0.82rem;
+            color: #4c5965;
+        }
+
+        .image-panel {
+            border: 1px solid var(--soft-border);
+            border-radius: 8px;
+            padding: 18px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            overflow-x: auto;
+        }
+
+        .image-panel img {
+            display: block;
+            width: 100%;
+            min-width: 760px;
+            height: auto;
+        }
+
+        @media (max-width: 576px) {
+            .page-wrapper {
+                padding: 28px 18px;
+            }
+
+            .section-header::before,
+            .section-header::after {
+                margin: 0 10px;
+            }
+
+            .action-row {
+                align-items: stretch;
+            }
+
+            .action-group,
+            .btn-custom {
+                width: 100%;
+            }
+
+            .btn-custom {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_length label,
+            .dataTables_wrapper .dataTables_filter label {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                text-align: center;
+            }
+
+            .dataTables_wrapper .pagination {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_paginate {
+                justify-content: center;
+            }
+        }
+
+
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .status-traced {
+            color: #0f5132;
+            background: #d1e7dd;
+            border: 1px solid #badbcc;
+        }
+
+        .status-unavailable {
+            color: #664d03;
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+        }
+
+        .job-status-card {
+            background: #fffdf9;
+            border: 1px solid #f0d4b6;
+            border-radius: 14px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin: 20px 0 28px;
+        }
+
+        .job-spinner {
+            width: 42px;
+            height: 42px;
+            border: 4px solid #ffe3c2;
+            border-top-color: var(--primary-orange);
+            border-radius: 50%;
+            animation: jobSpin 0.9s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes jobSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .job-status-title {
+            color: var(--dark-orange);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .job-status-message {
+            color: #5f6b76;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+
+        /* ===================== Trace DecoBrowse ===================== */
+        .trace-decobrowse-panel {
+            background: #fff;
+            border: 1px solid #eadfd3;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+            margin: 24px 0 28px;
+        }
+
+        .trace-decobrowse-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .trace-decobrowse-title {
+            color: var(--dark-orange);
+            font-weight: 800;
+            font-size: 1.28rem;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .trace-decobrowse-subtitle {
+            color: #5f6b76;
+            font-weight: 600;
+            line-height: 1.7;
+            margin: 0 0 16px;
+        }
+
+        .trace-deco-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px 16px;
+            margin-bottom: 12px;
+        }
+
+        .trace-deco-query-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #495057;
+            font-weight: 800;
+        }
+
+        .trace-deco-query-filter select {
+            min-width: 260px;
+            max-width: 100%;
+            height: 38px;
+            border: 1px solid #d8dee4;
+            border-radius: 8px;
+            padding: 0 10px;
+            color: #2c3e50;
+            font-weight: 700;
+            background: #fff;
+            outline: 0;
+        }
+
+        .trace-deco-query-filter select:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.16rem rgba(230, 126, 34, 0.16);
+        }
+
+
+        .trace-deco-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .trace-deco-tab {
+            border: 1px solid #efc89a;
+            background: #fff;
+            color: var(--dark-orange);
+            border-radius: 999px;
+            padding: 7px 13px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .trace-deco-tab:hover,
+        .trace-deco-tab.is-active {
+            color: #fff;
+            background: var(--dark-orange);
+            border-color: var(--dark-orange);
+            box-shadow: 0 7px 16px rgba(211, 84, 0, 0.18);
+        }
+
+        .trace-deco-tab.is-muted {
+            opacity: 0.45;
+        }
+
+        .trace-deco-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .trace-deco-toolbar button {
+            border-radius: 7px;
+            font-weight: 700;
+            padding: 7px 12px;
+            border: 1px solid #d8dee4;
+            background: #fff;
+            color: #44515c;
+        }
+
+        .trace-deco-toolbar button:hover {
+            color: var(--dark-orange);
+            background: #fff8ef;
+            border-color: #efc89a;
+        }
+
+        .trace-deco-info {
+            display: none;
+        }
+
+        .trace-deco-warning {
+            display: none;
+            color: #7a4b00;
+            background: #fff8e6;
+            border: 1px dashed #edc56a;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .trace-deco-warning:not(:empty) {
+            display: block;
+        }
+
+        .trace-deco-legend {
+            display: none;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            color: #5f6b76;
+            font-size: 0.88rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .trace-deco-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .trace-deco-legend-mark {
+            width: 22px;
+            height: 12px;
+            border-radius: 4px;
+            border: 1px solid #b85c00;
+            background: #f6c38a;
+        }
+
+        .trace-deco-legend-mark.target-active {
+            background: #f6c38a;
+            border-color: #ff2f3a;
+            filter: brightness(1.3);
+            transform: scale(1.12);
+            box-shadow: 0 2px 4px rgba(44, 62, 80, 0.18);
+        }
+
+        .trace-deco-legend-mark.target-other {
+            background: #f39c12;
+            border-color: #a45d00;
+        }
+
+        .trace-deco-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            border: 1.4px solid #2f2f2f;
+            background: #fffdf9;
+        }
+
+        .trace-deco-svg-wrap {
+            border: 1px solid #eadfd3;
+            border-radius: 12px;
+            background: #fff4e8;
+            overflow: auto;
+            min-height: 150px;
+            max-height: 860px;
+            padding: 10px 12px;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .trace-deco-svg-wrap.is-dragging {
+            cursor: grabbing;
+        }
+
+        .trace-deco-grid-box {
+            fill: none;
+            stroke: none;
+        }
+
+        .trace-deco-grid-cell {
+            fill: #fffdf9;
+            stroke: #eadfd3;
+            stroke-width: 1;
+        }
+
+        .trace-deco-grid-line {
+            stroke: #7f7f7f;
+            stroke-width: 1.25;
+            vector-effect: non-scaling-stroke;
+            shape-rendering: crispEdges;
+        }
+
+        .trace-deco-grid-node {
+            fill: #fffdf9;
+            stroke: #2f2f2f;
+            stroke-width: 1.15;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .trace-deco-track-label {
+            fill: #2c3e50;
+            font-size: 12px;
+            font-weight: 800;
+            dominant-baseline: middle;
+        }
+
+        .trace-deco-track-label.is-extant {
+            fill: #22628f;
+        }
+
+        .trace-deco-track-submeta.is-extant {
+            fill: #4f7d9e;
+        }
+
+        .trace-deco-track-submeta {
+            fill: #7a8792;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .trace-deco-center-guide {
+            stroke: #d98a38;
+            stroke-width: 1.6;
+            stroke-dasharray: 5 4;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .trace-deco-center-label {
+            fill: #a45d00;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .trace-deco-empty {
+            color: #6c757d;
+            background: #fff8ef;
+            border: 1px dashed #efc89a;
+            border-radius: 12px;
+            padding: 22px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .trace-deco-tooltip {
+            position: fixed;
+            z-index: 1060;
+            max-width: 360px;
+            padding: 10px 12px;
+            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.97);
+            border: 1px solid #e0c4a1;
+            border-radius: 10px;
+            box-shadow: 0 10px 28px rgba(44, 62, 80, 0.16);
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.55;
+            pointer-events: none;
+            display: none;
+        }
+
+        .trace-deco-svg text {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .trace-deco-track-title {
+            fill: #2c3e50;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .trace-deco-track-meta {
+            fill: #6c757d;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .trace-deco-baseline {
+            stroke: #d8b18a;
+            stroke-width: 2;
+            stroke-dasharray: 5 4;
+        }
+
+        .trace-deco-gene-shape {
+            fill: #f6c38a;
+            stroke: #b85c00;
+            stroke-width: 1.3;
+            cursor: pointer;
+            transform-box: fill-box;
+            transform-origin: center;
+            transition: filter 0.16s ease, transform 0.16s ease;
+        }
+
+        .trace-deco-gene-shape:hover {
+            filter: brightness(0.96);
+        }
+
+        .trace-deco-gene-shape.is-target-other {
+            fill: #f39c12;
+            stroke: #a45d00;
+            stroke-width: 2.2;
+        }
+
+        .trace-deco-gene-shape.is-target-active {
+            stroke: #ff2f3a;
+            stroke-width: 2;
+            filter:
+                brightness(1.3)
+                drop-shadow(0 0 5px rgba(185, 28, 45, 0.42))
+                drop-shadow(0 2px 2px rgba(44, 62, 80, 0.24));
+            transform: scale(1.3);
+        }
+
+        .trace-deco-gene-label {
+            fill: #2c3e50;
+            font-size: 10px;
+            font-weight: 650;
+            cursor: pointer;
+        }
+
+        .trace-deco-gene-label.is-target-other {
+            fill: #a45d00;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .trace-deco-gene-label.is-target-active {
+            fill: #b83246;
+            font-size: 11px;
+            font-weight: 850;
+            paint-order: stroke;
+            stroke: rgba(255, 253, 249, 0.9);
+            stroke-width: 2.4px;
+            stroke-linejoin: round;
+            filter: none;
+        }
+
+        .trace-deco-column-label {
+            fill: #697782;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .trace-deco-header-label {
+            fill: #2c3e50;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        @media (max-width: 992px) {
+            .trace-deco-controls {
+                align-items: flex-start;
+            }
+
+            .trace-deco-toolbar {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-wrapper">
+        <h2 class="main-title">{{ page_mode_label|default:"Blast Results" }}</h2>
+
+        <div class="section-header{% if not result_section_label %} section-header-line-only{% endif %}">
+            {% if result_section_label %}
+                <div class="section-title-box">
+                    <h3 class="section-title-text">{{ result_section_label }}</h3>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if job_status == 'running' %}
+            <div class="job-status-card">
+                <div class="job-spinner" aria-hidden="true"></div>
+                <h3 class="job-status-title">{{ page_mode_label|default:"Ancestral Gene Tracing" }} is Running</h3>
+                <p class="job-status-message">
+                    {{ job_message|default:"Searching bottom-layer extant species databases shown in the ancestral tree. This may take a few minutes." }}<br>
+                    This page will refresh automatically. Please do not resubmit the same query.
+                </p>
+                <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-secondary-link">
+                    <i class="fas fa-arrow-left"></i> Back to Query
+                </a>
+            </div>
+        {% elif job_status == 'failed' %}
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-triangle-exclamation"></i></div>
+                <h3 class="empty-title">{{ page_mode_label|default:"Ancestral Gene Tracing" }} Failed</h3>
+                <p class="empty-message">
+                    {{ job_message|default:"The search failed while processing this query. Please check the sequence format and try again." }}
+                </p>
+                <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-select">
+                    <i class="fas fa-arrow-left"></i> Back to Query
+                </a>
+            </div>
+        {% elif search_mode == 'best_hit_trace' %}
+            {% if trace_results %}
+                <div class="table-container">
+                    <div class="action-row">
+                        <div class="action-group">
+                            <button type="button" id="selectAllBtn" class="btn-custom btn-select">
+                                <i class="fas fa-check-square"></i> Select All
+                            </button>
+                            <button type="button" id="download-btn" class="btn-custom btn-download">
+                                <i class="fas fa-download"></i> Download Selected
+                            </button>
+                            <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-secondary-link">
+                                <i class="fas fa-arrow-left"></i> Back to Query
+                            </a>
+                        </div>
+                        <div class="text-muted fw-semibold">{{ result_count }} tracing rows</div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="ancestralTraceTable" class="table table-hover result-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-cell">
+                                        <label class="current-page-select">
+                                            <input type="checkbox" class="js-select-current-page">
+                                            <span>Select</span>
+                                        </label>
+                                    </th>
+                                    <th>Query ID</th>
+                                    <th>Best Matched Gene</th>
+                                    <th>Matched Species</th>
+                                    <th>Reference Set</th>
+                                    <th>Inferred Ancestor Genes</th>
+                                    <th>Identity</th>
+                                    <th>Length</th>
+                                    <th>E-value</th>
+                                    <th>Bit Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in trace_results %}
+                                    <tr>
+                                        <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                        <td>{{ row.query_id }}</td>
+                                        <td>{{ row.best_gene }}</td>
+                                        <td>{{ row.matched_species }}</td>
+                                        <td>{{ row.reference_set }}</td>
+                                        <td>{{ row.ancestor_gene_summary }}</td>
+                                        <td>{{ row.identity }}</td>
+                                        <td>{{ row.length }}</td>
+                                        <td>{{ row.evalue }}</td>
+                                        <td>{{ row.bitscore }}</td>
+                                        <td>
+                                            {% if row.status == 'Traced' %}
+                                                <span class="status-badge status-traced">Traced</span>
+                                            {% else %}
+                                                <span class="status-badge status-unavailable">No ancestral relationship</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fas fa-search"></i></div>
+                    <h3 class="empty-title">No Ancestral Genes Passed the Filters</h3>
+                    <p class="empty-message">
+                        The all-species search completed, but no ancestral genes matched the submitted E-value, score, and identity thresholds.
+                    </p>
+                    <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-select">
+                        <i class="fas fa-arrow-left"></i> Back to Query
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if blast_results %}
+                <div class="table-container">
+                    <div class="action-row">
+                        <div class="action-group">
+                            <button type="button" id="selectAllBtn" class="btn-custom btn-select">
+                                <i class="fas fa-check-square"></i> Select All
+                            </button>
+                            <button type="button" id="download-btn" class="btn-custom btn-download">
+                                <i class="fas fa-download"></i> Download Selected
+                            </button>
+                            <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-secondary-link">
+                                <i class="fas fa-arrow-left"></i> Back to Query
+                            </a>
+                        </div>
+                        <div class="text-muted fw-semibold">{{ result_count }} matching hits</div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="ancestralBlastTable" class="table table-hover result-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-cell">
+                                        <label class="current-page-select">
+                                            <input type="checkbox" class="js-select-current-page">
+                                            <span>Select</span>
+                                        </label>
+                                    </th>
+                                    <th>Query ID</th>
+                                    <th>Subject ID</th>
+                                    <th>Ancestor</th>
+                                    <th>Identity</th>
+                                    <th>Length</th>
+                                    <th>Mismatch</th>
+                                    <th>Gapopen</th>
+                                    <th>Qstart</th>
+                                    <th>Qend</th>
+                                    <th>Sstart</th>
+                                    <th>Send</th>
+                                    <th>E-value</th>
+                                    <th>Bit Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pair in blast_results %}
+                                    <tr>
+                                        <td class="checkbox-cell"><input type="checkbox" class="row-checkbox"></td>
+                                        <td>{{ pair.0 }}</td>
+                                        <td>{{ pair.1 }}</td>
+                                        <td>{{ pair.12|default:metadata.species_data }}</td>
+                                        <td>{{ pair.2 }}</td>
+                                        <td>{{ pair.3 }}</td>
+                                        <td>{{ pair.4 }}</td>
+                                        <td>{{ pair.5 }}</td>
+                                        <td>{{ pair.6 }}</td>
+                                        <td>{{ pair.7 }}</td>
+                                        <td>{{ pair.8 }}</td>
+                                        <td>{{ pair.9 }}</td>
+                                        <td>{{ pair.10 }}</td>
+                                        <td>{{ pair.11 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fas fa-filter"></i></div>
+                    <h3 class="empty-title">No Hits Passed the Filters</h3>
+                    <p class="empty-message">
+                        The search completed, but no rows matched the submitted E-value, score, and identity thresholds.
+                    </p>
+                    <a href="{% url 'ancestral_chromosome_url' %}" class="btn-custom btn-select">
+                        <i class="fas fa-arrow-left"></i> Back to Query
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if job_status != 'running' and job_status != 'failed' %}
+        <div class="section-header">
+            <div class="section-title-box">
+                <h3 class="section-title-text">Ancestral Karyotype Overview</h3>
+            </div>
+        </div>
+
+        <div class="karyotype-panel" id="karyotypePanel">
+            <div class="karyotype-scroll">
+                <div id="ancestralKaryotypeCanvas"></div>
+            </div>
+            <div id="karyotypeTooltip" class="karyotype-tooltip" role="status" aria-live="polite"></div>
+        </div>
+
+        {% if search_mode == 'best_hit_trace' and trace_results and trace_decobrowse_payload.rows %}
+            <div class="trace-decobrowse-panel" id="traceDecoBrowsePanel">
+                <div class="trace-deco-controls">
+                    <label class="trace-deco-query-filter" for="traceDecoQuerySelect">
+                        Focus query
+                        <select id="traceDecoQuerySelect">
+                            <option value="">All uploaded queries</option>
+                        </select>
+                    </label>
+                    <div class="trace-deco-toolbar">
+                        <button type="button" id="traceDecoToggleIds"><i class="fas fa-font"></i> Toggle Gene IDs</button>
+                        <button type="button" id="traceDecoZoomIn"><i class="fas fa-search-plus"></i> Zoom In</button>
+                        <button type="button" id="traceDecoZoomOut"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                        <button type="button" id="traceDecoReset"><i class="fas fa-rotate-left"></i> Reset</button>
+                        <button type="button" id="traceDecoSave"><i class="fas fa-download"></i> Save SVG</button>
+                    </div>
+                </div>
+                <div class="trace-deco-tabs" id="traceDecoAncestorTabs"></div>
+                <div class="trace-deco-info" id="traceDecoInfo"></div>
+                <div class="trace-deco-warning" id="traceDecoWarning"></div>
+                <div class="trace-deco-legend">
+                    <span class="trace-deco-legend-item"><span class="trace-deco-legend-mark target-active"></span>Matched species gene</span>
+                    <span class="trace-deco-legend-item"><span class="trace-deco-legend-mark"></span>Same-row gene</span>
+                    <span class="trace-deco-legend-item"><span class="trace-deco-legend-dot"></span>Empty combined-table cell</span>
+                </div>
+                <div class="trace-deco-svg-wrap" id="traceDecoCanvas"></div>
+                <div class="trace-deco-tooltip" id="traceDecoTooltip"></div>
+            </div>
+        {% endif %}
+        {% endif %}
+
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+{{ alignment_payload|json_script:"ancestralAlignmentPayload" }}
+	{{ trace_decobrowse_payload|json_script:"traceDecoBrowsePayload" }}
+{% if job_status == 'running' %}
+<script>
+    window.setTimeout(function () {
+        window.location.reload();
+    }, 5000);
+</script>
+{% endif %}
+<script>
+    $(function() {
+        var ancestralTable = null;
+        var selectAllBtn = document.getElementById("selectAllBtn");
+        var downloadBtn = document.getElementById("download-btn");
+        var alignmentPayloadNode = document.getElementById("ancestralAlignmentPayload");
+        var alignmentPayload = alignmentPayloadNode ? JSON.parse(alignmentPayloadNode.textContent || "{}") : {};
+        var ancestralSummaries = alignmentPayload.summaries || {};
+        var selectedAncestorList = Array.isArray(alignmentPayload.selected_ancestors) ? alignmentPayload.selected_ancestors : [];
+        var selectedAncestorMap = {};
+
+        selectedAncestorList.forEach(function (code) {
+            selectedAncestorMap[normalizeAncestorCode(code)] = true;
+        });
+
+        function normalizeAncestorCode(value) {
+            return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+        }
+
+        function escapeHtml(value) {
+            return String(value == null ? "" : value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+
+        var traceDecoPayloadNode = document.getElementById("traceDecoBrowsePayload");
+        var traceDecoPayload = traceDecoPayloadNode ? JSON.parse(traceDecoPayloadNode.textContent || "{}") : {};
+        var traceDecoAncestors = Array.isArray(traceDecoPayload.ancestors) ? traceDecoPayload.ancestors : [];
+        var traceDecoExtantTracks = Array.isArray(traceDecoPayload.extant_tracks) ? traceDecoPayload.extant_tracks : [];
+        var traceDecoRows = Array.isArray(traceDecoPayload.rows) ? traceDecoPayload.rows : [];
+        var traceDecoQueries = Array.isArray(traceDecoPayload.queries) ? traceDecoPayload.queries : [];
+        var traceDecoWarnings = Array.isArray(traceDecoPayload.warnings) ? traceDecoPayload.warnings : [];
+        var traceDecoDefaultScale = 1.35;
+        var traceDecoState = {
+            activeCode: traceDecoAncestors.length ? traceDecoAncestors[0].code : "__all__",
+            activeQuery: "",
+            scale: traceDecoDefaultScale,
+            showLabels: true
+        };
+
+        function joinLimited(values, fallback, limit) {
+            limit = limit || 5;
+            if (!Array.isArray(values) || !values.length) {
+                return fallback || "";
+            }
+            return values.slice(0, limit).join(", ") + (values.length > limit ? " ..." : "");
+        }
+
+        function arrayHasValue(values, value) {
+            if (!value) {
+                return false;
+            }
+            return Array.isArray(values) && values.indexOf(value) !== -1;
+        }
+
+        function svgEl(name, attrs) {
+            var element = document.createElementNS("http://www.w3.org/2000/svg", name);
+            Object.keys(attrs || {}).forEach(function (key) {
+                element.setAttribute(key, attrs[key]);
+            });
+            return element;
+        }
+
+        function polygonPointsForGene(x, y, width, height, strand) {
+            var head = Math.min(16, width * 0.34);
+            if (strand === "-") {
+                return [
+                    [x, y], [x + head, y - height / 2], [x + width, y - height / 2],
+                    [x + width, y + height / 2], [x + head, y + height / 2]
+                ].map(function (point) { return point.join(","); }).join(" ");
+            }
+            return [
+                [x, y - height / 2], [x + width - head, y - height / 2], [x + width, y],
+                [x + width - head, y + height / 2], [x, y + height / 2]
+            ].map(function (point) { return point.join(","); }).join(" ");
+        }
+
+        function geneIsActiveTarget(gene) {
+            if (!gene || !gene.is_target) {
+                return false;
+            }
+            if (!traceDecoState.activeQuery) {
+                return true;
+            }
+            return arrayHasValue(gene.queries, traceDecoState.activeQuery);
+        }
+
+        function trackMatchesActiveQuery(track) {
+            if (!traceDecoState.activeQuery) {
+                return true;
+            }
+            if (arrayHasValue(track.target_queries, traceDecoState.activeQuery)) {
+                return true;
+            }
+            return (track.genes || []).some(function (gene) {
+                return gene.is_target && arrayHasValue(gene.queries, traceDecoState.activeQuery);
+            });
+        }
+
+        function ancestorMatchesActiveQuery(ancestor) {
+            if (!traceDecoState.activeQuery) {
+                return true;
+            }
+            return (ancestor.tracks || []).some(trackMatchesActiveQuery);
+        }
+
+        function renderTraceDecoQueryFilter() {
+            var select = document.getElementById("traceDecoQuerySelect");
+            if (!select) {
+                return;
+            }
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            traceDecoQueries.forEach(function (query) {
+                var option = document.createElement("option");
+                option.value = query.id;
+                option.textContent = query.id + " (" + (query.target_count || 0) + " target genes; " + joinLimited(query.ancestor_labels, "-", 3) + ")";
+                select.appendChild(option);
+            });
+            select.value = traceDecoState.activeQuery;
+        }
+
+        function renderTraceDecoTabs() {
+            var tabs = document.getElementById("traceDecoAncestorTabs");
+            if (!tabs) {
+                return;
+            }
+            tabs.innerHTML = "";
+
+            function addButton(label, code, muted, title) {
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "trace-deco-tab" + (traceDecoState.activeCode === code ? " is-active" : "") + (muted ? " is-muted" : "");
+                button.textContent = label;
+                if (title) {
+                    button.title = title;
+                }
+                button.addEventListener("click", function () {
+                    traceDecoState.activeCode = code;
+                    traceDecoState.scale = traceDecoDefaultScale;
+                    renderTraceDecoTabs();
+                    renderTraceDecoCanvas();
+                });
+                tabs.appendChild(button);
+            }
+
+            traceDecoAncestors.forEach(function (ancestor) {
+                var isMuted = !ancestorMatchesActiveQuery(ancestor);
+                addButton(
+                    ancestor.label,
+                    ancestor.code,
+                    isMuted,
+                    (ancestor.query_count || 0) + " query / " + (ancestor.track_count || 0) + " local track(s)"
+                );
+            });
+            addButton("All", "__all__", false, "Show all matched ancestors");
+        }
+
+        function trackContainsBestGene(track, bestGeneMap) {
+            if (!track || !bestGeneMap) {
+                return false;
+            }
+            var values = [];
+            if (track.target_gene) {
+                values.push(track.target_gene);
+            }
+            if (Array.isArray(track.target_best_extant_genes)) {
+                values = values.concat(track.target_best_extant_genes);
+            }
+            return values.some(function (value) {
+                return value && (bestGeneMap[value] || bestGeneMap[String(value).toUpperCase()]);
+            });
+        }
+
+        function addBestGenesFromTrack(track, bestGeneMap) {
+            if (!track || !bestGeneMap) {
+                return;
+            }
+            (track.target_best_extant_genes || []).forEach(function (value) {
+                if (value) {
+                    bestGeneMap[value] = true;
+                    bestGeneMap[String(value).toUpperCase()] = true;
+                }
+            });
+            (track.genes || []).forEach(function (gene) {
+                (gene.best_extant_genes || []).forEach(function (value) {
+                    if (value) {
+                        bestGeneMap[value] = true;
+                        bestGeneMap[String(value).toUpperCase()] = true;
+                    }
+                });
+            });
+        }
+
+        function extantTrackMatchesCurrentAncestor(track) {
+            if (traceDecoState.activeCode === "__all__") {
+                return true;
+            }
+            if (arrayHasValue(track.ancestor_codes, traceDecoState.activeCode)) {
+                return true;
+            }
+            return (track.genes || []).some(function (gene) {
+                return arrayHasValue(gene.ancestor_codes, traceDecoState.activeCode);
+            });
+        }
+
+        function collectTraceDecoTracks() {
+            var ancestorRows = [];
+            var bestGeneMap = {};
+
+            traceDecoAncestors.forEach(function (ancestor) {
+                if (traceDecoState.activeCode !== "__all__" && ancestor.code !== traceDecoState.activeCode) {
+                    return;
+                }
+                var tracks = Array.isArray(ancestor.tracks) ? ancestor.tracks : [];
+                tracks.forEach(function (track) {
+                    if (!trackMatchesActiveQuery(track)) {
+                        return;
+                    }
+                    addBestGenesFromTrack(track, bestGeneMap);
+                    ancestorRows.push({
+                        row_type: "ancestor",
+                        row_label: ancestor.label || ancestor.code || "Ancestor",
+                        source_label: ancestor.label || ancestor.code || "Ancestor",
+                        source_code: ancestor.code || "",
+                        source_has_gff: ancestor.has_gff,
+                        source_gff_file: ancestor.gff_file || "",
+                        hidden_track_count: ancestor.hidden_track_count || 0,
+                        missing_targets: Array.isArray(ancestor.missing_targets) ? ancestor.missing_targets : [],
+                        track: track,
+                        matches_active_query: true
+                    });
+                });
+            });
+
+            ancestorRows.sort(function (a, b) {
+                if (a.source_label < b.source_label) {
+                    return -1;
+                }
+                if (a.source_label > b.source_label) {
+                    return 1;
+                }
+                var chrA = a.track && a.track.chromosome ? String(a.track.chromosome) : "";
+                var chrB = b.track && b.track.chromosome ? String(b.track.chromosome) : "";
+                return chrA.localeCompare(chrB, undefined, {numeric: true, sensitivity: 'base'});
+            });
+
+            var extantRows = [];
+            traceDecoExtantTracks.forEach(function (track) {
+                if (!trackMatchesActiveQuery(track)) {
+                    return;
+                }
+                if (!extantTrackMatchesCurrentAncestor(track)) {
+                    return;
+                }
+                if (Object.keys(bestGeneMap).length && !trackContainsBestGene(track, bestGeneMap)) {
+                    return;
+                }
+                var speciesLabel = track.label || track.species || "Extant";
+                extantRows.push({
+                    row_type: "extant",
+                    row_label: "Extant: " + speciesLabel,
+                    source_label: speciesLabel,
+                    source_code: track.species || "",
+                    source_has_gff: track.has_gff,
+                    source_gff_file: track.gff_file || "",
+                    hidden_track_count: 0,
+                    missing_targets: [],
+                    track: track,
+                    matches_active_query: true
+                });
+            });
+
+            extantRows.sort(function (a, b) {
+                if (a.source_label < b.source_label) {
+                    return -1;
+                }
+                if (a.source_label > b.source_label) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            return extantRows.concat(ancestorRows);
+        }
+
+        function getTrackTargetIndex(genes) {
+            if (!Array.isArray(genes) || !genes.length) {
+                return -1;
+            }
+            var index = -1;
+            if (traceDecoState.activeQuery) {
+                index = genes.findIndex(function (gene) {
+                    return gene && gene.is_target && arrayHasValue(gene.queries, traceDecoState.activeQuery);
+                });
+            }
+            if (index === -1) {
+                index = genes.findIndex(function (gene) {
+                    return gene && gene.is_target;
+                });
+            }
+            if (index === -1) {
+                index = Math.floor(genes.length / 2);
+            }
+            return index;
+        }
+
+        function getTrackTargetGene(genes) {
+            var index = getTrackTargetIndex(genes);
+            return index >= 0 ? genes[index] : null;
+        }
+
+
+        function tooltipHtmlForGene(gene, rowMeta) {
+            return [
+                rowMeta ? '<strong>Source:</strong> ' + escapeHtml((rowMeta.source_type ? rowMeta.source_type + ': ' : '') + (rowMeta.source_label || '-')) : '',
+                "<strong>Gene:</strong> " + escapeHtml(gene.gene || "-"),
+                gene.aliases && gene.aliases.length > 1 ? "<strong>Aliases:</strong> " + escapeHtml(joinLimited(gene.aliases, "-", 6)) : "",
+                "<strong>Position:</strong> " + escapeHtml((gene.chromosome || "-") + ":" + (gene.start || "-") + "-" + (gene.end || "-")),
+                "<strong>Strand:</strong> " + escapeHtml(gene.strand || "+"),
+                gene.is_target ? "<strong>Query:</strong> " + escapeHtml(joinLimited(gene.queries, "-", 6)) : "",
+                gene.is_target ? "<strong>Best extant gene:</strong> " + escapeHtml(joinLimited(gene.best_extant_genes, "-", 6)) : "",
+                gene.is_target ? "<strong>Matched species:</strong> " + escapeHtml(joinLimited(gene.matched_species, "-", 6)) : "",
+                gene.is_target ? "<strong>Reference set:</strong> " + escapeHtml(joinLimited(gene.reference_sets, "-", 6)) : ""
+            ].filter(Boolean).join("<br>");
+        }
+
+        function bindTraceDecoTooltip(element, gene, rowMeta) {
+            var tooltip = document.getElementById("traceDecoTooltip");
+            if (!tooltip) {
+                return;
+            }
+            element.addEventListener("mousemove", function (event) {
+                tooltip.innerHTML = tooltipHtmlForGene(gene, rowMeta);
+                tooltip.style.left = Math.min(event.clientX + 14, window.innerWidth - 380) + "px";
+                tooltip.style.top = Math.min(event.clientY + 14, window.innerHeight - 220) + "px";
+                tooltip.style.display = "block";
+            });
+            element.addEventListener("mouseleave", function () {
+                tooltip.style.display = "none";
+            });
+        }
+
+        function shortTraceGeneLabel(value, maxLength) {
+            value = String(value || "");
+            maxLength = maxLength || 14;
+            return value.length > maxLength ? value.slice(0, Math.max(1, maxLength - 3)) + "..." : value;
+        }
+
+        function renderTraceDecoCanvas() {
+            var canvas = document.getElementById("traceDecoCanvas");
+            var info = document.getElementById("traceDecoInfo");
+            var warning = document.getElementById("traceDecoWarning");
+            if (!canvas) {
+                return;
+            }
+
+            var visibleRows = collectTraceDecoTracks();
+            canvas.innerHTML = "";
+            if (warning) {
+                warning.textContent = "";
+            }
+
+            if (!visibleRows.length) {
+                canvas.innerHTML = '<div class="trace-deco-empty">No traced ancestral genes are available for the selected query/ancestor.</div>';
+                if (info) {
+                    info.textContent = '';
+                }
+                return;
+            }
+
+            var left = 210;
+            var top = 62;
+            var centerX = 590;
+            var columnGap = 120;
+            var rowGap = traceDecoState.showLabels ? 54 : 42;
+            var arrowWidth = 36;
+            var arrowHeight = 14;
+            var labelOffset = 14;
+            var minRel = 0;
+            var maxRel = 0;
+            var hiddenTrackCount = 0;
+            var gffMissingSources = [];
+            var missingTargets = [];
+
+            visibleRows.forEach(function (row) {
+                var genes = row.track && Array.isArray(row.track.genes) ? row.track.genes : [];
+                var targetIndex = getTrackTargetIndex(genes);
+                genes.forEach(function (gene, idx) {
+                    var rel = idx - targetIndex;
+                    minRel = Math.min(minRel, rel);
+                    maxRel = Math.max(maxRel, rel);
+                });
+                hiddenTrackCount += row.hidden_track_count || 0;
+                if (row.source_has_gff === false) {
+                    gffMissingSources.push(row.source_label || row.source_code || 'Source');
+                }
+                (row.missing_targets || []).forEach(function (value) {
+                    if (value) {
+                        missingTargets.push(value);
+                    }
+                });
+            });
+
+            // Reserve a stable left label area so the first gene arrow never overlaps row labels.
+            var minFirstColumnX = 230;
+            centerX = Math.max(centerX, minFirstColumnX - minRel * columnGap);
+
+            if (info) {
+                var rowText = visibleRows.length + ' local row(s)';
+                var queryText = traceDecoState.activeQuery ? (' focused on ' + traceDecoState.activeQuery) : ' across all queries';
+                info.textContent = rowText + queryText + '. Rows are centered on the traced target gene to make local position comparisons easier.';
+            }
+
+            if (warning) {
+                var warningParts = [];
+                if (gffMissingSources.length) {
+                    warningParts.push('GFF missing for: ' + joinLimited(Array.from(new Set(gffMissingSources)), '-', 4) + '.');
+                }
+                if (missingTargets.length) {
+                    warningParts.push('Targets missing in some GFFs: ' + joinLimited(Array.from(new Set(missingTargets)), '-', 6) + '.');
+                }
+                if (hiddenTrackCount) {
+                    warningParts.push(hiddenTrackCount + ' extra local track(s) are hidden to keep the page responsive.');
+                }
+                warning.textContent = warningParts.join(' ');
+            }
+
+            var firstColumnX = centerX + minRel * columnGap;
+            var lastColumnX = centerX + maxRel * columnGap;
+            var firstRowY = top;
+            var lastRowY = top + (visibleRows.length - 1) * rowGap;
+            var gridPadX = columnGap * 0.62;
+            var gridPadY = traceDecoState.showLabels ? 34 : 24;
+            var gridLeft = firstColumnX - gridPadX;
+            var gridRight = lastColumnX + gridPadX;
+            var gridTop = firstRowY - gridPadY;
+            var gridBottom = lastRowY + gridPadY;
+            var baseWidth = Math.max(980, Math.ceil(gridRight + 40));
+            var baseHeight = Math.max(150, Math.ceil(gridBottom + 24));
+            var width = Math.round(baseWidth * traceDecoState.scale);
+            var height = Math.round(baseHeight * traceDecoState.scale);
+            var svg = svgEl('svg', {
+                class: 'trace-deco-svg',
+                width: width,
+                height: height,
+                viewBox: '0 0 ' + baseWidth + ' ' + baseHeight,
+                role: 'img',
+                'aria-label': 'Trace DecoBrowse extant and ancestral local gene-position view'
+            });
+
+
+            for (var relIndex = minRel; relIndex <= maxRel; relIndex += 1) {
+                var columnX = centerX + relIndex * columnGap;
+                svg.appendChild(svgEl('line', {
+                    x1: columnX,
+                    y1: gridTop,
+                    x2: columnX,
+                    y2: gridBottom,
+                    class: 'trace-deco-grid-line'
+                }));
+            }
+
+            visibleRows.forEach(function (row, rowIndex) {
+                var rowY = top + rowIndex * rowGap;
+                svg.appendChild(svgEl('line', {
+                    x1: gridLeft,
+                    y1: rowY,
+                    x2: gridRight,
+                    y2: rowY,
+                    class: 'trace-deco-grid-line'
+                }));
+            });
+
+            visibleRows.forEach(function (row, rowIndex) {
+                var rowY = top + rowIndex * rowGap;
+                for (var relNode = minRel; relNode <= maxRel; relNode += 1) {
+                    svg.appendChild(svgEl('circle', {
+                        cx: centerX + relNode * columnGap,
+                        cy: rowY,
+                        r: 5,
+                        class: 'trace-deco-grid-node'
+                    }));
+                }
+            });
+
+            svg.appendChild(svgEl('line', {
+                x1: centerX,
+                y1: Math.max(18, gridTop - 28),
+                x2: centerX,
+                y2: gridBottom,
+                class: 'trace-deco-center-guide'
+            }));
+            var centerLabel = svgEl('text', {
+                x: centerX,
+                y: Math.max(14, gridTop - 38),
+                class: 'trace-deco-center-label',
+                'text-anchor': 'middle'
+            });
+            centerLabel.textContent = 'Target-centered alignment';
+            svg.appendChild(centerLabel);
+
+            visibleRows.forEach(function (row, rowIndex) {
+                var genes = row.track && Array.isArray(row.track.genes) ? row.track.genes : [];
+                var rowY = top + rowIndex * rowGap;
+                var targetIndex = getTrackTargetIndex(genes);
+                var targetGene = getTrackTargetGene(genes);
+
+                var leftLabel = svgEl('text', {
+                    x: 12,
+                    y: rowY - 6,
+                    class: 'trace-deco-track-label' + (row.row_type === 'extant' ? ' is-extant' : '')
+                });
+                leftLabel.textContent = row.row_label || row.source_label || 'Source';
+                svg.appendChild(leftLabel);
+
+                var subMeta = svgEl('text', {
+                    x: 12,
+                    y: rowY + 10,
+                    class: 'trace-deco-track-submeta' + (row.row_type === 'extant' ? ' is-extant' : '')
+                });
+                var metaParts = [];
+                if (row.track && row.track.chromosome) {
+                    metaParts.push('Chr ' + row.track.chromosome);
+                }
+                if (targetGene && targetGene.gene) {
+                    metaParts.push('Target ' + shortTraceGeneLabel(targetGene.gene, 18));
+                }
+                subMeta.textContent = metaParts.join(' · ');
+                svg.appendChild(subMeta);
+
+                genes.forEach(function (gene, geneIndex) {
+                    var rel = geneIndex - targetIndex;
+                    var nodeX = centerX + rel * columnGap;
+                    var geneX = nodeX - arrowWidth / 2;
+                    var isActiveTarget = geneIsActiveTarget(gene);
+                    var isOtherTarget = gene.is_target && !isActiveTarget;
+                    var targetClass = isActiveTarget ? ' is-target-active' : (isOtherTarget ? ' is-target-other' : '');
+                    var rowMeta = { source_type: row.row_type === 'extant' ? 'Extant species' : 'Ancestor', source_label: row.source_label, source_code: row.source_code };
+
+                    var shape = svgEl('polygon', {
+                        points: polygonPointsForGene(geneX, rowY, arrowWidth, arrowHeight, gene.strand),
+                        class: 'trace-deco-gene-shape' + targetClass,
+                        tabindex: '0'
+                    });
+                    shape.addEventListener('click', function () {
+                        if (gene.gene) {
+                            window.location.href = '/browse/gene_' + encodeURIComponent(gene.gene) + '/';
+                        }
+                    });
+                    bindTraceDecoTooltip(shape, gene, rowMeta);
+                    svg.appendChild(shape);
+
+                    if (traceDecoState.showLabels) {
+                        var label = svgEl('text', {
+                            x: nodeX,
+                            y: rowY - labelOffset,
+                            class: 'trace-deco-gene-label' + targetClass,
+                            'text-anchor': 'middle'
+                        });
+                        label.textContent = gene.gene || '';
+                        label.addEventListener('click', function () {
+                            if (gene.gene) {
+                                window.location.href = '/browse/gene_' + encodeURIComponent(gene.gene) + '/';
+                            }
+                        });
+                        bindTraceDecoTooltip(label, gene, rowMeta);
+                        svg.appendChild(label);
+                    }
+                });
+            });
+            canvas.appendChild(svg);
+        }
+
+        function renderTraceDecoBrowse() {
+            if (!document.getElementById('traceDecoBrowsePanel')) {
+                return;
+            }
+            renderTraceDecoQueryFilter();
+            renderTraceDecoTabs();
+            renderTraceDecoCanvas();
+            enableTraceDecoDragScroll();
+        }
+
+        function saveTraceDecoSVG() {
+            var svg = document.querySelector("#traceDecoCanvas svg");
+            if (!svg) {
+                alert("No DecoBrowse SVG is available to save.");
+                return;
+            }
+            var clone = svg.cloneNode(true);
+            clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            var data = new XMLSerializer().serializeToString(clone);
+            var blob = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            var queryPart = traceDecoState.activeQuery ? "_" + traceDecoState.activeQuery.replace(/[^A-Za-z0-9_.-]+/g, "_") : "";
+            var ancestorPart = traceDecoState.activeCode && traceDecoState.activeCode !== "__all__" ? "_" + traceDecoState.activeCode : "";
+            link.href = url;
+            link.download = "Trace_DecoBrowse" + ancestorPart + queryPart + ".svg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        }
+
+        var traceDecoQuerySelect = document.getElementById("traceDecoQuerySelect");
+        var traceDecoToggleIds = document.getElementById("traceDecoToggleIds");
+        var traceDecoZoomIn = document.getElementById("traceDecoZoomIn");
+        var traceDecoZoomOut = document.getElementById("traceDecoZoomOut");
+        var traceDecoReset = document.getElementById("traceDecoReset");
+        var traceDecoSave = document.getElementById("traceDecoSave");
+        if (traceDecoQuerySelect) {
+            traceDecoQuerySelect.addEventListener("change", function () {
+                traceDecoState.activeQuery = this.value || "";
+                traceDecoState.scale = traceDecoDefaultScale;
+                if (traceDecoState.activeCode !== "__all__") {
+                    var stillVisible = traceDecoAncestors.some(function (ancestor) {
+                        return ancestor.code === traceDecoState.activeCode && ancestorMatchesActiveQuery(ancestor);
+                    });
+                    if (!stillVisible) {
+                        var firstVisible = traceDecoAncestors.find(ancestorMatchesActiveQuery);
+                        traceDecoState.activeCode = firstVisible ? firstVisible.code : "__all__";
+                    }
+                }
+                renderTraceDecoTabs();
+                renderTraceDecoCanvas();
+            });
+        }
+        if (traceDecoToggleIds) {
+            traceDecoToggleIds.addEventListener("click", function () {
+                traceDecoState.showLabels = !traceDecoState.showLabels;
+                renderTraceDecoCanvas();
+            });
+        }
+        if (traceDecoZoomIn) {
+            traceDecoZoomIn.addEventListener("click", function () {
+                traceDecoState.scale = Math.min(2.8, traceDecoState.scale + 0.18);
+                renderTraceDecoCanvas();
+            });
+        }
+        if (traceDecoZoomOut) {
+            traceDecoZoomOut.addEventListener("click", function () {
+                traceDecoState.scale = Math.max(0.45, traceDecoState.scale - 0.18);
+                renderTraceDecoCanvas();
+            });
+        }
+        if (traceDecoReset) {
+            traceDecoReset.addEventListener("click", function () {
+                traceDecoState.scale = traceDecoDefaultScale;
+                traceDecoState.showLabels = true;
+                traceDecoState.activeCode = traceDecoAncestors.length ? traceDecoAncestors[0].code : "__all__";
+                renderTraceDecoTabs();
+                renderTraceDecoCanvas();
+            });
+        }
+        if (traceDecoSave) {
+            traceDecoSave.addEventListener("click", saveTraceDecoSVG);
+        }
+
+
+        function polygonPointsForGene(x, y, width, height, strand) {
+            var head = Math.min(8, width * 0.36);
+            if (strand === "-") {
+                return [
+                    [x, y], [x + head, y - height / 2], [x + width, y - height / 2],
+                    [x + width, y + height / 2], [x + head, y + height / 2]
+                ].map(function (point) { return point.join(","); }).join(" ");
+            }
+            return [
+                [x, y - height / 2], [x + width - head, y - height / 2], [x + width, y],
+                [x + width - head, y + height / 2], [x, y + height / 2]
+            ].map(function (point) { return point.join(","); }).join(" ");
+        }
+
+        function shortTraceGeneLabel(value, maxLength) {
+            value = String(value || "");
+            maxLength = maxLength || 14;
+            return value.length > maxLength ? value.slice(0, Math.max(1, maxLength - 3)) + "..." : value;
+        }
+
+        function rowMatchesActiveQuery(row) {
+            return !traceDecoState.activeQuery || row.query_id === traceDecoState.activeQuery;
+        }
+
+        function rowHasAncestor(row, code) {
+            if (!row || code === "__all__") {
+                return true;
+            }
+            return Array.isArray(row.ancestor_codes) && row.ancestor_codes.indexOf(code) !== -1;
+        }
+
+        function ancestorMatchesActiveQuery(ancestor) {
+            if (!ancestor || !ancestor.code) {
+                return false;
+            }
+            return traceDecoRows.some(function (row) {
+                return rowMatchesActiveQuery(row) && rowHasAncestor(row, ancestor.code);
+            });
+        }
+
+        function collectTraceDecoRows() {
+            return traceDecoRows.filter(function (row) {
+                return rowMatchesActiveQuery(row) && rowHasAncestor(row, traceDecoState.activeCode);
+            });
+        }
+
+        function emptyAncestorCell(label) {
+            return {
+                role: "ancestor",
+                label: label || "Ancestor",
+                gene: "",
+                genes: [],
+                display: "",
+                is_empty: true,
+                is_target: false,
+                strand: "+"
+            };
+        }
+
+        function activeAncestorLabel() {
+            if (traceDecoState.activeCode === "__all__") {
+                return "Ancestor";
+            }
+            var ancestor = traceDecoAncestors.find(function (item) {
+                return item.code === traceDecoState.activeCode;
+            });
+            return ancestor ? ancestor.label : "Ancestor";
+        }
+
+        function ancestorCellForRow(row) {
+            if (traceDecoState.activeCode === "__all__") {
+                return row.all_ancestor_cell || emptyAncestorCell("Ancestor");
+            }
+            return (row.ancestor_cells && row.ancestor_cells[traceDecoState.activeCode]) || emptyAncestorCell(activeAncestorLabel());
+        }
+
+        function renderTraceDecoQueryFilter() {
+            var select = document.getElementById("traceDecoQuerySelect");
+            if (!select) {
+                return;
+            }
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            traceDecoQueries.forEach(function (query) {
+                var option = document.createElement("option");
+                option.value = query.id;
+                option.textContent = query.id + " (" + (query.target_count || 0) + " row(s); " + joinLimited(query.ancestor_labels, "-", 3) + ")";
+                select.appendChild(option);
+            });
+            select.value = traceDecoState.activeQuery;
+        }
+
+        function renderTraceDecoTabs() {
+            var tabs = document.getElementById("traceDecoAncestorTabs");
+            if (!tabs) {
+                return;
+            }
+            tabs.innerHTML = "";
+
+            function addButton(label, code, muted, title) {
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "trace-deco-tab" + (traceDecoState.activeCode === code ? " is-active" : "") + (muted ? " is-muted" : "");
+                button.textContent = label;
+                if (title) {
+                    button.title = title;
+                }
+                button.addEventListener("click", function () {
+                    traceDecoState.activeCode = code;
+                    traceDecoState.scale = traceDecoDefaultScale;
+                    renderTraceDecoTabs();
+                    renderTraceDecoCanvas();
+                });
+                tabs.appendChild(button);
+            }
+
+            traceDecoAncestors.forEach(function (ancestor) {
+                var isMuted = !ancestorMatchesActiveQuery(ancestor);
+                addButton(
+                    ancestor.label,
+                    ancestor.code,
+                    isMuted,
+                    (ancestor.query_count || 0) + " query / " + joinLimited(ancestor.matched_species, "-", 4)
+                );
+            });
+            addButton("All", "__all__", false, "Show all matched ancestor columns");
+        }
+
+        function tooltipHtmlForCell(cell, row) {
+            var geneValues = Array.isArray(cell.genes) ? cell.genes : [];
+            var primaryGene = cell.gene || (geneValues.length ? geneValues[0] : "-");
+            var genes = geneValues.length ? geneValues.join(", ") : "-";
+            return [
+                "<strong>Query:</strong> " + escapeHtml(row.query_id || "-"),
+                "<strong>Gene:</strong> " + escapeHtml(primaryGene),
+                geneValues.length > 1 ? "<strong>Genes in cell:</strong> " + escapeHtml(genes) : "",
+                cell.role === "species" ? "<strong>Species:</strong> " + escapeHtml(cell.species || "-") : "",
+                "<strong>Position:</strong> " + escapeHtml((cell.chromosome || "-") + ":" + (cell.start || "-") + "-" + (cell.end || "-")),
+                "<strong>Strand:</strong> " + escapeHtml(cell.strand || "+"),
+                cell.is_target ? "<strong>Best matched gene:</strong> " + escapeHtml(row.best_gene || "-") : "",
+                cell.is_target ? "<strong>Matched species:</strong> " + escapeHtml(row.matched_species || "-") : ""
+            ].filter(Boolean).join("<br>");
+        }
+
+        function bindTraceDecoTooltip(element, cell, row) {
+            var tooltip = document.getElementById("traceDecoTooltip");
+            if (!tooltip) {
+                return;
+            }
+            element.addEventListener("mousemove", function (event) {
+                tooltip.innerHTML = tooltipHtmlForCell(cell, row);
+                tooltip.style.left = Math.min(event.clientX + 14, window.innerWidth - 380) + "px";
+                tooltip.style.top = Math.min(event.clientY + 14, window.innerHeight - 220) + "px";
+                tooltip.style.display = "block";
+            });
+            element.addEventListener("mouseleave", function () {
+                tooltip.style.display = "none";
+            });
+        }
+
+        function renderTraceDecoCanvas() {
+            var canvas = document.getElementById("traceDecoCanvas");
+            var info = document.getElementById("traceDecoInfo");
+            var warning = document.getElementById("traceDecoWarning");
+            if (!canvas) {
+                return;
+            }
+
+            var visibleRows = collectTraceDecoRows();
+            canvas.innerHTML = "";
+            if (warning) {
+                warning.textContent = traceDecoWarnings.join(" ");
+            }
+
+            if (!visibleRows.length) {
+                canvas.innerHTML = '<div class="trace-deco-empty">No combined-table rows are available for the selected query/ancestor.</div>';
+                if (info) {
+                    info.textContent = '';
+                }
+                return;
+            }
+
+            var rowPalette = [
+                "#36c48f", "#ff8a32", "#c253b8", "#8b5ac2", "#8a4f2a",
+                "#f7a51e", "#3e6570", "#5aa7c8", "#d85d63", "#6e9f44"
+            ];
+            var rowStrokePalette = [
+                "#167656", "#a94f00", "#7d2b76", "#533078", "#57321a",
+                "#a56400", "#243d44", "#32677f", "#8d3036", "#46682d"
+            ];
+            var columnGap = 80;
+            var top = 60;
+            var rowGap = traceDecoState.showLabels ? 50 : 38;
+            var arrowWidth = 26;
+            var arrowHeight = 9;
+            var labelOffset = 14;
+            var maxCells = visibleRows.reduce(function (maxValue, row) {
+                return Math.max(maxValue, 1 + ((row.species_cells || []).length));
+            }, 1);
+            var firstCellX = 54;
+            var gridLeft = firstCellX - columnGap * 0.45;
+            var gridRight = firstCellX + (maxCells - 1) * columnGap + columnGap * 0.45;
+            var firstRowY = top;
+            var lastRowY = top + (visibleRows.length - 1) * rowGap;
+            var gridTop = firstRowY - 34;
+            var gridBottom = lastRowY + 18;
+            var baseWidth = Math.max(680, Math.ceil(gridRight + 36));
+            var baseHeight = Math.max(150, Math.ceil(gridBottom + 24));
+            var width = Math.round(baseWidth * traceDecoState.scale);
+            var height = Math.round(baseHeight * traceDecoState.scale);
+            var svg = svgEl('svg', {
+                class: 'trace-deco-svg',
+                width: width,
+                height: height,
+                viewBox: '0 0 ' + baseWidth + ' ' + baseHeight,
+                role: 'img',
+                'aria-label': 'Trace DecoBrowse combined-table matrix'
+            });
+
+            for (var colIndex = 0; colIndex < maxCells; colIndex += 1) {
+                var columnX = firstCellX + colIndex * columnGap;
+                svg.appendChild(svgEl('line', {
+                    x1: columnX,
+                    y1: gridTop,
+                    x2: columnX,
+                    y2: gridBottom,
+                    class: 'trace-deco-grid-line'
+                }));
+            }
+
+            visibleRows.forEach(function (row, rowIndex) {
+                var rowY = top + rowIndex * rowGap;
+                var cells = [ancestorCellForRow(row)].concat(row.species_cells || []);
+                var rowRight = firstCellX + (cells.length - 1) * columnGap;
+                svg.appendChild(svgEl('line', {
+                    x1: gridLeft,
+                    y1: rowY,
+                    x2: rowRight + columnGap * 0.45,
+                    y2: rowY,
+                    class: 'trace-deco-grid-line'
+                }));
+            });
+
+            visibleRows.forEach(function (row, rowIndex) {
+                var rowY = top + rowIndex * rowGap;
+                var rowColor = rowPalette[rowIndex % rowPalette.length];
+                var rowStroke = rowStrokePalette[rowIndex % rowStrokePalette.length];
+
+                var cells = [ancestorCellForRow(row)].concat(row.species_cells || []);
+                cells.forEach(function (cell, cellIndex) {
+                    var nodeX = firstCellX + cellIndex * columnGap;
+                    var isTarget = !!cell.is_target;
+                    if (cell.is_empty || !(cell.genes || []).length) {
+                        var dot = svgEl('circle', {
+                            cx: nodeX,
+                            cy: rowY,
+                            r: 5,
+                            class: 'trace-deco-grid-node',
+                            tabindex: '0'
+                        });
+                        bindTraceDecoTooltip(dot, cell, row);
+                        svg.appendChild(dot);
+                    } else {
+                        var geneX = nodeX - arrowWidth / 2;
+                        var shape = svgEl('polygon', {
+                            points: polygonPointsForGene(geneX, rowY, arrowWidth, arrowHeight, cell.strand),
+                            class: 'trace-deco-gene-shape' + (isTarget ? ' is-target-active' : ''),
+                            fill: rowColor,
+                            stroke: isTarget ? '#ff2f3a' : rowStroke,
+                            'stroke-width': isTarget ? '2' : '1.2',
+                            style: 'fill:' + rowColor + ';stroke:' + (isTarget ? '#ff2f3a' : rowStroke) + ';stroke-width:' + (isTarget ? '2' : '1.2'),
+                            tabindex: '0'
+                        });
+                        shape.addEventListener('click', function () {
+                            if (cell.gene) {
+                                window.location.href = '/browse/gene_' + encodeURIComponent(cell.gene) + '/';
+                            }
+                        });
+                        bindTraceDecoTooltip(shape, cell, row);
+                        svg.appendChild(shape);
+
+                        if (traceDecoState.showLabels) {
+                            var label = svgEl('text', {
+                                x: nodeX,
+                                y: rowY - labelOffset,
+                                class: 'trace-deco-gene-label' + (isTarget ? ' is-target-active' : ''),
+                                'text-anchor': 'middle'
+                            });
+                            label.textContent = cell.gene || cell.display || '';
+                            label.addEventListener('click', function () {
+                                if (cell.gene) {
+                                    window.location.href = '/browse/gene_' + encodeURIComponent(cell.gene) + '/';
+                                }
+                            });
+                            bindTraceDecoTooltip(label, cell, row);
+                            svg.appendChild(label);
+                        }
+                    }
+                });
+            });
+
+            if (info) {
+                info.textContent = visibleRows.length + ' combined row(s)';
+            }
+            canvas.appendChild(svg);
+        }
+
+        function renderTraceDecoBrowse() {
+            if (!document.getElementById('traceDecoBrowsePanel')) {
+                return;
+            }
+            renderTraceDecoQueryFilter();
+            renderTraceDecoTabs();
+            renderTraceDecoCanvas();
+            enableTraceDecoDragScroll();
+        }
+
+        function saveTraceDecoSVG() {
+            var svg = document.querySelector("#traceDecoCanvas svg");
+            if (!svg) {
+                alert("No DecoBrowse SVG is available to save.");
+                return;
+            }
+            var clone = svg.cloneNode(true);
+            clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            var data = new XMLSerializer().serializeToString(clone);
+            var blob = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            var queryPart = traceDecoState.activeQuery ? "_" + traceDecoState.activeQuery.replace(/[^A-Za-z0-9_.-]+/g, "_") : "";
+            var ancestorPart = traceDecoState.activeCode && traceDecoState.activeCode !== "__all__" ? "_" + traceDecoState.activeCode : "";
+            link.href = url;
+            link.download = "Trace_DecoBrowse_combined" + ancestorPart + queryPart + ".svg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        }
+
+
+        function enableTraceDecoDragScroll() {
+            var wrap = document.getElementById("traceDecoCanvas");
+            if (!wrap || wrap.dataset.dragScrollReady === "1") {
+                return;
+            }
+            wrap.dataset.dragScrollReady = "1";
+            var isDown = false;
+            var startX = 0;
+            var startY = 0;
+            var scrollLeft = 0;
+            var scrollTop = 0;
+            var moved = false;
+
+            wrap.addEventListener("mousedown", function (event) {
+                if (event.button !== 0) {
+                    return;
+                }
+                isDown = true;
+                moved = false;
+                startX = event.pageX - wrap.offsetLeft;
+                startY = event.pageY - wrap.offsetTop;
+                scrollLeft = wrap.scrollLeft;
+                scrollTop = wrap.scrollTop;
+                wrap.classList.add("is-dragging");
+            });
+
+            wrap.addEventListener("mouseleave", function () {
+                isDown = false;
+                wrap.classList.remove("is-dragging");
+            });
+
+            wrap.addEventListener("mouseup", function () {
+                isDown = false;
+                wrap.classList.remove("is-dragging");
+                window.setTimeout(function () { moved = false; }, 0);
+            });
+
+            wrap.addEventListener("mousemove", function (event) {
+                if (!isDown) {
+                    return;
+                }
+                event.preventDefault();
+                var x = event.pageX - wrap.offsetLeft;
+                var y = event.pageY - wrap.offsetTop;
+                var walkX = x - startX;
+                var walkY = y - startY;
+                if (Math.abs(walkX) > 3 || Math.abs(walkY) > 3) {
+                    moved = true;
+                }
+                wrap.scrollLeft = scrollLeft - walkX;
+                wrap.scrollTop = scrollTop - walkY;
+            });
+
+            wrap.addEventListener("click", function (event) {
+                if (moved) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            }, true);
+        }
+
+        function renderAncestralKaryotype() {
+            var container = document.getElementById("ancestralKaryotypeCanvas");
+            var panel = document.getElementById("karyotypePanel");
+            var tooltip = document.getElementById("karyotypeTooltip");
+            if (!container || !panel || !tooltip) {
+                return;
+            }
+
+            var svgNS = "http://www.w3.org/2000/svg";
+            var leafY = 935;
+            // Shift the tree left now that the legend no longer occupies the left side.
+            // Tune this value if you want more/less left margin: e.g. -220 or -260.
+            var treeOffsetX = -245;
+            // Leaf labels are read from bottom to top and aligned by their upper end.
+            // Tune this value to move the whole label row up/down.
+            var labelY = 945;
+            var branchWidth = 4;
+            var colors = {
+                gray: "#5f6063",
+                noHit: "#9aa1a8",
+                blue: "#5d80bd",
+                orange: "#e1a06a",
+                pink: "#d68aad",
+                purple: "#7c76a6"
+            };
+            var eventColors = {
+                eu: "#dce46a",
+                teB: "#efaaa7",
+                ach: "#146091",
+                wgd: "#d71920",
+                ech: "#d71920",
+                ne: "#9bc8e4",
+                bu: "#f1c233",
+                lst: "#78c4c1",
+                bst: "#c6bfda",
+                teA: "#b8d0e2",
+                dst: "#df8444",
+                sst: "#8d98c4"
+            };
+
+            var leaves = [
+                {id: "Eupl", label: "Euptelea pleiosperma", color: colors.gray},
+                {id: "Nenu", label: "Nelumbo nucifera", color: colors.gray},
+                {id: "Trsi", label: "Tetracentron sinense", color: colors.gray},
+                {id: "Busi", label: "Buxus sinica", color: colors.gray},
+                {id: "Vivi", label: "Vitis vinifera", color: colors.gray},
+                {id: "Nyin", label: "Nymphoides indica", color: colors.gray},
+                {id: "Gerbera_hybrida", label: "Gerbera hybrida", color: colors.blue},
+                {id: "Arctium_lappa", label: "Arctium lappa", color: colors.orange},
+                {id: "Saussurea_involucrata", label: "Saussurea involucrata", color: colors.orange},
+                {id: "Centaurea_solstitialis", label: "Centaurea solstitialis", color: colors.orange},
+                {id: "Carthamus_tinctorius", label: "Carthamus tinctorius", color: colors.orange},
+                {id: "Cynara_cardunculus", label: "Cynara cardunculus", color: colors.orange},
+                {id: "Cichorium_intybus", label: "Cichorium intybus", color: colors.pink},
+                {id: "Lactuca_sativa", label: "Lactuca sativa", color: colors.pink},
+                {id: "Taraxacum_mongolicum", label: "Taraxacum mongolicum", color: colors.pink},
+                {id: "Senecio_squalidus", label: "Senecio squalidus", color: colors.purple},
+                {id: "Pseudognaphalium_luteoalbum", label: "Pseudognaphalium luteoalbum", color: colors.purple},
+                {id: "Logfia_minima", label: "Logfia minima", color: colors.purple},
+                {id: "Erigeron_canadensis", label: "Erigeron canadensis", color: colors.purple},
+                {id: "Solidago_canadensis", label: "Solidago canadensis", color: colors.purple},
+                {id: "Glebionis_coronaria", label: "Glebionis coronaria", color: colors.purple},
+                {id: "Artemisia_tridentata", label: "Artemisia tridentata", color: colors.purple},
+                {id: "Chrysanthemum_lavandulifolium", label: "Chrysanthemum lavandulifolium", color: colors.purple},
+                {id: "Pulicaria_dysenterica", label: "Pulicaria dysenterica", color: colors.purple},
+                {id: "Cosmos_bipinnatus", label: "Cosmos bipinnatus", color: colors.purple},
+                {id: "Bidens_alba", label: "Bidens alba", color: colors.purple},
+                {id: "Dahlia_pinnata", label: "Dahlia pinnata", color: colors.purple},
+                {id: "Helianthus_annuus", label: "Helianthus annuus", color: colors.purple},
+                {id: "Ambrosia_trifida", label: "Ambrosia trifida", color: colors.purple},
+                {id: "Smallanthus_sonchifolius", label: "Smallanthus sonchifolius", color: colors.purple},
+                {id: "Tagetes_erecta", label: "Tagetes erecta", color: colors.purple},
+                {id: "Flaveria_linearis", label: "Flaveria linearis", color: colors.purple},
+                {id: "Deinandra_increscens", label: "Deinandra increscens", color: colors.purple},
+                {id: "Stevia_rebaudiana", label: "Stevia rebaudiana", color: colors.purple},
+                {id: "Mikania_micrantha", label: "Mikania micrantha", color: colors.purple}
+            ];
+
+            var nodes = {
+                root: {children: ["Eupl", "n1"], y: 90, stemTop: 42, color: colors.gray},
+                n1: {children: ["Nenu", "n2"], y: 112, color: colors.gray},
+                n2: {children: ["n3", "n4"], y: 130, color: colors.gray},
+                n3: {children: ["Trsi", "Busi"], y: 155, color: colors.gray},
+                n4: {children: ["Vivi", "n5"], y: 188, color: colors.gray},
+                n5: {children: ["Nyin", "AAKI"], y: 205, color: colors.gray},
+                AAKI: {code: "AAKI", label: "AAK-I", children: [ "AAKII"], y: 205, color: colors.blue, dx: -20, dy: 5},
+                AAKII: {code: "AAKII", label: "AAK-II", children: ["Gerbera_hybrida","AAKIII"], y: 255, manualX: 620, color: colors.blue, dx: -20, dy: 8},
+                AAKIII: {code: "AAKIII", label: "AAK-III", children: ["CAAKI", "ACAK"], y: 360, color: colors.orange, dx: -54, dy: -22},
+                CAAKI: {code: "CAAKI", label: "CAAK-I", children: ["CAAKII", "CAAKIII"], y: 560, color: colors.orange, dx: -50, dy: -18},
+                CAAKII: {code: "CAAKII", label: "CAAK-II", children: ["Arctium_lappa","Saussurea_involucrata"], y: 705, color: colors.orange, dx: -50, dy: -8},
+                CAAKIII: {code: "CAAKIII", label: "CAAK-III", children: ["CAAKIV", "Cynara_cardunculus"], y: 780, color: colors.orange, dx: -46, dy: -18},
+                CAAKIV: {code: "CAAKIV", label: "CAAK-IV", children: ["Centaurea_solstitialis", "Carthamus_tinctorius"], y: 875, color: colors.orange, dx: -56, dy: -8},
+                ACAK: {code: "ACAK", label: "ACAK", children: ["CIAKI", "ASAKI"], y: 430, color: colors.pink, dx: -36, dy: -22},
+                CIAKI: {code: "CIAKI", label: "CIAK-I", children: ["Cichorium_intybus", "CIAKII"], y: 505, color: colors.pink, dx: -42, dy: -18},
+                CIAKII: {code: "CIAKII", label: "CIAK-II", children: ["Lactuca_sativa", "Taraxacum_mongolicum"], y: 840, color: colors.pink, dx: -40, dy: -18},
+                ASAKI: {code: "ASAKI", label: "ASAK-I", children: ["ASAKII", "ASAKIII"], y: 485, color: colors.purple, dx: -40, dy: -18},
+                ASAKII: {code: "ASAKII", label: "ASAK-II", children: ["ASAKIV", "ASAKV"], y: 560, color: colors.purple, dx: -40, dy: -28},
+                ASAKIV: {code: "ASAKIV", label: "ASAK-IV", children: ["Senecio_squalidus", "ASAKVII"], y: 625, color: colors.purple, dx: -40, dy: -18},
+                ASAKVII: {code: "ASAKVII", label: "ASAK-VII", children: [ "ASAKXI", "ASAKXII"], y: 700, color: colors.purple, dx: -50, dy: -18},
+                ASAKXI: {code: "ASAKXI", label: "ASAK-XI", children: ["Pseudognaphalium_luteoalbum","Logfia_minima"], y: 805, color: colors.purple, dx: -52, dy: -18},
+                ASAKXII: {code: "ASAKXII", label: "ASAK-XII", children: ["Erigeron_canadensis", "Solidago_canadensis"], y: 860, color: colors.purple, dx: -42, dy: -22},
+                ASAKV: {code: "ASAKV", label: "ASAK-V", children: ["Glebionis_coronaria", "ASAKVIII"], y: 685, color: colors.purple, dx: -42, dy: -18},
+                ASAKVIII: {code: "ASAKVIII", label: "ASAK-VIII", children: ["Artemisia_tridentata", "Chrysanthemum_lavandulifolium"], y: 815, color: colors.purple, dx: -40, dy: -18},
+                ASAKIII: {code: "ASAKIII", label: "ASAK-III", children: ["Pulicaria_dysenterica", "ASAKVI"], y: 560, color: colors.purple, dx: -36, dy: -22},
+                ASAKVI: {code: "ASAKVI", label: "ASAK-VI", children: ["ASAKIX", "ASAKX"], y: 625, color: colors.purple, dx: -50, dy: 5},
+                ASAKIX: {code: "ASAKIX", label: "ASAK-IX", children: ["ASAKXIII", "ASAKXIV"], y: 700, color: colors.purple, dx: -50, dy: -18},
+                ASAKXIII: {code: "ASAKXIII", label: "ASAK-XIII", children: ["ASAKXVI", "Dahlia_pinnata"], y: 785, color: colors.purple, dx: -52, dy: -18},
+                ASAKXVI: {code: "ASAKXVI", label: "ASAK-XVI", children: ["Cosmos_bipinnatus","Bidens_alba"], y: 860, color: colors.purple, dx: -59, dy: -24},
+                ASAKXIV: {code: "ASAKXIV", label: "ASAK-XIV", children: ["Helianthus_annuus", "Ambrosia_trifida"], y: 860, color: colors.purple, dx: -56, dy: -20},
+                ASAKX: {code: "ASAKX", label: "ASAK-X", children: ["Smallanthus_sonchifolius", "ASAKXV"], y: 690, color: colors.purple, dx: -30, dy: -18},
+                ASAKXV: {code: "ASAKXV", label: "ASAK-XV", children: ["ASAKXVII", "ASAKXVIII"], y: 760, color: colors.purple, dx: -50, dy: -18},
+                ASAKXVII: {code: "ASAKXVII", label: "ASAK-XVII", children: ["Tagetes_erecta", "Flaveria_linearis"], y: 820, color: colors.purple, dx: -58, dy: -20},
+                ASAKXVIII: {code: "ASAKXVIII", label: "ASAK-XVIII", children: ["Deinandra_increscens", "ASAKXIX"], y: 865, color: colors.purple, dx: -50, dy: -28},
+                ASAKXIX: {code: "ASAKXIX", label: "ASAK-XIX", children: ["Stevia_rebaudiana", "Mikania_micrantha"], y: 910, color: colors.purple, dx: -35, dy: -10}
+            };
+
+            var leafPositions = [
+                282, 314, 346, 378, 410, 442, 482,
+                525, 572, 606, 638, 670,
+                742, 802, 862,
+                905, 940, 982, 1042, 1100,
+                1142, 1196, 1285, 1338, 1382,
+                1412, 1444, 1490, 1532, 1572,
+                1606, 1680, 1730, 1762, 1794
+            ];
+            var leafMap = {};
+            leaves.forEach(function (leaf, index) {
+                leaf.x = leafPositions[index] || (280 + index * 43);
+                leaf.y = leafY;
+                leafMap[leaf.id] = leaf;
+            });
+
+            function svgEl(name, attrs) {
+                var el = document.createElementNS(svgNS, name);
+                Object.keys(attrs || {}).forEach(function (key) {
+                    el.setAttribute(key, attrs[key]);
+                });
+                return el;
+            }
+
+            function isLeaf(id) {
+                return !!leafMap[id];
+            }
+
+            function getItem(id) {
+                return leafMap[id] || nodes[id];
+            }
+
+            function assignX(id) {
+                if (isLeaf(id)) {
+                    return leafMap[id].x;
+                }
+                var node = nodes[id];
+                var childXs = node.children.map(assignX);
+                node.x = node.manualX != null
+                    ? node.manualX
+                    : childXs.reduce(function (sum, value) { return sum + value; }, 0) / childXs.length;
+                return node.x;
+            }
+
+            function drawLine(layer, x1, y1, x2, y2, color, width) {
+                layer.appendChild(svgEl("line", {
+                    x1: x1,
+                    y1: y1,
+                    x2: x2,
+                    y2: y2,
+                    class: "karyotype-branch",
+                    stroke: color,
+                    "stroke-width": width || branchWidth
+                }));
+            }
+
+            function ancestorWasQueried(code) {
+                var normalized = normalizeAncestorCode(code);
+                if (!normalized) {
+                    return false;
+                }
+                if (selectedAncestorList.length > 0) {
+                    return !!selectedAncestorMap[normalized];
+                }
+                var summary = ancestralSummaries[normalized];
+                return !!(summary && summary.selected);
+            }
+
+            function ancestorHasHit(code) {
+                var summary = ancestralSummaries[normalizeAncestorCode(code)] || {};
+                return (summary.hit_count || 0) > 0;
+            }
+
+            function ancestorIsNoHit(code) {
+                return ancestorWasQueried(code) && !ancestorHasHit(code);
+            }
+
+            function branchColorForItem(item, fallbackColor) {
+                if (item && item.code && ancestorIsNoHit(item.code)) {
+                    return colors.noHit;
+                }
+                return (item && item.color) || fallbackColor || colors.gray;
+            }
+
+            function branchColorForChild(parent, child) {
+                if (child && child.code) {
+                    return branchColorForItem(child, (parent && parent.color) || colors.gray);
+                }
+                if (parent && parent.code && ancestorIsNoHit(parent.code)) {
+                    return colors.noHit;
+                }
+                return (child && child.color) || (parent && parent.color) || colors.gray;
+            }
+
+            function drawEdges(layer, id) {
+                if (isLeaf(id)) {
+                    return;
+                }
+                var node = nodes[id];
+                var nodeBranchColor = branchColorForItem(node, node.color);
+                var childItems = node.children.map(getItem);
+                var childXs = childItems.map(function (item) { return item.x; });
+                var spanXs = node.manualX != null ? childXs.concat([node.x]) : childXs;
+                var minX = Math.min.apply(Math, spanXs);
+                var maxX = Math.max.apply(Math, spanXs);
+                if (minX !== maxX) {
+                    drawLine(layer, minX, node.y, maxX, node.y, nodeBranchColor, branchWidth);
+                }
+                childItems.forEach(function (child) {
+                    drawLine(layer, child.x, node.y, child.x, child.y, branchColorForChild(node, child), branchWidth);
+                });
+                node.children.forEach(function (childId) {
+                    drawEdges(layer, childId);
+                });
+            }
+
+            function starPoints(cx, cy, outerRadius, innerRadius) {
+                var points = [];
+                for (var i = 0; i < 10; i += 1) {
+                    var angle = -Math.PI / 2 + i * Math.PI / 5;
+                    var radius = i % 2 === 0 ? outerRadius : innerRadius;
+                    points.push((cx + Math.cos(angle) * radius) + "," + (cy + Math.sin(angle) * radius));
+                }
+                return points.join(" ");
+            }
+
+            function drawEventSymbol(layer, shape, x, y, color, size) {
+                if (shape === "star") {
+                    layer.appendChild(svgEl("polygon", {
+                        points: starPoints(x, y, size || 17, (size || 17) * 0.42),
+                        fill: color,
+                        class: "karyotype-event"
+                    }));
+                    return;
+                }
+                if (shape === "circle") {
+                    layer.appendChild(svgEl("circle", {
+                        cx: x,
+                        cy: y,
+                        r: size || 10,
+                        fill: color,
+                        class: "karyotype-event"
+                    }));
+                    return;
+                }
+                layer.appendChild(svgEl("ellipse", {
+                    cx: x,
+                    cy: y,
+                    rx: (size || 12) * 1.2,
+                    ry: (size || 12) * 0.72,
+                    fill: color,
+                    class: "karyotype-event"
+                }));
+            }
+
+            function renderEventLegend(layer) {
+                var legend = [
+                    ["Eu-ST", "ellipse", eventColors.eu],
+                    ["Te-ST-B", "ellipse", eventColors.teB],
+                    ["ACH", "star", eventColors.ach],
+                    ["WGD-A", "circle", eventColors.wgd],
+                    ["Ne-ST", "ellipse", eventColors.ne],
+                    ["Bu-ST", "ellipse", eventColors.bu],
+                    ["LST", "ellipse", eventColors.lst],
+                    ["BST", "ellipse", eventColors.bst],
+                    ["Te-ST-A", "ellipse", eventColors.teA],
+                    ["ECH", "star", eventColors.ech],
+                    ["DST", "ellipse", eventColors.dst],
+                    ["SST", "ellipse", eventColors.sst]
+                ];
+                // Upper-right legend: keep symbol close to text, but keep columns farther apart.
+                var legendStartX = 950;
+                var legendStartY = 55;
+                var legendColumnWidth = 240;
+                var legendRowHeight = 43;
+                var legendSymbolOffset = 90;
+                legend.forEach(function (item, index) {
+                    var column = Math.floor(index / 4);
+                    var row = index % 4;
+                    var x = legendStartX + column * legendColumnWidth;
+                    var y = legendStartY + row * legendRowHeight;
+                    var text = svgEl("text", {x: x, y: y + 6, class: "karyotype-legend-label"});
+                    text.textContent = item[0];
+                    layer.appendChild(text);
+                    drawEventSymbol(layer, item[1], x + legendSymbolOffset, y, item[2], item[1] === "star" ? 18 : 11);
+                });
+            }
+
+            function renderEvents(layer) {
+                var markers = [
+                    {shape: "ellipse", x: 280, y: 123, color: eventColors.eu, size: 11},
+                    {shape: "ellipse", x: 345, y: 218, color: eventColors.teA, size: 11},
+                    {shape: "ellipse", x: 345, y: 237, color: eventColors.teB, size: 11},
+                    {shape: "ellipse", x: 377, y: 207, color: eventColors.bu, size: 11},
+                    {shape: "ellipse", x: 315, y: 372, color: eventColors.ne, size: 11},
+                    {shape: "star", x: 470, y: 155, color: eventColors.ech, size: 19},
+                    {shape: "star", x: 620, y: 230, color: eventColors.ach, size: 18},
+                    {shape: "circle", x: 1550, y: 580, color: eventColors.wgd, size: 10},
+                    {shape: "ellipse", x: 980, y: 918, color: eventColors.lst, size: 11},
+                    {shape: "ellipse", x: 1380, y: 902, color: eventColors.bst, size: 11},
+                    {shape: "ellipse", x: 1410, y: 918, color: eventColors.dst, size: 11},
+                    {shape: "ellipse", x: 1575, y: 856, color: eventColors.sst, size: 11}
+                ];
+                markers.forEach(function (marker) {
+                    drawEventSymbol(layer, marker.shape, marker.x, marker.y, marker.color, marker.size);
+                });
+            }
+
+            function nodeIsSelected(code) {
+                return selectedAncestorList.length === 0 || selectedAncestorMap[normalizeAncestorCode(code)];
+            }
+
+            function tooltipHtml(code, label) {
+                var summary = ancestralSummaries[code] || {};
+                var selected = nodeIsSelected(code) || summary.selected;
+                var hitCount = summary.hit_count || 0;
+                var best = summary.best_hit || null;
+                var html = '<div class="karyotype-tooltip-title"><strong>' + escapeHtml(label) + '</strong><span class="karyotype-tooltip-count">' + hitCount + ' hit' + (hitCount === 1 ? '' : 's') + '</span></div>';
+
+                if (!selected) {
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Status</span><span class="karyotype-tooltip-value">Not included in this run</span></div>';
+                    return html;
+                }
+                if (!hitCount || !best) {
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Result</span><span class="karyotype-tooltip-value">No filtered hit passed the current thresholds.</span></div>';
+                    return html;
+                }
+
+                if (best.trace_mode) {
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Query</span><span class="karyotype-tooltip-value">' + escapeHtml(best.query) + '</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Subject</span><span class="karyotype-tooltip-value">' + escapeHtml(best.ancestor_gene || best.subject) + '</span></div>';
+                } else {
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Query</span><span class="karyotype-tooltip-value">' + escapeHtml(best.query) + '</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Subject</span><span class="karyotype-tooltip-value">' + escapeHtml(best.subject) + '</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Identity</span><span class="karyotype-tooltip-value">' + escapeHtml(best.identity) + '% over ' + escapeHtml(best.length) + ' aa</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">E-value</span><span class="karyotype-tooltip-value">' + escapeHtml(best.evalue) + '</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Bit score</span><span class="karyotype-tooltip-value">' + escapeHtml(best.bit_score) + '</span></div>';
+                    html += '<div class="karyotype-tooltip-row"><span class="karyotype-tooltip-key">Ranges</span><span class="karyotype-tooltip-value">Q ' + escapeHtml(best.qstart) + '-' + escapeHtml(best.qend) + ' / S ' + escapeHtml(best.sstart) + '-' + escapeHtml(best.send) + '</span></div>';
+                }
+
+                if (summary.top_hits && summary.top_hits.length > 1) {
+                    html += '<div class="karyotype-tooltip-list">';
+                    summary.top_hits.slice(0, 3).forEach(function (hit, index) {
+                        if (hit.trace_mode) {
+                            html += '<div class="karyotype-tooltip-hit"><span>#' + (index + 1) + ' ' + escapeHtml(hit.query) + '</span><span>' + escapeHtml(hit.ancestor_gene || hit.subject) + '</span></div>';
+                        } else {
+                            html += '<div class="karyotype-tooltip-hit"><span>#' + (index + 1) + ' ' + escapeHtml(hit.subject) + '</span><span>' + escapeHtml(hit.identity) + '% / ' + escapeHtml(hit.evalue) + '</span></div>';
+                        }
+                    });
+                    html += '</div>';
+                }
+                return html;
+            }
+
+            var pinnedTooltipGroup = null;
+
+            function clampTooltipPosition(x, y) {
+                var maxX = Math.max(12, panel.clientWidth - tooltip.offsetWidth - 12);
+                var maxY = Math.max(12, panel.clientHeight - tooltip.offsetHeight - 12);
+                tooltip.style.left = Math.max(12, Math.min(x, maxX)) + "px";
+                tooltip.style.top = Math.max(12, Math.min(y, maxY)) + "px";
+            }
+
+            function positionTooltip(event) {
+                var panelRect = panel.getBoundingClientRect();
+                var x = event && typeof event.clientX === "number" ? event.clientX - panelRect.left + 14 : 18;
+                var y = event && typeof event.clientY === "number" ? event.clientY - panelRect.top + 14 : 18;
+                clampTooltipPosition(x, y);
+            }
+
+            function positionTooltipNearGroup(group) {
+                var target = group.querySelector(".karyotype-node-hotspot") || group.querySelector(".karyotype-node-label") || group;
+                var targetRect = target.getBoundingClientRect();
+                var panelRect = panel.getBoundingClientRect();
+                var x = targetRect.right - panelRect.left + 12;
+                var y = targetRect.top - panelRect.top + targetRect.height / 2 - tooltip.offsetHeight / 2;
+                clampTooltipPosition(x, y);
+            }
+
+            function showTooltip(event, group, code, label, fixedToNode) {
+                tooltip.innerHTML = tooltipHtml(code, label);
+                tooltip.classList.add("is-visible");
+                group.classList.add("is-active");
+                if (fixedToNode) {
+                    positionTooltipNearGroup(group);
+                } else {
+                    positionTooltip(event);
+                }
+            }
+
+            function hideTooltip(group) {
+                tooltip.classList.remove("is-visible");
+                if (group) {
+                    group.classList.remove("is-active");
+                }
+            }
+
+            function pinTooltip(group, code, label) {
+                if (pinnedTooltipGroup && pinnedTooltipGroup !== group) {
+                    pinnedTooltipGroup.classList.remove("is-active");
+                }
+                pinnedTooltipGroup = group;
+                showTooltip(null, group, code, label, true);
+            }
+
+            function unpinTooltip() {
+                if (!pinnedTooltipGroup) {
+                    return;
+                }
+                var group = pinnedTooltipGroup;
+                pinnedTooltipGroup = null;
+                hideTooltip(group);
+            }
+
+            assignX("root");
+            container.innerHTML = "";
+
+            var svg = svgEl("svg", {
+                class: "karyotype-svg",
+                viewBox: "0 0 1655 1270",
+                role: "img",
+                "aria-label": "Asteraceae ancestral karyotype tree with ancestral alignment summaries"
+            });
+            var treeLayer = svgEl("g", {transform: "translate(" + treeOffsetX + ",0)"});
+            var branchLayer = svgEl("g", {});
+            var eventLayer = svgEl("g", {});
+            var leafLayer = svgEl("g", {});
+            var nodeLayer = svgEl("g", {});
+            var legendLayer = svgEl("g", {});
+
+            svg.appendChild(treeLayer);
+            treeLayer.appendChild(branchLayer);
+            treeLayer.appendChild(eventLayer);
+            treeLayer.appendChild(leafLayer);
+            treeLayer.appendChild(nodeLayer);
+            svg.appendChild(legendLayer);
+            if (nodes.root && nodes.root.stemTop != null) {
+                drawLine(branchLayer, nodes.root.x, nodes.root.stemTop, nodes.root.x, nodes.root.y, nodes.root.color, branchWidth);
+            }
+            drawEdges(branchLayer, "root");
+            renderEvents(eventLayer);
+            renderEventLegend(legendLayer);
+
+            leaves.forEach(function (leaf) {
+                var label = svgEl("text", {
+                    x: 0,
+                    y: 0,
+                    transform: "translate(" + (leaf.x + 0) + "," + labelY + ") rotate(-90)",
+                    class: "karyotype-leaf-label",
+                    fill: leaf.color
+                });
+                label.textContent = leaf.label;
+                leafLayer.appendChild(label);
+            });
+
+            Object.keys(nodes).forEach(function (nodeId) {
+                var node = nodes[nodeId];
+                if (!node.code) {
+                    return;
+                }
+                var code = normalizeAncestorCode(node.code);
+                var summary = ancestralSummaries[code] || {};
+                var hitCount = summary.hit_count || 0;
+                var groupClass = "karyotype-node-group" + (hitCount ? " is-hit" : "") + (!nodeIsSelected(code) ? " is-muted" : "");
+                var group = svgEl("g", {
+                    class: groupClass,
+                    tabindex: "0",
+                    role: "button",
+                    "aria-label": node.label + " alignment summary"
+                });
+                var marker = svgEl("circle", {
+                    cx: node.x,
+                    cy: node.y,
+                    r: hitCount ? 7 : 5,
+                    stroke: node.color,
+                    class: "karyotype-node-marker"
+                });
+                var text = svgEl("text", {
+                    x: node.x + (node.dx || 10),
+                    y: node.y + (node.dy || -10),
+                    class: "karyotype-node-label"
+                });
+                text.textContent = node.label;
+                group.appendChild(marker);
+                group.appendChild(text);
+                group.addEventListener("mouseenter", function (event) {
+                    if (!pinnedTooltipGroup) {
+                        showTooltip(event, group, code, node.label, false);
+                    }
+                });
+                group.addEventListener("mousemove", function (event) {
+                    if (!pinnedTooltipGroup) {
+                        positionTooltip(event);
+                    }
+                });
+                group.addEventListener("mouseleave", function () {
+                    if (pinnedTooltipGroup !== group) {
+                        hideTooltip(group);
+                    }
+                });
+                group.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    pinTooltip(group, code, node.label);
+                });
+                group.addEventListener("focus", function () {
+                    if (!pinnedTooltipGroup) {
+                        showTooltip(null, group, code, node.label, true);
+                    }
+                });
+                group.addEventListener("blur", function () {
+                    if (pinnedTooltipGroup !== group) {
+                        hideTooltip(group);
+                    }
+                });
+                nodeLayer.appendChild(group);
+            });
+
+            container.appendChild(svg);
+
+            panel.addEventListener("click", function (event) {
+                if (!pinnedTooltipGroup) {
+                    return;
+                }
+                if (event.target.closest && event.target.closest(".karyotype-node-group")) {
+                    return;
+                }
+                unpinTooltip();
+            });
+
+            var karyotypeScroll = panel.querySelector(".karyotype-scroll");
+            if (karyotypeScroll) {
+                karyotypeScroll.addEventListener("scroll", function () {
+                    if (pinnedTooltipGroup) {
+                        positionTooltipNearGroup(pinnedTooltipGroup);
+                    }
+                });
+            }
+
+            window.addEventListener("resize", function () {
+                if (pinnedTooltipGroup) {
+                    positionTooltipNearGroup(pinnedTooltipGroup);
+                }
+            });
+
+            // Use the real SVG text bounding box as the base hover area,
+            // then enlarge it by a small padding around the text.
+            var labelHitPaddingX = 10;
+            var labelHitPaddingY = 7;
+
+            nodeLayer.querySelectorAll(".karyotype-node-group").forEach(function (group) {
+                var label = group.querySelector(".karyotype-node-label");
+                if (!label) {
+                    return;
+                }
+
+                var bbox;
+                try {
+                    bbox = label.getBBox();
+                } catch (error) {
+                    return;
+                }
+
+                var hotspot = svgEl("rect", {
+                    x: bbox.x - labelHitPaddingX,
+                    y: bbox.y - labelHitPaddingY,
+                    width: bbox.width + labelHitPaddingX * 2,
+                    height: bbox.height + labelHitPaddingY * 2,
+                    class: "karyotype-node-hotspot"
+                });
+
+                group.insertBefore(hotspot, label);
+            });
+        }
+
+        renderTraceDecoBrowse();
+        renderAncestralKaryotype();
+
+        function installPageJump(table, tableSelector) {
+            var tableId = $(tableSelector).attr('id');
+            var wrapper = $('#' + tableId + '_wrapper');
+
+            function renderPageJump() {
+                var info = table.page.info();
+                var paginate = wrapper.find('.dataTables_paginate');
+                paginate.find('.page-jump-control').remove();
+
+                if (!info || info.pages <= 1) {
+                    return;
+                }
+
+                var inputId = tableId + '_page_jump';
+                var control = $('<div class="page-jump-control" aria-label="Jump to page"></div>');
+                var input = $('<input type="number" inputmode="numeric" class="page-jump-input">').attr({
+                    id: inputId,
+                    min: 1,
+                    max: info.pages,
+                    value: info.page + 1,
+                    'aria-label': 'Page number'
+                });
+                var total = $('<span class="page-jump-total"></span>').text('/ ' + info.pages);
+                var button = $('<button type="button" class="page-jump-btn">Go</button>');
+
+                function jumpToPage() {
+                    var requestedPage = parseInt(input.val(), 10);
+                    if (isNaN(requestedPage)) {
+                        input.val(info.page + 1).focus();
+                        return;
+                    }
+
+                    requestedPage = Math.max(1, Math.min(info.pages, requestedPage));
+                    table.page(requestedPage - 1).draw('page');
+                }
+
+                input.on('keydown', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        jumpToPage();
+                    }
+                });
+                button.on('click', jumpToPage);
+
+                control
+                    .append($('<label></label>').attr('for', inputId).text('Page'))
+                    .append(input)
+                    .append(total)
+                    .append(button);
+                paginate.append(control);
+            }
+
+            table.on('draw', renderPageJump);
+            renderPageJump();
+        }
+
+        var activeTableSelector = $('#ancestralTraceTable').length ? '#ancestralTraceTable' : ($('#ancestralBlastTable').length ? '#ancestralBlastTable' : null);
+        if (activeTableSelector) {
+            ancestralTable = $(activeTableSelector).DataTable({
+                paging: true,
+                info: true,
+                searching: true,
+                lengthChange: true,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pagingType: 'simple_numbers',
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { orderable: false, targets: 0 }
+                ]
+            });
+
+            ancestralTable.on('draw', updateSelectionControls);
+            installPageJump(ancestralTable, activeTableSelector);
+        }
+
+        function tableRows(selector) {
+            if (!ancestralTable) {
+                return $();
+            }
+            return $(ancestralTable.rows(selector).nodes());
+        }
+
+        function allFilteredCheckboxes() {
+            return tableRows({ search: 'applied' }).find('.row-checkbox');
+        }
+
+        function currentPageCheckboxes() {
+            return tableRows({ page: 'current' }).find('.row-checkbox');
+        }
+
+        function updateSelectionControls() {
+            var allBoxes = allFilteredCheckboxes();
+            var checkedAllCount = allBoxes.filter(':checked').length;
+            var allSelected = allBoxes.length > 0 && checkedAllCount === allBoxes.length;
+
+            if (selectAllBtn) {
+                selectAllBtn.innerHTML = allSelected
+                    ? '<i class="fas fa-square"></i> Clear Selection'
+                    : '<i class="fas fa-check-square"></i> Select All';
+            }
+
+            var currentPageSelectors = $('.js-select-current-page');
+            if (currentPageSelectors.length) {
+                var pageBoxes = currentPageCheckboxes();
+                var checkedPageCount = pageBoxes.filter(':checked').length;
+                currentPageSelectors.prop('checked', pageBoxes.length > 0 && checkedPageCount === pageBoxes.length);
+                currentPageSelectors.each(function () {
+                    this.indeterminate = checkedPageCount > 0 && checkedPageCount < pageBoxes.length;
+                });
+            }
+        }
+
+        if (selectAllBtn) {
+            selectAllBtn.addEventListener("click", function () {
+                var allBoxes = allFilteredCheckboxes();
+                var shouldSelect = allBoxes.filter(':checked').length !== allBoxes.length;
+                allBoxes.prop('checked', shouldSelect);
+                updateSelectionControls();
+            });
+        }
+
+        $(document).on('change', '.js-select-current-page', function () {
+            currentPageCheckboxes().prop('checked', this.checked);
+            updateSelectionControls();
+        });
+
+        $(document).on('change', '#ancestralBlastTable .row-checkbox, #ancestralTraceTable .row-checkbox', function () {
+            updateSelectionControls();
+        });
+
+        if (ancestralTable) {
+            $(activeTableSelector).on('length.dt search.dt order.dt page.dt', function () {
+                setTimeout(updateSelectionControls, 0);
+            });
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener("click", function () {
+                var rows = [];
+                tableRows({ search: 'applied' }).each(function () {
+                    var row = this;
+                    var checkbox = row.querySelector('.row-checkbox');
+                    if (!checkbox || !checkbox.checked) {
+                        return;
+                    }
+
+                    var data = [];
+                    row.querySelectorAll("td").forEach(function (cell, index) {
+                        if (index > 0) {
+                            data.push(cell.textContent.trim());
+                        }
+                    });
+                    rows.push(data.join("\t"));
+                });
+
+                if (rows.length === 0) {
+                    alert("Please select at least one row to download.");
+                    return;
+                }
+
+                var headerCells = [];
+                document.querySelectorAll(activeTableSelector + " thead th").forEach(function (cell, index) {
+                    if (index > 0) {
+                        headerCells.push(cell.textContent.trim());
+                    }
+                });
+                var header = headerCells.join("\t");
+                var blob = new Blob([[header].concat(rows).join("\n")], {type: "text/plain"});
+                var url = window.URL.createObjectURL(blob);
+                var link = document.createElement("a");
+                link.href = url;
+                link.download = activeTableSelector === '#ancestralTraceTable' ? "Ancestral_gene_tracing_results.txt" : "Ancestral_chromosome_filtered_hits.txt";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            });
+        }
+
+        updateSelectionControls();
+    });
+</script>
+{% endblock %}

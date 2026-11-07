@@ -1,0 +1,68 @@
+<form class="mode-form" id="candidateSearchForm" data-mode-form="candidate" action="ancestral_chromosome" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="search_mode" value="candidate">
+
+        <div class="form-card">
+            <h4 class="section-title">Ancestral Candidate Search</h4>
+            <div class="mode-hint">
+                This mode returns all ancestral hits that meet the selected E-value, score, and identity thresholds.
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Query Sequence
+                    <button type="button" class="example-btn js-example-sequence" data-target="candidate_query_sequence">Example</button>
+                </label>
+                <textarea class="form-control" id="candidate_query_sequence" name="query_sequence" rows="5"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Upload query FASTA file (single or multiple genes)</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="file1">
+                    <a href="/static/example_file/ancestral_chromosome/Aann.pep" class="input-group-text js-example-file" download>Example</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Query sequence type</label>
+                    <select class="form-control" name="patten" required>
+                        <option value="blastp" selected>Protein sequence (BLASTP)</option>
+                        <option value="blastn">Nucleotide sequence (BLASTN)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ancestral Chromosomes</label>
+                    <select class="form-control" name="species_data" required>
+                        <option value="ALL_ANCESTRAL_DATASETS" selected>All ancestors</option>
+                        {% if ancestral_options %}
+                        {% for ancestor in ancestral_options %}
+                        <option value="{{ ancestor.code }}">{{ ancestor.name }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">E-value</label>
+                    <input type="text" class="form-control" name="e_value" value="1e-5" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Score value</label>
+                    <input type="text" class="form-control" name="score_1" value="100" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Identity value</label>
+                    <input type="text" class="form-control" name="identity_1" value="60" required>
+                </div>
+            </div>
+
+            <input class="w-100 btn btn-lg search-btn" type="submit" value="Search">
+        </div>
+    </form>

@@ -1,0 +1,15 @@
+{
+  "search_mode": "candidate",
+  "mode_label": "Ancestral Candidate Search",
+  "query_name": "existing_search_results",
+  "sequence_type": "nucl",
+  "species_codes": [
+    "AAKI"
+  ],
+  "e_value_cutoff": 1e-05,
+  "score_cutoff": 100,
+  "identity_cutoff": 60,
+  "total_hits": 2,
+  "filtered_hits": 2,
+  "result_file": "candidate_hits.tsv"
+}
