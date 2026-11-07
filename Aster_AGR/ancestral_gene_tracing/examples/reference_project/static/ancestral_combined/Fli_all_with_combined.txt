@@ -1,0 +1,12 @@
+.	.	.	.	.	.	.	.	.	.	Fli1g00001	.	.	.	.	.	.	.	.	.	.	.	.	Taer1g05816	Fro12g02633	.	.	Fra11g02682	.	.	.
+ASAKIX3g00002	ASAKVI3g00002	.	.	ASAKXIV6g00002	.	.	ASAKXVI9g00002	.	.	Fli1g00002	Hean16g01229	Cobi4g03440	.	.	Dapi7g00004	Dapi23g00003	Hetu48g01074	Hetu46g01234	Hetu47g01185	Amtr01g04695	.	.	.	.	.	.	Fra11g02683	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00003	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00004	Hean4g04589	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00005	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	Fra11g02684	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00006	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00007	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+ASAKIX3g00008	ASAKVI3g00008	ASAKX1g00008	.	ASAKXIV6g00008	ASAKXIX14g00008	ASAKXV19g00008	ASAKXVI9g00008	ASAKXVII1g00008	ASAKXVIII14g00008	Fli1g00008	Hean16g01233	Cobi4g03438	.	.	Dapi7g00007	Dapi23g00004	Hetu48g01071	Hetu46g01232	Hetu47g01183	Amtr01g04689	Smso7g00337	Smso29g00381	Taer1g05815	Fro12g02631	Fso2g00002	.	Fra11g02685	.	Stre6g00032	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00009	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+ASAKIX3g00010	ASAKVI3g00010	ASAKX1g00010	.	ASAKXIV6g00010	ASAKXIX14g00010	.	ASAKXVI9g00010	.	ASAKXVIII14g00010	Fli1g00010	Hean16g01237	Cobi4g03435	.	.	Dapi7g00009	Dapi23g00006	Hetu48g01067	Hetu46g01229	Hetu47g01174	Amtr01g04685	Smso7g00333	Smso29g00377	Taer1g05811	.	.	.	.	.	Stre6g00036	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00011	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+.	.	.	.	.	.	.	.	.	.	Fli1g00012	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.

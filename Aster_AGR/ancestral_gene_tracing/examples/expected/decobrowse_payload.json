@@ -1,0 +1,2521 @@
+{
+  "ancestors": [
+    {
+      "code": "AAKI",
+      "label": "AAK-I",
+      "target_count": 1,
+      "query_count": 1,
+      "matched_species": [
+        "Arla"
+      ]
+    },
+    {
+      "code": "ASAKXI",
+      "label": "ASAK-XI",
+      "target_count": 1,
+      "query_count": 1,
+      "matched_species": [
+        "Arla"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 1,
+      "center_row_index": 1,
+      "is_center_row": true,
+      "row_label": "demo_traced",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {
+        "AAKI": {
+          "role": "ancestor",
+          "label": "AAK-I",
+          "species": "",
+          "ancestor_code": "AAKI",
+          "column_indices": [
+            1
+          ],
+          "gene": "AAKI3g00001",
+          "genes": [
+            "AAKI3g00001"
+          ],
+          "display": "AAKI3g00001",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKXI": {
+          "role": "ancestor",
+          "label": "ASAK-XI",
+          "species": "",
+          "ancestor_code": "ASAKXI",
+          "column_indices": [
+            11
+          ],
+          "gene": "ASAKXI1g00001",
+          "genes": [
+            "ASAKXI1g00001"
+          ],
+          "display": "ASAKXI1g00001",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      },
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [
+          1,
+          11
+        ],
+        "gene": "AAKI3g00001",
+        "genes": [
+          "AAKI3g00001",
+          "ASAKXI1g00001"
+        ],
+        "display": "AAKI3g00001",
+        "is_empty": false,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00001",
+          "genes": [
+            "Arla1g00001"
+          ],
+          "display": "Arla1g00001",
+          "is_empty": false,
+          "is_target": true,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    },
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 2,
+      "center_row_index": 1,
+      "is_center_row": false,
+      "row_label": "Row 2",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {},
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [],
+        "gene": "",
+        "genes": [],
+        "display": "",
+        "is_empty": true,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00002",
+          "genes": [
+            "Arla1g00002"
+          ],
+          "display": "Arla1g00002",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "Armi1g00001",
+          "genes": [
+            "Armi1g00001"
+          ],
+          "display": "Armi1g00001",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    },
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 3,
+      "center_row_index": 1,
+      "is_center_row": false,
+      "row_label": "Row 3",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {
+        "AAKI": {
+          "role": "ancestor",
+          "label": "AAK-I",
+          "species": "",
+          "ancestor_code": "AAKI",
+          "column_indices": [
+            1
+          ],
+          "gene": "AAKI3g00003",
+          "genes": [
+            "AAKI3g00003"
+          ],
+          "display": "AAKI3g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "AAKIII": {
+          "role": "ancestor",
+          "label": "AAK-III",
+          "species": "",
+          "ancestor_code": "AAKIII",
+          "column_indices": [
+            2
+          ],
+          "gene": "AAKIII1g00003",
+          "genes": [
+            "AAKIII1g00003"
+          ],
+          "display": "AAKIII1g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ACAK": {
+          "role": "ancestor",
+          "label": "ACAK",
+          "species": "",
+          "ancestor_code": "ACAK",
+          "column_indices": [
+            3
+          ],
+          "gene": "ACAK8g00003",
+          "genes": [
+            "ACAK8g00003"
+          ],
+          "display": "ACAK8g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKI": {
+          "role": "ancestor",
+          "label": "ASAK-I",
+          "species": "",
+          "ancestor_code": "ASAKI",
+          "column_indices": [
+            4
+          ],
+          "gene": "ASAKI8g00003",
+          "genes": [
+            "ASAKI8g00003"
+          ],
+          "display": "ASAKI8g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKII": {
+          "role": "ancestor",
+          "label": "ASAK-II",
+          "species": "",
+          "ancestor_code": "ASAKII",
+          "column_indices": [
+            5
+          ],
+          "gene": "ASAKII10g00003",
+          "genes": [
+            "ASAKII10g00003"
+          ],
+          "display": "ASAKII10g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKIII": {
+          "role": "ancestor",
+          "label": "ASAK-III",
+          "species": "",
+          "ancestor_code": "ASAKIII",
+          "column_indices": [
+            6
+          ],
+          "gene": "ASAKIII7g00003",
+          "genes": [
+            "ASAKIII7g00003"
+          ],
+          "display": "ASAKIII7g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKIV": {
+          "role": "ancestor",
+          "label": "ASAK-IV",
+          "species": "",
+          "ancestor_code": "ASAKIV",
+          "column_indices": [
+            7
+          ],
+          "gene": "ASAKIV4g00003",
+          "genes": [
+            "ASAKIV4g00003"
+          ],
+          "display": "ASAKIV4g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKVII": {
+          "role": "ancestor",
+          "label": "ASAK-VII",
+          "species": "",
+          "ancestor_code": "ASAKVII",
+          "column_indices": [
+            9
+          ],
+          "gene": "ASAKVII4g00003",
+          "genes": [
+            "ASAKVII4g00003"
+          ],
+          "display": "ASAKVII4g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKXI": {
+          "role": "ancestor",
+          "label": "ASAK-XI",
+          "species": "",
+          "ancestor_code": "ASAKXI",
+          "column_indices": [
+            11
+          ],
+          "gene": "ASAKXI1g00003",
+          "genes": [
+            "ASAKXI1g00003"
+          ],
+          "display": "ASAKXI1g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKXII": {
+          "role": "ancestor",
+          "label": "ASAK-XII",
+          "species": "",
+          "ancestor_code": "ASAKXII",
+          "column_indices": [
+            12
+          ],
+          "gene": "ASAKXII3g00003",
+          "genes": [
+            "ASAKXII3g00003"
+          ],
+          "display": "ASAKXII3g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CIAKI": {
+          "role": "ancestor",
+          "label": "CIAK-I",
+          "species": "",
+          "ancestor_code": "CIAKI",
+          "column_indices": [
+            17
+          ],
+          "gene": "CIAKI8g00003",
+          "genes": [
+            "CIAKI8g00003"
+          ],
+          "display": "CIAKI8g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CIAKII": {
+          "role": "ancestor",
+          "label": "CIAK-II",
+          "species": "",
+          "ancestor_code": "CIAKII",
+          "column_indices": [
+            18
+          ],
+          "gene": "CIAKII7g00003",
+          "genes": [
+            "CIAKII7g00003"
+          ],
+          "display": "CIAKII7g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      },
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [
+          1,
+          11
+        ],
+        "gene": "AAKI3g00003",
+        "genes": [
+          "AAKI3g00003",
+          "ASAKXI1g00003"
+        ],
+        "display": "AAKI3g00003",
+        "is_empty": false,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00003",
+          "genes": [
+            "Arla1g00003"
+          ],
+          "display": "Arla1g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "Gehy11g01925",
+          "genes": [
+            "Gehy11g01925"
+          ],
+          "display": "Gehy11g01925",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "Armi1g00003",
+          "genes": [
+            "Armi1g00003"
+          ],
+          "display": "Armi1g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "Sain12g00015",
+          "genes": [
+            "Sain12g00015"
+          ],
+          "display": "Sain12g00015",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "Cien5g03419",
+          "genes": [
+            "Cien5g03419"
+          ],
+          "display": "Cien5g03419",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "Cich4g04715",
+          "genes": [
+            "Cich4g04715"
+          ],
+          "display": "Cich4g04715",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "Lssa7g03675",
+          "genes": [
+            "Lssa7g03675"
+          ],
+          "display": "Lssa7g03675",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "Laca7g02992",
+          "genes": [
+            "Laca7g02992"
+          ],
+          "display": "Laca7g02992",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    },
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 4,
+      "center_row_index": 1,
+      "is_center_row": false,
+      "row_label": "Row 4",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {},
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [],
+        "gene": "",
+        "genes": [],
+        "display": "",
+        "is_empty": true,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00004",
+          "genes": [
+            "Arla1g00004"
+          ],
+          "display": "Arla1g00004",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    },
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 5,
+      "center_row_index": 1,
+      "is_center_row": false,
+      "row_label": "Row 5",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {},
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [],
+        "gene": "",
+        "genes": [],
+        "display": "",
+        "is_empty": true,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00005",
+          "genes": [
+            "Arla1g00005"
+          ],
+          "display": "Arla1g00005",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "Sain12g00017",
+          "genes": [
+            "Sain12g00017"
+          ],
+          "display": "Sain12g00017",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    },
+    {
+      "query_id": "demo_traced",
+      "best_gene": "Arla1g00001",
+      "matched_species": "Arla",
+      "reference_set": "Arla",
+      "combined_row_index": 6,
+      "center_row_index": 1,
+      "is_center_row": false,
+      "row_label": "Row 6",
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "ancestor_cells": {
+        "AAKI": {
+          "role": "ancestor",
+          "label": "AAK-I",
+          "species": "",
+          "ancestor_code": "AAKI",
+          "column_indices": [
+            1
+          ],
+          "gene": "AAKI3g00006",
+          "genes": [
+            "AAKI3g00006"
+          ],
+          "display": "AAKI3g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "AAKIII": {
+          "role": "ancestor",
+          "label": "AAK-III",
+          "species": "",
+          "ancestor_code": "AAKIII",
+          "column_indices": [
+            2
+          ],
+          "gene": "AAKIII1g00006",
+          "genes": [
+            "AAKIII1g00006"
+          ],
+          "display": "AAKIII1g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ACAK": {
+          "role": "ancestor",
+          "label": "ACAK",
+          "species": "",
+          "ancestor_code": "ACAK",
+          "column_indices": [
+            3
+          ],
+          "gene": "ACAK8g00006",
+          "genes": [
+            "ACAK8g00006"
+          ],
+          "display": "ACAK8g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKI": {
+          "role": "ancestor",
+          "label": "ASAK-I",
+          "species": "",
+          "ancestor_code": "ASAKI",
+          "column_indices": [
+            4
+          ],
+          "gene": "ASAKI8g00006",
+          "genes": [
+            "ASAKI8g00006"
+          ],
+          "display": "ASAKI8g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKII": {
+          "role": "ancestor",
+          "label": "ASAK-II",
+          "species": "",
+          "ancestor_code": "ASAKII",
+          "column_indices": [
+            5
+          ],
+          "gene": "ASAKII10g00006",
+          "genes": [
+            "ASAKII10g00006"
+          ],
+          "display": "ASAKII10g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKIV": {
+          "role": "ancestor",
+          "label": "ASAK-IV",
+          "species": "",
+          "ancestor_code": "ASAKIV",
+          "column_indices": [
+            7
+          ],
+          "gene": "ASAKIV4g00006",
+          "genes": [
+            "ASAKIV4g00006"
+          ],
+          "display": "ASAKIV4g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKV": {
+          "role": "ancestor",
+          "label": "ASAK-V",
+          "species": "",
+          "ancestor_code": "ASAKV",
+          "column_indices": [
+            8
+          ],
+          "gene": "ASAKV7g00006",
+          "genes": [
+            "ASAKV7g00006"
+          ],
+          "display": "ASAKV7g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKVII": {
+          "role": "ancestor",
+          "label": "ASAK-VII",
+          "species": "",
+          "ancestor_code": "ASAKVII",
+          "column_indices": [
+            9
+          ],
+          "gene": "ASAKVII4g00006",
+          "genes": [
+            "ASAKVII4g00006"
+          ],
+          "display": "ASAKVII4g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKVIII": {
+          "role": "ancestor",
+          "label": "ASAK-VIII",
+          "species": "",
+          "ancestor_code": "ASAKVIII",
+          "column_indices": [
+            10
+          ],
+          "gene": "ASAKVIII4g00006",
+          "genes": [
+            "ASAKVIII4g00006"
+          ],
+          "display": "ASAKVIII4g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKXI": {
+          "role": "ancestor",
+          "label": "ASAK-XI",
+          "species": "",
+          "ancestor_code": "ASAKXI",
+          "column_indices": [
+            11
+          ],
+          "gene": "ASAKXI1g00006",
+          "genes": [
+            "ASAKXI1g00006"
+          ],
+          "display": "ASAKXI1g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "ASAKXII": {
+          "role": "ancestor",
+          "label": "ASAK-XII",
+          "species": "",
+          "ancestor_code": "ASAKXII",
+          "column_indices": [
+            12
+          ],
+          "gene": "ASAKXII3g00006",
+          "genes": [
+            "ASAKXII3g00006"
+          ],
+          "display": "ASAKXII3g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CAAKIII": {
+          "role": "ancestor",
+          "label": "CAAK-III",
+          "species": "",
+          "ancestor_code": "CAAKIII",
+          "column_indices": [
+            15
+          ],
+          "gene": "CAAKIII5g00006",
+          "genes": [
+            "CAAKIII5g00006"
+          ],
+          "display": "CAAKIII5g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CAAKIV": {
+          "role": "ancestor",
+          "label": "CAAK-IV",
+          "species": "",
+          "ancestor_code": "CAAKIV",
+          "column_indices": [
+            16
+          ],
+          "gene": "CAAKIV3g00006",
+          "genes": [
+            "CAAKIV3g00006"
+          ],
+          "display": "CAAKIV3g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CIAKI": {
+          "role": "ancestor",
+          "label": "CIAK-I",
+          "species": "",
+          "ancestor_code": "CIAKI",
+          "column_indices": [
+            17
+          ],
+          "gene": "CIAKI8g00006",
+          "genes": [
+            "CIAKI8g00006"
+          ],
+          "display": "CIAKI8g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        "CIAKII": {
+          "role": "ancestor",
+          "label": "CIAK-II",
+          "species": "",
+          "ancestor_code": "CIAKII",
+          "column_indices": [
+            18
+          ],
+          "gene": "CIAKII7g00006",
+          "genes": [
+            "CIAKII7g00006"
+          ],
+          "display": "CIAKII7g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      },
+      "all_ancestor_cell": {
+        "role": "ancestor",
+        "label": "Ancestor",
+        "species": "",
+        "ancestor_code": "__all__",
+        "column_indices": [
+          1,
+          11
+        ],
+        "gene": "AAKI3g00006",
+        "genes": [
+          "AAKI3g00006",
+          "ASAKXI1g00006"
+        ],
+        "display": "AAKI3g00006",
+        "is_empty": false,
+        "is_target": false,
+        "strand": "+",
+        "chromosome": "",
+        "start": "",
+        "end": "",
+        "query_id": "demo_traced",
+        "best_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla"
+      },
+      "species_cells": [
+        {
+          "role": "species",
+          "label": "Arla-1",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            19
+          ],
+          "gene": "Arla1g00006",
+          "genes": [
+            "Arla1g00006"
+          ],
+          "display": "Arla1g00006",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Arla-2",
+          "species": "Arla",
+          "ancestor_code": "",
+          "column_indices": [
+            20
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Gehy",
+          "species": "Gehy",
+          "ancestor_code": "",
+          "column_indices": [
+            22
+          ],
+          "gene": "Gehy11g01926",
+          "genes": [
+            "Gehy11g01926"
+          ],
+          "display": "Gehy11g01926",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Armi",
+          "species": "Armi",
+          "ancestor_code": "",
+          "column_indices": [
+            23
+          ],
+          "gene": "Armi1g00005",
+          "genes": [
+            "Armi1g00005"
+          ],
+          "display": "Armi1g00005",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Sain",
+          "species": "Sain",
+          "ancestor_code": "",
+          "column_indices": [
+            24
+          ],
+          "gene": "",
+          "genes": [],
+          "display": "",
+          "is_empty": true,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Ceso",
+          "species": "Ceso",
+          "ancestor_code": "",
+          "column_indices": [
+            25
+          ],
+          "gene": "Ceso2g03161",
+          "genes": [
+            "Ceso2g03161"
+          ],
+          "display": "Ceso2g03161",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cati",
+          "species": "Cati",
+          "ancestor_code": "",
+          "column_indices": [
+            26
+          ],
+          "gene": "Cati3g00003",
+          "genes": [
+            "Cati3g00003"
+          ],
+          "display": "Cati3g00003",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cien",
+          "species": "Cien",
+          "ancestor_code": "",
+          "column_indices": [
+            28
+          ],
+          "gene": "Cien5g03422",
+          "genes": [
+            "Cien5g03422"
+          ],
+          "display": "Cien5g03422",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Cich",
+          "species": "Cich",
+          "ancestor_code": "",
+          "column_indices": [
+            29
+          ],
+          "gene": "Cich4g04717",
+          "genes": [
+            "Cich4g04717"
+          ],
+          "display": "Cich4g04717",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Lssa",
+          "species": "Lssa",
+          "ancestor_code": "",
+          "column_indices": [
+            30
+          ],
+          "gene": "Lssa7g03676",
+          "genes": [
+            "Lssa7g03676"
+          ],
+          "display": "Lssa7g03676",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        },
+        {
+          "role": "species",
+          "label": "Laca",
+          "species": "Laca",
+          "ancestor_code": "",
+          "column_indices": [
+            31
+          ],
+          "gene": "Laca7g02993",
+          "genes": [
+            "Laca7g02993"
+          ],
+          "display": "Laca7g02993",
+          "is_empty": false,
+          "is_target": false,
+          "strand": "+",
+          "chromosome": "",
+          "start": "",
+          "end": "",
+          "query_id": "demo_traced",
+          "best_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla"
+        }
+      ],
+      "target_species_position": 0,
+      "target_column_index": 19,
+      "left_species_count": 0,
+      "right_species_count": 10
+    }
+  ],
+  "queries": [
+    {
+      "id": "demo_traced",
+      "target_count": 1,
+      "ancestor_labels": [
+        "AAK-I",
+        "ASAK-XI"
+      ],
+      "ancestor_codes": [
+        "AAKI",
+        "ASAKXI"
+      ],
+      "matched_species": [
+        "Arla"
+      ],
+      "best_extant_genes": [
+        "Arla1g00001"
+      ]
+    },
+    {
+      "id": "demo_unmapped",
+      "target_count": 0,
+      "ancestor_labels": [],
+      "ancestor_codes": [],
+      "matched_species": [
+        "Arla"
+      ],
+      "best_extant_genes": [
+        "Arla99g99999"
+      ]
+    }
+  ],
+  "flank": 5,
+  "warnings": [
+    "No combined-table row was found for Arla99g99999."
+  ]
+}

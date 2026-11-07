@@ -1,0 +1,42 @@
+[
+  {
+    "query_id": "demo_traced",
+    "best_gene": "Arla1g00001",
+    "matched_species": "Arla",
+    "reference_set": "Arla",
+    "combined_source": "Arla",
+    "combined_row_index": 1,
+    "ancestor_gene_summary": "AAK-I: AAKI3g00001; ASAK-XI: ASAKXI1g00001",
+    "ancestor_gene_map": {
+      "AAKI": [
+        "AAKI3g00001"
+      ],
+      "ASAKXI": [
+        "ASAKXI1g00001"
+      ]
+    },
+    "ancestor_codes": [
+      "AAKI",
+      "ASAKXI"
+    ],
+    "identity": "99.00",
+    "length": 100,
+    "evalue": "1.00e-40",
+    "bitscore": "220.00",
+    "status": "Traced"
+  },
+  {
+    "query_id": "demo_unmapped",
+    "best_gene": "Arla99g99999",
+    "matched_species": "Arla",
+    "reference_set": "-",
+    "ancestor_gene_summary": "No ancestral chromosome relationship is currently available for this gene.",
+    "ancestor_gene_map": {},
+    "ancestor_codes": [],
+    "identity": "95.00",
+    "length": 100,
+    "evalue": "1.00e-35",
+    "bitscore": "210.00",
+    "status": "No ancestral relationship"
+  }
+]

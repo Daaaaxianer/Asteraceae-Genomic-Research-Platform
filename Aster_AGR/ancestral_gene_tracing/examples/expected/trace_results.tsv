@@ -1,0 +1,3 @@
+query_id	best_gene	matched_species	reference_set	ancestor_gene_summary	identity	length	evalue	bitscore	status
+demo_traced	Arla1g00001	Arla	Arla	AAK-I: AAKI3g00001; ASAK-XI: ASAKXI1g00001	99.00	100	1.00e-40	220.00	Traced
+demo_unmapped	Arla99g99999	Arla	-	No ancestral chromosome relationship is currently available for this gene.	95.00	100	1.00e-35	210.00	No ancestral relationship

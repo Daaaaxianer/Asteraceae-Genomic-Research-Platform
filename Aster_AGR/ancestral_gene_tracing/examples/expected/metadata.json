@@ -1,0 +1,23 @@
+{
+  "search_mode": "best_hit_trace",
+  "mode_label": "Ancestral Gene Tracing",
+  "total_hits": 4,
+  "filtered_hits": 3,
+  "best_hit_count": 2,
+  "traced_query_count": 1,
+  "trace_result_count": 2,
+  "available_reference_sets": [
+    "Fli",
+    "Gehy",
+    "Arla"
+  ],
+  "searched_species": [
+    "Fli",
+    "Gehy",
+    "Arla"
+  ],
+  "e_value_cutoff": 1e-05,
+  "score_cutoff": 100,
+  "identity_cutoff": 60,
+  "input_mode": "existing_search_results"
+}

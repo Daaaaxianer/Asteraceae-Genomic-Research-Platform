@@ -1,0 +1,115 @@
+{
+  "selected_ancestors": [
+    "AAKI",
+    "ASAKXI"
+  ],
+  "summaries": {
+    "AAKI": {
+      "code": "AAKI",
+      "label": "AAK-I",
+      "selected": true,
+      "hit_count": 1,
+      "top_hits": [
+        {
+          "query": "demo_traced",
+          "subject": "AAKI3g00001",
+          "ancestor_gene": "AAKI3g00001",
+          "best_extant_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla",
+          "identity": "99.00",
+          "length": 100,
+          "qstart": "",
+          "qend": "",
+          "sstart": "",
+          "send": "",
+          "evalue": "1.00e-40",
+          "bit_score": "220.00",
+          "trace_mode": true
+        }
+      ],
+      "best_hit": {
+        "query": "demo_traced",
+        "subject": "AAKI3g00001",
+        "ancestor_gene": "AAKI3g00001",
+        "best_extant_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla",
+        "identity": "99.00",
+        "length": 100,
+        "qstart": "",
+        "qend": "",
+        "sstart": "",
+        "send": "",
+        "evalue": "1.00e-40",
+        "bit_score": "220.00",
+        "trace_mode": true
+      }
+    },
+    "ASAKXI": {
+      "code": "ASAKXI",
+      "label": "ASAK-XI",
+      "selected": true,
+      "hit_count": 1,
+      "top_hits": [
+        {
+          "query": "demo_traced",
+          "subject": "ASAKXI1g00001",
+          "ancestor_gene": "ASAKXI1g00001",
+          "best_extant_gene": "Arla1g00001",
+          "matched_species": "Arla",
+          "reference_set": "Arla",
+          "identity": "99.00",
+          "length": 100,
+          "qstart": "",
+          "qend": "",
+          "sstart": "",
+          "send": "",
+          "evalue": "1.00e-40",
+          "bit_score": "220.00",
+          "trace_mode": true
+        }
+      ],
+      "best_hit": {
+        "query": "demo_traced",
+        "subject": "ASAKXI1g00001",
+        "ancestor_gene": "ASAKXI1g00001",
+        "best_extant_gene": "Arla1g00001",
+        "matched_species": "Arla",
+        "reference_set": "Arla",
+        "identity": "99.00",
+        "length": 100,
+        "qstart": "",
+        "qend": "",
+        "sstart": "",
+        "send": "",
+        "evalue": "1.00e-40",
+        "bit_score": "220.00",
+        "trace_mode": true
+      }
+    }
+  },
+  "meta": {
+    "search_mode": "best_hit_trace",
+    "mode_label": "Ancestral Gene Tracing",
+    "total_hits": 4,
+    "filtered_hits": 3,
+    "best_hit_count": 2,
+    "traced_query_count": 1,
+    "trace_result_count": 2,
+    "available_reference_sets": [
+      "Fli",
+      "Gehy",
+      "Arla"
+    ],
+    "searched_species": [
+      "Fli",
+      "Gehy",
+      "Arla"
+    ],
+    "e_value_cutoff": 1e-05,
+    "score_cutoff": 100,
+    "identity_cutoff": 60,
+    "input_mode": "existing_search_results"
+  }
+}

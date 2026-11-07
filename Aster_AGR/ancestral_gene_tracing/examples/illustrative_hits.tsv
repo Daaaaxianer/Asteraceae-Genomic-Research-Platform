@@ -1,0 +1,5 @@
+# Illustrative BLAST-format records; numeric similarities are synthetic format fixtures.
+demo_traced	Arla1g00001	99	100	1	0	1	100	1	100	1e-40	220
+demo_traced	Fli1g00002	98	100	2	0	1	100	1	100	1e-30	180
+demo_unmapped	Arla99g99999	95	100	5	0	1	100	1	100	1e-35	210
+demo_filtered	Fli1g00001	40	100	60	0	1	100	1	100	1e-3	50
