@@ -10,6 +10,8 @@ The full online platform described on the homepage contains 156 plant genomes: 1
 
 This source-code release contains the application code and frontend templates, with a local SQLite configuration for interface inspection. Many large datasets and supporting files used by the online platform have been omitted to reduce the archive size. The archive does not contain the complete production MySQL database, sequence libraries, alignment databases, or all precomputed results and indexes.
 
+For the four research directories and their examples, see [Additional repository modules](#additional-repository-modules).
+
 ## Architecture and local evaluation
 
 The application uses Python and Django, with a Bootstrap 5 interface built from HTML, CSS, and JavaScript. The production deployment uses MySQL. The local edition uses SQLite at `.private/local.sqlite3`, so basic interface inspection does not require a separate database server.
@@ -134,4 +136,43 @@ For questions about data availability or a complete server installation, contact
 
 ## Additional repository modules
 
-The repository also retains the research modules previously published in [Aster_AGR](Aster_AGR/), [Aster_Api](Aster_Api/), [Aster_Collinearity](Aster_Collinearity/), and [Aster_MGA](Aster_MGA/). The Django platform described above runs from the repository root.
+The four directories below provide research workflows, reference materials, and examples alongside the Django application. Each directory has its own guide describing the inputs, dependencies, commands, and available results. The Django platform described above runs from the repository root.
+
+| Directory | Main purpose | Included resources |
+| --- | --- | --- |
+| [Aster_AGR](Aster_AGR/README.md) | Ancestral candidate searches, gene tracing, and ancestor resource extraction. | Three tool modules, command-line adapters, relationship tables, AAK-I resources, and small examples. |
+| [Aster_Api](Aster_Api/README.md) | Documentation for programmatic access to AGRP data and downloads. | Endpoint reference, parameters, request examples, access rules, and the API documentation HTML template. |
+| [Aster_Collinearity](Aster_Collinearity/README.md) | Protein homology searches, collinear block identification, Ka/Ks calculation, and dot plots. | Analysis scripts, a species-name table, a selected precomputed plotting example, and reference figures. |
+| [Aster_MGA](Aster_MGA/README.md) | Construction of a multiple-collinearity table using manually defined homologous regions. | An Elu–Ddev worked example with annotations, BLAST hits, blocks, region definitions, scripts, tables, and figures. |
+
+### Aster_AGR: ancestral genome tools
+
+The ancestral genome directory separates the two search modes of the `ancestral_chromosome` page from the scripts used to extract ancestor resources:
+
+- [Ancestral Candidate Search](Aster_AGR/ancestral_candidate_search/README.md): search selected ancestor databases and retain all retrieved hits passing the E-value, bitscore, and identity thresholds.
+- [Ancestral Gene Tracing](Aster_AGR/ancestral_gene_tracing/README.md): select the best extant gene hit for each query, then retrieve its recorded ancestral relationships from the Fli, Gehy, and Arla combined reference tables. The module also builds the neighborhood data used by the result viewer.
+- [Ancestral Genome Extraction](Aster_AGR/ancestral_genome_extraction/README.md): select supported ancestor–extant mappings and extract or rename matching GFF, CDS, and protein records. The supplied AAK-I CDS is distributed as `AAKI.cds.gz`, with local decompression instructions.
+
+Small examples demonstrate offline filtering, tracing, and resource extraction. Fresh sequence searches require the corresponding DIAMOND or BLAST+ databases. The supplied full AAK-I resources retain repeated identifiers; review the module's [identifier status](Aster_AGR/ancestral_genome_extraction/README.md#identifier-status) before using them as a reference that requires unique gene IDs.
+
+### Aster_Api: API documentation
+
+This directory documents the deployed API at `https://asteraceae.cgrpoee.top/api/`, covering Genomics, Geno-Syn, and Multi-Omics queries, public and analysis-result files, browser exports, and tool request routes. It describes request methods, parameters, pagination, access credentials, rate limits, and error responses, with examples for scripted use.
+
+The directory contains the API guide and its HTML documentation template. The endpoint implementation belongs to the root `api/` package and the Django application; use the local or production setup above when deploying those services.
+
+### Aster_Collinearity: homology, blocks, and Ks
+
+The [pipeline guide](Aster_Collinearity/collinearity-pipeline/README.md) describes the sequence of BLASTP or DIAMOND searches, ColinearScan block identification, and Ka/Ks calculation, together with BLAST, block, and Ks dot plots. It specifies the prepared FASTA, gene annotation, chromosome gene-count, and intermediate file formats expected by the scripts.
+
+The [Aoff–Ases example](Aster_Collinearity/examples/Aoff_Ases/README.md) uses selected precomputed records for *Asparagus officinalis* and *Angraecum sesquipedale*. It provides a small plotting demonstration and expected figures. Protein/CDS inputs and the external analysis tools are needed to run a fresh complete calculation; the precomputed example does not include those FASTA inputs.
+
+### Aster_MGA: multiple collinearity example
+
+The worked example compares *Elaeis guineensis* (`Elu`) with *Dendrobium devonianum* (`Ddev`). It combines collinear blocks with manually delineated homologous regions, labeled A1–A4, to construct an Elu-referenced multiple-collinearity table with up to four Ddev copy columns per Elu gene.
+
+The workflow converts plot coordinates to gene-index coordinates, assigns blocks to the selected regions, builds and reformats the table, extracts its corresponding BLAST pairs, and plots the result. The directory includes the [region correspondences](Aster_MGA/regions/Elu_Ddev.correspondence.txt) and the [tab-separated table with missing values marked as dots](Aster_MGA/mc_table/Elu_v_Ddev.mc.tab.dot.txt), alongside the scripts and figures.
+
+Python, pandas, matplotlib, and Perl are used for the documented steps; rerunning block detection also requires ColinearScan. Manual region selection is part of the workflow, so a fresh analysis requires reviewing the region boundaries for the genomes being compared.
+
+Use each module's guide for its own working-directory and file-format conventions. The modules include selected research data and demonstrations, while the complete online platform still requires the production resources described above.
